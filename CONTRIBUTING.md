@@ -9,6 +9,8 @@ or improve existing ones — no platform code required.
 ## What belongs here
 
 - New security agent skill packages (public, non-offensive)
+- New engineering, DevOps, or executive skill packages
+- New `cs-*` orchestrator agents in `agents/<domain>/`
 - Improvements to existing SKILL.md prompts (better reasoning procedures, new classification tables, updated MITRE mappings)
 - New or improved reference documents (`references/`)
 - Better expected output examples (`expected_outputs/`)
@@ -240,6 +242,69 @@ Before opening a PR, verify:
 4. Open a PR against `main` with:
    - Title: `feat: add <slug> agent` or `improve: <slug> — <what changed>`
    - Description: what the agent does and why it belongs in this library
+
+---
+
+## Adding a cs-* Orchestrator Agent
+
+Orchestrator agents live in `agents/<domain>/` and combine multiple skills into role-specific workflows.
+
+### Agent File Structure
+
+```
+agents/
+├── CLAUDE.md                  # Agent development guide
+├── security/
+│   └── cs-security-analyst.md
+├── devsecops/
+│   └── cs-devsecops-engineer.md
+└── executive/
+    └── cs-ciso-advisor.md
+```
+
+### Required Frontmatter
+
+```yaml
+---
+name: cs-<agent-name>
+description: <one-line description>
+skills: <primary-skill-slug>
+domain: <security|devsecops|executive>
+model: sonnet
+tools: [Read, Write, Bash, Grep, Glob]
+---
+```
+
+### Required Sections
+
+1. **Purpose** — 2-3 paragraphs explaining the agent's role and audience
+2. **Skill Integration** — skill paths, Python tools, knowledge bases
+3. **Workflows** — minimum 3 workflows with named steps and bash commands
+4. **Integration Examples** — runnable bash command block
+5. **Success Metrics** — 5+ measurable outcomes
+6. **Related Agents** — links to agents that receive or send to this agent
+7. **References** — links to primary skill SKILL.md files
+
+### Path Convention
+
+From `agents/security/cs-my-agent.md`, reference skills via:
+```bash
+../../<slug>/scripts/<slug>_tool.py
+```
+
+### Agent Quality Checklist
+
+```
+[ ] YAML frontmatter valid with cs-* prefix
+[ ] All skill slugs referenced exist in the repo
+[ ] Relative paths resolve correctly from agents/domain/
+[ ] At least 3 workflows with concrete bash commands
+[ ] Success metrics are measurable (not aspirational)
+[ ] agents/CLAUDE.md agent catalog updated
+[ ] README.md agents table updated
+```
+
+See [agents/CLAUDE.md](agents/CLAUDE.md) for the full agent development guide.
 
 ---
 

@@ -1,6 +1,6 @@
 # usap-skills
 
-56 standalone LLM skill packages for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
+66 standalone LLM skill packages + 5 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
 
 Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
 
@@ -118,10 +118,43 @@ Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Olla
 
 ---
 
-## All 56 agents
+## Orchestrator Agents
+
+5 `cs-*` agents that coordinate multiple skills into role-specific workflows:
+
+| Agent | Domain | Skills Orchestrated | Description |
+|---|---|---|---|
+| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | threat-hunting, behavioral-analytics, secrets-exposure, incident-classification, telemetry-signal-quality | Tier 2 SOC analyst — alert triage, threat hunt execution, compromise assessment |
+| [`cs-incident-responder`](agents/security/cs-incident-responder.md) | Security | incident-commander, incident-classification, containment-advisor, forensics, zero-day-response | Full incident lifecycle — triage, containment, forensics, post-incident review |
+| [`cs-red-teamer`](agents/security/cs-red-teamer.md) | Security | red-team-planner, red-team-operations, safe-exploitation, attack-path-analysis, continuous-pentesting | Offensive security coordinator — engagement scoping, attack path mapping, findings report |
+| [`cs-devsecops-engineer`](agents/devsecops/cs-devsecops-engineer.md) | DevSecOps | secure-sdlc, sast-dast-coordinator, devsecops-pipeline, build-integrity, supply-chain-risk, appsec-code-review, pipeline-security-scan | Security-in-pipeline engineer — PR gate, pipeline hardening, SBOM generation |
+| [`cs-ciso-advisor`](agents/executive/cs-ciso-advisor.md) | Executive | enterprise-risk-assessment, compliance-mapping, metrics-reporting, security-posture-score, ciso-brief-generator, cyber-insurance | Executive advisor — board reports, risk posture reviews, regulatory gap assessments |
+
+See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
+
+---
+
+## Domain Index
+
+| Domain | Skills |
+|---|---|
+| [Detection](domains/detection.md) | threat-hunting, secrets-exposure, behavioral-analytics, telemetry-signal-quality, network-exposure, attack-surface-management, threat-intelligence, deception-honeypot |
+| [Response](domains/response.md) | incident-commander, incident-classification, containment-advisor, forensics, zero-day-response, zero-day-response-governance |
+| [Risk & Compliance](domains/risk-compliance.md) | enterprise-risk-assessment, risk-threat-modeling, compliance-mapping, regulatory-horizon, privacy-dpia, cyber-insurance, internal-audit-assurance, security-posture-score |
+| [Cloud & Infra](domains/cloud-infra.md) | cloud-security-posture, iac-security, endpoint-os-security, ot-iot-device-security, cloud-workload-protection |
+| [AppSec & DevSecOps](domains/appsec-devsecops.md) | secure-sdlc, sast-dast-coordinator, devsecops-pipeline, build-integrity, supply-chain-risk, supply-chain-simulation, appsec-code-review, pipeline-security-scan |
+| [Identity & Access](domains/identity-access.md) | identity-access-risk, data-security-classification, cryptography-key-management, insider-physical-risk |
+| [Red Team](domains/red-team.md) | red-team-operations, red-team-planner, safe-exploitation, continuous-pentesting, attack-path-analysis, ai-red-teaming |
+| [Governance](domains/governance.md) | security-architecture, security-policy-control, security-awareness, findings-tracker, vulnerability-management, metrics-reporting, security-posture-score, ciso-brief-generator |
+| [Platform & AI](domains/platform-ai.md) | orchestrator, tool-execution-broker, guardrail, agent-integrity-monitor, ai-agent-security, ai-ethics-governance, ai-red-teaming |
+
+---
+
+## All 66 skills
 
 | Slug | Level | Category | Description |
 |---|---|---|---|
+| `ai-red-teaming` | L4 | Red Team | Adversarial testing of AI/ML systems: prompt injection, model inversion, jailbreak detection |
 | `agent-integrity-monitor` | L3 | Detection | Monitors AI agent outputs for integrity violations, prompt injection, and manipulation |
 | `ai-agent-security` | L3 | Detection | Security assessment of AI/LLM agents: input validation, output sanitization, trust boundaries |
 | `ai-ethics-governance` | L2 | Governance | AI ethics review, bias assessment, and responsible AI governance for AI system deployments |
@@ -178,6 +211,16 @@ Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Olla
 | `vulnerability-management` | L3 | Vulnerability | Full vulnerability lifecycle: CVSS v3.1 + EPSS scoring, SLA-based prioritization, remediation tracking |
 | `zero-day-response` | L3 | Response | Zero-day compensating controls: exposure scoring, 5 control options, vendor timeline tracking |
 | `zero-day-response-governance` | L2 | Governance | Board/executive coordination for zero-day events: communication matrix, regulatory deadlines |
+| `ai-red-teaming` | L4 | Red Team | Adversarial testing of AI/ML systems: prompt injection, model inversion, jailbreak detection |
+| `cloud-workload-protection` | L4 | Cloud | Container and serverless runtime security: anomaly detection, escape detection, CWPP gap analysis |
+| `appsec-code-review` | L4 | AppSec | Security-focused static code analysis: OWASP Top 10, logic flaws, dependency audits |
+| `security-posture-score` | L3 | Governance | Cross-domain security posture scoring: aggregates findings into an executive scorecard |
+| `deception-honeypot` | L4 | Detection | Deception technology strategy: honeypot placement, canary token deployment, lateral movement traps |
+| `code-reviewer` | L4 | Engineering | PR review assistant: architecture, performance, security, and test coverage analysis |
+| `architecture-advisor` | L3 | Engineering | System design advisory: ADR generation, trade-off analysis, scalability review |
+| `sre-runbook-advisor` | L3 | Platform | SRE runbook generation: SLO burn rate analysis, runbook templating, postmortem facilitation |
+| `pipeline-security-scan` | L4 | DevOps | CI/CD pipeline security scanning: secrets in env vars, SAST integration, artifact signing check |
+| `ciso-brief-generator` | L2 | Executive | Generates CISO-level security briefs: risk posture summaries, board-ready narratives |
 
 ---
 
