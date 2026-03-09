@@ -1,0 +1,19 @@
+{
+  "agent_slug": "sre-runbook-advisor",
+  "intent_type": "advise",
+  "action": "",
+  "rationale": "",
+  "confidence": 0.0,
+  "severity": "critical",
+  "slo_analysis": {
+    "slo_target": 0.999,
+    "current_error_rate": 0.0,
+    "burn_rate": 0.0,
+    "budget_exhaustion_eta": ""
+  },
+  "runbook_generated": false,
+  "key_findings": [],
+  "next_agents": ["incident-commander"],
+  "human_approval_required": false,
+  "timestamp_utc": ""
+}

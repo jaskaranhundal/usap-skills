@@ -1,0 +1,23 @@
+{
+  "agent_slug": "code-reviewer",
+  "intent_type": "analyze",
+  "review_decision": "request_changes",
+  "action": "",
+  "rationale": "",
+  "confidence": 0.0,
+  "severity": "medium",
+  "findings": [
+    {
+      "dimension": "architecture | performance | security | testing | quality",
+      "file": "",
+      "line": 0,
+      "severity": "critical | high | medium | low",
+      "description": "",
+      "suggestion": ""
+    }
+  ],
+  "key_findings": [],
+  "next_agents": ["appsec-code-review"],
+  "human_approval_required": false,
+  "timestamp_utc": ""
+}

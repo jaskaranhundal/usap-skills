@@ -1,0 +1,115 @@
+---
+name: deception-honeypot
+description: USAP agent skill for Deception & Honeypot Strategy. Use for Deception technology planning — honeypot placement, canary token deployment, lateral movement traps.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-detection
+  updated: 2026-03-08
+  agent_slug: "deception-honeypot"
+---
+
+# Deception & Honeypot Strategy
+
+## Overview
+Design and advise on deception technology deployments to detect adversary lateral movement, credential theft, and data exfiltration. This skill governs honeypot placement strategy, canary token deployment across file shares and repositories, deceptive credential seeding, and lateral movement trap configuration. The goal is to convert attacker stealth into high-fidelity alerts with near-zero false positives.
+
+## Keywords
+- usap
+- security-agent
+- deception
+- honeypot
+- canary-tokens
+- lateral-movement
+- detection
+
+## Quick Start
+```bash
+python scripts/deception-honeypot_tool.py --help
+python scripts/deception-honeypot_tool.py --output json
+```
+
+## Core Workflows
+1. Assess environment topology for optimal deception asset placement.
+2. Recommend honeypot types and canary token strategies by attacker objective.
+3. Define alert logic for deception asset interactions.
+4. Produce deployment plan with monitoring integration.
+
+---
+
+## Skill Identity
+
+| Field | Value |
+|---|---|
+| **Slug** | `deception-honeypot` |
+| **Level** | L4 |
+| **Plane** | work |
+| **Phase** | phase1 |
+| **Domain** | Detection |
+| **Role** | Threat Hunter, Detection Engineer |
+| **Authorization required** | yes (production deployment) |
+
+---
+
+## Deception Asset Taxonomy
+
+### Honeypots
+| Type | Purpose | Placement |
+|---|---|---|
+| Credential honeypot | Detect credential stuffing and lateral movement | Domain controller vicinity, jump boxes |
+| Service honeypot | Detect port scanning and service exploitation | Unused IP ranges, DMZ |
+| Database honeypot | Detect unauthorized data access | Near production database segments |
+| Admin honeypot | Detect privilege escalation attempts | Admin workstation subnets |
+
+### Canary Tokens
+| Token Type | Detects | Placement |
+|---|---|---|
+| AWS key canary | Credential theft from code/config | Repositories, S3 buckets, config files |
+| DNS canary | Document exfiltration | Word docs, PDFs, spreadsheets |
+| Web bug canary | Email phishing and document open | Phishing simulation emails |
+| HTTP canary | File access and data staging | Network file shares |
+
+### Lateral Movement Traps
+- Fake domain admin accounts with monitoring
+- Deceptive SMB shares with canary files
+- Honey credentials in LSASS memory (requires EDR integration)
+- Deceptive DNS entries pointing to monitoring infrastructure
+
+---
+
+## Output Contract
+
+```json
+{
+  "agent_slug": "deception-honeypot",
+  "intent_type": "advise",
+  "action": "Deploy honeypot and canary token assets per the attached deployment plan.",
+  "rationale": "Current environment has no deception assets. Attacker lateral movement would go undetected without active controls.",
+  "confidence": 0.9,
+  "severity": "medium",
+  "key_findings": [],
+  "evidence_references": [],
+  "next_agents": ["threat-hunting", "incident-commander"],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-03-08T09:00:00Z"
+}
+```
+
+---
+
+## Escalation Logic
+
+| Condition | Action |
+|---|---|
+| Canary token triggered | Immediate escalation to `incident-commander` (SEV2) |
+| Honeypot interaction detected | Escalate to `threat-hunting` for hunt initiation |
+| Multiple assets triggered | Escalate to `incident-commander` (SEV1) — active lateral movement |
+
+---
+
+## Related Skills
+
+- `threat-hunting` — executes hunts triggered by deception asset alerts
+- `incident-commander` — receives escalations from deception asset triggers
+- `behavioral-analytics` — correlates deception alerts with entity risk scores
