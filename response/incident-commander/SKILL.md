@@ -179,6 +179,53 @@ intent_classification:
 - **Downstream**: `forensics`, `containment-advisor`, `compliance-mapping`, `threat-intelligence`, `metrics-reporting`
 - **Triggers**: All downstream agents receive `incident_severity` and `response_tracks`
 
+## Context Discovery
+
+Before prompting for input, check for context sources in this order:
+
+1. **`security-context.md`** — Check in the repository root and the working directory. Extract: `regulatory_scope` (GDPR, PCI, HIPAA, NY DFS), `notification_deadlines` (override defaults if org-specific SLAs exist), `escalation_contacts` (CISO name, Legal counsel contact, Communications lead).
+2. **Prior incident record** — If a prior `incident-classification` output is available in context, ingest `incident_type`, `severity_assessment`, and `false_positive_flag` before prompting for input.
+
+Apply extracted fields to: pre-populate regulatory notification deadlines without asking, route to the correct CISO escalation contact, and avoid re-asking for severity if already declared upstream.
+
+Announce: "Found security-context.md — regulatory scope: [value], escalation contacts loaded." Only ask for what is missing.
+
+---
+
+## Proactive Triggers
+
+Surface the following without being asked, whenever the condition is met:
+
+- **SEV2 or above with no regulatory scope check completed**: Immediately surface notification deadline status — state the applicable frameworks and their T+0 deadlines before any other analysis.
+- **SEV1 AND SIEM or CloudTrail is reported as disabled**: Flag GDPR Art.33 72-hour notification clock — defense evasion active means the organization cannot prove absence of data exfiltration; clock starts now.
+- **More than 30 minutes elapsed since SEV1 declaration with no containment authorization logged**: Flag SLA breach risk — the T+15 containment window has been exceeded; state current elapsed time and escalation path.
+- **Response tracks assigned but forensics not yet activated**: Flag volatile evidence loss risk — memory, active network connections, and running processes are being lost while forensics is pending.
+- **Third-party or vendor system identified as involved**: Flag supply chain notification obligations — the vendor's own incident notification SLAs and contractual obligations must be assessed.
+
+---
+
+## Output Artifacts
+
+| When operator asks for... | You produce... |
+|---|---|
+| SEV declaration record | JSON with `incident_severity`, `declared_at_utc`, `response_tracks`, `regulatory_notification_required`, `notification_deadline_utc` |
+| Containment options summary | `mutating_actions_ordered` array with action, mutating_category, urgency, and required approver_role per action |
+| Regulatory deadline table | Markdown table: Framework → Deadline → Clock Start → Status → Owner |
+| Incident status summary | Plain-English situation report: current SEV level, elapsed time, containment status, next SLA checkpoint |
+| Post-incident closure record | Closure JSON with timeline, root cause, resolution actions, lessons learned, and handoff to risk-compliance |
+
+---
+
+## Related Skills
+
+- `incident-classification` — Use before this skill; provides `incident_type` and `severity_assessment` that pre-populate the SEV declaration. NOT for re-classification once SEV1 has been declared.
+- `containment-advisor` — Use immediately after SEV declaration to scope blast radius and recommend containment. NOT for forensic evidence collection (that is `forensics`).
+- `forensics` — Use in parallel with containment (never after) to preserve volatile evidence. NOT a replacement for containment authorization — both run concurrently.
+- `zero-day-response-governance` — Use when the incident involves a CVE with no available patch or requires regulatory external notification. NOT for standard credential rotation incidents.
+- `cs-incident-responder` — The orchestrator agent that manages this skill as part of the full SEV1–SEV4 lifecycle. NOT a substitute for this skill's direct invocation in automated pipelines.
+
+---
+
 ## Validation Checklist
 - [ ] `agent_slug: incident-commander` in frontmatter
 - [ ] Runtime contract: `../../agents/incident-commander.yaml`

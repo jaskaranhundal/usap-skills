@@ -230,6 +230,14 @@ Before opening a PR, verify:
 [ ] expected_outputs/sample_output.json validates against the output contract
 [ ] No paid API keys referenced in any file
 [ ] No offensive techniques (those go to usap-bugbounty)
+[ ] SKILL.md ≤10KB (check: wc -c SKILL.md)
+[ ] ## Proactive Triggers present with 4-6 triggers
+[ ] ## Output Artifacts table present with 3-6 rows
+[ ] ## Related Skills entries include NOT-scenarios
+[ ] ## Context Discovery section present
+[ ] Python tool runs zero-config: python scripts/<slug>_tool.py --output json
+[ ] Python tool has --help (argparse required)
+[ ] If tool scores, output includes risk_score (0-100 int) alongside confidence float
 ```
 
 ---

@@ -79,6 +79,33 @@ metadata:
 
 ---
 
+## Optional Metadata Fields
+
+### `metadata.context_file`
+- **Type:** string
+- **Pattern:** relative path from skill root
+- **Example:** `"../../shared/security-context.md"`
+- **Rules:** Points to a domain context document the skill reads before prompting the user. If present, the skill must check this file first and apply its contents before asking for missing input.
+
+### `metadata.proactive_triggers_count`
+- **Type:** integer
+- **Allowed values:** 4–6
+- **Example:** `5`
+- **Rules:** Must match the number of entries in the `## Proactive Triggers` section of SKILL.md. Validated at review time.
+
+### `metadata.output_artifacts_count`
+- **Type:** integer
+- **Allowed values:** 3–6
+- **Example:** `4`
+- **Rules:** Must match the number of rows in the `## Output Artifacts` table of SKILL.md. Validated at review time.
+
+### `metadata.skill_size_kb`
+- **Type:** float
+- **Example:** `8.4`
+- **Rules:** Approximate size of SKILL.md in kilobytes. Must be ≤10 or include a rationale comment explaining why the size is acceptable. Content exceeding 10KB should be moved to `references/`.
+
+---
+
 ## Category → Domain Mapping
 
 | Category | Domain |
@@ -103,3 +130,6 @@ metadata:
 - [ ] `metadata.category` is one of the allowed categories
 - [ ] `metadata.updated` is today's date or earlier
 - [ ] `metadata.agent_slug` is quoted and matches `name`
+- [ ] SKILL.md ≤10KB; overflow moved to `references/`
+- [ ] `## Proactive Triggers` section present with 4–6 entries
+- [ ] `## Output Artifacts` table present with 3–6 rows

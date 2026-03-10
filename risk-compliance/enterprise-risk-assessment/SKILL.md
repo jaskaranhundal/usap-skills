@@ -194,6 +194,52 @@ Key Metrics vs. Last Quarter:
 - **Key inputs**: `vulnerability-management` (CVE counts), `incident-commander` (active incidents), `compliance-mapping` (regulatory gaps), `cyber-insurance` (coverage)
 - **Downstream**: Board reporting, `cyber-insurance` (risk quantification for coverage decisions)
 
+## Context Discovery
+
+Before prompting for input, check for context sources in this order:
+
+1. **`security-context.md`** — Check in the repository root and working directory. Extract: `risk_appetite_statement` (approved board statement or reference), `organization_size_tier` (SMB/mid-market/enterprise), `regulatory_frameworks` (active compliance obligations).
+2. **Existing risk register** — If a prior risk register JSON or markdown file is available in context, ingest current scenario ALEs and trend data before prompting for input.
+
+Apply extracted fields to: calibrate the risk heat map against the stated risk appetite, size scenarios appropriately for the organization tier, and map outputs to the correct regulatory frameworks without re-asking.
+
+Announce: "Found security-context.md — organization tier: [value], risk appetite: [value], frameworks: [list]." Only ask for what is missing.
+
+---
+
+## Proactive Triggers
+
+Surface the following without being asked, whenever the condition is met:
+
+- **Risk appetite statement absent or last updated >12 months ago**: Flag that the risk heat map cannot be validly calibrated — a stale or missing appetite statement means the board has not confirmed its current risk tolerance; assessment output is advisory only until refreshed.
+- **Any single scenario ALE (likely estimate) exceeds $10M**: Flag immediate board escalation required — this scenario exceeds the Critical tier threshold and requires a named risk owner and emergency remediation plan, not just a register entry.
+- **Cyber insurance coverage limit is less than the top-tier ALE (likely estimate)**: Flag a coverage gap — the organization is self-insuring the delta; quantify the gap amount explicitly.
+- **Three or more scenarios simultaneously at High or Critical tier**: Flag that aggregated risk may exceed the stated risk appetite even if each scenario is individually within tolerance — present combined ALE range.
+- **Assessment has not been re-run following a material infrastructure change** (new cloud region, major acquisition, new SaaS platform): Flag assessment staleness — the heat map does not reflect current exposure.
+
+---
+
+## Output Artifacts
+
+| When operator asks for... | You produce... |
+|---|---|
+| FAIR risk quantification | Per-scenario JSON: `scenario`, `ale_min`, `ale_likely`, `ale_max`, `aro`, `inherent_risk_tier`, `residual_risk_tier`, `key_controls`, `control_gaps` |
+| Board-ready risk summary | Plain-English risk dashboard using the Board Reporting Format — top 3 risks by ALE, total exposure range, insurance gap, investment ROI |
+| Risk register extract | Markdown table: Scenario → ALE Range → Risk Tier → Risk Owner → Last Assessed → Trend |
+| Risk trend delta | Comparison of current vs. prior assessment: scenarios that moved tiers, new scenarios added, scenarios closed, aggregate ALE change |
+
+---
+
+## Related Skills
+
+- `risk-threat-modeling` — Use before this skill to generate threat scenario inputs from system DFDs. NOT for board-level ALE quantification (that is this skill's function).
+- `compliance-mapping` — Use after this skill to map high-ALE scenarios to specific regulatory control gaps. NOT for financial risk quantification.
+- `cyber-insurance` — Use in parallel to validate insurance coverage adequacy against the ALEs this skill produces. NOT a substitute for quantified risk assessment.
+- `security-posture-score` — Use after this skill to translate risk findings into a cross-domain posture scorecard. NOT for FAIR methodology calculations.
+- `cs-ciso-advisor` — The orchestrator agent that includes this skill's output in board-ready briefs. NOT a direct substitute for this skill's quantification analysis.
+
+---
+
 ## Validation Checklist
 - [ ] `agent_slug: enterprise-risk-assessment` in frontmatter
 - [ ] Runtime contract: `../../agents/enterprise-risk-assessment.yaml`

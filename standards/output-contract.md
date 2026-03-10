@@ -34,6 +34,7 @@ Every USAP agent skill must produce a JSON payload conforming to this schema. Th
 | `regulatory_flags` | array[string] | Triggered compliance framework clauses |
 | `risk_score` | integer | 0–100 composite risk score |
 | `escalation_reason` | string | Why escalation was triggered (if applicable) |
+| `communication_standard_applied` | boolean | True if human-facing narrative follows the 5-part Communication Standard format |
 
 ---
 
@@ -101,3 +102,26 @@ The `guardrail` skill automatically validates outputs. Validation failures produ
   "timestamp_utc": "<ISO8601>"
 }
 ```
+
+---
+
+## Communication Standard for Human-Facing Output
+
+When a skill produces output intended for a human operator (not a downstream agent), format the narrative response in this 5-part structure:
+
+```
+BOTTOM LINE: [one sentence verdict — always first]
+WHAT: [findings with confidence tag: verified / medium / assumed]
+WHY THIS MATTERS: [business/security impact, 1-3 sentences]
+HOW TO ACT: [action → owner role → urgency]
+YOUR DECISION (if applicable): [Option A vs B with trade-offs]
+```
+
+**Rules:**
+- Bottom line always first — no preamble or context-setting before the verdict
+- Maximum 5 WHAT bullets — prioritize by severity
+- Every action must have an owner role and a time constraint
+- No process narration — state what was found and what to do, not what steps were taken
+- YOUR DECISION section included only when the operator must choose between paths with materially different trade-offs
+
+Set `communication_standard_applied: true` in the JSON output when this format is used.

@@ -117,11 +117,50 @@ Produce a structured JSON payload conforming to the output contract. Include `ac
 
 ---
 
+## Context Discovery
+
+Before prompting the user for input, check for context sources in this order:
+
+1. **`security-context.md`** — Check in the current directory and up to two parent directories. If found, extract relevant fields (environment type, approved tooling, regulatory scope) and apply to this skill's analysis context.
+2. **`metadata.context_file`** — If the frontmatter specifies a `context_file`, read it and apply any fields relevant to this skill's domain.
+
+Only ask the user for information not already present in these context sources. Announce what context was found before proceeding: "Found security-context.md — applying [field1], [field2]."
+
+---
+
+## Proactive Triggers
+
+Surface the following findings to the operator without being asked, whenever the conditions are met:
+
+- **[Observable condition 1]**: [specific security or business consequence]
+- **[Observable condition 2]**: [specific security or business consequence]
+- **[Observable condition 3]**: [specific security or business consequence]
+- **[Observable condition 4]**: [specific security or business consequence]
+- **[Observable condition 5]**: [specific security or business consequence]
+
+---
+
+## Output Artifacts
+
+| When operator asks for... | You produce... |
+|---|---|
+| [Request type 1] | [Artifact name] — [format and key fields] |
+| [Request type 2] | [Artifact name] — [format and key fields] |
+| [Request type 3] | [Artifact name] — [format and key fields] |
+
+---
+
 ## Related Skills
 
-- `orchestrator` — routes events to this skill
-- `incident-commander` — receives escalations from this skill
-- `findings-tracker` — records findings produced by this skill
+- `orchestrator` — Use when routing events to this skill. NOT for direct invocation when a more specific downstream skill is available.
+- `incident-commander` — Use when this skill produces a finding requiring SEV declaration. NOT for advisory-only outputs below confidence 0.5.
+- `findings-tracker` — Use when recording confirmed findings for lifecycle tracking. NOT for ephemeral analysis outputs.
+
+---
+
+## Communication Standard
+
+Human-facing narrative output from this skill follows the 5-part Communication Standard defined in [`standards/output-contract.md`](../../standards/output-contract.md).
 
 ---
 
