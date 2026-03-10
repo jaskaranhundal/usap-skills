@@ -201,9 +201,9 @@ Before prompting for input, check for context sources in this order:
 1. **`security-context.md`** — Check in the repository root and working directory. Extract: `risk_appetite_statement` (approved board statement or reference), `organization_size_tier` (SMB/mid-market/enterprise), `regulatory_frameworks` (active compliance obligations).
 2. **Existing risk register** — If a prior risk register JSON or markdown file is available in context, ingest current scenario ALEs and trend data before prompting for input.
 
-Apply extracted fields to: calibrate the risk heat map against the stated risk appetite, size scenarios appropriately for the organization tier, and map outputs to the correct regulatory frameworks without re-asking.
+Apply: calibrate heat map to risk appetite, size scenarios for org tier, map to active regulatory frameworks.
 
-Announce: "Found security-context.md — organization tier: [value], risk appetite: [value], frameworks: [list]." Only ask for what is missing.
+Announce findings. Only ask for what is missing.
 
 ---
 
