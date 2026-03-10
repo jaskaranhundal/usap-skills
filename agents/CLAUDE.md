@@ -60,6 +60,66 @@ tools: [Read, Write, Bash, Grep, Glob]
 6. **Related Agents**
 7. **References**
 
+---
+
+## Required Agent Sections (v2)
+
+All cs-* agents created or updated after 2026-03-10 must include these 12 sections in order:
+
+1. **YAML Frontmatter** — Required fields + optional `state:` block
+2. **Purpose** — 2-3 paragraphs: role, audience, and what gap the agent fills
+3. **Persona** ← NEW — Named identity, background, communication style, operating principles
+4. **Critical Actions** ← NEW — ALWAYS (3) and NEVER (3) hard operational rules
+5. **Command Menu** ← NEW — 2-letter trigger codes mapped to workflow names + HE (help) + ST (status)
+6. **Input Discovery** ← NEW — Documents to auto-discover before prompting for input
+7. **Skill Integration** — Skill paths, Python tools, knowledge bases
+8. **Workflows** — Minimum 3 workflows, each with MANDATORY EXECUTION RULES + FAILURE MODES + SUCCESS CRITERIA + FAILURE INDICATORS
+9. **Integration Examples** — Runnable bash command blocks
+10. **Success Metrics** — Measurable outcomes (not aspirational)
+11. **Related Agents** — Agents that send to or receive from this agent
+12. **References** — Links to primary SKILL.md files used
+
+### Workflow Block Requirements (v2)
+
+Each workflow must include at the top (after **Goal:**):
+
+```
+MANDATORY EXECUTION RULES:
+1. [rule]
+2. [rule]
+3. [rule]
+
+FAILURE MODES:
+- [condition] → [fallback]
+- [condition] → [fallback]
+- [condition] → [fallback]
+```
+
+And at the bottom (after **Expected Output:**):
+
+```
+SUCCESS CRITERIA:
+- [measurable outcome]
+- [measurable outcome]
+
+FAILURE INDICATORS:
+- [observable sign of invalid output]
+- [observable sign of invalid output]
+```
+
+### Optional `state:` Frontmatter Block
+
+Add to agent YAML to enable workflow state tracking:
+
+```yaml
+state:
+  active_workflow: null
+  steps_completed: []
+  input_documents: []
+  workflow_started_utc: null
+  last_step_completed_utc: null
+```
+
 ## Path Resolution
 
 From `agents/security/cs-security-analyst.md` to a skill:
