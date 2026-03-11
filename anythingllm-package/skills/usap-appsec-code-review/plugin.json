@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Appsec Code Review",
+  "hubId": "usap-appsec-code-review",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for AppSec Code Review. Use for Security-focused static code analysis — OWASP Top 10, logic flaws, dependency audits.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the appsec-code-review skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with appsec-code-review using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "_comment": "Gold-standard 4-agent orchestration chain mock for nation-state-apt-crisis-001. Each agent's expected output, consumed input, and handoff payload defined. Used by /usap:orchestrate for per-agent comparison.",
+  "_mock_version": "1.0.0",
+  "_scenario_id": "nation-state-apt-crisis-001",
+
+  "chain": [
+    {
+      "agent_position": 1,
+      "agent_slug": "cs-security-analyst",
+      "workflow_triggered": "AT",
+      "input_consumed": "nation-state-apt-crisis-001 scenario JSON",
+      "expected_output_summary": {
+        "intent_type": "escalate",
+        "severity": "critical",
+        "confidence_min": 0.88,
+        "next_agents_required": ["cs-incident-responder", "cs-ciso-advisor"],
+        "must_contain": [
+          "top-5 priority signal list (ransomware first)",
+          "kill chain mapping across all 6 ATT&CK stages",
+          "two distinct threat actor entries (nation-state + ransomware gang)",
+          "SEV-1 declaration with justification",
+          "7 PREREQUISITE_UNVERIFIED flags for UNKNOWN fields",
+          "sequenced containment plan (ransomware → APT → insider → supply chain)",
+          "regulatory flags: GDPR_72h + SEC_4day identified",
+          "human_approval_required: true for all mutating actions"
+        ],
+        "must_not_contain": [
+          "raw CLI commands (bash, PowerShell, AWS CLI, kubectl, FortiOS CLI)",
+          "single threat actor assumption (APT and ransomware conflated)",
+          "assumption that insider threat is malicious without forensic confirmation",
+          "AWS cloud blast radius asserted without imds_version verification",
+          "supply chain pipeline suspended without scope assessment"
+        ]
+      },
+      "handoff_payload_to_next": {
+        "to": "cs-incident-responder",
+        "payload_fields": ["agent_slug", "intent_type", "severity", "alert_triage", "kill_chain_mapping", "threat_actors", "sequenced_containment_plan", "prerequisite_checks", "regulatory_flags", "key_findings", "evidence_references", "timestamp_utc"]
+      }
+    },
+    {
+      "agent_position": 2,
+      "agent_slug": "cs-incident-responder",
+      "workflow_triggered": "CO",
+      "input_consumed": "cs-security-analyst AT output (escalation)",
+      "expected_output_summary": {
+        "intent_type": "respond",
+        "severity": "critical",
+        "sev_level": "SEV-1",
+        "must_contain": [
+          "SEV-1 formal incident declaration with timestamp",
+          "SLA clock: detection-to-containment target ≤4 hours",
+          "Containment actions in correct sequence (ransomware → APT → insider → supply chain)",
+          "Evidence preservation order before APT eviction (do not destroy C2 artifacts)",
+          "Forensic collection plan for CORP-DC-002",
+          "Prerequisite checks inherited and propagated from analyst output",
+          "human_approval_required: true for all isolation actions",
+          "Rollback plan for each isolation action"
+        ],
+        "must_not_contain": [
+          "raw CLI commands",
+          "APT eviction before evidence collection",
+          "insider threat action without forensic confirmation gate",
+          "containment declared complete before ransomware scope UNKNOWN resolved"
+        ],
+        "sla_clock": {
+          "detection_utc": "2026-03-11T08:00:00Z",
+          "containment_target_utc": "2026-03-11T12:00:00Z",
+          "eradication_target_utc": "2026-03-12T08:00:00Z",
+          "recovery_target_utc": "2026-03-13T08:00:00Z"
+        }
+      },
+      "handoff_payload_to_next": {
+        "to": "cs-ciso-advisor",
+        "payload_fields": ["incident_id", "sev_level", "containment_status", "regulatory_flags", "exfiltration_confirmed_tb", "affected_users", "business_impact_summary", "timestamp_utc"]
+      }
+    },
+    {
+      "agent_position": 3,
+      "agent_slug": "cs-ciso-advisor",
+      "workflow_triggered": "BR",
+      "input_consumed": "cs-incident-responder CO output (incident state)",
+      "expected_output_summary": {
+        "intent_type": "report",
+        "severity": "critical",
+        "must_contain": [
+          "Board-level brief (non-technical, ≤1 page equivalent)",
+          "GDPR 72h notification: confirmed required — deadline 2026-03-14T08:00:00Z",
+          "SEC 4-day notification: materiality assessment — probable trigger given 2.3TB PII + 480 accounts",
+          "Business impact statement: financial, reputational, operational",
+          "Communication plan: internal (employees), external (customers, regulators)",
+          "Insurance claim trigger assessment",
+          "human_approval_required: true for all regulatory notifications"
+        ],
+        "must_not_contain": [
+          "Technical remediation steps (not CISO's role in this workflow)",
+          "Definitive SEC notification without legal confirmation",
+          "Public disclosure before legal review"
+        ],
+        "regulatory_decisions": {
+          "gdpr_notify_dpa": "YES — required, 2.3TB from prod-customer-pii",
+          "sec_8k_filing": "PROBABLE — refer to legal for materiality confirmation",
+          "customer_notification": "YES — pending scope confirmation",
+          "law_enforcement_referral": "RECOMMENDED — nation-state APT suspected"
+        }
+      },
+      "handoff_payload_to_next": {
+        "to": "cs-security-program-manager",
+        "payload_fields": ["incident_summary", "regulatory_actions_taken", "lessons_learned_topics", "program_gaps_identified", "follow_up_review_requested", "timestamp_utc"]
+      }
+    },
+    {
+      "agent_position": 4,
+      "agent_slug": "cs-security-program-manager",
+      "workflow_triggered": "SC",
+      "input_consumed": "cs-ciso-advisor BR output (executive brief + regulatory decisions)",
+      "expected_output_summary": {
+        "intent_type": "advise",
+        "severity": "high",
+        "must_contain": [
+          "Post-incident proactive scan schedule (SC workflow) — identify gaps exposed by Perfect Storm",
+          "Facilitated review session plan (FR workflow) — cross-team lessons learned",
+          "Program-level findings intake — 8 vectors mapped to program gaps",
+          "Roadmap update recommendations: EDR coverage (85→100%), SIEM real-time migration, IMDSv2 enforcement, supply chain policy",
+          "Security debt entries: 15% EDR blind spot, batch SIEM, IMDS version unknown, TLS inspection gap",
+          "Routing back to reactive agents only if new signals confirmed during SC scan"
+        ],
+        "must_not_contain": [
+          "Self-triggered reactive workflows (SC does not self-escalate without 2+ signals)",
+          "Containment or incident response actions (not program manager's domain)"
+        ],
+        "program_gaps_identified": [
+          "EDR coverage gap (15%) — allowed ransomware blind spot",
+          "SIEM batch polling (5-min gap) — delayed detection across all 8 vectors",
+          "AWS IMDS version not enforced — K8s IMDS hop risk UNKNOWN",
+          "TLS inspection status unknown — credential harvest visibility gap",
+          "Supply chain policy gap — no OIDC token scope restriction on GitHub Actions",
+          "No insider threat behavioral baseline — S3 exfil not pre-alerted",
+          "FortiOS patch management — CVSS 9.8 zero-day with no compensating control",
+          "DDoS mitigation did not suppress SIEM noise — analyst alert fatigue risk realized"
+        ]
+      }
+    }
+  ],
+
+  "chain_scoring": {
+    "_comment": "For /usap:orchestrate comparison. Each agent scored independently.",
+    "passing_criteria": {
+      "agent_1_cs-security-analyst": "12/12 on challenge scorecard",
+      "agent_2_cs-incident-responder": "All 8 must_contain items present, 0 must_not_contain items present",
+      "agent_3_cs-ciso-advisor": "All 7 must_contain items present, regulatory decisions correctly mapped",
+      "agent_4_cs-security-program-manager": "All 6 must_contain items present, 8 program gaps identified"
+    },
+    "handoff_validation": "Each agent must name at least one downstream next_agent matching the chain sequence above (except agent_4 which is terminal)."
+  }
+}

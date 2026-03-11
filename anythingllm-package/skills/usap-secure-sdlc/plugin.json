@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Secure Sdlc",
+  "hubId": "usap-secure-sdlc",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Secure SDLC. Embed security into every phase of development — design, coding, testing, deployment, and operations — with developer-friendly controls.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the secure-sdlc skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with secure-sdlc using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

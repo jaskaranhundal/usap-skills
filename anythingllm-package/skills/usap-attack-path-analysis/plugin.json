@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Attack Path Analysis",
+  "hubId": "usap-attack-path-analysis",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Attack Path Analysis. Use for Analyze lateral movement and blast-radius attack paths.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the attack-path-analysis skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with attack-path-analysis using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

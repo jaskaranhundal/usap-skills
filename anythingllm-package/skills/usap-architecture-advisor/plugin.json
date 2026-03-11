@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Architecture Advisor",
+  "hubId": "usap-architecture-advisor",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Architecture Advisor. Use for System design advisory — ADR generation, trade-off analysis, scalability review.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the architecture-advisor skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with architecture-advisor using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

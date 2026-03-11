@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Code Reviewer",
+  "hubId": "usap-code-reviewer",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Code Reviewer. Use for PR review assistant — architecture, performance, security, and test coverage analysis.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the code-reviewer skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with code-reviewer using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

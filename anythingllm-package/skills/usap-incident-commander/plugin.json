@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Incident Commander",
+  "hubId": "usap-incident-commander",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Incident Commander. Coordinate multi-agent incident response, declare severity levels, assign response tracks, and drive decision-making under time pressure.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the incident-commander skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with incident-commander using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

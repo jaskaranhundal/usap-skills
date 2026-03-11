@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Security Requirements Review",
+  "hubId": "usap-security-requirements-review",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Security Requirements Review. Use for proactive analysis of design documents — POA&M, PRDs, architecture docs, requirements specs — to extract security gaps before any alerts fire.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the security-requirements-review skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with security-requirements-review using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

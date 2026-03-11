@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Internal Audit Assurance",
+  "hubId": "usap-internal-audit-assurance",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP skill for Internal Audit Assurance",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the internal-audit-assurance skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with internal-audit-assurance using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

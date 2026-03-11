@@ -64,6 +64,7 @@ Operators can trigger workflows using 2-letter codes or natural-language phrases
 | AT | alert triage / triage this alert | Alert Triage |
 | TH | threat hunt / run a hunt | Threat Hunt Execution |
 | CA | compromise assess / was this compromised | Compromise Assessment |
+| DI | document intake / analyze this document | Pre-Alert Document Intake |
 | HE | help / what can you do | Display this command menu |
 | ST | status / where are we | Report current workflow state and last completed step |
 
@@ -268,6 +269,48 @@ Announce all discovered documents before proceeding: "Found [document] — extra
 - Assessment produced with confidence >= 0.5 but no evidence references
 - "Clean" verdict on degraded telemetry without explicit qualification
 
+### Workflow 4: Pre-Alert Document Intake
+
+**Goal:** Convert an uploaded design document into structured SecurityFact JSON payloads, then feed those payloads into the existing Alert Triage workflow — ensuring alerts only fire with full document context, never from partial analysis.
+
+**MANDATORY EXECUTION RULES:**
+1. Complete document intake (Steps 1–2) before generating any alert payloads — no triage routing until the full document is understood; partial analysis produces false positives
+2. Each generated SecurityFact must include `"source": "document-intake"` and `"source_document": "<filename>"` to distinguish from live SIEM/EDR alerts
+3. Cap alert payloads at 5 per document — deduplicate before routing; log remaining findings to findings-tracker without triggering alert triage
+
+**FAILURE MODES:**
+- security-requirements-review tool unavailable → request operator to paste document text; manually apply classification rules from SKILL.md; do not skip Step 2 analysis
+- Document returns 0 key_findings → still produce a summary noting no critical or high findings; do not route to alert triage; log to findings-tracker as informational
+- More than 5 critical/high findings → route the top 5 by severity, log all remaining to findings-tracker with a note that batch cap was applied
+
+**Steps:**
+1. **Run security-requirements-review** — extract and classify the document
+   ```bash
+   python ../../appsec-devsecops/security-requirements-review/scripts/security-requirements-review_tool.py \
+     --input <file> --output json
+   ```
+2. **Extract candidate SecurityFacts** — read `key_findings` from the output; each finding is a candidate SecurityFact
+3. **Construct and route alert payloads** — for findings at `severity: critical` or `high`:
+   - Build a SecurityFact JSON: `{"source": "document-intake", "source_document": "<filename>", "finding": "<text>", "severity": "<severity>", "mitre_technique": "<if available>"}`
+   - Feed each into Workflow 1 (Alert Triage) — classify, check telemetry quality, assess behavioral context
+   - Hard cap at 5 alert payloads per document; deduplicate by finding text before routing
+4. **Log remaining findings** — for `severity: medium` or lower, add to findings-tracker without triggering alert triage
+5. **Report summary** — produce intake summary: `"N findings extracted → M alerts triggered (capped at 5), K findings logged to findings-tracker"`
+
+**Expected Output:** Intake summary with finding count, alert payload count, and findings-tracker entry count. Each routed alert payload is a structured SecurityFact linked to the source document.
+
+**SUCCESS CRITERIA:**
+- All alert payloads include `source: "document-intake"` and `source_document` fields — traceable to origin document
+- No alert triage routing occurs before Step 2 (full skill output) is available
+- Intake summary produced for every document, even documents with 0 critical/high findings
+
+**FAILURE INDICATORS:**
+- Alert payload routed to triage without `source: "document-intake"` field
+- More than 5 alert payloads routed from a single document without deduplication check
+- Document intake completed without producing an intake summary
+
+---
+
 ## Integration Examples
 
 ```bash
@@ -285,6 +328,10 @@ python ../../detection/behavioral-analytics/scripts/behavioral-analytics_tool.py
 
 # Run secrets exposure check
 python ../../detection/secrets-exposure/scripts/secrets-exposure_tool.py --output json
+
+# Pre-alert document intake (DI workflow)
+python ../../appsec-devsecops/security-requirements-review/scripts/security-requirements-review_tool.py \
+  --input /path/to/design-doc.md --output json
 ```
 
 ## Success Metrics

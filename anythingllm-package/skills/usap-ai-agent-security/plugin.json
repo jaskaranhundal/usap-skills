@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Ai Agent Security",
+  "hubId": "usap-ai-agent-security",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for AI Agent Security. Use for Detect prompt injection and misuse against agentic workflows.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the ai-agent-security skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with ai-agent-security using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

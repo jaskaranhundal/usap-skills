@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Security Awareness",
+  "hubId": "usap-security-awareness",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Security Awareness. Track and improve human risk posture through targeted training, phishing simulation analysis, and behavioral risk measurement.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the security-awareness skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with security-awareness using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

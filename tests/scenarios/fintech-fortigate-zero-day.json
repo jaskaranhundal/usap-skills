@@ -1,0 +1,126 @@
+{
+  "scenario_id": "fintech-fortigate-zero-day-001",
+  "scenario_name": "Fintech FortiGate Zero-Day — No-Patch 7-Day Window",
+  "description": "Active exploitation of a CVSS 9.8 FortiOS zero-day against a global fintech company. No vendor patch available. Production cannot be shut down. Attacker confirmed aware of vulnerability. 7-day patch window. Five concrete tasks must be answered.",
+  "context": {
+    "org_type": "global fintech",
+    "users": 4000,
+    "production_shutdown_allowed": false,
+    "vendor_patch_eta_days": 7,
+    "assume_attacker_aware": true,
+    "regulatory_scope": ["PCI-DSS", "GDPR", "FCA"]
+  },
+  "vulnerability": {
+    "product": "FortiGate FortiOS",
+    "cve": "CVE-PENDING",
+    "cvss_score": 9.8,
+    "patch_available": false,
+    "exploited_in_wild": true,
+    "exploit_window_minutes": 3,
+    "ids_signature_available": false,
+    "attack_vector": "network",
+    "attack_complexity": "low",
+    "privileges_required": "none",
+    "user_interaction": "none",
+    "scope": "changed",
+    "confidentiality_impact": "high",
+    "integrity_impact": "high",
+    "availability_impact": "high"
+  },
+  "environment": {
+    "assets": [
+      {
+        "type": "edge_firewall",
+        "count": 2,
+        "platform": "FortiGate FortiOS",
+        "internet_facing": true,
+        "ha_mode": "active-passive",
+        "note": "HA failover is an attacker-reachable pivot path"
+      },
+      {
+        "type": "kubernetes_cluster",
+        "count": 1,
+        "platform": "Kubernetes",
+        "internet_facing": true,
+        "ingress": "public Ingress exposed",
+        "note": "K8s Ingress reachable from compromised firewall network segment"
+      },
+      {
+        "type": "aws_vpc",
+        "count": 6,
+        "platform": "AWS VPC",
+        "internet_facing": false,
+        "subnets": "private subnets",
+        "accounts": 6,
+        "note": "IMDS version unknown — blast radius from container escape unverified"
+      },
+      {
+        "type": "ci_cd_pipeline",
+        "count": 1,
+        "platform": "GitHub Actions",
+        "internet_facing": true,
+        "oidc_enabled": true,
+        "note": "GitHub OIDC tokens may be stealable if pipeline network path crosses compromised segment"
+      },
+      {
+        "type": "identity_provider",
+        "count": 1,
+        "platform": "Okta SSO",
+        "users": 4000,
+        "mfa_enforced": true,
+        "saml_enabled": true,
+        "note": "SAML assertion forgery possible if FortiGate SSL inspection terminates Okta traffic"
+      },
+      {
+        "type": "siem",
+        "count": 1,
+        "platform": "batch polling 5-minute interval",
+        "real_time": false,
+        "detection_gap_minutes": 5,
+        "note": "5-minute blind window covers full exploit-to-backdoor lifecycle (exploit_window = 3 min)"
+      }
+    ],
+    "tls_inspection_status": "UNKNOWN",
+    "aws_imds_version": "UNKNOWN",
+    "firewall_cpu_baseline": "UNKNOWN",
+    "siem_eps_capacity": "UNKNOWN",
+    "existing_compromise_status": "UNKNOWN"
+  },
+  "threat_intel": {
+    "exploitation_confirmed_in_wild": true,
+    "actor_type": "opportunistic_and_targeted",
+    "backdoor_account_creation_observed": true,
+    "exploit_occurs_within_3_min_of_scan": true,
+    "active_scanning_against_org_confirmed": true,
+    "ids_signature_available": false,
+    "attacker_knows_vulnerability": true,
+    "known_post_exploitation_ttps": [
+      "T1136 - Create Account (backdoor)",
+      "T1078 - Valid Accounts (stolen credentials)",
+      "T1021 - Remote Services (lateral movement)",
+      "T1583 - Acquire Infrastructure (C2 staging)",
+      "T1190 - Exploit Public-Facing Application"
+    ]
+  },
+  "tasks": [
+    "T1: Enumerate all attack paths originating from a FortiGate firewall compromise — include K8s Ingress pivot, AWS IAM via IMDS hop, Okta SAML abuse, GitHub OIDC theft, and lateral movement via HA failover",
+    "T2: Propose compensating controls that do not require patching and keep production running — all controls must be expressed as USAP intent blocks, no raw CLI",
+    "T3: Classify all proposed controls as IMMEDIATE (0-24h) or DEFERRED (24h-7d) with explicit rationale for each timeline bucket",
+    "T4: Determine how to verify whether the FortiGate firewall has already been compromised — existing_compromise_status is UNKNOWN, do not assume clean",
+    "T5: Produce a 7-day risk assessment showing daily residual risk posture and how it changes as controls are applied"
+  ],
+  "constraints": {
+    "no_production_shutdown": true,
+    "no_raw_cli": true,
+    "all_mutating_controls_require_human_approval": true,
+    "vendor_patch_days": 7,
+    "assume_attacker_aware": true,
+    "unknown_fields_must_be_prerequisite_unverified": [
+      "tls_inspection_status",
+      "aws_imds_version",
+      "firewall_cpu_baseline",
+      "siem_eps_capacity",
+      "existing_compromise_status"
+    ]
+  }
+}

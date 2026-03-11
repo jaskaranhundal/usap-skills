@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Deception Honeypot",
+  "hubId": "usap-deception-honeypot",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Deception & Honeypot Strategy. Use for Deception technology planning — honeypot placement, canary token deployment, lateral movement traps.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the deception-honeypot skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with deception-honeypot using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

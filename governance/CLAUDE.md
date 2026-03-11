@@ -33,6 +33,8 @@ Subdomains covered by this domain:
 | knowledge-management | governance/knowledge-management | knowledge-management_tool.py | Runbooks, lessons learned |
 | security-posture-score | governance/security-posture-score | security-posture-score_tool.py | Cross-domain scoring |
 | ciso-brief-generator | governance/ciso-brief-generator | ciso-brief-generator_tool.py | Executive briefs |
+| security-roadmap-planner | governance/security-roadmap-planner | security-roadmap-planner_tool.py | 12-month investment-prioritized program roadmap |
+| security-debt-tracker | governance/security-debt-tracker | security-debt-tracker_tool.py | Aging debt analysis, SLA breach detection, accumulation rate |
 
 All skill paths are relative from the repository root as `governance/<slug>/`. For example, the vulnerability-management skill lives at `governance/vulnerability-management/`.
 
@@ -51,6 +53,8 @@ All skill paths are relative from the repository root as `governance/<slug>/`. F
 | knowledge-management_tool.py | governance/knowledge-management/scripts/knowledge-management_tool.py | Maintains runbook currency, captures lessons learned, and surfaces knowledge gaps from recent incidents | `--runbook`, `--incident-id`, `--output` |
 | security-posture-score_tool.py | governance/security-posture-score/scripts/security-posture-score_tool.py | Aggregates findings, metrics, and control coverage from all domains into a 0–100 executive scorecard | `--domains`, `--period`, `--output` |
 | ciso-brief-generator_tool.py | governance/ciso-brief-generator/scripts/ciso-brief-generator_tool.py | Synthesizes posture score, vulnerability trends, and metrics into board-ready narrative briefs | `--audience`, `--period`, `--format`, `--output` |
+| security-roadmap-planner_tool.py | governance/security-roadmap-planner/scripts/security-roadmap-planner_tool.py | Builds investment-prioritized 12-month security program roadmap from posture, risk, and compliance inputs | `--input`, `--risk-input`, `--compliance-input`, `--output` |
+| security-debt-tracker_tool.py | governance/security-debt-tracker/scripts/security-debt-tracker_tool.py | Analyzes findings aging, SLA breach counts, debt accumulation rate; exits 0/1/2 for stable/accumulating/critical | `--input`, `--output` |
 
 ---
 
@@ -219,6 +223,40 @@ metrics-reporting            (update SLA compliance rate; flag breach in period 
 ```
 
 SLA breach notifications include: vulnerability ID, CVSS score, EPSS score, assigned SLA band, discovery date, deadline date, and system owner contact. The breach record is included in the next posture score computation as a weighted negative input.
+
+---
+
+## Cascade Intelligence — Cross-Skill Routing
+
+New skills `security-roadmap-planner` and `security-debt-tracker` introduce passive lifecycle routing into the governance domain. The following routing rules apply:
+
+### security-debt-tracker Cascade
+
+| Exit Code | Condition | Routes To |
+|---|---|---|
+| 2 | critical/high in critical_debt | `cs-security-analyst` (AT) + `ciso-brief-generator` |
+| 1 | overdue items OR growing accumulation | `vulnerability-management` |
+| 0 | debt stable | no routing; persist clean digest |
+
+### security-roadmap-planner Cascade
+
+| Condition | Routes To |
+|---|---|
+| Always | `ciso-brief-generator` (board formatting) |
+| Always | `metrics-reporting` (track execution) |
+| L-band initiative | `cs-ciso-advisor` (budget approval framing) |
+| Compliance gap with deadline | `compliance-mapping` (gap detail) |
+
+### Passive Scan Integration Pattern
+
+```
+cs-security-program-manager (SC workflow)
+  └─ Step 1: security-debt-tracker     → exit 0/1/2
+  └─ Step 2: attack-surface-management → drift signals
+  └─ Step 3: vulnerability-management  → SLA status
+  └─ Step 4: behavioral-analytics      → drift detection
+  └─ Step 5: compile digest + route
+```
 
 ---
 

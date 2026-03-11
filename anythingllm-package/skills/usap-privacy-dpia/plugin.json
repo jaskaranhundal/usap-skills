@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Privacy Dpia",
+  "hubId": "usap-privacy-dpia",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Privacy & DPIA. Produce GDPR-compliant Data Protection Impact Assessments, identify high-risk processing activities, and generate privacy evidence packs.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the privacy-dpia skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with privacy-dpia using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

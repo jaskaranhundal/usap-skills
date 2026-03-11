@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Security Research",
+  "hubId": "usap-security-research",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Security Research. Track emerging threats, analyze novel attack techniques, evaluate research findings, and translate intelligence into actionable security improvements.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the security-research skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with security-research using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

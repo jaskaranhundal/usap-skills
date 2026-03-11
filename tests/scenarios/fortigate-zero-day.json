@@ -1,0 +1,34 @@
+{
+  "scenario_id": "fortigate-zero-day-test-001",
+  "scenario_name": "FortiOS Zero-Day Active Exploitation",
+  "description": "Active exploitation detected against FortiGate edge firewalls. No vendor patch available. Exploit window confirmed at 3 minutes per threat intel.",
+  "vulnerability": {
+    "product": "FortiGate FortiOS",
+    "cvss_score": 9.8,
+    "patch_available": false,
+    "exploited_in_wild": true,
+    "exploit_window_minutes": 3,
+    "attack_vector": "network",
+    "attack_complexity": "low",
+    "privileges_required": "none"
+  },
+  "environment": {
+    "assets": [
+      {"type": "edge_firewall", "count": 2, "platform": "FortiGate FortiOS", "internet_facing": true, "ha_mode": "active-passive"},
+      {"type": "kubernetes_cluster", "count": 1, "platform": "Kubernetes with public Ingress", "internet_facing": true},
+      {"type": "aws_vpc", "count": 1, "platform": "AWS VPC, private subnets only", "internet_facing": false},
+      {"type": "ci_cd_pipeline", "count": 1, "platform": "GitHub Actions", "internet_facing": true},
+      {"type": "identity_provider", "count": 1, "platform": "Okta SSO", "users": 4000},
+      {"type": "siem", "count": 1, "platform": "Batch polling 5-minute interval", "real_time": false, "detection_gap_minutes": 5}
+    ],
+    "tls_inspection_status": "UNKNOWN",
+    "aws_imds_version": "UNKNOWN",
+    "firewall_cpu_baseline": "UNKNOWN",
+    "siem_eps_capacity": "UNKNOWN"
+  },
+  "threat_intel": {
+    "exploitation_confirmed": true,
+    "actor_type": "opportunistic_and_targeted",
+    "active_scanning_detected": true
+  }
+}

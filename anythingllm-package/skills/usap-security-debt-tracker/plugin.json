@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Security Debt Tracker",
+  "hubId": "usap-security-debt-tracker",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Security Debt Tracking. Use for analyzing aging security findings, computing SLA breach counts, and classifying debt accumulation rate.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the security-debt-tracker skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with security-debt-tracker using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

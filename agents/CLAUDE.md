@@ -33,9 +33,22 @@ agents/
 │   └── cs-red-teamer.md             # Offensive security coordinator
 ├── devsecops/
 │   └── cs-devsecops-engineer.md     # Security-in-pipeline engineer
-└── executive/
-    └── cs-ciso-advisor.md           # Executive security advisor
+├── executive/
+│   └── cs-ciso-advisor.md           # Executive security advisor
+└── governance/
+    └── cs-security-program-manager.md  # Passive lifecycle: program planning, proactive scanning, facilitation
 ```
+
+## Agent Catalog
+
+| Agent | File | Role | Mode |
+|---|---|---|---|
+| cs-security-analyst | `security/cs-security-analyst.md` | Tier 2 SOC analyst | Reactive (alert-driven) |
+| cs-incident-responder | `security/cs-incident-responder.md` | Incident lifecycle manager | Reactive (incident-driven) |
+| cs-red-teamer | `security/cs-red-teamer.md` | Offensive security coordinator | Proactive (authorized, scoped) |
+| cs-devsecops-engineer | `devsecops/cs-devsecops-engineer.md` | Security-in-pipeline engineer | Pipeline-triggered + doc intake |
+| cs-ciso-advisor | `executive/cs-ciso-advisor.md` | Executive security advisor | Scheduled (board reporting) |
+| cs-security-program-manager | `governance/cs-security-program-manager.md` | Passive lifecycle orchestrator | Passive (planning, scanning, facilitation) |
 
 ## Required Frontmatter
 
@@ -138,6 +151,27 @@ So: `../../threat-hunting/scripts/threat-hunting_tool.py`
 - [ ] At least 3 workflows documented
 - [ ] Integration examples tested
 - [ ] Success metrics defined
+
+---
+
+## Passive vs. Reactive Split
+
+**Passive workflows are owned exclusively by `cs-security-program-manager`.** No other cs-* agent should self-initiate a passive/scheduled workflow. The split:
+
+- `cs-security-program-manager` → owns PL (program planning), SC (proactive scan), FR (facilitated review)
+- `cs-security-analyst` → owns AT (alert triage), TH (threat hunt), CA (compromise assess), DI (doc intake)
+- `cs-incident-responder` → owns IT (incident triage), CO (containment), FO (forensics)
+- `cs-red-teamer` → owns ES (engagement scoping), AP (attack path), FR (red team facilitation — authorized, scoped)
+- `cs-devsecops-engineer` → owns PR (pipeline review), RS (requirements scan), PA (pipeline assessment), DR (design review)
+- `cs-ciso-advisor` → owns BR (board report), RP (risk presentation), RG (regulatory guidance)
+
+`cs-security-program-manager` may ROUTE findings to any reactive agent for further action. Reactive agents do not dispatch back — they produce outputs that `cs-security-program-manager` may consume in subsequent passive scans.
+
+**Routing boundary rule:** A finding is only escalated from a passive workflow (SC) to a reactive agent (cs-security-analyst AT) when:
+1. Severity is Critical or High, AND
+2. Confirmed by at least 2 independent passive scan signals
+
+---
 
 ## Creating a New Agent
 

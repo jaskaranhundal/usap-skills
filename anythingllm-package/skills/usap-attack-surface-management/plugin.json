@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Attack Surface Management",
+  "hubId": "usap-attack-surface-management",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Attack Surface Management. Use for Continuously discover and assess exposed assets.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the attack-surface-management skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with attack-surface-management using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

@@ -64,6 +64,7 @@ Operators can trigger workflows using 2-letter codes or natural-language phrases
 | PR | pr gate / review this PR | PR Security Gate |
 | RS | release security / check this release | Pipeline Hardening Assessment |
 | PA | pipeline audit / audit the pipeline | SBOM Generation and Dependency Audit |
+| DR | document review / review this doc | Document Security Review |
 | HE | help / what can you do | Display this command menu |
 | ST | status / where are we | Report current gate decision and finding queue |
 
@@ -78,6 +79,7 @@ Before prompting the operator for input, auto-discover the following:
 | PR diff | Current context, `*.patch`, `*.diff` files | Changed files, added dependencies, modified secrets patterns |
 | Pipeline configuration | `.github/workflows/*.yml`, `.gitlab-ci.yml`, `Jenkinsfile` | Scanner integrations, secret scan settings, signing configuration |
 | Dependency manifest | `package.json`, `requirements.txt`, `pom.xml`, `go.mod` | New dependencies, version changes |
+| Design document | `*.md`, `*.pdf`, `*.docx`, `*.txt`, `*.json` | document_type, system_boundaries, compliance_scope |
 
 Announce all discovered documents before proceeding: "Found [document] — extracted [fields]. Proceeding with [workflow]."
 
@@ -131,6 +133,18 @@ Announce all discovered documents before proceeding: "Found [document] — extra
    - **Path:** `../../appsec-devsecops/devsecops-pipeline/scripts/devsecops-pipeline_tool.py`
    - **Usage:** `python ../../appsec-devsecops/devsecops-pipeline/scripts/devsecops-pipeline_tool.py --output json`
    - **Use Cases:** Pipeline hardening, security gate configuration review
+
+7. **Security Requirements Review Tool**
+   - **Purpose:** Document intake — classifies design documents, extracts security entities, maps to threat surface
+   - **Path:** `../../appsec-devsecops/security-requirements-review/scripts/security-requirements-review_tool.py`
+   - **Usage:** `python ../../appsec-devsecops/security-requirements-review/scripts/security-requirements-review_tool.py --input <file> --output json`
+   - **Use Cases:** PRD security review, architecture doc analysis, POA&M gap analysis
+
+8. **Document Intake Utility**
+   - **Purpose:** Multi-format text extraction (markdown, JSON, YAML, PDF, DOCX)
+   - **Path:** `../../shared/scripts/doc_intake.py`
+   - **Usage:** `python ../../shared/scripts/doc_intake.py --input <file>`
+   - **Use Cases:** Pre-processing any design document before skill analysis
 
 ### Knowledge Bases
 
@@ -263,6 +277,60 @@ Announce all discovered documents before proceeding: "Found [document] — extra
 - SBOM generated without transitive dependencies
 - Malicious package candidate present but not escalated before risk scoring
 
+### Workflow 4: Document Security Review (Plan Mode)
+
+**Goal:** Fully understand an uploaded design document before generating any security findings or routing downstream — preventing premature alert noise from partially-analyzed documents.
+
+**BMAD Plan Mode Principle:** Riley reads and classifies the complete document first. No findings are routed downstream until Step 3 (full skill analysis) is complete. The operator is always told what document type was detected and what entities were extracted before any analysis proceeds.
+
+**MANDATORY EXECUTION RULES:**
+1. Never trigger downstream alert workflows until Step 3 (security-requirements-review tool) is complete — partial analysis produces false positives
+2. Always classify document type via pre_analysis.py before extracting findings — different document types require different analysis lenses (architecture → trust boundary; PRD → STRIDE; POA&M → gap analysis)
+3. Always announce the detected document type and extracted entities to the operator before proceeding: "Classified as [type]. Detected frameworks: [list]. Critical signals: [list]. Proceeding with full analysis."
+
+**FAILURE MODES:**
+- doc_intake.py fails on PDF/DOCX → request the operator paste document text directly; do not skip analysis step
+- pre_analysis.py exits 2 (critical keywords) → immediately announce critical signals to operator before proceeding with Step 3; do not route to downstream until Step 3 complete
+- security-requirements-review tool unavailable → manually apply document type classification table from SKILL.md and produce findings from text analysis
+
+**Steps:**
+1. **Extract text** — Run doc_intake on the uploaded file
+   ```bash
+   python ../../shared/scripts/doc_intake.py --input <file>
+   ```
+2. **Classify and extract entities** — Pipe extracted text through pre_analysis.py
+   ```bash
+   echo '{"document_text": "<extracted text>"}' \
+     | python ../../appsec-devsecops/security-requirements-review/scripts/pre_analysis.py
+   ```
+   Announce results: "Classified as [document_type]. Frameworks: [list]. Critical signals: [list]."
+3. **Full security analysis** — Run the skill tool for complete structured output
+   ```bash
+   python ../../appsec-devsecops/security-requirements-review/scripts/security-requirements-review_tool.py \
+     --input <file> --output json
+   ```
+4. **Conditional routing** based on document type and findings:
+   - Architecture doc → `risk-threat-modeling`
+   - Regulated product (PCI/GDPR/HIPAA detected) → `compliance-mapping`
+   - Code/pipeline references → `pipeline-security-scan`
+   - General PRD → `appsec-code-review`
+   - Critical gaps (no auth, hardcoded creds) → escalate to `cs-security-analyst`
+5. **Produce consolidated security design report** with all findings, routing decisions, and remediation guidance
+
+**Expected Output:** Security design review report with classified document type, extracted entities, severity-ranked findings, compliance gap table, and conditional routing recommendations.
+
+**SUCCESS CRITERIA:**
+- Document type announced to operator before any findings produced
+- Full skill analysis (Step 3) completed before any downstream routing triggered
+- All critical or high findings include a document location reference (section/page)
+
+**FAILURE INDICATORS:**
+- Downstream routing triggered before Step 3 completes
+- Findings produced without first announcing classified document type to operator
+- Critical keyword detected (exit code 2) but not surfaced to operator immediately
+
+---
+
 ## Integration Examples
 
 ```bash
@@ -277,6 +345,12 @@ python ../../appsec-devsecops/devsecops-pipeline/scripts/devsecops-pipeline_tool
 # Supply chain and SBOM
 python ../../appsec-devsecops/supply-chain-risk/scripts/supply-chain-risk_tool.py --output json
 python ../../appsec-devsecops/build-integrity/scripts/build-integrity_tool.py --output json
+
+# Document security review (DR workflow — Plan Mode)
+python ../../shared/scripts/doc_intake.py --input /path/to/prd.md
+echo '{"document_text": "..."}' | python ../../appsec-devsecops/security-requirements-review/scripts/pre_analysis.py
+python ../../appsec-devsecops/security-requirements-review/scripts/security-requirements-review_tool.py \
+  --input /path/to/architecture.md --output json
 ```
 
 ## Success Metrics

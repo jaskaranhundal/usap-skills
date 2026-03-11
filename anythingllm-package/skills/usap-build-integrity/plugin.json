@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Build Integrity",
+  "hubId": "usap-build-integrity",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Build Integrity. Verify build provenance, validate artifact signatures, check SLSA compliance, and detect signs of build pipeline compromise.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the build-integrity skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with build-integrity using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

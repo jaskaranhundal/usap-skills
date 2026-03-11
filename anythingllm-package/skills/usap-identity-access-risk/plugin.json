@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Identity Access Risk",
+  "hubId": "usap-identity-access-risk",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP skill for Identity Access Risk",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the identity-access-risk skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with identity-access-risk using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

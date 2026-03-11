@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Cloud Security Posture",
+  "hubId": "usap-cloud-security-posture",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Cloud Security Posture. Use for Evaluate cloud misconfigurations and posture drift.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the cloud-security-posture skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with cloud-security-posture using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

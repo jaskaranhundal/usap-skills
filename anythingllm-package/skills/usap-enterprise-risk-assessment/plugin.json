@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Enterprise Risk Assessment",
+  "hubId": "usap-enterprise-risk-assessment",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Enterprise Risk Assessment. Quantify enterprise cyber risk using FAIR methodology, produce risk heat maps, and communicate residual exposure to the board.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the enterprise-risk-assessment skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with enterprise-risk-assessment using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

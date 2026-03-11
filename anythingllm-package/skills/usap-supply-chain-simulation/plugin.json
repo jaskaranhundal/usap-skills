@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Supply Chain Simulation",
+  "hubId": "usap-supply-chain-simulation",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Supply Chain Simulation. Design and analyze supply chain attack scenarios in isolated environments to test detection coverage and response capabilities.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the supply-chain-simulation skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with supply-chain-simulation using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

@@ -34,6 +34,7 @@ The orchestrating agent for this domain is [cs-devsecops-engineer](../agents/dev
 | Supply Chain Simulation | `appsec-devsecops/supply-chain-simulation` | `supply-chain-simulation_tool.py` | Attack simulation |
 | AppSec Code Review | `appsec-devsecops/appsec-code-review` | `appsec-code-review_tool.py` | OWASP Top 10, CWE |
 | Pipeline Security Scan | `appsec-devsecops/pipeline-security-scan` | `pipeline-security-scan_tool.py` | Secrets, SAST gaps |
+| Security Requirements Review | `appsec-devsecops/security-requirements-review` | `security-requirements-review_tool.py` | Design doc intake, PRD/architecture/POA&M analysis |
 
 Each skill directory follows the USAP Agent Skills Standard v1 layout:
 
@@ -62,6 +63,7 @@ Each skill directory follows the USAP Agent Skills Standard v1 layout:
 | `devsecops-pipeline_tool.py` | `devsecops-pipeline/scripts/` | Assess security gate coverage in CI/CD pipeline | Pipeline security score |
 | `secure-sdlc_tool.py` | `secure-sdlc/scripts/` | SDLC maturity scoring and security requirements audit | Maturity score (0-5) + gap list |
 | `supply-chain-simulation_tool.py` | `supply-chain-simulation/scripts/` | Simulate supply chain attack scenarios | Simulation report |
+| `security-requirements-review_tool.py` | `security-requirements-review/scripts/` | Ingest design docs (PRD, arch, POA&M); extract security gaps; route findings | JSON output contract with document_metadata + design_analysis |
 
 Invoke all tools with `--output json` for machine-readable output compatible with downstream aggregation.
 
@@ -71,7 +73,7 @@ Invoke all tools with `--output json` for machine-readable output compatible wit
 
 | SDLC Phase | Skills Active | Gates | Artifacts Produced |
 |---|---|---|---|
-| Requirements & Design | `secure-sdlc` | Threat model sign-off required for high-risk features | Threat model, abuse case register, security requirements doc |
+| Requirements & Design | `secure-sdlc`, `security-requirements-review` | Threat model sign-off required for high-risk features; document security review before design freeze | Threat model, abuse case register, security requirements doc, design gap report |
 | Development (pre-commit) | `appsec-code-review`, `pipeline-security-scan` | Pre-commit hook: secrets scan + lint (<30 s) | Pre-commit finding log |
 | Pull Request | `appsec-code-review`, `sast-dast-coordinator`, `supply-chain-risk` | Block merge on Critical/High findings | PR security gate report, CWE-mapped findings |
 | CI/CD Build | `devsecops-pipeline`, `pipeline-security-scan`, `build-integrity` | Fail pipeline on missing SAST gate or unsigned artifact | Pipeline scan report, artifact signature |
@@ -183,6 +185,12 @@ Artifacts produced: SBOM (CycloneDX or SPDX), build provenance (SLSA .intoto.jso
 ## Cascade Intelligence (Cross-Skill Routing)
 
 ```
+security-requirements-review ──► risk-threat-modeling (architecture docs)
+                              ──► compliance-mapping (regulated data detected)
+                              ──► appsec-code-review (PRD / requirements)
+                              ──► pipeline-security-scan (pipeline/CI references)
+                              ──► cs-security-analyst (critical gaps: no auth, hardcoded creds)
+
 appsec-code-review ──► sast-dast-coordinator ──► findings-tracker
                                                  └──► secrets-exposure (hardcoded credential findings)
 
@@ -212,7 +220,7 @@ When a Critical finding is produced by any skill in this domain, route immediate
 
 | Level | Meaning | Skills at this Level |
 |---|---|---|
-| L3 | Practitioner — structured analysis, defined output | `secure-sdlc`, `sast-dast-coordinator`, `devsecops-pipeline`, `build-integrity`, `supply-chain-risk`, `supply-chain-simulation` |
+| L3 | Practitioner — structured analysis, defined output | `secure-sdlc`, `sast-dast-coordinator`, `devsecops-pipeline`, `build-integrity`, `supply-chain-risk`, `supply-chain-simulation`, `security-requirements-review` |
 | L4 | Expert — blocking gate authority, CWE mapping, high-confidence decisions | `appsec-code-review`, `pipeline-security-scan` |
 
 L4 skills have authority to produce `block_required: true` decisions. L3 skills produce findings and recommendations that feed into gate decisions made by L4 skills or the orchestrating agent.

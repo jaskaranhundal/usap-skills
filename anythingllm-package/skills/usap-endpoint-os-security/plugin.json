@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Endpoint Os Security",
+  "hubId": "usap-endpoint-os-security",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Endpoint & OS Security. Analyze endpoint security posture, evaluate EDR coverage, detect configuration drift, and recommend hardening for Windows, Linux, macOS, and containers.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the endpoint-os-security skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with endpoint-os-security using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}

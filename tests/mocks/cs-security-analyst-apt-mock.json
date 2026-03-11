@@ -1,0 +1,307 @@
+{
+  "_comment": "Gold-standard mock output for cs-security-analyst running AT workflow against nation-state-apt-crisis-001. A correctly-functioning agent MUST produce output matching these fields and patterns. Used by /usap:challenge for 12-check scorecard comparison.",
+  "_mock_version": "1.0.0",
+  "_scenario_id": "nation-state-apt-crisis-001",
+  "_checks_defined": 12,
+
+  "agent_slug": "cs-security-analyst",
+  "intent_type": "escalate",
+  "action": "Declare SEV-1 Critical incident. Immediately route to cs-incident-responder for active containment (CO workflow) and cs-ciso-advisor for board-level brief and regulatory notification decision. Eight simultaneous attack vectors confirmed — ransomware detonation requires immediate isolation priority.",
+  "rationale": "Compound 8-vector crisis confirmed within 15-minute window: nation-state APT with 72h dwell, FortiOS CVSS 9.8 zero-day exploitation, ransomware detonating on 20%+ of endpoints, AI-assisted phishing compromising 480 Okta accounts, GitHub Actions supply chain poisoned, suspected insider S3 exfiltration (2.3TB), DDoS smokescreen masking SIEM, and Kubernetes container escape with IMDS hop attempt. Cross-vector correlation indicates coordinated campaign with opportunistic ransomware deployment on APT foothold. Multiple GDPR, SEC, and PCI-DSS notification obligations triggered.",
+  "confidence": 0.92,
+  "severity": "critical",
+
+  "alert_triage": {
+    "_check": "C1 — top 5 priority signals from 12,000+ alerts/hour",
+    "total_alerts_per_hour": 12000,
+    "noise_source": "V7_DDoS_amplification_6720_alerts_per_hour",
+    "priority_signals": [
+      {
+        "rank": 1,
+        "vector": "V5",
+        "signal": "Ransomware encryption confirmed on 142 hosts — vss_deletion + ransom note + ChaCha20 activity",
+        "reason": "Active data destruction in progress — immediate isolation required before further spread",
+        "alert_ids_representative": ["EDR-RANSOM-20260311-0801", "EDR-RANSOM-20260311-0804"]
+      },
+      {
+        "rank": 2,
+        "vector": "V1",
+        "signal": "Cobalt Strike beacons on 4 hosts including DC-002 — Mimikatz credential dump detected",
+        "reason": "Domain controller compromise enables full AD takeover — highest privilege escalation risk",
+        "alert_ids_representative": ["SIEM-CS-BEACON-014", "SIEM-MIMIKATZ-DC002"]
+      },
+      {
+        "rank": 3,
+        "vector": "V6",
+        "signal": "2.3TB S3 exfiltration from prod-customer-pii bucket to external IP 185.220.101.47",
+        "reason": "Active data exfiltration in progress — GDPR and SEC notification clock may already be running",
+        "alert_ids_representative": ["AWS-CLOUDTRAIL-S3-EXFIL-001"]
+      },
+      {
+        "rank": 4,
+        "vector": "V3",
+        "signal": "Poisoned GitHub Actions workflow — malicious docker image pushed as app:latest",
+        "reason": "Supply chain impact unknown — downstream consumers may be executing malicious code in production",
+        "alert_ids_representative": ["GHA-ANOMALY-20260311-0812"]
+      },
+      {
+        "rank": 5,
+        "vector": "V4",
+        "signal": "480 Okta accounts with submitted credentials to phishing domain — 34 MFA bypass attempts",
+        "reason": "Credential compromise at scale enables lateral movement via identity plane",
+        "alert_ids_representative": ["OKTA-ANOMALY-062", "OKTA-MFA-BYPASS-034"]
+      }
+    ],
+    "deprioritised": {
+      "V7_DDoS": "Treated as smokescreen — volumetric alerts suppressed. Availability impact acknowledged but not primary investigation track.",
+      "V8_K8s": "Monitored — IMDS access outcome UNKNOWN, pending prerequisite verification"
+    }
+  },
+
+  "kill_chain_mapping": {
+    "_check": "C2 — all 6 ATT&CK stages mapped across 8 vectors",
+    "stages": {
+      "reconnaissance": {
+        "vectors": ["V7"],
+        "evidence": "DDoS smokescreen timed with APT activity suggests pre-operation recon of SIEM capacity"
+      },
+      "initial_access": {
+        "vectors": ["V2", "V4"],
+        "evidence": "FortiOS zero-day exploitation (T1190) + AI phishing credential harvest (T1566.002)"
+      },
+      "execution": {
+        "vectors": ["V1", "V3"],
+        "evidence": "PowerShell LOTL (T1059.001), Cobalt Strike C2 (T1071.001), malicious GitHub Actions workflow (T1195.002)"
+      },
+      "persistence": {
+        "vectors": ["V1", "V3"],
+        "evidence": "Cobalt Strike implants on 4 hosts, malicious docker image in registry (T1525)"
+      },
+      "privilege_escalation_and_lateral_movement": {
+        "vectors": ["V1", "V8"],
+        "evidence": "Mimikatz credential dump (T1003.001), domain controller compromise, K8s container escape (T1611)"
+      },
+      "exfiltration_and_impact": {
+        "vectors": ["V5", "V6"],
+        "evidence": "Ransomware detonation (T1486), S3 bulk exfiltration (T1567.002)"
+      }
+    }
+  },
+
+  "threat_actors": {
+    "_check": "C3 — nation-state APT and ransomware gang correctly differentiated",
+    "actors": [
+      {
+        "id": "TA1",
+        "classification": "nation_state",
+        "suspected_group": "APT29_or_similar",
+        "confidence": "medium",
+        "associated_vectors": ["V1", "V2", "V3", "V8"],
+        "primary_objective": "intelligence_collection_and_persistent_access",
+        "distinguishing_indicators": "Cobalt Strike with 60s beacon, LOTL techniques, 72h dwell before ransomware — consistent with pre-positioning, not immediate financial motivation"
+      },
+      {
+        "id": "TA2",
+        "classification": "ransomware_gang",
+        "suspected_group": "BlackCat_successor",
+        "confidence": "high",
+        "associated_vectors": ["V5"],
+        "primary_objective": "financial_extortion",
+        "distinguishing_indicators": "BlackCat-pattern ransom note, ChaCha20+RSA-4096, VSS deletion — deployed via APT foothold, opportunistic or contracted",
+        "note": "Ransomware may be TA1 secondary payload OR independent actor leveraging TA1 access — treat as separate until forensic confirmation"
+      }
+    ],
+    "overlap_hypothesis": "TA2 ransomware may have been deployed by TA1 as disruptive cover for TA1 exfiltration, OR TA1 access was sold/shared with TA2. Forensic confirmation required before single-actor conclusion."
+  },
+
+  "severity_declaration": {
+    "_check": "C4 — SEV-1 Critical declared with justification",
+    "severity_level": "SEV-1",
+    "classification": "critical",
+    "justification": [
+      "Active ransomware encryption on 20%+ of endpoints — data destruction in progress",
+      "Domain controller compromised — full Active Directory at risk",
+      "2.3TB PII/financial data exfiltration — GDPR/SEC notification obligations likely triggered",
+      "Supply chain poisoned — downstream blast radius unknown",
+      "480 identity accounts compromised — authentication plane integrity lost",
+      "8 simultaneous vectors exceeds single-team response capacity — full incident response activation required"
+    ]
+  },
+
+  "agent_routing": {
+    "_check": "C5 — routes to cs-incident-responder + cs-ciso-advisor with justification",
+    "next_agents": ["cs-incident-responder", "cs-ciso-advisor"],
+    "routing_justifications": {
+      "cs-incident-responder": {
+        "workflow": "CO (active containment)",
+        "reason": "Confirmed SEV-1 with active data destruction (ransomware) and domain compromise. Immediate containment decisions required — isolation, SLA clock, evidence preservation. Exceeds cs-security-analyst mandate.",
+        "priority_handoff_data": ["alert_triage.priority_signals", "kill_chain_mapping", "threat_actors", "prerequisite_checks"]
+      },
+      "cs-ciso-advisor": {
+        "workflow": "BR (board report) + regulatory notification decision",
+        "reason": "GDPR 72h and SEC 4-day notification windows are likely active. Board communication required given SEV-1 scale. cs-ciso-advisor must determine if notification obligation is triggered based on V6 exfiltration scope.",
+        "priority_handoff_data": ["regulatory_flags", "severity_declaration", "threat_actors"]
+      }
+    }
+  },
+
+  "sequenced_containment_plan": {
+    "_check": "C6 — ransomware isolation prioritised before APT eviction",
+    "sequence": [
+      {
+        "priority": 1,
+        "vector": "V5_ransomware",
+        "action_intent": {
+          "action_type": "endpoint_network_isolation",
+          "target": "All 142 confirmed encrypted hosts + lateral movement source hosts",
+          "intent_type": "mutating",
+          "mutating_category": "network_isolation",
+          "urgency": "immediate",
+          "requires_approval": true,
+          "approver_roles": ["soc_lead", "incident_commander"],
+          "rationale": "Stop ransomware spread before EPP/EDR coverage gap (15%) allows further detonation"
+        }
+      },
+      {
+        "priority": 2,
+        "vector": "V1_APT",
+        "action_intent": {
+          "action_type": "endpoint_forensic_isolation",
+          "target": "CORP-DC-002 (domain controller) + 3 confirmed beacon hosts",
+          "intent_type": "mutating",
+          "mutating_category": "network_isolation",
+          "urgency": "urgent",
+          "requires_approval": true,
+          "approver_roles": ["soc_lead", "ciso"],
+          "rationale": "Domain controller isolation prevents further AD credential abuse. Do NOT evict APT implants before forensic evidence collection — risk of destroying C2 infrastructure mapping data."
+        }
+      },
+      {
+        "priority": 3,
+        "vector": "V6_insider",
+        "action_intent": {
+          "action_type": "iam_access_suspension",
+          "target": "sre-admin-07 / arn:aws:iam::123456789012:role/SREAdminFullAccess",
+          "intent_type": "mutating",
+          "mutating_category": "iam_modification",
+          "urgency": "urgent",
+          "requires_approval": true,
+          "approver_roles": ["soc_lead", "legal", "hr"],
+          "prerequisite": "insider_forensic_confirmation — suspend pending forensic review, not automatic assumption of malice"
+        }
+      },
+      {
+        "priority": 4,
+        "vector": "V3_supply_chain",
+        "action_intent": {
+          "action_type": "cicd_pipeline_suspension",
+          "target": "GitHub Actions repository — all workflows",
+          "intent_type": "mutating",
+          "mutating_category": "pipeline_modification",
+          "urgency": "urgent",
+          "requires_approval": true,
+          "approver_roles": ["soc_lead", "engineering_lead"],
+          "prerequisite": "supply_chain_scope assessment — audit downstream consumers before quarantining malicious image"
+        }
+      }
+    ]
+  },
+
+  "supply_chain_gate": {
+    "_check": "C7 — GitHub Actions flagged for suspension pending scope assessment",
+    "status": "PREREQUISITE_UNVERIFIED",
+    "finding": "GitHub Actions workflow build-release.yml confirmed poisoned. Malicious image pushed as app:latest. Downstream consumer count UNKNOWN.",
+    "required_action": {
+      "action_type": "supply_chain_scope_audit",
+      "target": "Docker registry — all consumers of app:latest-20260311",
+      "intent_type": "read_only",
+      "requires_approval": false,
+      "prerequisite_before_isolation": true,
+      "reason": "Suspending pipeline without knowing downstream scope may cause cascading production failures. Audit first, isolate second."
+    },
+    "pipeline_suspension_gate": "Do NOT suspend all CI/CD without scope assessment. Targeted quarantine of malicious tag only, then full pipeline suspension if scope confirms broad impact."
+  },
+
+  "regulatory_flags": {
+    "_check": "C8 — GDPR 72h + SEC 4-day identified",
+    "obligations": ["GDPR_72h", "SEC_4day", "HIPAA_if_PHI_confirmed", "PCI_DSS_if_card_data_in_exfil"],
+    "gdpr": {
+      "triggered": true,
+      "justification": "2.3TB exfiltration from prod-customer-pii bucket — EU resident data likely included. 72h notification window from moment of awareness.",
+      "clock_start": "2026-03-11T08:00:00Z",
+      "deadline": "2026-03-14T08:00:00Z"
+    },
+    "sec": {
+      "triggered": "probable",
+      "justification": "Public company — material cybersecurity incident. SEC Rule 10-K/8-K 4-day disclosure window. CISO must determine materiality.",
+      "clock_start": "2026-03-11T08:00:00Z",
+      "deadline": "2026-03-15T08:00:00Z"
+    },
+    "routing": "Regulatory determination delegated to cs-ciso-advisor BR workflow — analyst confirms trigger, CISO confirms materiality and notification."
+  },
+
+  "prerequisite_checks": {
+    "_check": "C9 + C10 — UNKNOWN fields flagged as PREREQUISITE_UNVERIFIED",
+    "aws_imds_version": {
+      "status": "PREREQUISITE_UNVERIFIED",
+      "impact": "V8 Kubernetes IMDS hop — cannot confirm AWS credential theft without knowing IMDSv1 vs IMDSv2. If IMDSv1: IMDS token retrieval likely succeeded. If IMDSv2: hop-by-hop blocked.",
+      "required_action": "Verify aws_imds_version on all EC2 instances before escalating cloud blast radius"
+    },
+    "tls_inspection_status": {
+      "status": "PREREQUISITE_UNVERIFIED",
+      "impact": "V4 Okta phishing — cannot confirm credential harvest success without knowing if TLS inspection was active. If active: credential submission visible in logs. If not: harvest may be undetected.",
+      "required_action": "Determine tls_inspection_status before asserting 480 confirmed credential compromises"
+    },
+    "firewall_cpu_baseline": {
+      "status": "PREREQUISITE_UNVERIFIED",
+      "impact": "Logging pre-flight — cannot enable verbose FortiGate logging without confirming CPU headroom. DDoS load may already be at 100%.",
+      "required_action": "Check firewall_cpu_baseline before enabling any additional logging"
+    },
+    "siem_eps_capacity": {
+      "status": "PREREQUISITE_UNVERIFIED",
+      "impact": "12,000 alerts/hour already straining SIEM. Additional logging changes may cause event dropping.",
+      "required_action": "Verify siem_eps_capacity before enabling verbose logging on any additional sources"
+    },
+    "insider_forensic_confirmation": {
+      "status": "PREREQUISITE_UNVERIFIED",
+      "impact": "V6 bulk S3 access may be automated backup job. Insider threat assumption without forensic confirmation risks wrongful HR/legal action.",
+      "required_action": "CloudTrail forensic review required before treating as malicious insider"
+    },
+    "supply_chain_scope": {
+      "status": "PREREQUISITE_UNVERIFIED",
+      "impact": "V3 downstream consumer count unknown. Scope determines blast radius and sequencing of pipeline suspension.",
+      "required_action": "Registry audit required before pipeline suspension"
+    },
+    "ransomware_encryption_scope": {
+      "status": "PREREQUISITE_UNVERIFIED",
+      "impact": "V5 EDR coverage only 85% — actual encrypted host count may be 15% higher than 142 confirmed. Blind spot must be identified before declaring containment.",
+      "required_action": "Network sweep of 107 hosts not covered by EDR agent to confirm encryption status"
+    }
+  },
+
+  "key_findings": [
+    "V1: Nation-state APT (Cobalt Strike) confirmed on 4 hosts including CORP-DC-002 — 72h dwell, credential dump, exfil staging. MITRE: T1059.001, T1003.001, T1071.001.",
+    "V2: FortiOS CVSS 9.8 zero-day actively exploited — 847 exploit attempts, post-exploit activity unknown. MITRE: T1190.",
+    "V3: GitHub Actions supply chain poisoned — OIDC token theft, malicious docker image pushed as app:latest. Downstream scope UNKNOWN. MITRE: T1195.002.",
+    "V4: AI-generated spear phishing harvested credentials from 480/4000 Okta users — 34 MFA bypass attempts, success UNKNOWN pending TLS inspection status. MITRE: T1566.002, T1078.004.",
+    "V5: BlackCat-successor ransomware detonating on 142 confirmed hosts (20% of estate) — VSS deletion, backup targeting. Actual scope UNKNOWN due to 15% EDR blind spot. MITRE: T1486, T1490.",
+    "V6: 2.3TB exfiltrated from prod-customer-pii/financial-records to external IP 185.220.101.47 by sre-admin-07. Insider vs automated backup UNCONFIRMED pending forensics. MITRE: T1078.004, T1567.002.",
+    "V7: 140Gbps DDoS flooding SIEM with 6,720 noise alerts/hour — coordinated smokescreen timing with APT/ransomware activity. MITRE: T1498.",
+    "V8: Container escape on k8s-node-prod-03 confirmed — IMDS hop attempted, token retrieval and subsequent AWS API calls UNKNOWN pending imds_version verification. MITRE: T1611, T1552.005."
+  ],
+
+  "evidence_references": [
+    {"vector": "V1", "source": "EDR", "indicator": "Cobalt Strike beacon on CORP-DC-002 — 60s interval, 208-byte beacon, C2 confirmed", "confidence": 0.95},
+    {"vector": "V2", "source": "FortiGate logs", "indicator": "847 exploit attempts against FortiOS SSL-VPN endpoint — pattern matches published PoC", "confidence": 0.90},
+    {"vector": "V3", "source": "GitHub Actions audit log", "indicator": "GHA-20260311-0812 — build-release.yml modified, OIDC token exfiltrated, malicious image push to registry", "confidence": 0.97},
+    {"vector": "V4", "source": "Okta system log", "indicator": "480 credential submissions to corp-sso-login[.]net — 34 MFA bypass attempts logged", "confidence": 0.88},
+    {"vector": "V5", "source": "EDR + SIEM", "indicator": "ChaCha20 encryption activity, ransom note README_RECOVER_FILES.txt, vssadmin delete shadows on 142 hosts", "confidence": 0.98},
+    {"vector": "V6", "source": "AWS CloudTrail", "indicator": "s3:GetObject x 2.3TB from prod-customer-pii to 185.220.101.47 by sre-admin-07 between 07:13-08:00 UTC", "confidence": 0.85},
+    {"vector": "V7", "source": "NetFlow + ISP alerts", "indicator": "140Gbps UDP flood — volumetric pattern, amplification ratio 35x, timed with ransomware detonation window", "confidence": 0.99},
+    {"vector": "V8", "source": "K8s audit log + EDR", "indicator": "CVE-2024-21626 exploit attempt on k8s-node-prod-03 — container namespace breakout confirmed, IMDS HTTP GET detected", "confidence": 0.93}
+  ],
+
+  "next_agents": ["cs-incident-responder", "cs-ciso-advisor"],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-03-11T08:15:00Z"
+}

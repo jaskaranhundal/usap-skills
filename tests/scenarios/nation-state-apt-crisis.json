@@ -1,0 +1,211 @@
+{
+  "scenario_id": "nation-state-apt-crisis-001",
+  "scenario_name": "Perfect Storm — Nation-State APT + Ransomware + Supply Chain + AI Phishing (8-Vector Simultaneous)",
+  "description": "Simultaneous 8-vector compound crisis against a 4000-user enterprise. All vectors confirmed active within the same 15-minute window. SIEM is receiving 12,000+ alerts/hour due to DDoS smokescreen. No single vector should be treated in isolation — all are linked or opportunistically concurrent.",
+  "crisis_start_utc": "2026-03-11T08:00:00Z",
+  "detection_window_minutes": 15,
+  "siem_alert_rate_per_hour": 12000,
+  "attack_vectors": [
+    {
+      "id": "V1",
+      "name": "Nation-State APT — Active Intrusion",
+      "confirmed": true,
+      "actor_type": "nation_state",
+      "attribution_confidence": "medium",
+      "mitre_ttps": ["T1059.001", "T1003.001", "T1071.001", "T1021.002", "T1560.001"],
+      "indicators": {
+        "beaconing_hosts": 7,
+        "beacon_interval_seconds": 60,
+        "c2_framework": "Cobalt Strike",
+        "c2_beacon_size_bytes": 208,
+        "lateral_movement_technique": "Living-Off-the-Land (PowerShell, WMI)",
+        "credential_dumping_tool": "Mimikatz",
+        "affected_hosts": ["CORP-WS-014", "CORP-WS-031", "CORP-SRV-008", "CORP-DC-002"],
+        "dwell_time_estimate_hours": 72,
+        "exfiltration_staging_detected": true,
+        "exfil_staging_path": "C:\\Windows\\Temp\\~tmp7f3a",
+        "exfil_volume_estimated_gb": 4.2
+      },
+      "siem_alerts_contributed": 420
+    },
+    {
+      "id": "V2",
+      "name": "FortiOS Zero-Day — Perimeter Breach",
+      "confirmed": true,
+      "actor_type": "unknown_may_overlap_V1",
+      "mitre_ttps": ["T1190"],
+      "vulnerability": {
+        "product": "FortiGate FortiOS",
+        "cvss_score": 9.8,
+        "patch_available": false,
+        "exploited_in_wild": true,
+        "exploit_window_minutes": 3,
+        "attack_vector": "network",
+        "attack_complexity": "low",
+        "privileges_required": "none"
+      },
+      "environment": {
+        "firewalls_affected": 2,
+        "ha_mode": "active-passive",
+        "internet_facing": true
+      },
+      "indicators": {
+        "exploit_attempts_detected": 847,
+        "successful_exploitation_suspected": true,
+        "post_exploit_activity": "unknown"
+      },
+      "siem_alerts_contributed": 847
+    },
+    {
+      "id": "V3",
+      "name": "Supply Chain — GitHub Actions Poisoned Workflow",
+      "confirmed": true,
+      "actor_type": "unknown_may_overlap_V1",
+      "mitre_ttps": ["T1195.002", "T1552.001", "T1525"],
+      "indicators": {
+        "poisoned_workflow_file": ".github/workflows/build-release.yml",
+        "oidc_token_theft": true,
+        "malicious_docker_image_pushed": true,
+        "malicious_image_tag": "app:latest-20260311",
+        "downstream_consumers_affected": "UNKNOWN",
+        "pipeline_run_id": "GHA-20260311-0812",
+        "secrets_potentially_exposed": ["DOCKERHUB_TOKEN", "AWS_OIDC_ROLE_ARN", "NPM_PUBLISH_TOKEN"]
+      },
+      "supply_chain_scope": "UNKNOWN",
+      "siem_alerts_contributed": 12
+    },
+    {
+      "id": "V4",
+      "name": "AI-Assisted Spear Phishing — Okta Credential Harvest",
+      "confirmed": true,
+      "actor_type": "opportunistic_or_coordinated",
+      "mitre_ttps": ["T1566.002", "T1078.004", "T1539"],
+      "indicators": {
+        "phishing_campaign_volume": 4000,
+        "click_rate_percent": 12,
+        "credentials_submitted": 480,
+        "accounts_suspected_compromised": 480,
+        "ai_generated_content_confirmed": true,
+        "phishing_domain": "corp-sso-login[.]net",
+        "okta_anomaly_alerts": 62,
+        "mfa_bypass_attempts": 34,
+        "mfa_bypass_successful": "UNKNOWN"
+      },
+      "tls_inspection_status": "UNKNOWN",
+      "siem_alerts_contributed": 96
+    },
+    {
+      "id": "V5",
+      "name": "Ransomware Detonation — BlackCat Successor Variant",
+      "confirmed": true,
+      "actor_type": "ransomware_gang",
+      "mitre_ttps": ["T1486", "T1490", "T1489", "T1562.001"],
+      "indicators": {
+        "encrypted_hosts_confirmed": 142,
+        "total_windows_endpoints": 710,
+        "encrypted_percent_estimated": 20,
+        "edr_blind_spot_percent": 15,
+        "actual_encrypted_percent": "UNKNOWN",
+        "ransom_note_detected": true,
+        "ransom_note_filename": "README_RECOVER_FILES.txt",
+        "vss_deletion_detected": true,
+        "backup_targeting_detected": true,
+        "encryption_algorithm": "ChaCha20+RSA-4096",
+        "lateral_movement_source": "V1_APT_foothold"
+      },
+      "ransomware_encryption_scope": "UNKNOWN",
+      "siem_alerts_contributed": 3840
+    },
+    {
+      "id": "V6",
+      "name": "Insider Threat — Privileged SRE Bulk S3 Exfiltration",
+      "confirmed": false,
+      "confirmation_status": "SUSPECTED",
+      "actor_type": "insider_privileged",
+      "mitre_ttps": ["T1078.004", "T1567.002"],
+      "indicators": {
+        "user_account": "sre-admin-07",
+        "aws_role": "arn:aws:iam::123456789012:role/SREAdminFullAccess",
+        "s3_buckets_accessed": ["prod-customer-pii", "prod-financial-records", "prod-source-code"],
+        "data_volume_transferred_tb": 2.3,
+        "transfer_duration_minutes": 47,
+        "destination": "external_IP_185.220.101.47",
+        "user_employment_status": "active_with_pending_termination",
+        "hr_alert_received": true,
+        "after_hours": true,
+        "could_be_automated_backup": true
+      },
+      "insider_forensic_confirmation": "UNKNOWN",
+      "siem_alerts_contributed": 28
+    },
+    {
+      "id": "V7",
+      "name": "DDoS Smokescreen — 140Gbps Volumetric",
+      "confirmed": true,
+      "actor_type": "coordinated_with_V1_or_V5",
+      "mitre_ttps": ["T1498"],
+      "indicators": {
+        "attack_volume_gbps": 140,
+        "attack_type": "UDP_flood_amplification",
+        "primary_target": "datacenter_edge_routers",
+        "siem_alert_amplification_factor": 8,
+        "availability_impact": "primary_datacenter_degraded_40pct",
+        "analyst_alert_fatigue_risk": "critical"
+      },
+      "siem_alerts_contributed": 6720
+    },
+    {
+      "id": "V8",
+      "name": "Kubernetes Container Escape — IMDS Hop Attempt",
+      "confirmed": true,
+      "actor_type": "unknown_may_overlap_V1",
+      "mitre_ttps": ["T1611", "T1552.005"],
+      "indicators": {
+        "escape_technique": "CVE-2024-21626_runc_breakout",
+        "container_namespace": "prod-payments",
+        "escape_confirmed": true,
+        "imds_access_attempted": true,
+        "imds_token_retrieved": "UNKNOWN",
+        "aws_api_calls_post_escape": "UNKNOWN",
+        "node_compromised": "k8s-node-prod-03"
+      },
+      "aws_imds_version": "UNKNOWN",
+      "siem_alerts_contributed": 37
+    }
+  ],
+  "environment": {
+    "total_users": 4000,
+    "assets": [
+      {"type": "edge_firewall", "count": 2, "platform": "FortiGate FortiOS", "internet_facing": true, "ha_mode": "active-passive"},
+      {"type": "windows_endpoints", "count": 710, "edr_coverage_percent": 85, "internet_facing": false},
+      {"type": "kubernetes_cluster", "count": 1, "platform": "Kubernetes 1.28", "internet_facing": true, "namespaces": 14},
+      {"type": "aws_vpc", "count": 1, "platform": "AWS multi-account", "internet_facing": false, "accounts": 6},
+      {"type": "ci_cd_pipeline", "count": 1, "platform": "GitHub Actions", "internet_facing": true},
+      {"type": "identity_provider", "count": 1, "platform": "Okta SSO", "users": 4000, "mfa_enforced": true},
+      {"type": "siem", "count": 1, "platform": "Batch polling 5-minute interval", "real_time": false, "detection_gap_minutes": 5},
+      {"type": "domain_controller", "count": 2, "platform": "Windows Server 2022 AD", "internet_facing": false}
+    ],
+    "tls_inspection_status": "UNKNOWN",
+    "aws_imds_version": "UNKNOWN",
+    "firewall_cpu_baseline": "UNKNOWN",
+    "siem_eps_capacity": "UNKNOWN",
+    "insider_forensic_confirmation": "UNKNOWN",
+    "supply_chain_scope": "UNKNOWN",
+    "ransomware_encryption_scope": "UNKNOWN"
+  },
+  "regulatory_context": {
+    "gdpr_applicable": true,
+    "sec_applicable": true,
+    "hipaa_applicable": "UNKNOWN",
+    "pci_dss_applicable": true,
+    "gdpr_notification_window_hours": 72,
+    "sec_notification_window_days": 4
+  },
+  "threat_intelligence": {
+    "nation_state_actor_suspected": "APT29_or_similar",
+    "ransomware_group_suspected": "BlackCat_successor",
+    "iocs_shared_via_isac": false,
+    "active_scanning_detected": true,
+    "ttps_match_known_campaigns": true
+  }
+}

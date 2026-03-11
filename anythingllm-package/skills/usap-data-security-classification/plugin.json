@@ -1,0 +1,41 @@
+{
+  "active": true,
+  "name": "USAP: Data Security Classification",
+  "hubId": "usap-data-security-classification",
+  "schema": "skill-1.0.0",
+  "version": "1.0.0",
+  "description": "USAP agent skill for Data Security & Classification. Classify data sensitivity and assign appropriate protection requirements, handling controls, and retention policies.",
+  "author": "USAP Team",
+  "license": "MIT",
+  "entrypoint": {
+    "file": "handler.js",
+    "params": {
+      "input": {
+        "description": "JSON input for the skill (findings, posture data, etc.)",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "setup_args": {
+    "USAP_REPO_PATH": {
+      "type": "string",
+      "required": true,
+      "input": {
+        "label": "USAP repo path",
+        "description": "Absolute path to your usap-skills repo",
+        "placeholder": "/Users/you/usap-skills"
+      }
+    }
+  },
+  "examples": [
+    {
+      "prompt": "Run the data-security-classification skill",
+      "call": "{}"
+    },
+    {
+      "prompt": "Analyze with data-security-classification using this data",
+      "call": "{\"input\": \"{}\"}"
+    }
+  ]
+}
