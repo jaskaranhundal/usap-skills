@@ -31,6 +31,12 @@ DOMAINS = [
     "risk-compliance",
 ]
 
+MODE_OUTPUT_MAP = {
+    "lite": "dist/USAP_LITE.md",
+    "pro":  "dist/USAP_PRO.md",
+    "full": "dist/USAP_BUNDLE.md",
+}
+
 
 def collect_skills(domain_filter: Optional[str] = None) -> List[Tuple[str, str, Path]]:
     """Return list of (domain, slug, path) tuples sorted by domain then slug."""
@@ -77,13 +83,13 @@ def cmd_list_skills(args: argparse.Namespace) -> None:
 
 
 def cmd_bundle(args: argparse.Namespace) -> None:
-    output_path = Path(args.output)
-    agents_only: bool = args.agents_only
-    skills_only: bool = args.skills_only
+    mode: str = args.mode
 
-    if agents_only and skills_only:
-        print("Error: --agents-only and --skills-only are mutually exclusive.", file=sys.stderr)
-        sys.exit(1)
+    # Determine output path: explicit -o wins; otherwise derive from mode
+    if args.output is not None:
+        output_path = Path(args.output)
+    else:
+        output_path = REPO_ROOT / MODE_OUTPUT_MAP[mode]
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -91,23 +97,24 @@ def cmd_bundle(args: argparse.Namespace) -> None:
 
     sections.append(
         "# USAP — Unified Security Agent Platform\n"
-        "# Entry point: cs-security-analyst (Alex)\n"
+        "# Entry point: Alex (cs-security-analyst) — universal security advisor\n"
         "# Paste this entire file as your system prompt.\n"
+        f"# Kit: {mode.upper()}\n"
     )
 
     agents_bundled = 0
     skills_bundled = 0
 
-    if not skills_only:
-        # Main agent
-        if MAIN_AGENT.exists():
-            sections.append("---\n[MAIN AGENT]")
-            sections.append(MAIN_AGENT.read_text(encoding="utf-8").strip())
-            agents_bundled += 1
-        else:
-            print(f"Warning: main agent not found: {MAIN_AGENT}", file=sys.stderr)
+    # Alex always goes first in every kit
+    if MAIN_AGENT.exists():
+        sections.append("---\n[ALEX — USAP Security Expert]")
+        sections.append(MAIN_AGENT.read_text(encoding="utf-8").strip())
+        agents_bundled += 1
+    else:
+        print(f"Warning: main agent not found: {MAIN_AGENT}", file=sys.stderr)
 
-        # Other agents
+    # Pro and Full: include other cs-* agents
+    if mode in ("pro", "full"):
         other_sections: list[str] = []
         for name, path, _ in collect_agents()[1:]:
             if path.exists():
@@ -119,7 +126,8 @@ def cmd_bundle(args: argparse.Namespace) -> None:
             sections.append("---\n[AVAILABLE AGENTS]")
             sections.extend(other_sections)
 
-    if not agents_only:
+    # Full only: include all 66 skills
+    if mode == "full":
         skill_sections: list[str] = []
         for domain, slug, path in collect_skills():
             if path.exists():
@@ -138,6 +146,7 @@ def cmd_bundle(args: argparse.Namespace) -> None:
 
     size_kb = output_path.stat().st_size / 1024
     print(f"Bundle written to: {output_path}")
+    print(f"  Mode           : {mode}")
     print(f"  Agents bundled : {agents_bundled}")
     print(f"  Skills bundled : {skills_bundled}")
     print(f"  File size      : {size_kb:.1f} KB")
@@ -152,22 +161,24 @@ def build_parser() -> argparse.ArgumentParser:
     sub.required = True
 
     # bundle
-    p_bundle = sub.add_parser("bundle", help="Generate dist/USAP_BUNDLE.md (default output)")
+    p_bundle = sub.add_parser("bundle", help="Generate a USAP kit bundle")
+    p_bundle.add_argument(
+        "--mode",
+        choices=["lite", "pro", "full"],
+        default="full",
+        help=(
+            "Kit mode: "
+            "lite = Alex only (dist/USAP_LITE.md); "
+            "pro = Alex + 6 cs-* agents (dist/USAP_PRO.md); "
+            "full = Alex + agents + 66 skills (dist/USAP_BUNDLE.md). "
+            "Default: full"
+        ),
+    )
     p_bundle.add_argument(
         "-o", "--output",
-        default=str(REPO_ROOT / "dist" / "USAP_BUNDLE.md"),
+        default=None,
         metavar="PATH",
-        help="Output file path (default: dist/USAP_BUNDLE.md)",
-    )
-    p_bundle.add_argument(
-        "--agents-only",
-        action="store_true",
-        help="Bundle main agent + cs-* agents only (no skills)",
-    )
-    p_bundle.add_argument(
-        "--skills-only",
-        action="store_true",
-        help="Bundle skills only (no agents)",
+        help="Override output file path (default: derived from --mode)",
     )
     p_bundle.set_defaults(func=cmd_bundle)
 

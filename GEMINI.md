@@ -1,78 +1,66 @@
-# USAP Skills Library (Gemini Context)
+# USAP Skills — Gemini CLI Context
 
-This directory contains the public skill library for the **Unified Security Agent Platform (USAP)**. It is a collection of 66 standalone LLM skill packages and 5 specialized orchestrator agents designed for security, DevSecOps, and executive advisory tasks.
+66 standalone LLM skill packages + 6 orchestrator agents for the Unified
+Security Agent Platform (USAP).
 
-## Project Overview
+## Repo layout
 
-The project is structured as a modular library where each "skill" is a self-contained package including an LLM system prompt (`SKILL.md`), human-readable documentation (`README.md`), analysis workflows (`references/`), and automation scripts (`scripts/`).
+- `<domain>/<slug>/SKILL.md` — LLM system prompt for each of the 66 skills
+- `agents/<domain>/cs-*.md` — orchestrator agents (cs-security-analyst, etc.)
+- `dist/USAP_LITE.md` — bundled Alex kit (32 KB, paste-anywhere)
+- `dist/USAP_PRO.md` — Alex + all 6 specialist agents (121 KB)
+- `dist/USAP_BUNDLE.md` — all 66 skills embedded (684 KB)
+- `shared/scripts/` — CLI tools (cvss_scorer.py, bb_scope_enforcer.py)
 
-- **Architecture:** Modular, domain-driven skill packages.
-- **Core Components:**
-    - **Skills:** 66 packages across domains like Detection, Response, Red Team, Governance, and AppSec.
-    - **Orchestrators:** 5 `cs-*` agents that coordinate multiple skills for specific roles (e.g., `cs-security-analyst`).
-    - **Shared Utilities:** Common Python scripts in `shared/scripts/` for tasks like CVSS scoring and scope enforcement.
+## Available USAP commands (Gemini CLI skills)
 
-## Directory Structure
+| Command | Agent | Use for |
+|---|---|---|
+| `/usap-alex` | cs-security-analyst | Any security question — universal entry point |
+| `/usap-incident-responder` | cs-incident-responder | Active incidents, forensics, containment |
+| `/usap-red-teamer` | cs-red-teamer | Red team planning and offensive security |
+| `/usap-devsecops` | cs-devsecops-engineer | Pipeline security, SAST/DAST, PR gates |
+| `/usap-ciso` | cs-ciso-advisor | Board reports, risk posture, executive briefs |
+| `/usap-program-manager` | cs-security-program-manager | Security roadmap and program planning |
+
+Start with `/usap-alex` for any security question — Alex routes to the right
+specialist automatically.
+
+## Conventions
+
+- All skill tools: `python3 <domain>/<slug>/scripts/<slug>_tool.py --output json`
+- Commit style: Conventional Commits (`feat(skills):`, `fix(scripts):`, `docs:`)
+- Output contract required fields: `agent_slug`, `intent_type`, `action`,
+  `rationale`, `confidence`, `severity`, `key_findings`, `timestamp_utc`
+- Skill levels: L1=Board/advisory, L2=CISO/management, L3=SOC/analyst,
+  L4=Technical/tool-execution
+
+## 9 skill domains
+
+`appsec-devsecops`, `cloud-infra`, `detection`, `governance`,
+`identity-access`, `platform-ai`, `red-team`, `response`, `risk-compliance`
+
+## Project structure
 
 ```
 .
 ├── agents/                 # Orchestrator agents (cs-*)
 ├── shared/                 # Shared Python utilities
-├── standards/              # Specifications for frontmatter, naming, and output
+├── standards/              # Frontmatter, naming, and output specs
 ├── templates/              # Boilerplates for new agents and skills
-├── <domain-folders>/       # Categorized skill packages (e.g., red-team, governance)
-│   └── <skill-slug>/       # Individual skill package
-│       ├── SKILL.md        # Core LLM prompt + Metadata
-│       ├── README.md       # Skill description
+├── <domain-folders>/       # Categorized skill packages
+│   └── <skill-slug>/
+│       ├── SKILL.md        # Core LLM prompt + metadata
+│       ├── README.md
 │       ├── references/     # Detailed workflows
 │       ├── scripts/        # Skill-specific Python tools
-│       └── expected_outputs/ # Sample LLM outputs
+│       └── expected_outputs/
 └── domains/                # Domain-specific index files
 ```
 
-## Using Skills and Agents
+## Key files
 
-### Standalone Skill Usage
-You can use any skill by providing its `SKILL.md` as a system prompt to an LLM. 
-- **Input:** Structured JSON containing `event_type`, `severity`, and `raw_payload`.
-- **Output:** Structured JSON conforming to the [Output Contract](standards/output-contract.md).
-
-### Python Tools
-Many skills include Python CLI tools. These are generally standalone and use only the Python standard library.
-- **Example (CVSS Scorer):**
-  ```bash
-  python shared/scripts/cvss_scorer.py --vector "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H"
-  ```
-- **Example (Skill Tool):**
-  ```bash
-  python <skill-slug>/scripts/<skill-slug>_tool.py --help
-  ```
-
-### Orchestrator Agents
-Orchestrators (`cs-*`) coordinate multiple skills. They are documented in `agents/<domain>/cs-<agent>.md`.
-
-## Development Conventions
-
-### Creating a New Skill
-1. Use `templates/skill-template.md` as a base.
-2. Follow the [Frontmatter Specification](standards/frontmatter-spec.md).
-3. Ensure `SKILL.md` includes:
-    - Identity, Classification Tables, Reasoning Procedure, and Intent Classification.
-    - A Runtime Contract line pointing to its future USAP platform manifest.
-4. Provide a `references/workflow.md` describing the manual analyst process.
-
-### Metadata Standards
-- **Levels (L1-L4):** L1 (Executive) to L4 (Technical/Tool).
-- **Phases:** mvp, phase1, phase2.
-- **Planes:** work, control, governance.
-
-### Security and Quality
-- **No Secrets:** Never include API keys or sensitive credentials.
-- **MITRE Mapping:** Detection and offensive skills should map to MITRE ATT&CK techniques.
-- **Deterministic Logic:** Prefer Python scripts in `scripts/` for deterministic analysis that supports the LLM's reasoning.
-
-## Key Files for Reference
-- `README.md`: Main index of all skills and agents.
-- `CONTRIBUTING.md`: Detailed guide for authors.
-- `standards/`: Full specifications for metadata and output formats.
-- `agents/CLAUDE.md`: The orchestrator agent development guide.
+- `README.md` — main index of all skills and agents
+- `CONTRIBUTING.md` — authoring guide (frontmatter, quality checklist)
+- `standards/output-contract.md` — required output JSON schema
+- `agents/CLAUDE.md` — orchestrator agent development guide

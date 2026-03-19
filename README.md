@@ -1,8 +1,116 @@
 # usap-skills
 
-66 standalone LLM skill packages + 5 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
+66 standalone LLM skill packages + 6 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
 
 Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
+
+---
+
+## Quick Start
+
+> One agent. Any security question. Paste and go.
+
+| Who you are | Paste this | Works on |
+|---|---|---|
+| Anyone — business owner, IT admin, or security engineer | `dist/USAP_LITE.md` | Claude, ChatGPT, Gemini, Ollama |
+| Security team needing full orchestration across specialist agents | `dist/USAP_PRO.md` | Claude, ChatGPT, Gemini, Ollama |
+| Security program with all 66 skills embedded | `dist/USAP_BUNDLE.md` | Claude, ChatGPT, Gemini |
+
+Generate your kit:
+
+```bash
+python3 shared/scripts/bundle_usap.py bundle --mode lite   # → dist/USAP_LITE.md
+python3 shared/scripts/bundle_usap.py bundle --mode pro    # → dist/USAP_PRO.md
+python3 shared/scripts/bundle_usap.py bundle --mode full   # → dist/USAP_BUNDLE.md
+```
+
+### How Alex works
+
+**Alex** (`cs-security-analyst`) is the single entry point for all three kits. You do not need to know which agent or skill to use — Alex figures that out.
+
+- **Lite:** Alex answers directly from knowledge of all 66 USAP skills. Plain English by default; goes fully technical when you ask.
+- **Pro / Full:** Alex detects multi-domain problems, activates party mode (`OR`), delegates to specialist agents (`cs-incident-responder`, `cs-ciso-advisor`, etc.), and synthesizes one unified answer.
+- **Any LLM:** Paste the file as your system prompt. No install required.
+- **Future:** MCP connectors will let Alex pull live cloud inventory, SIEM, and EDR data automatically. Until then, paste logs or describe your environment.
+
+---
+
+## Use with Gemini
+
+Three ways — pick the one that fits your setup:
+
+### Option 1: Google AI Studio (free, no code)
+1. Go to [aistudio.google.com](https://aistudio.google.com)
+2. Click **Create new prompt** → set type to **Chat**
+3. Paste the contents of `dist/USAP_LITE.md` into the **System instructions** field
+4. Start chatting with Alex
+
+### Option 2: Gemini Gems (Gemini Advanced)
+1. Go to [gemini.google.com](https://gemini.google.com) → **Gems** → **Create a Gem**
+2. Name: `USAP Security Advisor`
+3. Instructions: paste the contents of `dist/USAP_LITE.md`
+4. Save and chat
+
+### Option 3: Python script (Gemini API)
+
+```bash
+# Install the SDK
+pip install google-generativeai
+
+# Set your API key (get one free at aistudio.google.com)
+export GEMINI_API_KEY="your-key-here"
+
+# Start a chat session with Alex
+python3 shared/scripts/gemini_chat.py --kit lite
+
+# Use the pro kit (Alex + all 6 agents)
+python3 shared/scripts/gemini_chat.py --kit pro
+
+# Use a different model
+python3 shared/scripts/gemini_chat.py --kit lite --model gemini-1.5-pro
+```
+
+Kit size guide:
+
+| Kit | Size | Recommended for |
+|---|---|---|
+| `lite` | 32 KB | Any Gemini model, free tier |
+| `pro` | 121 KB | Gemini 1.5 Pro / 2.0 Flash |
+| `full` | 684 KB | Gemini 1.5 Pro (2M context) |
+
+---
+
+## Use as CLI commands
+
+USAP agents are registered as native slash commands in both Gemini CLI and Claude Code.
+
+### Gemini CLI
+
+```bash
+npm install -g @google/gemini-cli
+cd usap-skills
+gemini          # GEMINI.md auto-loaded
+/usap-alex      # Activate cs-security-analyst
+```
+
+### Claude Code
+
+```bash
+cd usap-skills
+claude          # CLAUDE.md auto-loaded
+/usap-alex      # Activate cs-security-analyst
+```
+
+### Available commands
+
+| Command | Agent | Use for |
+|---|---|---|
+| `/usap-alex` | cs-security-analyst | Any security question — universal entry point |
+| `/usap-incident-responder` | cs-incident-responder | Active incidents, forensics, containment |
+| `/usap-red-teamer` | cs-red-teamer | Red team planning and offensive security |
+| `/usap-devsecops` | cs-devsecops-engineer | Pipeline security, SAST/DAST, PR gates |
+| `/usap-ciso` | cs-ciso-advisor | Board reports, risk posture, executive briefs |
+| `/usap-program-manager` | cs-security-program-manager | Security roadmap and program planning |
 
 ---
 
@@ -120,15 +228,16 @@ Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Olla
 
 ## Orchestrator Agents
 
-5 `cs-*` agents that coordinate multiple skills into role-specific workflows:
+6 `cs-*` agents that coordinate multiple skills into role-specific workflows:
 
 | Agent | Domain | Skills Orchestrated | Description |
 |---|---|---|---|
-| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | threat-hunting, behavioral-analytics, secrets-exposure, incident-classification, telemetry-signal-quality | Tier 2 SOC analyst — alert triage, threat hunt execution, compromise assessment |
+| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | All 66 skills (full knowledge base) + 5 specialist agents | Universal security advisor — any question, any audience, any domain. Adapts to non-technical and expert users. Makes decisions. |
 | [`cs-incident-responder`](agents/security/cs-incident-responder.md) | Security | incident-commander, incident-classification, containment-advisor, forensics, zero-day-response | Full incident lifecycle — triage, containment, forensics, post-incident review |
 | [`cs-red-teamer`](agents/security/cs-red-teamer.md) | Security | red-team-planner, red-team-operations, safe-exploitation, attack-path-analysis, continuous-pentesting | Offensive security coordinator — engagement scoping, attack path mapping, findings report |
 | [`cs-devsecops-engineer`](agents/devsecops/cs-devsecops-engineer.md) | DevSecOps | secure-sdlc, sast-dast-coordinator, devsecops-pipeline, build-integrity, supply-chain-risk, appsec-code-review, pipeline-security-scan | Security-in-pipeline engineer — PR gate, pipeline hardening, SBOM generation |
 | [`cs-ciso-advisor`](agents/executive/cs-ciso-advisor.md) | Executive | enterprise-risk-assessment, compliance-mapping, metrics-reporting, security-posture-score, ciso-brief-generator, cyber-insurance | Executive advisor — board reports, risk posture reviews, regulatory gap assessments |
+| [`cs-security-program-manager`](agents/governance/cs-security-program-manager.md) | Governance | security-roadmap-planner, security-debt-tracker, findings-tracker, metrics-reporting, vulnerability-management | Passive lifecycle orchestrator — program planning, proactive scanning, facilitation |
 
 See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 
@@ -293,6 +402,7 @@ python3 -m usap.cli validate-agents   # 63 agents valid
 |---|---|
 | `cvss_scorer.py` | CVSS v3.1 base score calculator — no dependencies |
 | `bb_scope_enforcer.py` | Bug bounty scope enforcement — validates targets against scope file |
+| `gemini_chat.py` | Interactive Gemini CLI — loads a USAP kit as system prompt, starts a chat session |
 
 See [`shared/README.md`](shared/README.md) for usage.
 
