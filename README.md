@@ -1,6 +1,8 @@
 # usap-skills
 
-66 standalone LLM skill packages + 6 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
+[![Skills](https://img.shields.io/badge/skills-69-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-6-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
+
+69 standalone LLM skill packages + 6 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
 
 Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
 
@@ -14,7 +16,7 @@ Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Olla
 |---|---|---|
 | Anyone — business owner, IT admin, or security engineer | `dist/USAP_LITE.md` | Claude, ChatGPT, Gemini, Ollama |
 | Security team needing full orchestration across specialist agents | `dist/USAP_PRO.md` | Claude, ChatGPT, Gemini, Ollama |
-| Security program with all 66 skills embedded | `dist/USAP_BUNDLE.md` | Claude, ChatGPT, Gemini |
+| Security program with all 69 skills embedded | `dist/USAP_BUNDLE.md` | Claude, ChatGPT, Gemini |
 
 Generate your kit:
 
@@ -28,7 +30,7 @@ python3 shared/scripts/bundle_usap.py bundle --mode full   # → dist/USAP_BUNDL
 
 **Alex** (`cs-security-analyst`) is the single entry point for all three kits. You do not need to know which agent or skill to use — Alex figures that out.
 
-- **Lite:** Alex answers directly from knowledge of all 66 USAP skills. Plain English by default; goes fully technical when you ask.
+- **Lite:** Alex answers directly from knowledge of all 69 USAP skills. Plain English by default; goes fully technical when you ask.
 - **Pro / Full:** Alex detects multi-domain problems, activates party mode (`OR`), delegates to specialist agents (`cs-incident-responder`, `cs-ciso-advisor`, etc.), and synthesizes one unified answer.
 - **Any LLM:** Paste the file as your system prompt. No install required.
 - **Future:** MCP connectors will let Alex pull live cloud inventory, SIEM, and EDR data automatically. Until then, paste logs or describe your environment.
@@ -232,7 +234,7 @@ claude          # CLAUDE.md auto-loaded
 
 | Agent | Domain | Skills Orchestrated | Description |
 |---|---|---|---|
-| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | All 66 skills (full knowledge base) + 5 specialist agents | Universal security advisor — any question, any audience, any domain. Adapts to non-technical and expert users. Makes decisions. |
+| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | All 69 skills (full knowledge base) + 5 specialist agents | Universal security advisor — any question, any audience, any domain. Adapts to non-technical and expert users. Makes decisions. |
 | [`cs-incident-responder`](agents/security/cs-incident-responder.md) | Security | incident-commander, incident-classification, containment-advisor, forensics, zero-day-response | Full incident lifecycle — triage, containment, forensics, post-incident review |
 | [`cs-red-teamer`](agents/security/cs-red-teamer.md) | Security | red-team-planner, red-team-operations, safe-exploitation, attack-path-analysis, continuous-pentesting | Offensive security coordinator — engagement scoping, attack path mapping, findings report |
 | [`cs-devsecops-engineer`](agents/devsecops/cs-devsecops-engineer.md) | DevSecOps | secure-sdlc, sast-dast-coordinator, devsecops-pipeline, build-integrity, supply-chain-risk, appsec-code-review, pipeline-security-scan | Security-in-pipeline engineer — PR gate, pipeline hardening, SBOM generation |
@@ -240,6 +242,36 @@ claude          # CLAUDE.md auto-loaded
 | [`cs-security-program-manager`](agents/governance/cs-security-program-manager.md) | Governance | security-roadmap-planner, security-debt-tracker, findings-tracker, metrics-reporting, vulnerability-management | Passive lifecycle orchestrator — program planning, proactive scanning, facilitation |
 
 See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
+
+---
+
+## Architecture
+
+```mermaid
+graph TB
+    User([User / Operator]) --> ORCH
+
+    subgraph USAP["USAP — AnythingLLM Workspace"]
+        ORCH[cs-usap-orchestrator<br/>Master Router]
+    end
+
+    ORCH --> PM[cs-security-program-manager<br/>Governance · Passive Lifecycle]
+    ORCH --> SA[cs-security-analyst<br/>SOC · Threat Hunting]
+    ORCH --> IR[cs-incident-responder<br/>Incident Lifecycle]
+    ORCH --> RT[cs-red-teamer<br/>Offensive Security]
+    ORCH --> DE[cs-devsecops-engineer<br/>Pipeline · AppSec]
+    ORCH --> CA[cs-ciso-advisor<br/>Executive · Board]
+
+    PM --> G[governance/ skills]
+    SA --> D[detection/ skills]
+    IR --> R[response/ skills]
+    RT --> T[red-team/ skills]
+    DE --> A[appsec-devsecops/ skills]
+    CA --> RC[risk-compliance/ skills]
+
+    G & D & R & T & A & RC --> TOOLS[Python _tool.py scripts<br/>69 total]
+    TOOLS --> OUTPUT[JSON Output Contract]
+```
 
 ---
 
@@ -259,7 +291,7 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 
 ---
 
-## All 66 skills
+## All 69 skills
 
 | Slug | Level | Category | Description |
 |---|---|---|---|
@@ -320,7 +352,6 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 | `vulnerability-management` | L3 | Vulnerability | Full vulnerability lifecycle: CVSS v3.1 + EPSS scoring, SLA-based prioritization, remediation tracking |
 | `zero-day-response` | L3 | Response | Zero-day compensating controls: exposure scoring, 5 control options, vendor timeline tracking |
 | `zero-day-response-governance` | L2 | Governance | Board/executive coordination for zero-day events: communication matrix, regulatory deadlines |
-| `ai-red-teaming` | L4 | Red Team | Adversarial testing of AI/ML systems: prompt injection, model inversion, jailbreak detection |
 | `cloud-workload-protection` | L4 | Cloud | Container and serverless runtime security: anomaly detection, escape detection, CWPP gap analysis |
 | `appsec-code-review` | L4 | AppSec | Security-focused static code analysis: OWASP Top 10, logic flaws, dependency audits |
 | `security-posture-score` | L3 | Governance | Cross-domain security posture scoring: aggregates findings into an executive scorecard |
@@ -330,6 +361,9 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 | `sre-runbook-advisor` | L3 | Platform | SRE runbook generation: SLO burn rate analysis, runbook templating, postmortem facilitation |
 | `pipeline-security-scan` | L4 | DevOps | CI/CD pipeline security scanning: secrets in env vars, SAST integration, artifact signing check |
 | `ciso-brief-generator` | L2 | Executive | Generates CISO-level security briefs: risk posture summaries, board-ready narratives |
+| `security-roadmap-planner` | L2 | Governance | Builds investment-prioritized 12-month security program roadmaps from posture, risk, and compliance data |
+| `security-debt-tracker` | L3 | Governance | Tracks and analyzes aging security findings, computes SLA breach counts, and classifies debt accumulation rate |
+| `security-requirements-review` | L3 | AppSec | Proactive analysis of PRDs, architecture docs, and requirements specs to extract security gaps before alerts fire |
 
 ---
 
