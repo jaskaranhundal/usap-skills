@@ -1,20 +1,24 @@
 ---
 name: devsecops-pipeline
-agent_slug: devsecops-pipeline
-agent_id: 38
-level: L4
-plane: work
-phase: mvp
-ttl: 300
-approval_required: false
-mutating_intents: [device_config_change, policy_change]
-can_execute: false
-providers: [claude, openai, gemini, ollama, mock]
-required_invoke_role: devops_engineer
-required_approver_role: soc_lead
-input_schema: schemas/input/devsecops-pipeline.yaml
-output_schema: schemas/output/devsecops-pipeline.yaml
-runtime_contract: agents/devsecops-pipeline.yaml
+description: USAP agent skill for DevSecOps Pipeline Security. Use for assessing security gate completeness in CI/CD pipelines, pipeline configuration review, SAST/DAST integration gaps, secret scanning in pipeline YAML, and security toolchain hardening.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-appsec-devsecops
+  updated: 2025-03-23
+  agent_slug: devsecops-pipeline
+  agent_id: 38
+  level: L4
+  plane: work
+  phase: mvp
+  ttl: 300
+  approval_required: false
+  mutating_intents: [device_config_change, policy_change]
+  can_execute: false
+  providers: [claude, openai, gemini, ollama, mock]
+  required_invoke_role: devops_engineer
+  required_approver_role: soc_lead
 ---
 
 # DevSecOps Pipeline Agent

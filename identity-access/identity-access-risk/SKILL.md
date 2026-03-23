@@ -1,20 +1,24 @@
 ---
 name: identity-access-risk
-agent_slug: identity-access-risk
-agent_id: 14
-level: L4
-plane: work
-phase: mvp
-ttl: 300
-approval_required: false
-mutating_intents: [policy_change, credential_operation]
-can_execute: false
-providers: [claude, openai, gemini, ollama, mock]
-required_invoke_role: soc_analyst
-required_approver_role: soc_lead
-input_schema: schemas/input/identity-access-risk.yaml
-output_schema: schemas/output/identity-access-risk.yaml
-runtime_contract: agents/identity-access-risk.yaml
+description: USAP agent skill for Identity and Access Risk Assessment. Use for IAM anomaly detection, privilege escalation path analysis, over-permissioned role scoring, CloudTrail behavioral review, dormant credential identification, and transitive permission chain mapping across AWS, Azure, and GCP.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-identity-access
+  updated: 2025-03-23
+  agent_slug: identity-access-risk
+  agent_id: 14
+  level: L4
+  plane: work
+  phase: mvp
+  ttl: 300
+  approval_required: false
+  mutating_intents: [policy_change, credential_operation]
+  can_execute: false
+  providers: [claude, openai, gemini, ollama, mock]
+  required_invoke_role: soc_analyst
+  required_approver_role: soc_lead
 ---
 
 # Identity and Access Risk Agent
@@ -74,65 +78,9 @@ Ask: if this identity is fully compromised, what can the attacker reach?
 
 ## AWS CloudTrail Event Analysis Patterns
 
-When analyzing raw CloudTrail events, look for these high-signal patterns:
+Five high-signal patterns: (1) Enumeration Burst — 6+ List/Describe calls in 5 min; (2) Backdoor Creation — CreateUser + CreateAccessKey + AttachUserPolicy; (3) Defense Evasion — StopLogging/DeleteTrail/DeleteDetector → auto-escalate to SEV1; (4) Role Assumption Chain — multi-hop AssumeRole to elevated trust; (5) Data Exfil Precursor — KMS + S3 + RDS + Secrets enumeration sequence.
 
-### Pattern 1: Enumeration Burst (T+0 to T+5 min after compromise)
-```
-eventNames: [
-  "sts:GetCallerIdentity",     // attacker confirms access
-  "iam:GetAccountSummary",     // enumerates account structure
-  "iam:ListUsers",              // harvests user list
-  "iam:ListRoles",              // identifies target roles
-  "s3:ListAllMyBuckets",        // identifies data targets
-  "ec2:DescribeInstances"       // maps compute infrastructure
-]
-```
-All six calls within a 5-minute window = high-confidence compromise indicator.
-
-### Pattern 2: Backdoor Creation (T+10 to T+20 min)
-```
-eventNames: [
-  "iam:CreateUser",
-  "iam:CreateAccessKey",
-  "iam:AttachUserPolicy"   // with AdministratorAccess
-]
-userAgent: "Boto3/1.x.x Python/3.x" (headless CLI tool, not console)
-sourceIPAddress: external/unusual IP
-```
-This pattern = attacker has created persistent access — urgency escalates to critical.
-
-### Pattern 3: Defense Evasion (T+20 to T+30 min)
-```
-eventNames: [
-  "cloudtrail:StopLogging",    // disabling your visibility
-  "cloudtrail:DeleteTrail",
-  "guardduty:DeleteDetector",
-  "config:StopConfigurationRecorder"
-]
-```
-If any of these appear: incident severity automatically escalates to SEV1. The attacker
-is now actively removing your ability to detect and respond.
-
-### Pattern 4: Privilege Escalation via Role Assumption Chain
-```
-Account A: sts:AssumeRole → Role in Account B
-Account B: sts:AssumeRole → Role in Account C (admin)
-```
-Multi-hop AssumeRole chains are a classic SolarWinds/APT technique to obscure the
-original compromised identity and elevate to admin without directly modifying any IAM policy.
-
-### Pattern 5: Data Exfiltration Precursor
-```
-eventNames: [
-  "kms:ListKeys",             // finding encryption keys
-  "kms:DescribeKey",
-  "s3:GetBucketEncryption",  // understanding encryption
-  "s3:GetObject",            // starting data access
-  "rds:DescribeDBInstances", // identifying databases
-  "secretsmanager:ListSecrets"
-]
-```
-This sequence = attacker has moved from reconnaissance to data collection.
+> See references/cloudtrail-patterns.md for full event sequences and timing details per pattern.
 
 ---
 
@@ -172,83 +120,21 @@ Apply these rules in order. Use the first matching condition.
 | Defense evasion events (StopLogging, DeleteTrail) | 0.99 |
 | Root account usage | 0.99 |
 
-**Reduce confidence by 0.15** if: the source IP is a known CI/CD IP, the user-agent is a known internal tool, or there is recent scheduled job evidence in the fact.
+**Reduce confidence by 0.15** if: source IP is known CI/CD, user-agent is known internal tool, or recent scheduled job evidence present.
 
 ---
 
 ## Cascade Intelligence
 
-**If prior agents produced findings, incorporate them into your analysis.**
+**If prior agents produced findings, incorporate them into your analysis.** secrets-exposure key findings may be the same attacker (confidence +0.15 if correlated). Threat-intel C2/Tor IPs → upgrade severity + set blast_radius = full_account. Downstream: containment-advisor, incident-classification, compliance-mapping, internal-audit-assurance.
 
-### Consuming secrets-exposure findings:
-- If `secrets-exposure` found an exposed AWS access key, this IAM anomaly may be the attacker
-  USING that key. Connect the events: same account ID? Same time window? Same region?
-- If both secrets-exposure AND this event point to the same identity, confidence += 0.15
-
-### Consuming telemetry-signal-quality findings:
-- If telemetry-signal-quality flagged high dedup confidence, this is a confirmed unique event
-- If it flagged normalization errors, reduce confidence and note data quality issue
-
-### Consuming threat-intelligence findings:
-- If threat-intelligence identified the source IP as a known threat actor C2 or Tor exit node,
-  upgrade severity by one level and set blast_radius = full_account regardless of actual permissions
-
-### Producing output for downstream agents:
-- `containment-advisor` will consume your `recommended_action` and `principal_arn` to recommend
-  specific containment steps (disable_user, revoke_session_tokens, quarantine_ec2)
-- `incident-classification` may escalate based on your severity assessment
-- `compliance-mapping` will use credential_operation or policy_change intent for regulatory analysis
-- `internal-audit-assurance` will reference your findings for SOC 2 CC6 (logical access) audit
+> See references/cascade-intelligence.md for full upstream/downstream routing rules.
 
 ---
 
 ## Reasoning Procedure
 
-Follow these steps in order.
-
-**Step 1 — Classify anomaly types**
-Match all anomaly types present in the SecurityFact against the classification table. List all matches — a single event may trigger multiple anomaly types.
-
-**Step 2 — Identify the principal**
-Extract from the SecurityFact: principal ARN, account ID, username or role name, region, user-agent, source IP, and event time. If the principal is a role assumption chain, trace back to the originating identity.
-
-**Step 3 — Score blast radius**
-Using the blast radius matrix, determine the tier based on the principal's apparent permissions. If the principal is an IAM role, consider what services and resources it can access.
-
-**Step 4 — Apply CloudTrail patterns**
-Check if the SecurityFact events match any of the 5 CloudTrail patterns (enumeration burst, backdoor creation, defense evasion, role assumption chain, data exfil precursor). If matched, the attack is already in progress — escalate urgency.
-
-**Step 5 — Check for false positive indicators**
-Known CI/CD automation IP? Known scheduled job user-agent (AWS Lambda, CodeBuild, CodePipeline)? Expected cross-account role for a known integration? If yes, reduce confidence but still document the analysis.
-
-**Step 6 — Apply severity matrix**
-Use the severity classification matrix to determine severity level. Apply highest matching condition.
-
-**Step 7 — Classify intent**
-```
-severity IN [critical, high] AND blast_radius NOT minimal:
-  → For access revocation: intent_type: mutating, mutating_category: credential_operation
-  → For IAM policy corrections: intent_type: mutating, mutating_category: policy_change
-  → approver_roles: [soc_lead, ciso]
-
-severity IN [medium, low] OR blast_radius == minimal:
-  → intent_type: read_only
-  → approver_roles: []
-```
-
-**Step 8 — Compose recommendation**
-Choose the exact action from this list:
-- `revoke_session_tokens` — active session compromise; immediate; `credential_operation`
-- `disable_user` — long-lived user credential compromise; `credential_operation`
-- `detach_overprivileged_policy` — policy correction; `policy_change`
-- `require_mfa_reenrollment` — MFA bypass or credential sharing; `policy_change`
-- `apply_permission_boundary` — restrict overprivileged role without deletion; `policy_change`
-- `quarantine_role` — suspicious role; deny all with explicit deny policy; `policy_change`
-- `flag_for_access_review` — medium severity; queue for next access review cycle; `read_only`
-- `investigate_automation` — likely CI/CD; confirm and document; `read_only`
-
-**Step 9 — List evidence references**
-Include: event IDs, CloudTrail eventNames matched, source IP, user-agent, principal ARN, timestamp.
+Follow these 9 steps in order: (1) Classify all anomaly types against the table. (2) Identify the principal — ARN, account ID, region, user-agent, source IP, event time; trace AssumeRole chains to origin. (3) Score blast radius using the matrix. (4) Apply all 5 CloudTrail patterns; if matched, attack is in progress — escalate urgency. (5) Check false positive indicators (CI/CD IP, known automation user-agent, expected cross-account role); reduce confidence but still document. (6) Apply severity matrix — use highest matching condition. (7) Classify intent: critical/high + non-minimal blast_radius → mutating (credential_operation or policy_change, approver_roles: [soc_lead, ciso]); medium/low or minimal → read_only. (8) Compose recommendation from action list: `revoke_session_tokens`, `disable_user`, `detach_overprivileged_policy`, `require_mfa_reenrollment`, `apply_permission_boundary`, `quarantine_role`, `flag_for_access_review`, or `investigate_automation`. (9) List evidence references — event IDs, CloudTrail eventNames, source IP, user-agent, principal ARN, timestamp.
 
 ---
 
@@ -276,63 +162,19 @@ Include: event IDs, CloudTrail eventNames matched, source IP, user-agent, princi
 
 ## Post-Incident Review Questions (IAM)
 
-1. **Detection gap**: When did the anomalous access begin vs. when was it detected? What was the lateral movement window?
-2. **Root credential**: Which original credential was compromised? How was it obtained (phishing, secrets exposure, leaked .env)?
-3. **Blast radius confirmation**: What did the attacker actually access? Review CloudTrail for all API calls during the window.
-4. **Backdoor check**: Did the attacker create any persistent access (new IAM users, access keys, OAuth apps, EC2 key pairs)? Have all backdoors been removed?
-5. **Policy gaps**: Which overprivileged policies enabled this path? Have they been corrected with least-privilege?
-6. **Detection improvement**: Which CloudTrail event should have triggered alerting earlier? Has a rule been added?
-7. **SolarWinds-style chain**: Was this a multi-hop AssumeRole attack? Map the full assumption chain.
-
----
+> See references/post-incident-review.md for the 7 post-incident review questions covering detection gap, root credential, blast radius, backdoor check, policy gaps, detection improvement, and AssumeRole chain mapping.
 
 ## Tool Integration
 
-```bash
-# Analyze an IAM policy JSON for privilege escalation
-python skills/identity-access-risk/scripts/analyze_iam_policy.py policy.json
-
-# Scan all IAM policies in a directory
-python skills/identity-access-risk/scripts/analyze_iam_policy.py policies/ --directory --json
-
-# Score CVE severity for a related vulnerability
-python skills/shared/scripts/cvss_scorer.py --vector "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H"
-
-# Pipe policy JSON from stdin
-aws iam get-policy-version --policy-arn arn:aws:iam::...:policy/... --version-id v1 \
-  | jq '.PolicyVersion.Document' | python analyze_iam_policy.py -
-```
-
----
+> See references/tool-integration.md for IAM policy analysis and CVSS scorer bash commands.
 
 ## Knowledge Sources
 
-- `references/iam_risk_matrix.md` — High-risk actions, privilege escalation paths, AssumeRole chain analysis
-- `references/mitre_attack_mapping.md` — MITRE ATT&CK technique details per anomaly type
-- `references/least_privilege_guide.md` — Policy correction recommendations and AWS IAM best practices
-- `scripts/analyze_iam_policy.py` — Detect privilege escalation in IAM policy JSON
+> See references/knowledge-sources.md for reference file index. See also: references/iam_risk_matrix.md, references/mitre_attack_mapping.md, references/least_privilege_guide.md.
 
 ## MCP Connector Output Contract
 
-When producing a mutating recommendation, include these optional fields in your
-JSON output so the MCP layer can execute on real infrastructure:
-
-```json
-{
-  "mcp_connector": "aws",
-  "target": "arn:aws:iam::123456789012:user/jsmith",
-  "aws_access_key_id": "AKIAZZ...",
-  "source_ip": "45.33.32.156",
-  "parameters": {}
-}
-```
-
-Field guidance:
-- `mcp_connector`: always `"aws"` for identity-access-risk (IAM policy changes)
-- `target`: IAM user ARN or role ARN that needs the policy applied
-- `aws_access_key_id`: specific key to deactivate (for credential_operation actions)
-- `source_ip`: attacker IP if credential abuse is the trigger
-- `parameters`: additional IAM context (e.g. `{"policy_arn": "arn:aws:iam::...:policy/..."}`)
+> See references/mcp-connector.md for the MCP connector JSON field specification for mutating IAM recommendations.
 
 ## Runtime Contract
 - ../../agents/identity-access-risk.yaml

@@ -1,20 +1,24 @@
 ---
 name: compliance-mapping
-agent_slug: compliance-mapping
-agent_id: 22
-level: L2
-plane: work
-phase: mvp
-ttl: 300
-approval_required: false
-mutating_intents: []
-can_execute: false
-providers: [claude, openai, gemini, ollama, mock]
-required_invoke_role: compliance_officer
-required_approver_role: security_manager
-input_schema: schemas/input/compliance-mapping.yaml
-output_schema: schemas/output/compliance-mapping.yaml
-runtime_contract: agents/compliance-mapping.yaml
+description: USAP agent skill for Multi-Framework Compliance Mapping. Use for mapping organizational controls to NIST, ISO 27001, SOC 2, PCI-DSS, HIPAA, GDPR, and NIS2 simultaneously, identifying coverage gaps, producing rationalized control cross-walk tables, and reducing duplicate evidence collection across frameworks.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-risk-compliance
+  updated: 2025-03-23
+  agent_slug: compliance-mapping
+  agent_id: 22
+  level: L2
+  plane: work
+  phase: mvp
+  ttl: 300
+  approval_required: false
+  mutating_intents: []
+  can_execute: false
+  providers: [claude, openai, gemini, ollama, mock]
+  required_invoke_role: compliance_officer
+  required_approver_role: security_manager
 ---
 
 # Compliance Mapping Agent
