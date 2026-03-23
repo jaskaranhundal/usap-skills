@@ -1,20 +1,24 @@
 ---
 name: telemetry-signal-quality
-agent_slug: telemetry-signal-quality
-agent_id: 8
-level: L3
-plane: control
-phase: mvp
-ttl: 0
-approval_required: false
-mutating_intents: []
-can_execute: false
-providers: [claude, openai, gemini, ollama, mock]
-required_invoke_role: system
-required_approver_role: admin
-input_schema: schemas/input/telemetry-signal-quality.yaml
-output_schema: schemas/output/telemetry-signal-quality.yaml
-runtime_contract: agents/telemetry-signal-quality.yaml
+description: USAP agent skill for Telemetry and Signal Quality Assessment. Use for evaluating SIEM data source health, log completeness, normalization error rates, and detection data fidelity before running threat hunts or drawing conclusions from negative detection results.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-detection
+  updated: 2025-03-23
+  agent_slug: telemetry-signal-quality
+  agent_id: 8
+  level: L3
+  plane: control
+  phase: mvp
+  ttl: 0
+  approval_required: false
+  mutating_intents: []
+  can_execute: false
+  providers: [claude, openai, gemini, ollama, mock]
+  required_invoke_role: system
+  required_approver_role: admin
 ---
 
 # Telemetry and Signal Quality Agent

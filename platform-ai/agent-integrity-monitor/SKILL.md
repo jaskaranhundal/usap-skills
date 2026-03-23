@@ -1,20 +1,24 @@
 ---
 name: agent-integrity-monitor
-agent_slug: agent-integrity-monitor
-agent_id: 34
-level: L3
-plane: work
-phase: mvp
-ttl: 300
-approval_required: false
-mutating_intents: []
-can_execute: false
-providers: [claude, openai, anythingllm, gemini, ollama, mock]
-required_invoke_role: admin
-required_approver_role: admin
-input_schema: schemas/input/agent-integrity-monitor.yaml
-output_schema: schemas/output/agent-integrity-monitor.yaml
-runtime_contract: agents/agent-integrity-monitor.yaml
+description: USAP agent skill for AI Agent Integrity Monitoring. Use for detecting prompt injection attempts, instruction override, goal drift, and behavioral deviation in autonomous AI agents — monitors production agent sessions against behavioral baselines and raises integrity violations before they produce harmful outputs.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-platform-ai
+  updated: 2025-03-23
+  agent_slug: agent-integrity-monitor
+  agent_id: 34
+  level: L3
+  plane: work
+  phase: mvp
+  ttl: 300
+  approval_required: false
+  mutating_intents: []
+  can_execute: false
+  providers: [claude, openai, anythingllm, gemini, ollama, mock]
+  required_invoke_role: admin
+  required_approver_role: admin
 ---
 
 # Agent Integrity Monitor
