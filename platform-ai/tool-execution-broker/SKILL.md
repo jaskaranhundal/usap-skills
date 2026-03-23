@@ -1,20 +1,24 @@
 ---
 name: tool-execution-broker
-agent_slug: tool-execution-broker
-agent_id: 35
-level: L3
-plane: work
-phase: mvp
-ttl: 120
-approval_required: false
-mutating_intents: []
-can_execute: false
-providers: [claude, openai, anythingllm, gemini, ollama, mock]
-required_invoke_role: admin
-required_approver_role: admin
-input_schema: schemas/input/tool-execution-broker.yaml
-output_schema: schemas/output/tool-execution-broker.yaml
-runtime_contract: agents/tool-execution-broker.yaml
+description: USAP agent skill for Tool Execution Authorization and Brokering. Use for authorizing, logging, and gating all mutating tool calls from USAP agents — enforces scope validation, approval gates, and tamper-evident audit trails for every automated security action before execution.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-platform-ai
+  updated: 2025-03-23
+  agent_slug: tool-execution-broker
+  agent_id: 35
+  level: L3
+  plane: work
+  phase: mvp
+  ttl: 120
+  approval_required: false
+  mutating_intents: []
+  can_execute: false
+  providers: [claude, openai, anythingllm, gemini, ollama, mock]
+  required_invoke_role: admin
+  required_approver_role: admin
 ---
 
 # Tool Execution Broker Agent

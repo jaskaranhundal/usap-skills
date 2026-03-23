@@ -1,20 +1,24 @@
 ---
 name: incident-classification
-agent_slug: incident-classification
-agent_id: 9
-level: L3
-plane: work
-phase: mvp
-ttl: 180
-approval_required: false
-mutating_intents: []
-can_execute: false
-providers: [claude, openai, gemini, ollama, mock]
-required_invoke_role: soc_analyst
-required_approver_role: soc_lead
-input_schema: schemas/input/incident-classification.yaml
-output_schema: schemas/output/incident-classification.yaml
-runtime_contract: agents/incident-classification.yaml
+description: USAP agent skill for Security Incident Classification and Triage. Use for classifying incoming security events into 14 incident types, assigning SEV1-SEV4 severity with false-positive filtering across 5 categories, and routing confirmed incidents to the correct response track with zero false-negative tolerance on critical criteria.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-response
+  updated: 2025-03-23
+  agent_slug: incident-classification
+  agent_id: 9
+  level: L3
+  plane: work
+  phase: mvp
+  ttl: 180
+  approval_required: false
+  mutating_intents: []
+  can_execute: false
+  providers: [claude, openai, gemini, ollama, mock]
+  required_invoke_role: soc_analyst
+  required_approver_role: soc_lead
 ---
 
 # Incident Classification Agent

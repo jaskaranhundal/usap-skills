@@ -1,20 +1,24 @@
 ---
 name: metrics-reporting
-agent_slug: metrics-reporting
-agent_id: 33
-level: L1
-plane: work
-phase: mvp
-ttl: 600
-approval_required: false
-mutating_intents: []
-can_execute: false
-providers: [claude, openai, gemini, ollama, mock]
-required_invoke_role: ciso
-required_approver_role: ciso
-input_schema: schemas/input/metrics-reporting.yaml
-output_schema: schemas/output/metrics-reporting.yaml
-runtime_contract: agents/metrics-reporting.yaml
+description: USAP agent skill for Security Metrics and Reporting. Use for producing MTTD/MTTR KPIs, patch coverage rates, SLA compliance metrics, false-positive rates, and board-level security dashboards — always with data provenance statements and period-over-period trend analysis.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-governance
+  updated: 2025-03-23
+  agent_slug: metrics-reporting
+  agent_id: 33
+  level: L1
+  plane: work
+  phase: mvp
+  ttl: 600
+  approval_required: false
+  mutating_intents: []
+  can_execute: false
+  providers: [claude, openai, gemini, ollama, mock]
+  required_invoke_role: ciso
+  required_approver_role: ciso
 ---
 
 # Metrics and Reporting Agent

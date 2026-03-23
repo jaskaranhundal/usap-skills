@@ -1,20 +1,24 @@
 ---
 name: threat-intelligence
-agent_slug: threat-intelligence
-agent_id: 25
-level: L3
-plane: work
-phase: mvp
-ttl: 300
-approval_required: false
-mutating_intents: []
-can_execute: false
-providers: [claude, openai, gemini, ollama, mock]
-required_invoke_role: soc_analyst
-required_approver_role: soc_lead
-input_schema: schemas/input/threat-intelligence.yaml
-output_schema: schemas/output/threat-intelligence.yaml
-runtime_contract: agents/threat-intelligence.yaml
+description: USAP agent skill for Threat Intelligence Enrichment and Attribution. Use for IOC enrichment, adversary TTP mapping to MITRE ATT&CK, threat actor attribution, intelligence-driven detection prioritization, and converting raw indicators into actionable detection or control recommendations.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-detection
+  updated: 2025-03-23
+  agent_slug: threat-intelligence
+  agent_id: 25
+  level: L3
+  plane: work
+  phase: mvp
+  ttl: 300
+  approval_required: false
+  mutating_intents: []
+  can_execute: false
+  providers: [claude, openai, gemini, ollama, mock]
+  required_invoke_role: soc_analyst
+  required_approver_role: soc_lead
 ---
 
 # Threat Intelligence Agent

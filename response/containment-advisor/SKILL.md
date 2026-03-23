@@ -1,20 +1,24 @@
 ---
 name: containment-advisor
-agent_slug: containment-advisor
-agent_id: 12
-level: L3
-plane: work
-phase: mvp
-ttl: 300
-approval_required: false
-mutating_intents: [remediation_action, network_change, credential_operation]
-can_execute: false
-providers: [claude, openai, gemini, ollama, mock]
-required_invoke_role: soc_analyst
-required_approver_role: soc_lead
-input_schema: schemas/input/containment-advisor.yaml
-output_schema: schemas/output/containment-advisor.yaml
-runtime_contract: agents/containment-advisor.yaml
+description: USAP agent skill for Incident Containment Strategy. Use for selecting the most targeted containment action for confirmed threats, blast-radius assessment across 10 threat types, production impact quantification, and preparing human-approval-gated containment plans for network isolation, credential revocation, or firewall changes.
+license: MIT
+metadata:
+  version: 1.0.0
+  author: USAP Team
+  category: usap-response
+  updated: 2025-03-23
+  agent_slug: containment-advisor
+  agent_id: 12
+  level: L3
+  plane: work
+  phase: mvp
+  ttl: 300
+  approval_required: false
+  mutating_intents: [remediation_action, network_change, credential_operation]
+  can_execute: false
+  providers: [claude, openai, gemini, ollama, mock]
+  required_invoke_role: soc_analyst
+  required_approver_role: soc_lead
 ---
 
 # Containment Advisor Agent
