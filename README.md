@@ -451,3 +451,11 @@ To add a new agent, open a PR against this repo. See [CONTRIBUTING.md](CONTRIBUT
 ## License
 
 Apache 2.0 — see [LICENSE](LICENSE).
+
+---
+
+## Privacy
+
+This plugin does not collect, store, or transmit any user data. All processing happens locally within your Claude Code session. No telemetry, no analytics, no external API calls are made by the plugin itself.
+
+**Contact:** jaskaranhundal0001@gmail.com
