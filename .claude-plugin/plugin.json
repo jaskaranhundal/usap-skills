@@ -1,0 +1,12 @@
+{
+  "name": "usap-skills",
+  "version": "1.0.0",
+  "description": "66 LLM security agent skills for the Unified Security Agent Platform (USAP). Covers threat detection, incident response, red team operations, cloud security, identity risk, compliance mapping, DevSecOps, and AI security. Use any skill standalone or as part of a USAP orchestration chain.",
+  "author": {
+    "name": "Jaskarn Singh",
+    "email": "jaskarn@jaskaranhundal.com"
+  },
+  "homepage": "https://github.com/jaskaranhundal/usap-skills",
+  "repository": "https://github.com/jaskaranhundal/usap-skills",
+  "license": "MIT"
+}
