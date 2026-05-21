@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-66 standalone LLM skill packages + 5 `cs-*` orchestrator agents for the [Unified Security Agent Platform (USAP)](https://github.com/jaskaranhundal/usap). Each `SKILL.md` is a complete LLM system prompt. Skills are usable standalone (paste into any LLM) or as a USAP git submodule.
+72 standalone LLM skill packages + 7 `cs-*` orchestrator agents for the [Unified Security Agent Platform (USAP)](https://github.com/jaskaranhundal/usap). Each `SKILL.md` is a complete LLM system prompt. Skills are usable standalone (paste into any LLM) or as a USAP git submodule.
 
 ---
 
@@ -14,7 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 usap-skills/
-├── <domain>/                  # 9 domain directories (see below)
+├── <domain>/                  # 11 domain directories (see below)
 │   ├── CLAUDE.md              # Domain-specific guidance
 │   ├── README.md
 │   └── <skill-slug>/          # Individual skill package
@@ -26,7 +26,7 @@ usap-skills/
 │       └── scripts/<slug>_tool.py
 ├── agents/                    # cs-* orchestrator agents
 │   ├── CLAUDE.md              # Agent dev guide — read before creating agents
-│   ├── security/              # cs-security-analyst, cs-incident-responder, cs-red-teamer
+│   ├── security/              # cs-security-analyst, cs-incident-responder, cs-red-teamer, cs-blue-team-analyst
 │   ├── devsecops/             # cs-devsecops-engineer
 │   └── executive/             # cs-ciso-advisor
 ├── templates/                 # skill-template.md, agent-template.md, command-template.md
@@ -36,7 +36,7 @@ usap-skills/
 └── references/                # Global reference docs
 ```
 
-**9 domains:** `appsec-devsecops`, `cloud-infra`, `detection`, `governance`, `identity-access`, `platform-ai`, `red-team`, `response`, `risk-compliance`
+**11 domains:** `appsec-devsecops`, `cloud-infra`, `detection`, `governance`, `identity-access`, `pentest`, `platform-ai`, `red-team`, `response`, `risk-compliance`, `system-security`
 
 ---
 
