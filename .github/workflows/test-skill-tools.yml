@@ -72,6 +72,15 @@ jobs:
       - name: Smoke-test shared scripts
         run: |
           if [ -f shared/scripts/cvss_scorer.py ]; then
-            python3 shared/scripts/cvss_scorer.py \
-              --vector "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H" && echo "  PASS cvss_scorer.py"
+            # cvss_scorer.py exits with a severity rank (0-3), not a success/failure
+            # code, so judge it by its output rather than its exit status.
+            out=$(python3 shared/scripts/cvss_scorer.py \
+              --vector "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H") || true
+            echo "$out"
+            if echo "$out" | grep -q "Base Score" && echo "$out" | grep -q "Critical"; then
+              echo "  PASS cvss_scorer.py"
+            else
+              echo "  FAIL cvss_scorer.py — unexpected output"
+              exit 1
+            fi
           fi
