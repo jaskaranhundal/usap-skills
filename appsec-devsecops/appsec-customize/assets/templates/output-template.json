@@ -1,0 +1,20 @@
+{
+  "agent_slug": "appsec-customize",
+  "intent_type": "advise",
+  "action": "<one-sentence: CUSTOMIZE.md plan ready for chain adoption>",
+  "rationale": "<plan summary: ecosystem, top 3 classes, deployment surface, L1-L4 defaults>",
+  "confidence": 0.78,
+  "severity": "informational",
+  "key_findings": [
+    "<plan element 1>",
+    "<plan element 2>",
+    "<plan element 3>"
+  ],
+  "evidence_references": [
+    {"source": "operator", "ref": "forcing-questions", "quote": "<one-line summary of the three answers>"}
+  ],
+  "next_agents": ["threat-model"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "artifact_path": "<target>/CUSTOMIZE.md"
+}
