@@ -51,9 +51,10 @@ Every `SKILL.md` file must begin with a valid YAML frontmatter block. This docum
   - `usap-executive`, `usap-governance`, `usap-identity-access`,
   - `usap-infrastructure`, `usap-operations`, `usap-pentest`,
   - `usap-platform-ai`, `usap-red-team`, `usap-response`,
-  - `usap-risk-compliance`, `usap-safety`, `usap-system-security`
+  - `usap-risk-compliance`, `usap-safety`, `usap-system-security`,
+  - `usap-webapp`
 - **Example:** `usap-operations`
-- **Rules:** Enum extended on 2026-06-20 to reflect the 11-domain layout (was an 8-token subset of the active categories). The validator at `tools/validate_skill.py` and the spec must stay in sync — adding a new category requires updating both.
+- **Rules:** Enum extended on 2026-06-20 to reflect the 11-domain layout (was an 8-token subset of the active categories). Extended again the same day with `usap-webapp` for the new `webapp-security/` domain. The validator at `tools/validate_skill.py` and the spec must stay in sync — adding a new category requires updating both.
 
 ### `metadata.updated`
 - **Type:** string (ISO date)
@@ -185,6 +186,7 @@ These artifacts are regenerated on every CI run and `git diff --exit-code mappin
 | `usap-risk-compliance` | `risk-compliance` |
 | `usap-safety` | AI safety / guardrail skills |
 | `usap-system-security` | `system-security` |
+| `usap-webapp` | `webapp-security` |
 
 ---
 

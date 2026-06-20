@@ -1,0 +1,21 @@
+{
+  "agent_slug": "api-security-posture",
+  "intent_type": "analyze",
+  "action": "<one-sentence next action — name the downstream skill the operator should invoke>",
+  "rationale": "<scorecard summary and routing rationale>",
+  "confidence": 0.8,
+  "severity": "medium",
+  "key_findings": [
+    "BOLA visibility: <score>/20 — <gap or strength>",
+    "Authentication: <score>/20 — <gap or strength>",
+    "Rate limiting: <score>/20 — <gap or strength>",
+    "Mass-assignment guard: <score>/20 — <gap or strength>",
+    "Audit logging: <score>/20 — <gap or strength>"
+  ],
+  "evidence_references": [
+    {"source": "descriptor", "ref": "<API name>", "quote": "<section of descriptor that drove the lowest score>"}
+  ],
+  "next_agents": ["secure-sdlc"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z"
+}

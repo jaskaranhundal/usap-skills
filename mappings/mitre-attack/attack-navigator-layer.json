@@ -84,9 +84,9 @@
     },
     {
       "techniqueID": "T1078",
-      "score": 3,
+      "score": 4,
       "color": "",
-      "comment": "USAP skills covering: detection/behavioral-analytics, detection/threat-hunting, detection/threat-intelligence",
+      "comment": "USAP skills covering: detection/behavioral-analytics, detection/threat-hunting, detection/threat-intelligence, webapp-security/api-security-posture",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -124,9 +124,9 @@
     },
     {
       "techniqueID": "T1190",
-      "score": 1,
+      "score": 3,
       "color": "",
-      "comment": "USAP skills covering: detection/threat-intelligence",
+      "comment": "USAP skills covering: detection/threat-intelligence, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
       "enabled": true,
       "metadata": [],
       "links": [],
