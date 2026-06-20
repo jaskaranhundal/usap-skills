@@ -3,11 +3,14 @@ name: detection-engineering
 description: USAP agent skill for Detection Engineering. Design, validate, and tune detection rules across SIEM, EDR, and cloud telemetry to minimize dwell time and maximize detection fidelity.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-06-20
   agent_slug: "detection-engineering"
+  frameworks:
+    mitre_attack: [T1059.001, T1098.001, T1110, T1562.008]
+    nist_csf: [DE.AE-02, DE.AE-07, DE.CM-01, DE.CM-09]
 ---
 
 # Detection Engineering Agent

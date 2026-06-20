@@ -86,6 +86,56 @@ metadata:
 
 ---
 
+## Framework Mappings
+
+Skills may declare machine-readable framework coverage under `metadata.frameworks`. Every key is optional. Each value is an array of identifier strings. The cap is 8 IDs per framework per skill — keep mappings focused on what the skill primarily covers; broader sweeps belong in repo-level coverage docs.
+
+### `metadata.frameworks.mitre_attack`
+- **Type:** `array[string]`
+- **Pattern:** `T\d{4}(\.\d{3})?` (MITRE ATT&CK Enterprise technique or sub-technique ID)
+- **Example:** `[T1078, T1059.001, T1083]`
+
+### `metadata.frameworks.nist_csf`
+- **Type:** `array[string]`
+- **Pattern:** `[A-Z]{2}\.[A-Z]{2}-\d{2}` (NIST CSF 2.0 subcategory ID)
+- **Example:** `[DE.CM-01, DE.AE-02, ID.RA-05]`
+
+### `metadata.frameworks.mitre_atlas`
+- **Type:** `array[string]`
+- **Pattern:** `AML\.T\d{4}(\.\d{3})?` (MITRE ATLAS technique ID)
+- **Example:** `[AML.T0040, AML.T0051]`
+
+### `metadata.frameworks.owasp_top10`
+- **Type:** `array[string]`
+- **Pattern:** `A\d{2}` (OWASP Top 10 2025 category code, e.g. `A01`)
+- **Example:** `[A01, A03, A07]`
+
+### `metadata.frameworks.d3fend`
+- **Type:** `array[string]`
+- **Pattern:** MITRE D3FEND technique label (e.g. `Process Termination`); free text accepted, no strict pattern. Cap 8.
+- **Example:** `["Process Termination", "Executable Denylisting"]`
+
+### `metadata.frameworks.nist_ai_rmf`
+- **Type:** `array[string]`
+- **Pattern:** `[A-Z]{2}-\d+(\.\d+)*` (NIST AI RMF function/subcategory, e.g. `MAP-1.1`)
+- **Example:** `[MAP-1.1, MEASURE-2.7]`
+
+### Source-of-truth rule
+
+`metadata.frameworks.*` is the canonical machine-readable record of a skill's framework coverage. Body-prose citations (e.g. "we map to T1078 here") are allowed but do not feed the auto-generated `mappings/` artifacts. The validator does not enforce a body-vs-frontmatter cross-check yet; that lands when `shared/scripts/framework_extractor.py` adds a `--check` mode in a later phase.
+
+### Auto-generation
+
+`tools/framework_extractor.py` walks every active-domain SKILL.md and emits:
+
+- `mappings/mitre-attack/attack-navigator-layer.json` (MITRE Navigator v4.5 schema)
+- `mappings/mitre-attack/coverage-summary.md`
+- `mappings/nist-csf/csf-alignment.md`
+
+These artifacts are regenerated on every CI run and `git diff --exit-code mappings/` fails the build if the committed coverage docs drift from the source-of-truth frontmatter. Do not hand-edit any file under `mappings/` except the static `README.md` per subdirectory.
+
+---
+
 ## Optional Metadata Fields
 
 ### `metadata.context_file`
