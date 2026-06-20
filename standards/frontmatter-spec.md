@@ -45,8 +45,15 @@ Every `SKILL.md` file must begin with a valid YAML frontmatter block. This docum
 
 ### `metadata.category`
 - **Type:** string
-- **Allowed values:** `usap-operations`, `usap-detection`, `usap-response`, `usap-governance`, `usap-red-team`, `usap-devsecops`, `usap-engineering`, `usap-executive`
+- **Allowed values:**
+  - `usap-adversary`, `usap-appsec-devsecops`, `usap-control-plane`,
+  - `usap-detection`, `usap-devsecops`, `usap-engineering`,
+  - `usap-executive`, `usap-governance`, `usap-identity-access`,
+  - `usap-infrastructure`, `usap-operations`, `usap-pentest`,
+  - `usap-platform-ai`, `usap-red-team`, `usap-response`,
+  - `usap-risk-compliance`, `usap-safety`, `usap-system-security`
 - **Example:** `usap-operations`
+- **Rules:** Enum extended on 2026-06-20 to reflect the 11-domain layout (was an 8-token subset of the active categories). The validator at `tools/validate_skill.py` and the spec must stay in sync — adding a new category requires updating both.
 
 ### `metadata.updated`
 - **Type:** string (ISO date)
@@ -108,16 +115,26 @@ metadata:
 
 ## Category → Domain Mapping
 
-| Category | Domain |
+| Category | Domain dirs it covers |
 |---|---|
-| `usap-operations` | Orchestration, Operations |
-| `usap-detection` | Detection, Telemetry |
-| `usap-response` | Incident Response, Forensics |
-| `usap-governance` | Risk, Compliance, Governance |
-| `usap-red-team` | Red Team, Testing |
-| `usap-devsecops` | DevSecOps, AppSec |
-| `usap-engineering` | Engineering (non-security) |
-| `usap-executive` | Executive, Board |
+| `usap-adversary` | `red-team`, parts of `pentest` |
+| `usap-appsec-devsecops` | `appsec-devsecops` (legacy slug) |
+| `usap-control-plane` | `platform-ai` (control-plane skills) |
+| `usap-detection` | `detection` |
+| `usap-devsecops` | `appsec-devsecops` |
+| `usap-engineering` | (reserved, non-security utilities) |
+| `usap-executive` | `governance/ciso-brief-generator` and other board-facing skills |
+| `usap-governance` | `governance` |
+| `usap-identity-access` | `identity-access` |
+| `usap-infrastructure` | `cloud-infra`, parts of `system-security` |
+| `usap-operations` | Cross-domain orchestration skills, `detection/*-engineering` |
+| `usap-pentest` | `pentest` |
+| `usap-platform-ai` | `platform-ai` |
+| `usap-red-team` | `red-team` (legacy slug) |
+| `usap-response` | `response` |
+| `usap-risk-compliance` | `risk-compliance` |
+| `usap-safety` | AI safety / guardrail skills |
+| `usap-system-security` | `system-security` |
 
 ---
 
