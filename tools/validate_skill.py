@@ -92,6 +92,18 @@ ALLOWED_CATEGORIES = {
     "usap-system-security",
 }
 
+FRAMEWORK_CAP = 8
+FRAMEWORK_PATTERNS = {
+    # See standards/frontmatter-spec.md "Framework Mappings".
+    "mitre_attack": re.compile(r"^T\d{4}(\.\d{3})?$"),
+    "nist_csf": re.compile(r"^[A-Z]{2}\.[A-Z]{2}-\d{2}$"),
+    "mitre_atlas": re.compile(r"^AML\.T\d{4}(\.\d{3})?$"),
+    "owasp_top10": re.compile(r"^A\d{2}$"),
+    "nist_ai_rmf": re.compile(r"^[A-Z]{2,7}-\d+(\.\d+)*$"),
+    # d3fend: free-text technique labels; cap-only, no pattern check.
+    "d3fend": None,
+}
+
 LEGACY_KEYS = {
     "agent_id",
     "level",
@@ -135,18 +147,19 @@ def _strip_quotes(value: str) -> str:
 def parse_frontmatter(text: str) -> Optional[Dict[str, object]]:
     """Parse the leading ``---`` frontmatter as a nested dict, stdlib-only.
 
-    Supports the patterns USAP actually uses:
-      - ``key: scalar`` (top level)
-      - ``key: [a, b, c]`` (inline list)
-      - ``key:`` followed by 2-space indented ``subkey: value`` lines
-        (one level of nesting — enough for ``metadata.*``)
-      - ``key:`` followed by ``- item`` block-list lines
+    Supports the patterns USAP actually uses, at arbitrary nesting depth
+    expressed by 2-space indent steps:
 
-    Returns ``None`` if no frontmatter block is found. Otherwise returns a
-    flat dict where nested objects are themselves dicts and lists are Python
-    lists. The parser is intentionally narrow: deeper nesting, anchors, and
-    multi-line folded scalars are not supported — USAP's spec does not use
-    them, and rejecting unknowns is safer than silently mis-parsing.
+      - ``key: scalar`` (any indent level)
+      - ``key: [a, b, c]`` (inline list at any indent level)
+      - ``key:`` followed by indented child lines — children may be either
+        ``- item`` block-list entries or nested ``key: value`` pairs
+      - Comment lines starting with ``#`` are ignored
+
+    Returns ``None`` if no frontmatter block is found. Anchors, tags, and
+    multi-line folded scalars are not supported; USAP's spec does not use
+    them. Recursive descent on indent depth makes ``metadata.frameworks.*``
+    parse correctly without special-casing.
     """
     if not text.startswith("---"):
         return None
@@ -155,24 +168,46 @@ def parse_frontmatter(text: str) -> Optional[Dict[str, object]]:
         return None
     block = text[3:end]
 
-    data: Dict[str, object] = {}
-    current_top: Optional[str] = None  # top-level key whose nested body we are in
-    list_target: Optional[List[str]] = None  # currently-collecting block list
-
+    # Pre-strip empty and comment lines; preserve original indent on what remains.
+    lines: List[str] = []
     for raw in block.split("\n"):
         line = raw.rstrip()
-        stripped = line.strip()
-        if not stripped or stripped.startswith("#"):
+        if not line.strip() or line.strip().startswith("#"):
             continue
+        lines.append(line)
 
-        indent = len(line) - len(line.lstrip(" "))
+    # Recursive descent uses a single-element mutable cursor so the helper can
+    # advance it across sibling calls. Closure over ``cursor`` keeps the public
+    # signature clean while letting nested calls move the parse forward.
+    cursor = [0]
 
-        if indent == 0:
-            # Reset nesting state when we hit any top-level line.
-            current_top = None
-            list_target = None
+    def _parse_at(min_indent: int):
+        result: Dict[str, object] = {}
+        block_list: List[str] = []
+        is_list = False
 
-            # inline list:  key: [a, b]
+        while cursor[0] < len(lines):
+            line = lines[cursor[0]]
+            indent = len(line) - len(line.lstrip(" "))
+
+            if indent < min_indent:
+                break
+
+            if indent > min_indent:
+                # Stray deeper indent without a parent context — skip safely.
+                cursor[0] += 1
+                continue
+
+            stripped = line.strip()
+
+            # Block-list item.
+            if stripped.startswith("- "):
+                is_list = True
+                block_list.append(_strip_quotes(stripped[2:]))
+                cursor[0] += 1
+                continue
+
+            # Inline list at this level.
             m = re.match(r"^([a-zA-Z_][\w-]*):\s*\[(.*)\]\s*$", stripped)
             if m:
                 items = [
@@ -180,55 +215,37 @@ def parse_frontmatter(text: str) -> Optional[Dict[str, object]]:
                     for i in m.group(2).split(",")
                     if i.strip()
                 ]
-                data[m.group(1)] = items
+                result[m.group(1)] = items
+                cursor[0] += 1
                 continue
 
-            # key: value  (value may be empty meaning a nested block follows)
+            # key: value (value may be empty — nested block follows).
             m = re.match(r"^([a-zA-Z_][\w-]*):\s*(.*)$", stripped)
             if m:
                 key = m.group(1)
-                raw_val = m.group(2).strip()
-                if raw_val:
-                    data[key] = _strip_quotes(raw_val)
+                val = m.group(2).strip()
+                cursor[0] += 1
+                if val:
+                    result[key] = _strip_quotes(val)
                 else:
-                    # Tentative: this key has a nested block under it. Default
-                    # to dict; will be flipped to list if the first indented
-                    # child line is "- item".
-                    data[key] = {}
-                    current_top = key
+                    # Look ahead: is the next non-trivial line more indented?
+                    if cursor[0] < len(lines):
+                        nxt = lines[cursor[0]]
+                        nxt_indent = len(nxt) - len(nxt.lstrip(" "))
+                        if nxt_indent > min_indent:
+                            result[key] = _parse_at(nxt_indent)
+                            continue
+                    # No nested body — record as empty string.
+                    result[key] = ""
                 continue
-            # Unknown top-level construct — silently skip; the required-field
-            # check will surface anything missing.
-            continue
 
-        # Indented (nested) line.
-        if current_top is None:
-            continue  # orphan indent — ignore
+            # Unrecognized construct — advance to avoid infinite loop.
+            cursor[0] += 1
 
-        # Block-list child:  "- item"
-        if stripped.startswith("- "):
-            if not isinstance(data.get(current_top), list):
-                # Flip nested container from {} -> []
-                data[current_top] = []
-                list_target = data[current_top]  # type: ignore[assignment]
-            elif list_target is None:
-                list_target = data[current_top]  # type: ignore[assignment]
-            list_target.append(_strip_quotes(stripped[2:]))
-            continue
+        return block_list if is_list else result
 
-        # Nested scalar:  "key: value"
-        m = re.match(r"^([a-zA-Z_][\w-]*):\s*(.*)$", stripped)
-        if m:
-            if not isinstance(data.get(current_top), dict):
-                data[current_top] = {}
-            nested = data[current_top]  # type: ignore[assignment]
-            assert isinstance(nested, dict)
-            k = m.group(1)
-            v = m.group(2).strip()
-            nested[k] = _strip_quotes(v) if v else ""
-            continue
-
-    return data
+    parsed = _parse_at(0)
+    return parsed if isinstance(parsed, dict) else {}
 
 
 def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
@@ -342,6 +359,44 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
             errors.append(
                 f"metadata.agent_slug '{agent_slug}' must equal name '{name}'"
             )
+
+        # Optional metadata.frameworks block.
+        frameworks = metadata.get("frameworks")
+        if frameworks is not None:
+            if not isinstance(frameworks, dict):
+                errors.append(
+                    "metadata.frameworks must be an object with framework "
+                    "names as keys (mitre_attack, nist_csf, ...)"
+                )
+            else:
+                for fname, ids in frameworks.items():
+                    if fname not in FRAMEWORK_PATTERNS:
+                        errors.append(
+                            f"metadata.frameworks.{fname} is not a known "
+                            "framework key (see frontmatter-spec.md)"
+                        )
+                        continue
+                    if not isinstance(ids, list) or not all(
+                        isinstance(x, str) for x in ids
+                    ):
+                        errors.append(
+                            f"metadata.frameworks.{fname} must be an array of strings"
+                        )
+                        continue
+                    if len(ids) > FRAMEWORK_CAP:
+                        errors.append(
+                            f"metadata.frameworks.{fname} has {len(ids)} entries "
+                            f"(cap {FRAMEWORK_CAP} per framework — split skills "
+                            "or trim to highest-signal IDs)"
+                        )
+                    pattern = FRAMEWORK_PATTERNS[fname]
+                    if pattern is not None:
+                        for entry in ids:
+                            if not pattern.match(entry):
+                                errors.append(
+                                    f"metadata.frameworks.{fname} '{entry}' does "
+                                    f"not match expected pattern {pattern.pattern}"
+                                )
 
     # No PowerShell-only scripts.
     scripts_dir = skill_dir / "scripts"
