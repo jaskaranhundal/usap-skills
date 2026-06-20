@@ -12,3 +12,7 @@ __pycache__/
 
 # One-off bootstrap pusher (pushes directly to main via PAT — keep local only)
 push_usap.py
+
+# references/ is a local-only scratch space for inspecting upstream skill repos.
+# Do not check anything under references/ into git.
+references/
