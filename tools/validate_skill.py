@@ -61,6 +61,7 @@ ACTIVE_DOMAINS = [
     "response",
     "risk-compliance",
     "system-security",
+    "webapp-security",
 ]
 
 REQUIRED_TOP = ("name", "description", "license")
@@ -90,6 +91,7 @@ ALLOWED_CATEGORIES = {
     "usap-risk-compliance",
     "usap-safety",
     "usap-system-security",
+    "usap-webapp",
 }
 
 FRAMEWORK_CAP = 8

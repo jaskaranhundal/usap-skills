@@ -1,0 +1,19 @@
+{
+  "agent_slug": "owasp-top10-classifier",
+  "intent_type": "detect",
+  "action": "<one-sentence call to action — name the next agent the operator should invoke>",
+  "rationale": "<evidence-based explanation of the category ranking>",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "A03 (Injection): top match — score 0.78",
+    "A05 (Security misconfiguration): secondary match — score 0.42",
+    "Caller-provided CWE: CWE-89 (used to corroborate A03)"
+  ],
+  "evidence_references": [
+    {"source": "<scanner | manual | siem>", "ref": "<id>", "quote": "<snippet that triggered the match>"}
+  ],
+  "next_agents": ["webapp-risk-triage"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z"
+}
