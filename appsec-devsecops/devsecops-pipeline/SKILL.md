@@ -3,7 +3,7 @@ name: devsecops-pipeline
 description: USAP agent skill for DevSecOps Pipeline Security. Use for assessing security gate completeness in CI/CD pipelines, pipeline configuration review, SAST/DAST integration gaps, secret scanning in pipeline YAML, and security toolchain hardening.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-appsec-devsecops
   updated: 2025-03-23

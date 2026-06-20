@@ -3,7 +3,7 @@ name: supply-chain-simulation
 description: USAP agent skill for Supply Chain Simulation. Design and analyze supply chain attack scenarios in isolated environments to test detection coverage and response capabilities.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-adversary
   updated: 2026-03-01

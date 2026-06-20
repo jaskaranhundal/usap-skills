@@ -3,7 +3,7 @@ name: orchestrator
 description: USAP agent skill for Orchestrator. Route SecurityFacts through deterministic policy sequences, coordinate multi-agent workflows, and manage agent execution order.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-control-plane
   updated: 2026-03-01

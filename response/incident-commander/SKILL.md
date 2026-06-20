@@ -3,7 +3,7 @@ name: incident-commander
 description: USAP agent skill for Incident Commander. Coordinate multi-agent incident response, declare severity levels, assign response tracks, and drive decision-making under time pressure.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-operations
   updated: 2026-03-01

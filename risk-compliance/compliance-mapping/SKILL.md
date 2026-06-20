@@ -3,7 +3,7 @@ name: compliance-mapping
 description: USAP agent skill for Multi-Framework Compliance Mapping. Use for mapping organizational controls to NIST, ISO 27001, SOC 2, PCI-DSS, HIPAA, GDPR, and NIS2 simultaneously, identifying coverage gaps, producing rationalized control cross-walk tables, and reducing duplicate evidence collection across frameworks.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-risk-compliance
   updated: 2025-03-23
