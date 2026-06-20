@@ -1,0 +1,86 @@
+name: test-skill-tools
+
+on:
+  pull_request:
+    paths:
+      - '**/scripts/*_tool.py'
+      - '**/expected_outputs/sample_output.json'
+      - 'shared/scripts/*.py'
+
+jobs:
+  test-tools:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: pip install pyyaml jsonschema
+
+      - name: Validate sample_output.json (changed files only)
+        run: |
+          git fetch origin "$GITHUB_BASE_REF" --depth=1 2>/dev/null || true
+          git diff --name-only "origin/$GITHUB_BASE_REF...HEAD" > /tmp/changed.txt 2>/dev/null || true
+          python3 - <<'PYEOF'
+          import os, json, sys
+
+          SCHEMA = {
+            "agent_slug": (str,), "intent_type": (str,), "action": (str,),
+            "rationale": (str,), "confidence": (float,int), "severity": (str,),
+            "key_findings": (list,), "evidence_references": (list,),
+            "next_agents": (list,), "human_approval_required": (bool,),
+            "timestamp_utc": (str,),
+          }
+          VALID_INTENTS   = {"detect","respond","analyze","advise","escalate","report","block"}
+          VALID_SEVERITIES = {"critical","high","medium","low","informational"}
+          try:
+            changed = [l.strip() for l in open("/tmp/changed.txt") if l.strip()]
+          except FileNotFoundError:
+            changed = []
+          targets = [p for p in changed
+                     if os.path.basename(p) == "sample_output.json" and os.path.exists(p)]
+          errors = []
+          for path in targets:
+            with open(path) as f:
+              try: data = json.load(f)
+              except Exception as e: errors.append(f"{path}: {e}"); continue
+            for field, types in SCHEMA.items():
+              if field not in data:
+                errors.append(f"{path}: missing '{field}'")
+              elif not isinstance(data[field], types):
+                errors.append(f"{path}: '{field}' wrong type")
+            if data.get("intent_type") not in VALID_INTENTS:
+              errors.append(f"{path}: invalid intent_type")
+            if data.get("severity") not in VALID_SEVERITIES:
+              errors.append(f"{path}: invalid severity")
+            conf = float(data.get("confidence", -1))
+            if not (0.0 <= conf <= 1.0):
+              errors.append(f"{path}: confidence out of range")
+            slug_dir = os.path.basename(os.path.dirname(os.path.dirname(path)))
+            if data.get("agent_slug") != slug_dir:
+              errors.append(f"{path}: agent_slug mismatch (expected '{slug_dir}')")
+          if errors:
+            for e in errors: print(f"  FAIL {e}")
+            sys.exit(1)
+          else:
+            print(f"  PASS {len(targets)} changed sample_output.json file(s) validated")
+          PYEOF
+
+      - name: Smoke-test shared scripts
+        run: |
+          if [ -f shared/scripts/cvss_scorer.py ]; then
+            # cvss_scorer.py exits with a severity rank (0-3), not a success/failure
+            # code, so judge it by its output rather than its exit status.
+            out=$(python3 shared/scripts/cvss_scorer.py \
+              --vector "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H") || true
+            echo "$out"
+            if echo "$out" | grep -q "Base Score" && echo "$out" | grep -q "Critical"; then
+              echo "  PASS cvss_scorer.py"
+            else
+              echo "  FAIL cvss_scorer.py — unexpected output"
+              exit 1
+            fi
+          fi

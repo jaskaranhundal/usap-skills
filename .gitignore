@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Local secrets / one-off scripts (never commit tokens)
+*.token
+.env
+
+# One-off bootstrap pusher (pushes directly to main via PAT — keep local only)
+push_usap.py
