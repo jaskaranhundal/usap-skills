@@ -3,11 +3,21 @@ name: <slug>
 description: USAP agent skill for <Title>. Use for <one-line purpose>.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-08
+  updated: 2026-06-20
   agent_slug: "<slug>"
+  # Optional framework mappings — see standards/frontmatter-spec.md.
+  # Cap 8 IDs per framework. Remove keys you do not populate; do NOT leave
+  # empty arrays in the committed file.
+  # frameworks:
+  #   mitre_attack: [T1078, T1059.001]
+  #   nist_csf:     [DE.CM-01, ID.RA-05]
+  #   mitre_atlas:  [AML.T0040]
+  #   owasp_top10:  [A01, A03]
+  #   d3fend:       ["Process Termination"]
+  #   nist_ai_rmf:  [MAP-1.1, MEASURE-2.7]
 ---
 
 # <Title>

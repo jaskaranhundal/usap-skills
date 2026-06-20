@@ -11,15 +11,19 @@ on:
       - '**/sample_output.json'
       - '**/output-template.json'
       - 'standards/**'
+      - 'mappings/**'
       - 'tools/validate_skill.py'
       - 'tools/output_contract.py'
+      - 'tools/framework_extractor.py'
       - '.github/workflows/validate-skills.yml'
   push:
     paths:
       - '**/SKILL.md'
       - 'standards/**'
+      - 'mappings/**'
       - 'tools/validate_skill.py'
       - 'tools/output_contract.py'
+      - 'tools/framework_extractor.py'
       - '.github/workflows/validate-skills.yml'
 
 jobs:
@@ -60,6 +64,14 @@ jobs:
             python3 tools/output_contract.py "$f" || rc=1
           done <<< "$CHANGED"
           exit $rc
+
+      - name: Framework-mappings drift check
+        # Regenerates mappings/* in-memory and fails if the committed files
+        # differ from what the source-of-truth metadata.frameworks would
+        # produce. Per gap-analysis anti-pattern 7.4 — never hand-edit
+        # files under mappings/ except the per-subdirectory README.md.
+        run: |
+          python3 tools/framework_extractor.py --check
 
       - name: Naming convention check (cs-* agents)
         run: |
