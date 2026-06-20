@@ -1,15 +1,15 @@
 # USAP Skills — Gemini CLI Context
 
-66 standalone LLM skill packages + 6 orchestrator agents for the Unified
+71 standalone LLM skill packages + 7 orchestrator agents for the Unified
 Security Agent Platform (USAP).
 
 ## Repo layout
 
-- `<domain>/<slug>/SKILL.md` — LLM system prompt for each of the 66 skills
+- `<domain>/<slug>/SKILL.md` — LLM system prompt for each of the 71 skills
 - `agents/<domain>/cs-*.md` — orchestrator agents (cs-security-analyst, etc.)
 - `dist/USAP_LITE.md` — bundled Alex kit (32 KB, paste-anywhere)
 - `dist/USAP_PRO.md` — Alex + all 6 specialist agents (121 KB)
-- `dist/USAP_BUNDLE.md` — all 66 skills embedded (684 KB)
+- `dist/USAP_BUNDLE.md` — all 71 skills embedded (684 KB)
 - `shared/scripts/` — CLI tools (cvss_scorer.py, bb_scope_enforcer.py)
 
 ## Available USAP commands (Gemini CLI skills)
@@ -35,10 +35,11 @@ specialist automatically.
 - Skill levels: L1=Board/advisory, L2=CISO/management, L3=SOC/analyst,
   L4=Technical/tool-execution
 
-## 9 skill domains
+## 11 skill domains
 
 `appsec-devsecops`, `cloud-infra`, `detection`, `governance`,
-`identity-access`, `platform-ai`, `red-team`, `response`, `risk-compliance`
+`identity-access`, `pentest`, `platform-ai`, `red-team`, `response`,
+`risk-compliance`, `system-security`
 
 ## Project structure
 

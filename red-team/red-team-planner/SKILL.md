@@ -3,7 +3,7 @@ name: red-team-planner
 description: USAP agent skill for Red Team Planner. Use for Plan red-team engagements, scope, and rules of engagement.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-adversary
   updated: 2026-02-28

@@ -1,9 +1,0 @@
-[submodule "references/claude-skills"]
-	path = references/claude-skills
-	url = https://github.com/alirezarezvani/claude-skills.git
-[submodule "references/BMAD-METHOD"]
-	path = references/BMAD-METHOD
-	url = https://github.com/bmad-code-org/BMAD-METHOD.git
-[submodule "references/openclaw"]
-	path = references/openclaw
-	url = https://github.com/openclaw/openclaw.git

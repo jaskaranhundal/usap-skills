@@ -3,7 +3,7 @@ name: network-exposure
 description: USAP agent skill for Network Exposure. Use for Identify network segmentation and exposure weaknesses.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
   updated: 2026-02-28

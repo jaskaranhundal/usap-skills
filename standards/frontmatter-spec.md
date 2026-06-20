@@ -2,6 +2,23 @@
 
 Every `SKILL.md` file must begin with a valid YAML frontmatter block. This document defines all fields, their types, allowed values, and examples.
 
+## agentskills.io conformance
+
+USAP's frontmatter is a strict superset of the [agentskills.io Skill specification](https://agentskills.io/specification). Verified on 2026-06-20 against the published spec:
+
+| Spec field | USAP behaviour | Conformance |
+|---|---|---|
+| `name` (required, 1–64 chars, kebab-case, no leading/trailing/consecutive hyphens, matches parent dir) | Enforced by `tools/validate_skill.py` via `KEBAB_RE`, `MAX_NAME_LEN`, and the `name != slug` check | Full |
+| `description` (required, 1–1024 chars, non-empty) | Required; minimum 50 chars (stricter than spec) | Full + stricter |
+| `license` (optional, free text) | Required, restricted to `MIT` / `Apache-2.0` / `GPL-3.0` (stricter than spec) | Full + stricter |
+| `compatibility` (optional, max 500 chars) | Populated on the L4 / tool-dependent skills (cloud scanners, KMS, AD/LDAP, forensics, pentest, red-team) | Full |
+| `metadata` (optional, arbitrary key-value mapping) | Used heavily — canonical 5+5 schema lives here plus optional `frameworks.*`. The spec explicitly says clients may store extra properties under `metadata` | Full |
+| `allowed-tools` (optional, **space-separated string**, experimental) | Populated as a string per the spec on the same L4 / tool-dependent skills | Full |
+
+USAP keeps its non-spec schema (the 5 required `metadata.*` subfields plus the optional `metadata.frameworks.*` arrays) nested under `metadata`, where the spec explicitly designates it as the arbitrary-key-value escape hatch. USAP does NOT put non-spec keys at the YAML top level.
+
+USAP's `version` (under `metadata`) is always quoted (`"1.0.0"`) so YAML parsers do not silently coerce it to a float on certain ill-formed strings.
+
 ---
 
 ## Required Fields
@@ -45,8 +62,16 @@ Every `SKILL.md` file must begin with a valid YAML frontmatter block. This docum
 
 ### `metadata.category`
 - **Type:** string
-- **Allowed values:** `usap-operations`, `usap-detection`, `usap-response`, `usap-governance`, `usap-red-team`, `usap-devsecops`, `usap-engineering`, `usap-executive`
+- **Allowed values:**
+  - `usap-adversary`, `usap-appsec-devsecops`, `usap-control-plane`,
+  - `usap-detection`, `usap-devsecops`, `usap-engineering`,
+  - `usap-executive`, `usap-governance`, `usap-identity-access`,
+  - `usap-infrastructure`, `usap-operations`, `usap-pentest`,
+  - `usap-platform-ai`, `usap-red-team`, `usap-response`,
+  - `usap-risk-compliance`, `usap-safety`, `usap-system-security`,
+  - `usap-webapp`
 - **Example:** `usap-operations`
+- **Rules:** Enum extended on 2026-06-20 to reflect the 11-domain layout (was an 8-token subset of the active categories). Extended again the same day with `usap-webapp` for the new `webapp-security/` domain. The validator at `tools/validate_skill.py` and the spec must stay in sync — adding a new category requires updating both.
 
 ### `metadata.updated`
 - **Type:** string (ISO date)
@@ -79,6 +104,56 @@ metadata:
 
 ---
 
+## Framework Mappings
+
+Skills may declare machine-readable framework coverage under `metadata.frameworks`. Every key is optional. Each value is an array of identifier strings. The cap is 8 IDs per framework per skill — keep mappings focused on what the skill primarily covers; broader sweeps belong in repo-level coverage docs.
+
+### `metadata.frameworks.mitre_attack`
+- **Type:** `array[string]`
+- **Pattern:** `T\d{4}(\.\d{3})?` (MITRE ATT&CK Enterprise technique or sub-technique ID)
+- **Example:** `[T1078, T1059.001, T1083]`
+
+### `metadata.frameworks.nist_csf`
+- **Type:** `array[string]`
+- **Pattern:** `[A-Z]{2}\.[A-Z]{2}-\d{2}` (NIST CSF 2.0 subcategory ID)
+- **Example:** `[DE.CM-01, DE.AE-02, ID.RA-05]`
+
+### `metadata.frameworks.mitre_atlas`
+- **Type:** `array[string]`
+- **Pattern:** `AML\.T\d{4}(\.\d{3})?` (MITRE ATLAS technique ID)
+- **Example:** `[AML.T0040, AML.T0051]`
+
+### `metadata.frameworks.owasp_top10`
+- **Type:** `array[string]`
+- **Pattern:** `A\d{2}` (OWASP Top 10 2025 category code, e.g. `A01`)
+- **Example:** `[A01, A03, A07]`
+
+### `metadata.frameworks.d3fend`
+- **Type:** `array[string]`
+- **Pattern:** MITRE D3FEND technique label (e.g. `Process Termination`); free text accepted, no strict pattern. Cap 8.
+- **Example:** `["Process Termination", "Executable Denylisting"]`
+
+### `metadata.frameworks.nist_ai_rmf`
+- **Type:** `array[string]`
+- **Pattern:** `[A-Z]{2}-\d+(\.\d+)*` (NIST AI RMF function/subcategory, e.g. `MAP-1.1`)
+- **Example:** `[MAP-1.1, MEASURE-2.7]`
+
+### Source-of-truth rule
+
+`metadata.frameworks.*` is the canonical machine-readable record of a skill's framework coverage. Body-prose citations (e.g. "we map to T1078 here") are allowed but do not feed the auto-generated `mappings/` artifacts. The validator does not enforce a body-vs-frontmatter cross-check yet; that lands when `shared/scripts/framework_extractor.py` adds a `--check` mode in a later phase.
+
+### Auto-generation
+
+`tools/framework_extractor.py` walks every active-domain SKILL.md and emits:
+
+- `mappings/mitre-attack/attack-navigator-layer.json` (MITRE Navigator v4.5 schema)
+- `mappings/mitre-attack/coverage-summary.md`
+- `mappings/nist-csf/csf-alignment.md`
+
+These artifacts are regenerated on every CI run and `git diff --exit-code mappings/` fails the build if the committed coverage docs drift from the source-of-truth frontmatter. Do not hand-edit any file under `mappings/` except the static `README.md` per subdirectory.
+
+---
+
 ## Optional Metadata Fields
 
 ### `metadata.context_file`
@@ -108,16 +183,27 @@ metadata:
 
 ## Category → Domain Mapping
 
-| Category | Domain |
+| Category | Domain dirs it covers |
 |---|---|
-| `usap-operations` | Orchestration, Operations |
-| `usap-detection` | Detection, Telemetry |
-| `usap-response` | Incident Response, Forensics |
-| `usap-governance` | Risk, Compliance, Governance |
-| `usap-red-team` | Red Team, Testing |
-| `usap-devsecops` | DevSecOps, AppSec |
-| `usap-engineering` | Engineering (non-security) |
-| `usap-executive` | Executive, Board |
+| `usap-adversary` | `red-team`, parts of `pentest` |
+| `usap-appsec-devsecops` | `appsec-devsecops` (legacy slug) |
+| `usap-control-plane` | `platform-ai` (control-plane skills) |
+| `usap-detection` | `detection` |
+| `usap-devsecops` | `appsec-devsecops` |
+| `usap-engineering` | (reserved, non-security utilities) |
+| `usap-executive` | `governance/ciso-brief-generator` and other board-facing skills |
+| `usap-governance` | `governance` |
+| `usap-identity-access` | `identity-access` |
+| `usap-infrastructure` | `cloud-infra`, parts of `system-security` |
+| `usap-operations` | Cross-domain orchestration skills, `detection/*-engineering` |
+| `usap-pentest` | `pentest` |
+| `usap-platform-ai` | `platform-ai` |
+| `usap-red-team` | `red-team` (legacy slug) |
+| `usap-response` | `response` |
+| `usap-risk-compliance` | `risk-compliance` |
+| `usap-safety` | AI safety / guardrail skills |
+| `usap-system-security` | `system-security` |
+| `usap-webapp` | `webapp-security` |
 
 ---
 

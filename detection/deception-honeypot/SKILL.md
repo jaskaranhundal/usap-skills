@@ -3,7 +3,7 @@ name: deception-honeypot
 description: USAP agent skill for Deception & Honeypot Strategy. Use for Deception technology planning — honeypot placement, canary token deployment, lateral movement traps.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-detection
   updated: 2026-03-08
