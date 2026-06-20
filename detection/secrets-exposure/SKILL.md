@@ -3,7 +3,7 @@ name: secrets-exposure
 description: USAP agent skill for Secrets and Credential Exposure Detection. Use for scanning repositories, pipelines, and runtime environments for exposed secrets, API keys, tokens, and credentials — includes entropy analysis, blast-radius estimation, and revocation prioritization.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-detection
   updated: 2025-03-23

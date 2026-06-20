@@ -3,7 +3,7 @@ name: data-security-classification
 description: USAP agent skill for Data Security & Classification. Classify data sensitivity and assign appropriate protection requirements, handling controls, and retention policies.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01

@@ -3,7 +3,7 @@ name: agent-integrity-monitor
 description: USAP agent skill for AI Agent Integrity Monitoring. Use for detecting prompt injection attempts, instruction override, goal drift, and behavioral deviation in autonomous AI agents — monitors production agent sessions against behavioral baselines and raises integrity violations before they produce harmful outputs.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-platform-ai
   updated: 2025-03-23

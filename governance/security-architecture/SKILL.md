@@ -3,7 +3,7 @@ name: security-architecture
 description: USAP agent skill for Security Architecture. Validate architecture changes against security principles, assess Zero Trust readiness, and provide security design guidance for new systems.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01

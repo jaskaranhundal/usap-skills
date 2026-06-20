@@ -3,7 +3,7 @@ name: findings-tracker
 description: USAP agent skill for Findings Tracker. Maintain authoritative registry of security findings, track remediation status, assign risk scores, and enforce SLA compliance.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-operations
   updated: 2026-03-01

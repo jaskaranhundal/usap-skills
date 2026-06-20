@@ -3,7 +3,7 @@ name: os-hardening
 description: USAP agent skill for OS Hardening Assessment. Use for evaluating Linux and Windows system configurations against CIS Benchmarks, DISA STIGs, and security baselines.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-system-security
   updated: 2026-05-20

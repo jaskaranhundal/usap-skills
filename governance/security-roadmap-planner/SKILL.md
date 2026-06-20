@@ -3,7 +3,7 @@ name: security-roadmap-planner
 description: USAP agent skill for Security Roadmap Planning. Use for building investment-prioritized 12-month security program roadmaps from posture, risk, and compliance data.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-10

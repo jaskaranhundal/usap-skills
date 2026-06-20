@@ -3,7 +3,7 @@ name: regulatory-horizon
 description: USAP agent skill for Regulatory Horizon. Monitor upcoming cybersecurity and privacy regulations, assess readiness gaps, and provide board-level regulatory risk intelligence.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-executive
   updated: 2026-03-01

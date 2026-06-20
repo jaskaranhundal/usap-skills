@@ -3,7 +3,7 @@ name: sast-dast-coordinator
 description: USAP agent skill for SAST/DAST Coordinator. Orchestrate static and dynamic application security testing, correlate findings across tools, deduplicate results, and prioritize by exploitability.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
   updated: 2026-03-01

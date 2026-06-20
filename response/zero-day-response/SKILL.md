@@ -3,7 +3,7 @@ name: zero-day-response
 description: USAP agent skill for Zero-Day Response. Use for Coordinate compensating controls for zero-day risk.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-operations
   updated: 2026-03-11
