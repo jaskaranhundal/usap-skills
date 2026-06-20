@@ -3,7 +3,7 @@ name: security-debt-tracker
 description: USAP agent skill for Security Debt Tracking. Use for analyzing aging security findings, computing SLA breach counts, and classifying debt accumulation rate.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-10

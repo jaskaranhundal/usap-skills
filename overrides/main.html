@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{# Inject SoftwareApplication JSON-LD on every page so Google can build a rich
+   result card. Mirrors site_name / site_description / site_url from mkdocs.yml. #}
+{% block extrahead %}
+  {{ super() }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "USAP — Open-Source AI Cybersecurity Agent Skills",
+    "alternateName": "USAP",
+    "description": "{{ config.site_description }}",
+    "url": "{{ config.site_url }}",
+    "applicationCategory": "SecurityApplication",
+    "applicationSubCategory": "Open-source AI cybersecurity agent skills library",
+    "operatingSystem": "Any (runs as LLM system prompt in Claude, ChatGPT, Gemini, Ollama, AnythingLLM)",
+    "softwareVersion": "2.0",
+    "license": "https://opensource.org/licenses/Apache-2.0",
+    "codeRepository": "https://github.com/jaskaranhundal/usap-skills",
+    "programmingLanguage": ["Python"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "USAP Team",
+      "url": "https://github.com/jaskaranhundal"
+    },
+    "keywords": "cybersecurity, AI security, agentic AI, LLM agents, incident response, threat hunting, SOC automation, DevSecOps, red team, blue team, pentest, CISO, MITRE ATT&CK, NIST CSF, OWASP Top 10, open source"
+  }
+  </script>
+{% endblock %}

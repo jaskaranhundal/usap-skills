@@ -3,7 +3,7 @@ name: cloud-workload-protection
 description: USAP agent skill for Cloud Workload Protection. Use for Container and serverless runtime security — anomaly detection, escape detection, CSPM gap analysis.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-operations
   updated: 2026-03-08

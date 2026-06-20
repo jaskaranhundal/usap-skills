@@ -1,0 +1,27 @@
+{
+  "agent_slug": "webapp-risk-triage",
+  "intent_type": "analyze",
+  "action": "<one-sentence next action — name the next agent the operator should invoke>",
+  "rationale": "<evidence-based explanation of why the severity and category call was made>",
+  "confidence": 0.85,
+  "severity": "high",
+  "key_findings": [
+    "<finding 1 — name what was observed>",
+    "<finding 2 — corroborating signal>",
+    "<finding 3 — blast-radius scoping observation>"
+  ],
+  "evidence_references": [
+    {
+      "source": "<scanner | manual | bug-bounty | siem>",
+      "ref": "<url, alert id, or screenshot path>",
+      "quote": "<short excerpt of the evidence>"
+    }
+  ],
+  "next_agents": [
+    "owasp-top10-classifier"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1190"],
+  "affected_assets": ["<URL or asset ARN>"]
+}

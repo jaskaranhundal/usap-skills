@@ -3,11 +3,13 @@ name: cryptography-key-management
 description: USAP agent skill for Cryptography & Key Management. Govern crypto posture, audit key lifecycle, enforce rotation policies, and detect weak or exposed cryptographic material.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
   updated: 2026-03-01
   agent_slug: "cryptography-key-management"
+compatibility: "Requires read access to KMS / HSM key inventory and policy. No mutation (key rotation is gated via human_approval_required)."
+allowed-tools: "aws-cli az-cli gcloud openssl"
 ---
 
 # Cryptography & Key Management Agent

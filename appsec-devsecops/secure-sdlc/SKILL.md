@@ -3,7 +3,7 @@ name: secure-sdlc
 description: USAP agent skill for Secure SDLC. Embed security into every phase of development — design, coding, testing, deployment, and operations — with developer-friendly controls.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
   updated: 2026-03-01

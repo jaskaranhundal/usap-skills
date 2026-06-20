@@ -3,7 +3,7 @@ name: appsec-code-review
 description: USAP agent skill for AppSec Code Review. Use for Security-focused static code analysis — OWASP Top 10, logic flaws, dependency audits.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-devsecops
   updated: 2026-03-08

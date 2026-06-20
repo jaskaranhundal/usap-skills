@@ -3,7 +3,7 @@ name: ai-agent-security
 description: USAP agent skill for AI Agent Security. Use for Detect prompt injection and misuse against agentic workflows.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-safety
   updated: 2026-02-28

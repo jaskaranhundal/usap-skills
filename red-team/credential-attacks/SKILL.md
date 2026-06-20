@@ -3,11 +3,13 @@ name: credential-attacks
 description: ARIA agent skill for credential attack reasoning. Use for deciding whether to spray vs brute-force, selecting wordlists, interpreting hydra results, and assessing account lockout risk before execution.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: ARIA Project
   category: usap-adversary
   updated: 2026-03-27
   agent_slug: "credential-attacks"
+compatibility: "Requires explicit written authorization and bb_scope_enforcer.py validation. Account lockout risk must be assessed before any password-spray."
+allowed-tools: "hydra hashcat john kerbrute crackmapexec"
 ---
 
 # Credential Attacks

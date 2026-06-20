@@ -3,7 +3,7 @@ name: attack-path-analysis
 description: USAP agent skill for Attack Path Analysis. Use for Analyze lateral movement and blast-radius attack paths.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-adversary
   updated: 2026-02-28

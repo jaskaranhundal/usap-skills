@@ -3,11 +3,13 @@ name: forensics
 description: USAP agent skill for Digital Forensics. Produce investigation timelines, evidence preservation guidance, and chain-of-custody recommendations for security incidents.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-operations
   updated: 2026-03-01
   agent_slug: "forensics"
+compatibility: "Requires forensic acquisition tooling and a write-blocked evidence target. Read-only against original evidence; chain-of-custody enforced."
+allowed-tools: "volatility3 plaso dd ewfacquire ftk-imager"
 ---
 
 # Forensics Agent

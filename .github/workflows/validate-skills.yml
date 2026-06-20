@@ -1,0 +1,94 @@
+name: validate-skills
+
+# Runs on every PR and every push to a branch. The validator is stdlib-only
+# Python; no `pip install` is performed. Logic lives in tools/validate_skill.py
+# and standards/frontmatter-spec.md (kept in sync — the validator's
+# ALLOWED_CATEGORIES set is the spec's enum).
+on:
+  pull_request:
+    paths:
+      - '**/SKILL.md'
+      - '**/sample_output.json'
+      - '**/output-template.json'
+      - 'standards/**'
+      - 'mappings/**'
+      - 'tools/validate_skill.py'
+      - 'tools/output_contract.py'
+      - 'tools/framework_extractor.py'
+      - '.github/workflows/validate-skills.yml'
+  push:
+    paths:
+      - '**/SKILL.md'
+      - 'standards/**'
+      - 'mappings/**'
+      - 'tools/validate_skill.py'
+      - 'tools/output_contract.py'
+      - 'tools/framework_extractor.py'
+      - '.github/workflows/validate-skills.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate every active-domain SKILL.md
+        run: |
+          python3 tools/validate_skill.py --all --summary
+
+      - name: Validate output contract on changed sample/template files
+        # Non-blocking informational check until the 59 placeholder samples
+        # flagged in docs/research/anthropic-cybersec-skills-gap-analysis.md
+        # are rewritten (gap-analysis quick-win 1, follow-up phase).
+        continue-on-error: true
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref || github.event.repository.default_branch }}
+        run: |
+          set -u
+          git fetch origin "$BASE_REF" --depth=1 2>/dev/null || true
+          CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD" 2>/dev/null \
+            | grep -E '/expected_outputs/sample_output\.json$|/assets/templates/output-template\.json$' || true)
+          if [ -z "$CHANGED" ]; then
+            echo "No sample output files changed in this PR — skipping."
+            exit 0
+          fi
+          rc=0
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            python3 tools/output_contract.py "$f" || rc=1
+          done <<< "$CHANGED"
+          exit $rc
+
+      - name: Framework-mappings drift check
+        # Regenerates mappings/* in-memory and fails if the committed files
+        # differ from what the source-of-truth metadata.frameworks would
+        # produce. Per gap-analysis anti-pattern 7.4 — never hand-edit
+        # files under mappings/ except the per-subdirectory README.md.
+        run: |
+          python3 tools/framework_extractor.py --check
+
+      - name: Naming convention check (cs-* agents)
+        run: |
+          python3 - <<'PYEOF'
+          import os, sys
+          errors = []
+          for root, _dirs, files in os.walk("agents"):
+              for fname in files:
+                  if not fname.endswith(".md"):
+                      continue
+                  if fname in ("CLAUDE.md", "README.md"):
+                      continue
+                  if not fname.startswith("cs-"):
+                      errors.append(f"{os.path.join(root, fname)}: must use cs- prefix")
+          if errors:
+              for e in errors:
+                  print(f"  FAIL {e}")
+              sys.exit(1)
+          print("  PASS Naming conventions OK")
+          PYEOF
