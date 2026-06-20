@@ -3,7 +3,7 @@ name: telemetry-signal-quality
 description: USAP agent skill for Telemetry and Signal Quality Assessment. Use for evaluating SIEM data source health, log completeness, normalization error rates, and detection data fidelity before running threat hunts or drawing conclusions from negative detection results.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-detection
   updated: 2025-03-23

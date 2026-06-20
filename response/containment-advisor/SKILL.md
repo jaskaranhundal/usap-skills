@@ -3,7 +3,7 @@ name: containment-advisor
 description: USAP agent skill for Incident Containment Strategy. Use for selecting the most targeted containment action for confirmed threats, blast-radius assessment across 10 threat types, production impact quantification, and preparing human-approval-gated containment plans for network isolation, credential revocation, or firewall changes.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-response
   updated: 2025-03-23

@@ -3,7 +3,7 @@ name: quantum-security-readiness
 description: USAP agent skill for Quantum Security Readiness. Use for Track post-quantum migration readiness and crypto agility.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-02-28

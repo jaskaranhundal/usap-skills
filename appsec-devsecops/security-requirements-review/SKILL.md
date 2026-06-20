@@ -3,7 +3,7 @@ name: security-requirements-review
 description: USAP agent skill for Security Requirements Review. Use for proactive analysis of design documents — POA&M, PRDs, architecture docs, requirements specs — to extract security gaps before any alerts fire.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-devsecops
   updated: 2026-03-10

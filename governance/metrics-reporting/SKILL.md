@@ -3,7 +3,7 @@ name: metrics-reporting
 description: USAP agent skill for Security Metrics and Reporting. Use for producing MTTD/MTTR KPIs, patch coverage rates, SLA compliance metrics, false-positive rates, and board-level security dashboards — always with data provenance statements and period-over-period trend analysis.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2025-03-23

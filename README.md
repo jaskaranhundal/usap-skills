@@ -15,6 +15,7 @@ Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Olla
 - **`cs-*` orchestrator agents.** 12 named agents (`cs-security-analyst`, `cs-incident-responder`, `cs-blue-team-analyst`, `cs-red-teamer`, `cs-cloud-investigator`, `cs-supply-chain-defender`, `cs-threat-intel-lead`, `cs-purple-team-lead`, `cs-appsec-engineer`, `cs-devsecops-engineer`, `cs-ciso-advisor`, `cs-security-program-manager`) compose the skills into reproducible workflows.
 - **Framework-mapped at the metadata layer.** `metadata.frameworks.{mitre_attack, nist_csf, mitre_atlas, owasp_top10, d3fend, nist_ai_rmf}` arrays drive auto-generated ATT&CK Navigator and NIST CSF coverage docs in `mappings/` — never hand-maintained.
 - **L1–L4 autonomy model.** Mutating intents (key rotation, isolation, account disablement) carry explicit `human_approval_required: true` gates. Predictable behaviour at every level.
+- **[agentskills.io spec-conformant](https://agentskills.io/specification).** Every USAP `SKILL.md` validates against the open standard (verified on 2026-06-20). Drop USAP into any agentskills.io-compatible client — Claude Code, Cursor, Goose, OpenCode, GitHub Copilot, Gemini CLI, OpenAI Codex CLI, and 30+ others.
 
 ## Who is this for
 

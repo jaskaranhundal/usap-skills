@@ -3,7 +3,7 @@ name: guardrail
 description: USAP agent skill for Guardrail. Enforce approval gates, RBAC role policies, intent_type boundaries, and safety rules for the USAP control plane.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-control-plane
   updated: 2026-03-01
