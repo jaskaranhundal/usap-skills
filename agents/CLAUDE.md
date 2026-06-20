@@ -31,7 +31,11 @@ agents/
 │   ├── cs-security-analyst.md       # Tier 2 SOC analyst orchestrator
 │   ├── cs-incident-responder.md     # Incident lifecycle manager
 │   ├── cs-red-teamer.md             # Offensive security coordinator
-│   └── cs-blue-team-analyst.md      # Blue Team detection/DFIR orchestrator
+│   ├── cs-blue-team-analyst.md      # Blue Team detection/DFIR orchestrator
+│   ├── cs-cloud-investigator.md     # Cloud incident investigation orchestrator
+│   ├── cs-supply-chain-defender.md  # Software supply chain defense orchestrator
+│   ├── cs-threat-intel-lead.md      # Intelligence-driven SOC orchestrator
+│   └── cs-purple-team-lead.md       # Purple team / detection validation orchestrator
 ├── appsec/
 │   └── cs-appsec-engineer.md        # Runtime + build-time AppSec orchestrator
 ├── devsecops/
@@ -50,6 +54,10 @@ agents/
 | cs-incident-responder | `security/cs-incident-responder.md` | Incident lifecycle manager | Reactive (incident-driven) |
 | cs-red-teamer | `security/cs-red-teamer.md` | Offensive security coordinator | Proactive (authorized, scoped) |
 | cs-blue-team-analyst | `security/cs-blue-team-analyst.md` | Blue Team detection/DFIR orchestrator | Reactive (alert + hunt-driven) |
+| cs-cloud-investigator | `security/cs-cloud-investigator.md` | Cloud incident investigation orchestrator | Reactive (CSPM-driven) |
+| cs-supply-chain-defender | `security/cs-supply-chain-defender.md` | Software supply chain defense orchestrator | Reactive (SBOM/CI-driven) |
+| cs-threat-intel-lead | `security/cs-threat-intel-lead.md` | Intelligence-driven SOC orchestrator | Reactive (IOC-driven) |
+| cs-purple-team-lead | `security/cs-purple-team-lead.md` | Purple team / detection validation orchestrator | Reactive (exercise-driven) |
 | cs-appsec-engineer | `appsec/cs-appsec-engineer.md` | Runtime + build-time AppSec orchestrator | Reactive (finding-driven) |
 | cs-devsecops-engineer | `devsecops/cs-devsecops-engineer.md` | Security-in-pipeline engineer | Pipeline-triggered + doc intake |
 | cs-ciso-advisor | `executive/cs-ciso-advisor.md` | Executive security advisor | Scheduled (board reporting) |
