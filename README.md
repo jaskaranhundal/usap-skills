@@ -1,10 +1,42 @@
-# usap-skills
+# USAP — Open-Source AI Cybersecurity Agent Skills
 
 [![Skills](https://img.shields.io/badge/skills-74-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-12-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
 
-74 standalone LLM skill packages + 12 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
+**Automate incident response, threat hunting, red team, blue team, and DevSecOps with 74 open-source AI security skills and 12 `cs-*` orchestrator agents across 12 cybersecurity domains. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM — no SaaS, no vendor lock-in.**
 
 Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
+
+---
+
+## Why USAP
+
+- **Open source, no SaaS, no waitlist.** Apache 2.0. Drop the skills into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no platform install. AI security platforms like Casky and Dropzone are paid SaaS; USAP is the open alternative your team owns.
+- **Standardized 11-field output contract.** Every skill emits CVSS, MITRE ATT&CK technique IDs, evidence references, and an explicit `human_approval_required` flag (`standards/output-contract.md`). Safe to embed in production agent stacks where competitor copilots remain black boxes.
+- **`cs-*` orchestrator agents.** 12 named agents (`cs-security-analyst`, `cs-incident-responder`, `cs-blue-team-analyst`, `cs-red-teamer`, `cs-cloud-investigator`, `cs-supply-chain-defender`, `cs-threat-intel-lead`, `cs-purple-team-lead`, `cs-appsec-engineer`, `cs-devsecops-engineer`, `cs-ciso-advisor`, `cs-security-program-manager`) compose the skills into reproducible workflows.
+- **Framework-mapped at the metadata layer.** `metadata.frameworks.{mitre_attack, nist_csf, mitre_atlas, owasp_top10, d3fend, nist_ai_rmf}` arrays drive auto-generated ATT&CK Navigator and NIST CSF coverage docs in `mappings/` — never hand-maintained.
+- **L1–L4 autonomy model.** Mutating intents (key rotation, isolation, account disablement) carry explicit `human_approval_required: true` gates. Predictable behaviour at every level.
+
+## Who is this for
+
+USAP is built for three teams that already own LLM access and don't want to rent another SaaS:
+
+- **SOC and detection engineering teams (50–500-person security orgs)** running Splunk / Sentinel + EDR who want a vetted, MITRE-mapped skills library to amplify analyst output. Activate `cs-security-analyst` for any alert; cascade to `cs-blue-team-analyst`, `cs-threat-intel-lead`, or `cs-incident-responder`.
+- **DevSecOps and platform-security engineers** at engineering-led orgs who use Claude Code or similar. Embed `cs-devsecops-engineer` and `cs-appsec-engineer` in CI; route runtime findings into `webapp-security/`.
+- **MSSPs, security consultancies, and red teamers** who need client-ready CVSS / MITRE / evidence-tagged deliverables. White-label the skills, embed in your own delivery stack, ship.
+
+## Compared to other AI security platforms
+
+| Platform | License | Runtime | Differentiator |
+|---|---|---|---|
+| **USAP** | Apache 2.0, open source | Any LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM) | 74 skills + 12 `cs-*` agents + typed 11-field output contract |
+| [Casky.AI](https://casky.ai/) | $49/mo SaaS, Claude-native | Claude only (waitlist) | Prosumer skills lab around investigation deliverables |
+| [Dropzone AI](https://www.dropzone.ai/) | Capacity-priced SaaS (~$36K/yr) | Vendor cloud | 24/7 autonomous AI Tier-1 SOC analyst, 90+ connectors |
+| [Prophet Security](https://www.prophetsecurity.ai/) | Enterprise SaaS, $41M total | Vendor cloud | 1M+ autonomous SOC investigations, 60+ connectors |
+| [7AI](https://7ai.com/) | Enterprise SaaS, $130M Series A | Vendor cloud | 50+ swarming SOC agents, largest cyber Series A on record |
+| [Simbian](https://simbian.ai/) | Enterprise SaaS, $10M seed | Vendor cloud | Multi-agent SOC + pentest under one platform |
+| [Andesite](https://andesite.ai/) | Enterprise SaaS, $38.5M seed | FedRAMP High, BYO-LLM | Federal-grade "Bionic SOC" for regulated buyers |
+
+Full landscape analysis: [`docs/research/casky-ai-competitive-landscape.md`](docs/research/casky-ai-competitive-landscape.md).
 
 ---
 
