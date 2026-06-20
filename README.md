@@ -1,8 +1,8 @@
 # usap-skills
 
-[![Skills](https://img.shields.io/badge/skills-71-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-7-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
+[![Skills](https://img.shields.io/badge/skills-74-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-8-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
 
-71 standalone LLM skill packages + 7 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
+74 standalone LLM skill packages + 8 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
 
 Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
 
@@ -16,7 +16,7 @@ Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Olla
 |---|---|---|
 | Anyone — business owner, IT admin, or security engineer | `dist/USAP_LITE.md` | Claude, ChatGPT, Gemini, Ollama |
 | Security team needing full orchestration across specialist agents | `dist/USAP_PRO.md` | Claude, ChatGPT, Gemini, Ollama |
-| Security program with all 71 skills embedded | `dist/USAP_BUNDLE.md` | Claude, ChatGPT, Gemini |
+| Security program with all 74 skills embedded | `dist/USAP_BUNDLE.md` | Claude, ChatGPT, Gemini |
 
 Generate your kit:
 
@@ -30,7 +30,7 @@ python3 shared/scripts/bundle_usap.py bundle --mode full   # → dist/USAP_BUNDL
 
 **Alex** (`cs-security-analyst`) is the single entry point for all three kits. You do not need to know which agent or skill to use — Alex figures that out.
 
-- **Lite:** Alex answers directly from knowledge of all 71 USAP skills. Plain English by default; goes fully technical when you ask.
+- **Lite:** Alex answers directly from knowledge of all 74 USAP skills. Plain English by default; goes fully technical when you ask.
 - **Pro / Full:** Alex detects multi-domain problems, activates party mode (`OR`), delegates to specialist agents (`cs-incident-responder`, `cs-ciso-advisor`, etc.), and synthesizes one unified answer.
 - **Any LLM:** Paste the file as your system prompt. No install required.
 - **Future:** MCP connectors will let Alex pull live cloud inventory, SIEM, and EDR data automatically. Until then, paste logs or describe your environment.
@@ -234,13 +234,14 @@ claude          # CLAUDE.md auto-loaded
 
 | Agent | Domain | Skills Orchestrated | Description |
 |---|---|---|---|
-| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | All 71 skills (full knowledge base) + 6 specialist agents | Universal security advisor — any question, any audience, any domain. Adapts to non-technical and expert users. Makes decisions. |
+| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | All 74 skills (full knowledge base) + 7 specialist agents | Universal security advisor — any question, any audience, any domain. Adapts to non-technical and expert users. Makes decisions. |
 | [`cs-incident-responder`](agents/security/cs-incident-responder.md) | Security | incident-commander, incident-classification, containment-advisor, forensics, zero-day-response | Full incident lifecycle — triage, containment, forensics, post-incident review |
 | [`cs-red-teamer`](agents/security/cs-red-teamer.md) | Security | red-team-planner, red-team-operations, safe-exploitation, attack-path-analysis, continuous-pentesting | Offensive security coordinator — engagement scoping, attack path mapping, findings report |
 | [`cs-devsecops-engineer`](agents/devsecops/cs-devsecops-engineer.md) | DevSecOps | secure-sdlc, sast-dast-coordinator, devsecops-pipeline, build-integrity, supply-chain-risk, appsec-code-review, pipeline-security-scan | Security-in-pipeline engineer — PR gate, pipeline hardening, SBOM generation |
 | [`cs-ciso-advisor`](agents/executive/cs-ciso-advisor.md) | Executive | enterprise-risk-assessment, compliance-mapping, metrics-reporting, security-posture-score, ciso-brief-generator, cyber-insurance | Executive advisor — board reports, risk posture reviews, regulatory gap assessments |
 | [`cs-security-program-manager`](agents/governance/cs-security-program-manager.md) | Governance | security-roadmap-planner, security-debt-tracker, findings-tracker, metrics-reporting, vulnerability-management | Passive lifecycle orchestrator — program planning, proactive scanning, facilitation |
 | [`cs-blue-team-analyst`](agents/security/cs-blue-team-analyst.md) | Security | threat-hunting, threat-intelligence, behavioral-analytics, telemetry-signal-quality, incident-classification, forensics, containment-advisor, detection-engineering | Blue Team commander — alert triage, proactive hunting, DFIR, detection engineering |
+| [`cs-appsec-engineer`](agents/appsec/cs-appsec-engineer.md) | AppSec | webapp-risk-triage, owasp-top10-classifier, api-security-posture, sast-dast-coordinator, secure-sdlc | Runtime + build-time AppSec orchestrator — finding triage, OWASP classification, API posture scoring |
 
 See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 
@@ -294,7 +295,7 @@ graph TB
 
 ---
 
-## All 71 skills
+## All 74 skills
 
 | Slug | Level | Category | Description |
 |---|---|---|---|
@@ -369,6 +370,9 @@ graph TB
 | `pentest-reporting` | L2 | Pentest | Compiles pentest findings into executive and technical reports with CVSS risk ratings and patch SLAs |
 | `credential-attacks` | L3 | Red Team | Credential attack reasoning: spray vs brute-force decisions, wordlist selection, hydra result interpretation, lockout risk |
 | `web-enumeration` | L3 | Red Team | Active web content discovery: path brute-force result reasoning, endpoint prioritization, high-value target identification |
+| `webapp-risk-triage` | L3 | Webapp | First-pass webapp finding triage: OWASP category mapping, severity scoring, blast radius scoping, downstream skill routing |
+| `owasp-top10-classifier` | L3 | Webapp | OWASP Top 10 2025 classification with confidence scoring from a finding description or CWE |
+| `api-security-posture` | L3 | Webapp | API surface posture scoring against OWASP API Security Top 10 (BOLA, auth, rate limit, mass assignment, audit) |
 
 ---
 
