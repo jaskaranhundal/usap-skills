@@ -1,0 +1,282 @@
+#!/usr/bin/env python3
+"""Validate USAP skill JSON output against the 11-field output contract.
+
+Implements the contract defined in ``standards/output-contract.md``. Exposes:
+
+  validate_payload(payload: dict) -> list[str]
+      Returns a list of human-readable violation strings. Empty list means
+      the payload is contract-compliant. Stable, deterministic ordering so
+      CI snapshots are diff-friendly.
+
+CLI usage::
+
+    python3 tools/output_contract.py path/to/payload.json
+    cat payload.json | python3 tools/output_contract.py -
+    python3 tools/output_contract.py --all-samples   # walk every
+                                                     # expected_outputs/sample_output.json
+
+Exit codes:
+  0 = clean
+  1 = at least one payload has violations
+  2 = malformed input (not JSON)
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+from typing import Any, Dict, List
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+REQUIRED_FIELDS = (
+    "agent_slug",
+    "intent_type",
+    "action",
+    "rationale",
+    "confidence",
+    "severity",
+    "key_findings",
+    "evidence_references",
+    "next_agents",
+    "human_approval_required",
+    "timestamp_utc",
+)
+
+INTENT_TYPES = {
+    "detect",
+    "respond",
+    "analyze",
+    "advise",
+    "escalate",
+    "report",
+    "block",
+}
+
+SEVERITIES = ("critical", "high", "medium", "low", "informational")
+HIGH_OR_ABOVE = {"critical", "high"}
+
+# ISO 8601 in UTC. Accepts either "Z" or "+00:00" terminator. Matches the
+# date-time patterns USAP samples actually use; rejects bare date-only.
+ISO_UTC_RE = re.compile(
+    r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|\+00:?00)$"
+)
+
+KEBAB_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+
+
+def _is_str(v: Any) -> bool:
+    return isinstance(v, str)
+
+
+def _is_list_of_str(v: Any) -> bool:
+    return isinstance(v, list) and all(isinstance(x, str) for x in v)
+
+
+def _is_list_of_obj(v: Any) -> bool:
+    return isinstance(v, list) and all(isinstance(x, dict) for x in v)
+
+
+def validate_payload(payload: Any) -> List[str]:
+    """Return human-readable violations of the 11-field contract.
+
+    The function never raises on bad input — malformed structures yield a
+    descriptive violation string instead. Callers should treat a non-empty
+    return as failure.
+    """
+    if not isinstance(payload, dict):
+        return [f"payload must be a JSON object, got {type(payload).__name__}"]
+
+    violations: List[str] = []
+
+    # 1. Required fields present.
+    for field in REQUIRED_FIELDS:
+        if field not in payload:
+            violations.append(f"missing required field: {field}")
+
+    # 2. agent_slug — non-empty kebab-case string.
+    slug = payload.get("agent_slug")
+    if "agent_slug" in payload:
+        if not _is_str(slug) or not slug:
+            violations.append("agent_slug must be a non-empty string")
+        elif not KEBAB_RE.match(slug):
+            violations.append(
+                f"agent_slug '{slug}' must be kebab-case"
+            )
+
+    # 3. intent_type — enum.
+    it = payload.get("intent_type")
+    if "intent_type" in payload and it not in INTENT_TYPES:
+        violations.append(
+            f"intent_type '{it}' must be one of {sorted(INTENT_TYPES)}"
+        )
+
+    # 4. action and rationale — non-empty strings.
+    for field in ("action", "rationale"):
+        v = payload.get(field)
+        if field in payload and (not _is_str(v) or not v.strip()):
+            violations.append(f"{field} must be a non-empty string")
+
+    # 5. confidence — float in [0.0, 1.0].
+    if "confidence" in payload:
+        c = payload["confidence"]
+        if isinstance(c, bool) or not isinstance(c, (int, float)):
+            violations.append("confidence must be a number")
+        elif not (0.0 <= float(c) <= 1.0):
+            violations.append(
+                f"confidence {c} is outside [0.0, 1.0]"
+            )
+
+    # 6. severity — enum.
+    sev = payload.get("severity")
+    if "severity" in payload and sev not in SEVERITIES:
+        violations.append(
+            f"severity '{sev}' must be one of {list(SEVERITIES)}"
+        )
+
+    # 7. key_findings — array of strings, at least one.
+    if "key_findings" in payload:
+        kf = payload["key_findings"]
+        if not _is_list_of_str(kf):
+            violations.append("key_findings must be an array of strings")
+        elif len(kf) == 0:
+            violations.append("key_findings must contain at least one entry")
+
+    # 8. evidence_references — array of objects; required >= high.
+    if "evidence_references" in payload:
+        er = payload["evidence_references"]
+        if not _is_list_of_obj(er):
+            violations.append("evidence_references must be an array of objects")
+        elif sev in HIGH_OR_ABOVE and len(er) == 0:
+            violations.append(
+                f"evidence_references must contain at least one entry "
+                f"when severity is '{sev}'"
+            )
+
+    # 9. next_agents — array of strings (empty allowed for terminal skills).
+    if "next_agents" in payload and not _is_list_of_str(payload["next_agents"]):
+        violations.append("next_agents must be an array of strings")
+
+    # 10. human_approval_required — boolean.
+    har = payload.get("human_approval_required")
+    if "human_approval_required" in payload and not isinstance(har, bool):
+        violations.append("human_approval_required must be a boolean")
+
+    # 11. timestamp_utc — ISO 8601 UTC string.
+    ts = payload.get("timestamp_utc")
+    if "timestamp_utc" in payload:
+        if not _is_str(ts) or not ISO_UTC_RE.match(ts):
+            violations.append(
+                f"timestamp_utc '{ts}' must be ISO 8601 UTC "
+                "(e.g., 2026-06-20T10:30:00Z or 2026-06-20T10:30:00+00:00)"
+            )
+
+    return violations
+
+
+def _load_json_from(path_or_dash: str) -> Any:
+    if path_or_dash == "-":
+        return json.load(sys.stdin)
+    return json.loads(Path(path_or_dash).read_text(encoding="utf-8"))
+
+
+def _sample_paths() -> List[Path]:
+    """All ``expected_outputs/sample_output.json`` files in active domains."""
+    domains = (
+        REPO_ROOT / d
+        for d in (
+            "appsec-devsecops",
+            "cloud-infra",
+            "detection",
+            "governance",
+            "identity-access",
+            "pentest",
+            "platform-ai",
+            "red-team",
+            "response",
+            "risk-compliance",
+            "system-security",
+        )
+    )
+    samples: List[Path] = []
+    for domain in domains:
+        if not domain.is_dir():
+            continue
+        for skill in sorted(domain.iterdir()):
+            sample = skill / "expected_outputs" / "sample_output.json"
+            if sample.is_file():
+                samples.append(sample)
+    return samples
+
+
+def _report(path: str, violations: List[str]) -> None:
+    if violations:
+        print(f"FAIL {path}")
+        for v in violations:
+            print(f"      x {v}")
+    else:
+        print(f"PASS {path}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Validate JSON against the USAP 11-field output contract."
+    )
+    parser.add_argument(
+        "path",
+        nargs="?",
+        help="Path to a JSON file. Use '-' to read from stdin.",
+    )
+    parser.add_argument(
+        "--all-samples",
+        action="store_true",
+        help="Walk every active-domain skill's expected_outputs/sample_output.json.",
+    )
+    args = parser.parse_args()
+
+    if not args.path and not args.all_samples:
+        parser.error("provide a JSON path (or '-') or use --all-samples")
+
+    if args.all_samples:
+        samples = _sample_paths()
+        if not samples:
+            print("error: no sample_output.json files found", file=sys.stderr)
+            return 1
+        passed = failed = 0
+        for s in samples:
+            try:
+                payload = _load_json_from(str(s))
+            except json.JSONDecodeError as exc:
+                _report(str(s.relative_to(REPO_ROOT)), [f"invalid JSON: {exc}"])
+                failed += 1
+                continue
+            v = validate_payload(payload)
+            _report(str(s.relative_to(REPO_ROOT)), v)
+            if v:
+                failed += 1
+            else:
+                passed += 1
+        print()
+        print("=" * 60)
+        print(f"Total: {passed + failed}  Passed: {passed}  Failed: {failed}")
+        return 0 if failed == 0 else 1
+
+    # Single-file mode.
+    try:
+        payload = _load_json_from(args.path)
+    except FileNotFoundError:
+        print(f"error: file not found: {args.path}", file=sys.stderr)
+        return 2
+    except json.JSONDecodeError as exc:
+        print(f"error: invalid JSON: {exc}", file=sys.stderr)
+        return 2
+
+    violations = validate_payload(payload)
+    _report(args.path, violations)
+    return 0 if not violations else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
