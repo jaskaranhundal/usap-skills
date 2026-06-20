@@ -3,11 +3,13 @@ name: web-enumeration
 description: ARIA agent skill for active web content discovery. Use for reasoning about path brute-forcing results, prioritising discovered endpoints, and identifying high-value targets for exploitation.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: ARIA Project
   category: usap-adversary
   updated: 2026-03-27
   agent_slug: "web-enumeration"
+compatibility: "Requires explicit written authorization and bb_scope_enforcer.py validation. Rate-limit politeness enforced; out-of-scope hostnames refused."
+allowed-tools: "gobuster ffuf dirsearch feroxbuster wfuzz"
 ---
 
 # Web Enumeration

@@ -3,7 +3,7 @@ name: build-integrity
 description: USAP agent skill for Build Integrity. Verify build provenance, validate artifact signatures, check SLSA compliance, and detect signs of build pipeline compromise.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
   updated: 2026-03-01

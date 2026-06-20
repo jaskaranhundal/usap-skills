@@ -3,7 +3,7 @@ name: red-team-operations
 description: USAP agent skill for Red Team Operations. Use for Execute controlled red-team operation workflows.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-adversary
   updated: 2026-02-28

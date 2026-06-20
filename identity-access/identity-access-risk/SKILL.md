@@ -3,7 +3,7 @@ name: identity-access-risk
 description: USAP agent skill for Identity and Access Risk Assessment. Use for IAM anomaly detection, privilege escalation path analysis, over-permissioned role scoring, CloudTrail behavioral review, dormant credential identification, and transitive permission chain mapping across AWS, Azure, and GCP.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-identity-access
   updated: 2025-03-23
@@ -19,6 +19,8 @@ metadata:
   providers: [claude, openai, gemini, ollama, mock]
   required_invoke_role: soc_analyst
   required_approver_role: soc_lead
+compatibility: "Requires read access to AD / LDAP / Okta SCIM exports and CloudTrail / Azure Activity Log / GCP Cloud Audit Log streams. No mutation."
+allowed-tools: "ldapsearch powershell aws-cli az-cli"
 ---
 
 # Identity and Access Risk Agent

@@ -3,7 +3,7 @@ name: cyber-insurance
 description: USAP agent skill for Cyber Insurance. Assess cyber insurance coverage adequacy, identify coverage gaps, maintain claim-readiness evidence, and support renewal applications.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-executive
   updated: 2026-03-01

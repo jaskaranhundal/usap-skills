@@ -3,7 +3,7 @@ name: security-posture-score
 description: USAP agent skill for Security Posture Scoring. Use for Cross-domain security posture scoring — aggregates findings into an executive scorecard.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-08

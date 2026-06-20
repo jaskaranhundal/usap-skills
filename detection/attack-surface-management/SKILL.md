@@ -3,7 +3,7 @@ name: attack-surface-management
 description: USAP agent skill for Attack Surface Management. Use for Continuously discover and assess exposed assets.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
   updated: 2026-02-28

@@ -3,7 +3,7 @@ name: enterprise-risk-assessment
 description: USAP agent skill for Enterprise Risk Assessment. Quantify enterprise cyber risk using FAIR methodology, produce risk heat maps, and communicate residual exposure to the board.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-executive
   updated: 2026-03-01

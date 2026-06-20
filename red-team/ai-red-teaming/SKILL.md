@@ -3,7 +3,7 @@ name: ai-red-teaming
 description: USAP agent skill for AI Red Teaming. Use for Adversarial testing of AI/ML systems — prompt injection, model inversion, jailbreaks.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-red-team
   updated: 2026-03-08

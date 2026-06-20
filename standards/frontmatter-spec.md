@@ -2,6 +2,23 @@
 
 Every `SKILL.md` file must begin with a valid YAML frontmatter block. This document defines all fields, their types, allowed values, and examples.
 
+## agentskills.io conformance
+
+USAP's frontmatter is a strict superset of the [agentskills.io Skill specification](https://agentskills.io/specification). Verified on 2026-06-20 against the published spec:
+
+| Spec field | USAP behaviour | Conformance |
+|---|---|---|
+| `name` (required, 1–64 chars, kebab-case, no leading/trailing/consecutive hyphens, matches parent dir) | Enforced by `tools/validate_skill.py` via `KEBAB_RE`, `MAX_NAME_LEN`, and the `name != slug` check | Full |
+| `description` (required, 1–1024 chars, non-empty) | Required; minimum 50 chars (stricter than spec) | Full + stricter |
+| `license` (optional, free text) | Required, restricted to `MIT` / `Apache-2.0` / `GPL-3.0` (stricter than spec) | Full + stricter |
+| `compatibility` (optional, max 500 chars) | Populated on the L4 / tool-dependent skills (cloud scanners, KMS, AD/LDAP, forensics, pentest, red-team) | Full |
+| `metadata` (optional, arbitrary key-value mapping) | Used heavily — canonical 5+5 schema lives here plus optional `frameworks.*`. The spec explicitly says clients may store extra properties under `metadata` | Full |
+| `allowed-tools` (optional, **space-separated string**, experimental) | Populated as a string per the spec on the same L4 / tool-dependent skills | Full |
+
+USAP keeps its non-spec schema (the 5 required `metadata.*` subfields plus the optional `metadata.frameworks.*` arrays) nested under `metadata`, where the spec explicitly designates it as the arbitrary-key-value escape hatch. USAP does NOT put non-spec keys at the YAML top level.
+
+USAP's `version` (under `metadata`) is always quoted (`"1.0.0"`) so YAML parsers do not silently coerce it to a float on certain ill-formed strings.
+
 ---
 
 ## Required Fields

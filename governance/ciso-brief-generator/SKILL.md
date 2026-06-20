@@ -3,7 +3,7 @@ name: ciso-brief-generator
 description: USAP agent skill for CISO Brief Generator. Use for generating CISO-level security briefs — risk posture summaries, board-ready narratives.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-executive
   updated: 2026-03-08

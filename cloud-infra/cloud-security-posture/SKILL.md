@@ -3,11 +3,13 @@ name: cloud-security-posture
 description: USAP agent skill for Cloud Security Posture. Use for Evaluate cloud misconfigurations and posture drift.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
   updated: 2026-02-28
   agent_slug: "cloud-security-posture"
+compatibility: "Requires read access to AWS / Azure / GCP control plane (IAM, EC2/Compute, S3/Blob/GCS, KMS, CloudTrail / Activity Log). No mutation."
+allowed-tools: "aws-cli az-cli gcloud checkov"
 ---
 
 # Cloud Security Posture

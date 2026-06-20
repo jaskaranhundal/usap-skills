@@ -3,7 +3,7 @@ name: zero-day-response-governance
 description: USAP agent skill for Zero-Day Response Governance. Govern policy and approval pathways for zero-day vulnerability programs — from discovery through coordinated disclosure and emergency response.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01
