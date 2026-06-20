@@ -65,7 +65,7 @@ export GEMINI_API_KEY="your-key-here"
 # Start a chat session with Alex
 python3 shared/scripts/gemini_chat.py --kit lite
 
-# Use the pro kit (Alex + all 6 agents)
+# Use the pro kit (Alex + all 6 specialist agents)
 python3 shared/scripts/gemini_chat.py --kit pro
 
 # Use a different model
