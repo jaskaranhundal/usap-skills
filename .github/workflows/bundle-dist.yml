@@ -1,0 +1,63 @@
+name: bundle-dist
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/SKILL.md'
+      - 'agents/**'
+      - 'shared/scripts/bundle_usap.py'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Bundle mode: lite / pro / full / all'
+        required: false
+        default: 'all'
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install pyyaml
+
+      - name: Generate bundles
+        run: |
+          MODE="${{ github.event.inputs.mode || 'all' }}"
+          if [ "$MODE" = "all" ]; then
+            python3 shared/scripts/bundle_usap.py bundle --mode lite
+            python3 shared/scripts/bundle_usap.py bundle --mode pro
+            python3 shared/scripts/bundle_usap.py bundle --mode full
+          else
+            python3 shared/scripts/bundle_usap.py bundle --mode "$MODE"
+          fi
+
+      - name: Show bundle sizes
+        run: |
+          for f in dist/*.md; do
+            [ -f "$f" ] && echo "$f: $(wc -c < $f) bytes"
+          done
+
+      - name: Commit updated dist/
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist/
+          if git diff --staged --quiet; then
+            echo "No bundle changes to commit"
+          else
+            SKILLS=$(find . -name "SKILL.md" -not -path "./.git/*" -not -path "./dist/*" | wc -l)
+            git commit -m "chore(dist): regenerate bundles ($SKILLS skills) [skip ci]"
+            git push
+          fi

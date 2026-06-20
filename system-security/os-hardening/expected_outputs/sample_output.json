@@ -1,0 +1,35 @@
+{
+  "agent_slug": "os-hardening",
+  "intent_type": "detect",
+  "action": "Remediate 3 critical CIS Level 1 failures: disable Telnet, enforce SSH key-only auth, enable auditd",
+  "rationale": "Ubuntu 22.04 LTS failed 3 critical and 7 high CIS Benchmark Level 1 controls.",
+  "confidence": 0.95,
+  "severity": "critical",
+  "key_findings": [
+    "Telnet active on port 23 (CIS 2.1.1) \u2014 MITRE T1040",
+    "SSH PermitRootLogin yes (CIS 5.2.7) \u2014 MITRE T1021.004",
+    "auditd service not running (CIS 4.1.1) \u2014 MITRE T1562.002",
+    "SUID binary /usr/bin/nmap outside baseline \u2014 MITRE T1548.001",
+    "SELinux in permissive mode \u2014 MITRE T1068"
+  ],
+  "evidence_references": [
+    {
+      "source": "Lynis 3.0.9",
+      "finding": "SSH-7408",
+      "control": "CIS Ubuntu 22.04 v1.0 \u2014 5.2.7",
+      "remediation": "Set PermitRootLogin no in /etc/ssh/sshd_config; systemctl restart sshd"
+    },
+    {
+      "source": "service enum",
+      "finding": "telnet.socket enabled",
+      "control": "CIS Ubuntu 22.04 v1.0 \u2014 2.1.1",
+      "remediation": "systemctl disable --now telnet.socket; apt purge telnetd"
+    }
+  ],
+  "next_agents": [
+    "vulnerability-management",
+    "detection-engineering"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-05-20T10:00:00Z"
+}

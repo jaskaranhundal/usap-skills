@@ -1,0 +1,19 @@
+{
+  "agent_slug": "owasp-top10-classifier",
+  "intent_type": "detect",
+  "action": "Hand off the ranked categories to webapp-risk-triage for re-routing decisions.",
+  "rationale": "Description matched the 'csrf' and 'path traversal' keywords for A01 (score 0.78). CWE-639 reinforces A01. No other category scored above 0.4. CVSS 6.2 from the caller did not bump severity.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "A01 (Broken access control): top match — score 0.78",
+    "A05 (Security misconfiguration): secondary — score 0.32",
+    "Caller-provided CWE-639 corroborates A01"
+  ],
+  "evidence_references": [
+    {"source": "scanner", "ref": "owasp-zap://alert/12871", "quote": "Endpoint /api/v1/profile accepts PUT from unauthenticated origin (CSRF token absent)"}
+  ],
+  "next_agents": ["webapp-risk-triage"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z"
+}

@@ -3,7 +3,7 @@ name: supply-chain-risk
 description: USAP agent skill for Supply Chain Risk. Evaluate software and hardware supply chain dependencies, detect malicious package injection, and assess build pipeline integrity.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
   updated: 2026-03-01

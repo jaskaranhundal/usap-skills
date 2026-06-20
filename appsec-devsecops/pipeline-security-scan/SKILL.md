@@ -3,7 +3,7 @@ name: pipeline-security-scan
 description: USAP agent skill for Pipeline Security Scan. Use for CI/CD pipeline security scanning — secrets in env vars, SAST integration, artifact signing check.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-devsecops
   updated: 2026-03-08

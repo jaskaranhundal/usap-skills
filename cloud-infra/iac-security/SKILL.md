@@ -3,11 +3,13 @@ name: iac-security
 description: USAP agent skill for IaC Security. Analyze Terraform, CloudFormation, Kubernetes manifests, and Helm charts for misconfigurations, insecure defaults, and compliance violations.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
   updated: 2026-03-01
   agent_slug: "iac-security"
+compatibility: "Requires the IaC source tree on disk (Terraform / CloudFormation / Kubernetes manifests / Helm charts). Read-only static analysis."
+allowed-tools: "checkov tfsec trivy kube-bench semgrep"
 ---
 
 # IaC Security Agent

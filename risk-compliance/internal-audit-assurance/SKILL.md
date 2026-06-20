@@ -3,7 +3,7 @@ name: internal-audit-assurance
 description: USAP agent skill for Internal Audit and Controls Assurance. Use for planning and executing internal security audits, collecting admissible controls evidence for SOC 2, ISO 27001, SOX, and FedRAMP, testing control operating effectiveness, and producing board-ready audit findings with root cause analysis and management responses.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-risk-compliance
   updated: 2025-03-23

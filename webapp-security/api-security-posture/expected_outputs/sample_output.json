@@ -1,0 +1,22 @@
+{
+  "agent_slug": "api-security-posture",
+  "intent_type": "analyze",
+  "action": "Route to security-requirements-review — mass_assignment is the largest single posture drag on the SimpleStoreAPI surface.",
+  "rationale": "Posture score 53/100. BOLA visibility and authentication both at 20/20 (oauth2 + owner-only checks). Rate limit covers per-route only (6/20). Mass-assignment guard absent (0/20) — the largest gap. Audit logging structured but retention below the 90-day threshold (7/20). Worst dim is mass-assignment, routed to security-requirements-review per the routing table in references/workflow.md.",
+  "confidence": 0.8,
+  "severity": "high",
+  "key_findings": [
+    "BOLA visibility: 20/20 — owner-only checks confirmed on both id-accepting endpoints",
+    "Authentication: 20/20 — oauth2 scheme covers all auth-required endpoints",
+    "Rate limiting: 6/20 — per-route only; missing per-user and per-ip ceilings",
+    "Mass-assignment guard: 0/20 — no allowlist or denylist documented",
+    "Audit logging: 7/20 — structured logging present, but retention is 30 days (below the 90-day floor)"
+  ],
+  "evidence_references": [
+    {"source": "descriptor", "ref": "SimpleStoreAPI", "quote": "mass_assignment_guard: none"}
+  ],
+  "next_agents": ["security-requirements-review"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1078", "T1190"]
+}

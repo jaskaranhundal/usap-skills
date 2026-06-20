@@ -3,7 +3,7 @@ name: insider-physical-risk
 description: USAP agent skill for Insider & Physical Risk. Evaluate insider threat indicators, analyze behavioral signals, and assess physical access security controls.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01

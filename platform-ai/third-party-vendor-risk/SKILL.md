@@ -3,7 +3,7 @@ name: third-party-vendor-risk
 description: USAP agent skill for Third-Party & Vendor Risk. Assess vendor security posture, track SLA compliance, and govern external dependency risk throughout the vendor lifecycle.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01
