@@ -57,7 +57,14 @@ jobs:
           if git diff --staged --quiet; then
             echo "No bundle changes to commit"
           else
-            SKILLS=$(find . -name "SKILL.md" -not -path "./.git/*" -not -path "./dist/*" | wc -l)
+            # Active-domain count only — match bundle_usap.py::DOMAINS.
+            # Counts SKILL.md exactly one level deep under each active domain;
+            # legacy / symlinked entries elsewhere are excluded.
+            SKILLS=$(find \
+              appsec-devsecops cloud-infra detection governance \
+              identity-access pentest platform-ai red-team \
+              response risk-compliance system-security webapp-security \
+              -mindepth 2 -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
             git commit -m "chore(dist): regenerate bundles ($SKILLS skills) [skip ci]"
             git push
           fi

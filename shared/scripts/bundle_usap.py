@@ -10,25 +10,36 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 
 MAIN_AGENT = REPO_ROOT / "agents" / "security" / "cs-security-analyst.md"
 
-# Ordered list of remaining agents: (display_name, path_relative_to_repo_root)
+# Ordered list of cs-* agents excluding Alex (cs-security-analyst is bundled as
+# MAIN_AGENT). Update when a new orchestrator agent ships.
 OTHER_AGENTS = [
-    ("cs-incident-responder", REPO_ROOT / "agents" / "security" / "cs-incident-responder.md"),
-    ("cs-red-teamer",         REPO_ROOT / "agents" / "security" / "cs-red-teamer.md"),
-    ("cs-ciso-advisor",       REPO_ROOT / "agents" / "executive" / "cs-ciso-advisor.md"),
-    ("cs-devsecops-engineer", REPO_ROOT / "agents" / "devsecops" / "cs-devsecops-engineer.md"),
+    ("cs-incident-responder",       REPO_ROOT / "agents" / "security"   / "cs-incident-responder.md"),
+    ("cs-red-teamer",               REPO_ROOT / "agents" / "security"   / "cs-red-teamer.md"),
+    ("cs-blue-team-analyst",        REPO_ROOT / "agents" / "security"   / "cs-blue-team-analyst.md"),
+    ("cs-cloud-investigator",       REPO_ROOT / "agents" / "security"   / "cs-cloud-investigator.md"),
+    ("cs-supply-chain-defender",    REPO_ROOT / "agents" / "security"   / "cs-supply-chain-defender.md"),
+    ("cs-threat-intel-lead",        REPO_ROOT / "agents" / "security"   / "cs-threat-intel-lead.md"),
+    ("cs-purple-team-lead",         REPO_ROOT / "agents" / "security"   / "cs-purple-team-lead.md"),
+    ("cs-appsec-engineer",          REPO_ROOT / "agents" / "appsec"     / "cs-appsec-engineer.md"),
+    ("cs-devsecops-engineer",       REPO_ROOT / "agents" / "devsecops"  / "cs-devsecops-engineer.md"),
+    ("cs-ciso-advisor",             REPO_ROOT / "agents" / "executive"  / "cs-ciso-advisor.md"),
     ("cs-security-program-manager", REPO_ROOT / "agents" / "governance" / "cs-security-program-manager.md"),
 ]
 
+# Active domains. Kept in sync with tools/validate_skill.py::ACTIVE_DOMAINS.
 DOMAINS = [
     "appsec-devsecops",
     "cloud-infra",
     "detection",
     "governance",
     "identity-access",
+    "pentest",
     "platform-ai",
     "red-team",
     "response",
     "risk-compliance",
+    "system-security",
+    "webapp-security",
 ]
 
 MODE_OUTPUT_MAP = {
@@ -126,7 +137,7 @@ def cmd_bundle(args: argparse.Namespace) -> None:
             sections.append("---\n[AVAILABLE AGENTS]")
             sections.extend(other_sections)
 
-    # Full only: include all 66 skills
+    # Full only: include every active-domain SKILL.md.
     if mode == "full":
         skill_sections: list[str] = []
         for domain, slug, path in collect_skills():
@@ -169,8 +180,9 @@ def build_parser() -> argparse.ArgumentParser:
         help=(
             "Kit mode: "
             "lite = Alex only (dist/USAP_LITE.md); "
-            "pro = Alex + 6 cs-* agents (dist/USAP_PRO.md); "
-            "full = Alex + agents + 66 skills (dist/USAP_BUNDLE.md). "
+            "pro = Alex + all 11 other cs-* agents (dist/USAP_PRO.md); "
+            "full = Alex + agents + every active-domain skill "
+            "(dist/USAP_BUNDLE.md). "
             "Default: full"
         ),
     )
