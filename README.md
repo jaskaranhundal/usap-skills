@@ -1,8 +1,8 @@
 # usap-skills
 
-[![Skills](https://img.shields.io/badge/skills-74-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-8-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
+[![Skills](https://img.shields.io/badge/skills-74-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-12-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
 
-74 standalone LLM skill packages + 8 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
+74 standalone LLM skill packages + 12 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
 
 Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
 
@@ -242,6 +242,10 @@ claude          # CLAUDE.md auto-loaded
 | [`cs-security-program-manager`](agents/governance/cs-security-program-manager.md) | Governance | security-roadmap-planner, security-debt-tracker, findings-tracker, metrics-reporting, vulnerability-management | Passive lifecycle orchestrator — program planning, proactive scanning, facilitation |
 | [`cs-blue-team-analyst`](agents/security/cs-blue-team-analyst.md) | Security | threat-hunting, threat-intelligence, behavioral-analytics, telemetry-signal-quality, incident-classification, forensics, containment-advisor, detection-engineering | Blue Team commander — alert triage, proactive hunting, DFIR, detection engineering |
 | [`cs-appsec-engineer`](agents/appsec/cs-appsec-engineer.md) | AppSec | webapp-risk-triage, owasp-top10-classifier, api-security-posture, sast-dast-coordinator, secure-sdlc | Runtime + build-time AppSec orchestrator — finding triage, OWASP classification, API posture scoring |
+| [`cs-cloud-investigator`](agents/security/cs-cloud-investigator.md) | Security | cloud-security-posture, cloud-workload-protection, identity-access-risk, threat-hunting | Cloud incident investigation — CSPM triage, workload runtime, IAM anomaly correlation |
+| [`cs-supply-chain-defender`](agents/security/cs-supply-chain-defender.md) | Security | supply-chain-risk, build-integrity, supply-chain-simulation, sast-dast-coordinator | Software supply chain defense — SBOM analysis, malicious package detection, SLSA verification |
+| [`cs-threat-intel-lead`](agents/security/cs-threat-intel-lead.md) | Security | threat-intelligence, threat-hunting, behavioral-analytics, incident-classification | Intelligence-driven SOC — IOC enrichment, attribution, intel-driven hunts |
+| [`cs-purple-team-lead`](agents/security/cs-purple-team-lead.md) | Security | red-team-planner, red-team-operations, detection-engineering, threat-hunting | Purple team orchestrator — detection validation, gap analysis, exercise readiness |
 
 See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 
