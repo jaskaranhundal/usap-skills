@@ -3,7 +3,7 @@ name: ot-iot-device-security
 description: USAP agent skill for OT/IoT/Device Security. Evaluate operational technology and IoT security controls, identify OT network segmentation gaps, and assess ICS/SCADA security posture.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
   updated: 2026-03-01

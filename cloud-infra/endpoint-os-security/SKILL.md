@@ -3,7 +3,7 @@ name: endpoint-os-security
 description: USAP agent skill for Endpoint & OS Security. Analyze endpoint security posture, evaluate EDR coverage, detect configuration drift, and recommend hardening for Windows, Linux, macOS, and containers.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
   updated: 2026-03-01

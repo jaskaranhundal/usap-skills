@@ -1,10 +1,43 @@
-# usap-skills
+# USAP — Open-Source AI Cybersecurity Agent Skills
 
-[![Skills](https://img.shields.io/badge/skills-69-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-6-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
+[![Skills](https://img.shields.io/badge/skills-74-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-12-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
 
-69 standalone LLM skill packages + 6 orchestrator agents for the [USAP (Unified Security Agent Platform)](https://github.com/jaskaranhundal/usap).
+**Automate incident response, threat hunting, red team, blue team, and DevSecOps with 74 open-source AI security skills and 12 `cs-*` orchestrator agents across 12 cybersecurity domains. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM — no SaaS, no vendor lock-in.**
 
 Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
+
+---
+
+## Why USAP
+
+- **Open source, no SaaS, no waitlist.** Apache 2.0. Drop the skills into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no platform install. AI security platforms like Casky and Dropzone are paid SaaS; USAP is the open alternative your team owns.
+- **Standardized 11-field output contract.** Every skill emits CVSS, MITRE ATT&CK technique IDs, evidence references, and an explicit `human_approval_required` flag (`standards/output-contract.md`). Safe to embed in production agent stacks where competitor copilots remain black boxes.
+- **`cs-*` orchestrator agents.** 12 named agents (`cs-security-analyst`, `cs-incident-responder`, `cs-blue-team-analyst`, `cs-red-teamer`, `cs-cloud-investigator`, `cs-supply-chain-defender`, `cs-threat-intel-lead`, `cs-purple-team-lead`, `cs-appsec-engineer`, `cs-devsecops-engineer`, `cs-ciso-advisor`, `cs-security-program-manager`) compose the skills into reproducible workflows.
+- **Framework-mapped at the metadata layer.** `metadata.frameworks.{mitre_attack, nist_csf, mitre_atlas, owasp_top10, d3fend, nist_ai_rmf}` arrays drive auto-generated ATT&CK Navigator and NIST CSF coverage docs in `mappings/` — never hand-maintained.
+- **L1–L4 autonomy model.** Mutating intents (key rotation, isolation, account disablement) carry explicit `human_approval_required: true` gates. Predictable behaviour at every level.
+- **[agentskills.io spec-conformant](https://agentskills.io/specification).** Every USAP `SKILL.md` validates against the open standard (verified on 2026-06-20). Drop USAP into any agentskills.io-compatible client — Claude Code, Cursor, Goose, OpenCode, GitHub Copilot, Gemini CLI, OpenAI Codex CLI, and 30+ others.
+
+## Who is this for
+
+USAP is built for three teams that already own LLM access and don't want to rent another SaaS:
+
+- **SOC and detection engineering teams (50–500-person security orgs)** running Splunk / Sentinel + EDR who want a vetted, MITRE-mapped skills library to amplify analyst output. Activate `cs-security-analyst` for any alert; cascade to `cs-blue-team-analyst`, `cs-threat-intel-lead`, or `cs-incident-responder`.
+- **DevSecOps and platform-security engineers** at engineering-led orgs who use Claude Code or similar. Embed `cs-devsecops-engineer` and `cs-appsec-engineer` in CI; route runtime findings into `webapp-security/`.
+- **MSSPs, security consultancies, and red teamers** who need client-ready CVSS / MITRE / evidence-tagged deliverables. White-label the skills, embed in your own delivery stack, ship.
+
+## Compared to other AI security platforms
+
+| Platform | License | Runtime | Differentiator |
+|---|---|---|---|
+| **USAP** | Apache 2.0, open source | Any LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM) | 74 skills + 12 `cs-*` agents + typed 11-field output contract |
+| [Casky.AI](https://casky.ai/) | $49/mo SaaS, Claude-native | Claude only (waitlist) | Prosumer skills lab around investigation deliverables |
+| [Dropzone AI](https://www.dropzone.ai/) | Capacity-priced SaaS (~$36K/yr) | Vendor cloud | 24/7 autonomous AI Tier-1 SOC analyst, 90+ connectors |
+| [Prophet Security](https://www.prophetsecurity.ai/) | Enterprise SaaS, $41M total | Vendor cloud | 1M+ autonomous SOC investigations, 60+ connectors |
+| [7AI](https://7ai.com/) | Enterprise SaaS, $130M Series A | Vendor cloud | 50+ swarming SOC agents, largest cyber Series A on record |
+| [Simbian](https://simbian.ai/) | Enterprise SaaS, $10M seed | Vendor cloud | Multi-agent SOC + pentest under one platform |
+| [Andesite](https://andesite.ai/) | Enterprise SaaS, $38.5M seed | FedRAMP High, BYO-LLM | Federal-grade "Bionic SOC" for regulated buyers |
+
+Full landscape analysis: [`docs/research/casky-ai-competitive-landscape.md`](docs/research/casky-ai-competitive-landscape.md).
 
 ---
 
@@ -16,7 +49,7 @@ Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Olla
 |---|---|---|
 | Anyone — business owner, IT admin, or security engineer | `dist/USAP_LITE.md` | Claude, ChatGPT, Gemini, Ollama |
 | Security team needing full orchestration across specialist agents | `dist/USAP_PRO.md` | Claude, ChatGPT, Gemini, Ollama |
-| Security program with all 69 skills embedded | `dist/USAP_BUNDLE.md` | Claude, ChatGPT, Gemini |
+| Security program with all 74 skills embedded | `dist/USAP_BUNDLE.md` | Claude, ChatGPT, Gemini |
 
 Generate your kit:
 
@@ -30,7 +63,7 @@ python3 shared/scripts/bundle_usap.py bundle --mode full   # → dist/USAP_BUNDL
 
 **Alex** (`cs-security-analyst`) is the single entry point for all three kits. You do not need to know which agent or skill to use — Alex figures that out.
 
-- **Lite:** Alex answers directly from knowledge of all 69 USAP skills. Plain English by default; goes fully technical when you ask.
+- **Lite:** Alex answers directly from knowledge of all 74 USAP skills. Plain English by default; goes fully technical when you ask.
 - **Pro / Full:** Alex detects multi-domain problems, activates party mode (`OR`), delegates to specialist agents (`cs-incident-responder`, `cs-ciso-advisor`, etc.), and synthesizes one unified answer.
 - **Any LLM:** Paste the file as your system prompt. No install required.
 - **Future:** MCP connectors will let Alex pull live cloud inventory, SIEM, and EDR data automatically. Until then, paste logs or describe your environment.
@@ -65,7 +98,7 @@ export GEMINI_API_KEY="your-key-here"
 # Start a chat session with Alex
 python3 shared/scripts/gemini_chat.py --kit lite
 
-# Use the pro kit (Alex + all 6 agents)
+# Use the pro kit (Alex + all 6 specialist agents)
 python3 shared/scripts/gemini_chat.py --kit pro
 
 # Use a different model
@@ -230,16 +263,22 @@ claude          # CLAUDE.md auto-loaded
 
 ## Orchestrator Agents
 
-6 `cs-*` agents that coordinate multiple skills into role-specific workflows:
+7 `cs-*` agents that coordinate multiple skills into role-specific workflows:
 
 | Agent | Domain | Skills Orchestrated | Description |
 |---|---|---|---|
-| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | All 69 skills (full knowledge base) + 5 specialist agents | Universal security advisor — any question, any audience, any domain. Adapts to non-technical and expert users. Makes decisions. |
+| [`cs-security-analyst`](agents/security/cs-security-analyst.md) | Security | All 74 skills (full knowledge base) + 7 specialist agents | Universal security advisor — any question, any audience, any domain. Adapts to non-technical and expert users. Makes decisions. |
 | [`cs-incident-responder`](agents/security/cs-incident-responder.md) | Security | incident-commander, incident-classification, containment-advisor, forensics, zero-day-response | Full incident lifecycle — triage, containment, forensics, post-incident review |
 | [`cs-red-teamer`](agents/security/cs-red-teamer.md) | Security | red-team-planner, red-team-operations, safe-exploitation, attack-path-analysis, continuous-pentesting | Offensive security coordinator — engagement scoping, attack path mapping, findings report |
 | [`cs-devsecops-engineer`](agents/devsecops/cs-devsecops-engineer.md) | DevSecOps | secure-sdlc, sast-dast-coordinator, devsecops-pipeline, build-integrity, supply-chain-risk, appsec-code-review, pipeline-security-scan | Security-in-pipeline engineer — PR gate, pipeline hardening, SBOM generation |
 | [`cs-ciso-advisor`](agents/executive/cs-ciso-advisor.md) | Executive | enterprise-risk-assessment, compliance-mapping, metrics-reporting, security-posture-score, ciso-brief-generator, cyber-insurance | Executive advisor — board reports, risk posture reviews, regulatory gap assessments |
 | [`cs-security-program-manager`](agents/governance/cs-security-program-manager.md) | Governance | security-roadmap-planner, security-debt-tracker, findings-tracker, metrics-reporting, vulnerability-management | Passive lifecycle orchestrator — program planning, proactive scanning, facilitation |
+| [`cs-blue-team-analyst`](agents/security/cs-blue-team-analyst.md) | Security | threat-hunting, threat-intelligence, behavioral-analytics, telemetry-signal-quality, incident-classification, forensics, containment-advisor, detection-engineering | Blue Team commander — alert triage, proactive hunting, DFIR, detection engineering |
+| [`cs-appsec-engineer`](agents/appsec/cs-appsec-engineer.md) | AppSec | webapp-risk-triage, owasp-top10-classifier, api-security-posture, sast-dast-coordinator, secure-sdlc | Runtime + build-time AppSec orchestrator — finding triage, OWASP classification, API posture scoring |
+| [`cs-cloud-investigator`](agents/security/cs-cloud-investigator.md) | Security | cloud-security-posture, cloud-workload-protection, identity-access-risk, threat-hunting | Cloud incident investigation — CSPM triage, workload runtime, IAM anomaly correlation |
+| [`cs-supply-chain-defender`](agents/security/cs-supply-chain-defender.md) | Security | supply-chain-risk, build-integrity, supply-chain-simulation, sast-dast-coordinator | Software supply chain defense — SBOM analysis, malicious package detection, SLSA verification |
+| [`cs-threat-intel-lead`](agents/security/cs-threat-intel-lead.md) | Security | threat-intelligence, threat-hunting, behavioral-analytics, incident-classification | Intelligence-driven SOC — IOC enrichment, attribution, intel-driven hunts |
+| [`cs-purple-team-lead`](agents/security/cs-purple-team-lead.md) | Security | red-team-planner, red-team-operations, detection-engineering, threat-hunting | Purple team orchestrator — detection validation, gap analysis, exercise readiness |
 
 See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 
@@ -288,10 +327,12 @@ graph TB
 | [Red Team](domains/red-team.md) | red-team-operations, red-team-planner, safe-exploitation, continuous-pentesting, attack-path-analysis, ai-red-teaming |
 | [Governance](domains/governance.md) | security-architecture, security-policy-control, security-awareness, findings-tracker, vulnerability-management, metrics-reporting, security-posture-score, ciso-brief-generator |
 | [Platform & AI](domains/platform-ai.md) | orchestrator, tool-execution-broker, guardrail, agent-integrity-monitor, ai-agent-security, ai-ethics-governance, ai-red-teaming |
+| [System Security](domains/system-security.md) | os-hardening |
+| [Pentest](domains/pentest.md) | web-app-pentest, pentest-reporting |
 
 ---
 
-## All 69 skills
+## All 74 skills
 
 | Slug | Level | Category | Description |
 |---|---|---|---|
@@ -356,14 +397,19 @@ graph TB
 | `appsec-code-review` | L4 | AppSec | Security-focused static code analysis: OWASP Top 10, logic flaws, dependency audits |
 | `security-posture-score` | L3 | Governance | Cross-domain security posture scoring: aggregates findings into an executive scorecard |
 | `deception-honeypot` | L4 | Detection | Deception technology strategy: honeypot placement, canary token deployment, lateral movement traps |
-| `code-reviewer` | L4 | Engineering | PR review assistant: architecture, performance, security, and test coverage analysis |
-| `architecture-advisor` | L3 | Engineering | System design advisory: ADR generation, trade-off analysis, scalability review |
-| `sre-runbook-advisor` | L3 | Platform | SRE runbook generation: SLO burn rate analysis, runbook templating, postmortem facilitation |
 | `pipeline-security-scan` | L4 | DevOps | CI/CD pipeline security scanning: secrets in env vars, SAST integration, artifact signing check |
 | `ciso-brief-generator` | L2 | Executive | Generates CISO-level security briefs: risk posture summaries, board-ready narratives |
 | `security-roadmap-planner` | L2 | Governance | Builds investment-prioritized 12-month security program roadmaps from posture, risk, and compliance data |
 | `security-debt-tracker` | L3 | Governance | Tracks and analyzes aging security findings, computes SLA breach counts, and classifies debt accumulation rate |
 | `security-requirements-review` | L3 | AppSec | Proactive analysis of PRDs, architecture docs, and requirements specs to extract security gaps before alerts fire |
+| `os-hardening` | L4 | System Security | OS configuration assessment against CIS Benchmarks, DISA STIGs, and NSA guides with prioritized remediation |
+| `web-app-pentest` | L4 | Pentest | OWASP Top 10 web/API penetration testing with CVSS and MITRE mapping; authorization required |
+| `pentest-reporting` | L2 | Pentest | Compiles pentest findings into executive and technical reports with CVSS risk ratings and patch SLAs |
+| `credential-attacks` | L3 | Red Team | Credential attack reasoning: spray vs brute-force decisions, wordlist selection, hydra result interpretation, lockout risk |
+| `web-enumeration` | L3 | Red Team | Active web content discovery: path brute-force result reasoning, endpoint prioritization, high-value target identification |
+| `webapp-risk-triage` | L3 | Webapp | First-pass webapp finding triage: OWASP category mapping, severity scoring, blast radius scoping, downstream skill routing |
+| `owasp-top10-classifier` | L3 | Webapp | OWASP Top 10 2025 classification with confidence scoring from a finding description or CWE |
+| `api-security-posture` | L3 | Webapp | API surface posture scoring against OWASP API Security Top 10 (BOLA, auth, rate limit, mass assignment, audit) |
 
 ---
 

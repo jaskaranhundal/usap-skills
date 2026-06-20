@@ -3,7 +3,7 @@ name: incident-classification
 description: USAP agent skill for Security Incident Classification and Triage. Use for classifying incoming security events into 14 incident types, assigning SEV1-SEV4 severity with false-positive filtering across 5 categories, and routing confirmed incidents to the correct response track with zero false-negative tolerance on critical criteria.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-response
   updated: 2025-03-23

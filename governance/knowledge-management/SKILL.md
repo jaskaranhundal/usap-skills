@@ -3,7 +3,7 @@ name: knowledge-management
 description: USAP agent skill for Knowledge Management. Manage reusable security knowledge, record agent decisions with rationale, surface relevant precedents, and prevent institutional amnesia.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01

@@ -3,7 +3,7 @@ name: security-policy-control
 description: USAP agent skill for Security Policy & Control. Author and govern policy-as-code rules, assess control effectiveness, and manage the security policy lifecycle.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01

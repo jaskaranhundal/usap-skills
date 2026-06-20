@@ -3,7 +3,7 @@ name: tool-execution-broker
 description: USAP agent skill for Tool Execution Authorization and Brokering. Use for authorizing, logging, and gating all mutating tool calls from USAP agents — enforces scope validation, approval gates, and tamper-evident audit trails for every automated security action before execution.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-platform-ai
   updated: 2025-03-23

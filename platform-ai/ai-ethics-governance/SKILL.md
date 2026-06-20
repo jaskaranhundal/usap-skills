@@ -3,7 +3,7 @@ name: ai-ethics-governance
 description: USAP agent skill for AI Ethics & Governance. Use for Govern ethical use and explainability of AI decisions.
 license: MIT
 metadata:
-  version: 1.0.0
+  version: "1.0.0"
   author: USAP Team
   category: usap-executive
   updated: 2026-02-28

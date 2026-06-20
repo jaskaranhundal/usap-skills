@@ -3,7 +3,7 @@ name: privacy-dpia
 description: USAP agent skill for Privacy & DPIA. Produce GDPR-compliant Data Protection Impact Assessments, identify high-risk processing activities, and generate privacy evidence packs.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01

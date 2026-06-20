@@ -1,0 +1,24 @@
+{
+  "agent_slug": "webapp-risk-triage",
+  "intent_type": "escalate",
+  "action": "Escalate to response/incident-classification — active SQL-injection exploit observed in production order-lookup API.",
+  "rationale": "Authenticated SQL injection in /api/v1/orders/<id> with a publicly available exploit, production environment, and confidential data tier — matches the routing rule 'production + active-in-the-wild -> incident-classification' (workflow.md). Severity escalated from 'high' to 'critical' per the severity matrix exploit-availability adjustment.",
+  "confidence": 0.92,
+  "severity": "critical",
+  "key_findings": [
+    "SQL-injection sink confirmed on parameter 'order_id' in /api/v1/orders/<id>",
+    "Authenticated user role required, but standard customer role suffices (no admin needed)",
+    "Public exploit module available; observed payload signature matches known PoC",
+    "Confidential-tier data (order details with PII) exposed via UNION-based extraction"
+  ],
+  "evidence_references": [
+    {"source": "scanner", "ref": "burp-pro://scan/2891/issue/sqli-1", "quote": "Parameter order_id reflected in error message with PostgreSQL stack trace"},
+    {"source": "siem", "ref": "splunk://search/abc123", "quote": "10x increase in 500-status responses from /api/v1/orders in the 6-hour window"}
+  ],
+  "next_agents": ["incident-classification", "compliance-mapping"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1190"],
+  "affected_assets": ["https://example.com/api/v1/orders"],
+  "regulatory_flags": ["PCI-DSS 6.5.1", "GDPR Art. 32"]
+}

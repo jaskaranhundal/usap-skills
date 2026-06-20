@@ -1,0 +1,65 @@
+site_name: USAP — Open-Source AI Cybersecurity Agent Skills
+site_description: Open-source AI cybersecurity agent skills for SOC, incident response, threat hunting, red team, blue team, and DevSecOps. 74 skills + 12 cs-* orchestrator agents across 12 security domains. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM with no SaaS lock-in.
+site_url: https://jaskaranhundal.github.io/usap-skills/
+site_author: USAP Team
+
+repo_name: jaskaranhundal/usap-skills
+repo_url: https://github.com/jaskaranhundal/usap-skills
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  custom_dir: overrides
+  features:
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.action.edit
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/jaskaranhundal/usap-skills
+
+nav:
+  - Home: index.md
+  - Domains:
+      - Overview: domains/index.md
+      - webapp-security: domains/webapp-security.md
+  - Comparisons:
+      - USAP vs Casky.AI: comparisons/vs-casky-ai.md
+  - GitHub: https://github.com/jaskaranhundal/usap-skills

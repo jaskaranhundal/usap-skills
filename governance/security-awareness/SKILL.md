@@ -3,7 +3,7 @@ name: security-awareness
 description: USAP agent skill for Security Awareness. Track and improve human risk posture through targeted training, phishing simulation analysis, and behavioral risk measurement.
 license: MIT
 metadata:
-  version: 2.0.0
+  version: "2.0.0"
   author: USAP Team
   category: usap-governance
   updated: 2026-03-01
