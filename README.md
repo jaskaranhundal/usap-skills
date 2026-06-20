@@ -442,6 +442,23 @@ See [`shared/README.md`](shared/README.md) for usage.
 
 ---
 
+## External references
+
+`references/` pins related skill ecosystems as git submodules so contributors can study prior art, borrow patterns, or cross-walk taxonomies. They are **not runtime dependencies** — USAP runs without them. Fetch them with:
+
+```bash
+git submodule update --init --recursive references
+```
+
+| Submodule | Purpose | Author / License |
+|---|---|---|
+| [`references/Anthropic-Cybersecurity-Skills`](https://github.com/mukul975/Anthropic-Cybersecurity-Skills) | 754 cybersecurity skills across 26 domains, mapped to MITRE ATT&CK v19, NIST CSF 2.0, MITRE ATLAS / D3FEND, and NIST AI RMF; compatible with the `agentskills.io` open standard | Mahipal Jangra (@mukul975) — Apache 2.0 |
+| [`references/claude-skills`](https://github.com/alirezarezvani/claude-skills) | Multi-team skill library (engineering, marketing, ra-qm, etc.) authored against Anthropic's skill conventions | Alireza Rezvani — MIT |
+| [`references/BMAD-METHOD`](https://github.com/bmad-code-org/BMAD-METHOD) | Breakthrough Method for Agile Agentic-Driven Development; reference for multi-agent orchestration patterns | BMAD-Code-Org — MIT |
+| [`references/openclaw`](https://github.com/openclaw/openclaw) | Open-source agent runtime with sandboxed tool execution | openclaw — MIT |
+
+---
+
 ## Contributing
 
 To add a new agent, open a PR against this repo. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full authoring guide including frontmatter requirements, SKILL.md body structure, and quality bar.

@@ -7,3 +7,6 @@
 [submodule "references/openclaw"]
 	path = references/openclaw
 	url = https://github.com/openclaw/openclaw.git
+[submodule "references/Anthropic-Cybersecurity-Skills"]
+	path = references/Anthropic-Cybersecurity-Skills
+	url = https://github.com/mukul975/Anthropic-Cybersecurity-Skills.git
