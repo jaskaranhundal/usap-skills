@@ -79,6 +79,26 @@ def _is_str(v: object) -> bool:
     return isinstance(v, str)
 
 
+def _coerce_bool(v: object) -> object:
+    """Coerce string ``"true"`` / ``"false"`` to Python booleans.
+
+    The shared frontmatter parser in ``tools/validate_skill.py`` is
+    stdlib-only and does not infer YAML scalar types beyond strings and
+    lists. YAML's ``user-invocable: true`` lands as the literal string
+    ``"true"`` here. Coerce so the boolean invariants below check
+    against real bools.
+    """
+    if isinstance(v, bool):
+        return v
+    if isinstance(v, str):
+        lower = v.strip().lower()
+        if lower == "true":
+            return True
+        if lower == "false":
+            return False
+    return v
+
+
 def _infer_level(fm: Dict[str, object], body: str, skill_dir: Path) -> str:
     metadata = fm.get("metadata") if isinstance(fm.get("metadata"), dict) else {}
     if isinstance(metadata, dict):
@@ -124,12 +144,14 @@ def _check_skill(skill_dir: Path) -> Tuple[List[str], List[str], str]:
 
     level = _infer_level(fm, body, skill_dir)
 
-    # Validate types of any present invocation-control fields.
-    dmi = fm.get("disable-model-invocation")
+    # Validate types of any present invocation-control fields. Coerce
+    # string "true"/"false" since the shared parser does not infer YAML
+    # booleans.
+    dmi = _coerce_bool(fm.get("disable-model-invocation"))
     if "disable-model-invocation" in fm and not isinstance(dmi, bool):
         errors.append("disable-model-invocation must be a boolean")
 
-    ui = fm.get("user-invocable")
+    ui = _coerce_bool(fm.get("user-invocable"))
     if "user-invocable" in fm and not isinstance(ui, bool):
         errors.append("user-invocable must be a boolean")
 
