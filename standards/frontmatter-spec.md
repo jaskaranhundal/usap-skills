@@ -154,6 +154,69 @@ These artifacts are regenerated on every CI run and `git diff --exit-code mappin
 
 ---
 
+## Invocation Control (Claude Code extensions to agentskills.io)
+
+These optional top-level fields layer onto the agentskills.io minimum (which only requires `name` and `description`). They are honored verbatim by Claude Code; other clients can ignore them safely. USAP uses them to express its L1–L4 autonomy model in machine-readable frontmatter rather than only in prose.
+
+Source: <https://code.claude.com/docs/en/skills>.
+
+### `disable-model-invocation`
+- **Type:** boolean
+- **Default:** `false`
+- **Meaning:** If `true`, only humans can invoke this skill (the model cannot select it autonomously). Required on every L4 (mutating) USAP skill.
+- **USAP invariant:** L4 skills must set `disable-model-invocation: true`. The L4 contract gates every mutating action behind a human; this field is the machine-readable expression of that gate.
+
+### `user-invocable`
+- **Type:** boolean
+- **Default:** `true`
+- **Meaning:** If `false`, the skill is not exposed as a slash command and can only be triggered programmatically by another skill or agent. Useful for sub-skills that should never appear in a `/help` listing.
+- **USAP invariant:** L1 advisory skills may set `user-invocable: false` when they are pure helpers (no operator-facing surface). All other levels keep the default.
+
+### `allowed-tools`
+- **Type:** string (space-separated)
+- **Format:** Claude Code grammar — `Bash(git:*) Bash(jq:*) Read Write`. Each token is a tool name optionally followed by a pattern in parentheses.
+- **USAP invariant:** Every L3 and L4 skill that depends on host tools must declare a non-empty `allowed-tools` so external clients can refuse out-of-policy commands. L1 / L2 advisory skills typically omit this field (no host-tool dependency).
+- **Conformance:** agentskills.io defines this field as "experimental"; USAP's use of it is forward-compatible.
+
+### `disallowed-tools`
+- **Type:** string (space-separated)
+- **Format:** Same grammar as `allowed-tools`.
+- **Meaning:** Explicit denylist that overrides any inherited allowlist.
+- **USAP invariant:** Recommended on every L3 / L4 skill — at minimum `Bash(rm:*) Bash(sudo:*)` to prevent accidental host damage. This is layered defense; the runtime should already block these.
+
+### `context`
+- **Type:** string enum: `inherit` (default), `fork`
+- **Meaning:** `fork` runs the skill in a fresh model context (no parent conversation history). Useful for skills where prior chat context would bias the result (e.g., evidence-only triage).
+- **USAP invariant:** Recommended `fork` on L3 evidence-handling skills (forensics, incident-classification, finding-triage). The fresh context makes the skill output reproducible and replayable.
+
+### `paths`
+- **Type:** `array[string]` (glob patterns)
+- **Meaning:** Restricts the skill to operating on files matching the listed globs. The model can still read other paths if `allowed-tools` permits, but the skill's operational scope is documented here.
+- **USAP invariant:** Recommended on every L3 / L4 skill that mutates files. Skills with no on-disk surface (advisory / scoring / classification) omit it.
+
+### `model`
+- **Type:** string
+- **Meaning:** Override the default model for this skill. Honored by Claude Code; ignored by clients that pin model per session.
+- **USAP invariant:** Use sparingly. Most skills should not override the operator's session model.
+
+### `effort`
+- **Type:** string enum: `low`, `medium`, `high`, `xhigh`, `max`
+- **Meaning:** Reasoning effort override. Higher = deeper thinking, slower output.
+- **USAP invariant:** Use sparingly. Default to operator's session effort.
+
+### Level → invocation-control invariants (summary)
+
+| Level | `disable-model-invocation` | `user-invocable` | `allowed-tools` | `context` |
+|---|---|---|---|---|
+| L1 (advisory) | false | optional | omitted | inherit |
+| L2 (analytical) | false | true | omitted | inherit |
+| L3 (operational) | false | true | required, non-empty | `fork` if evidence-handling |
+| L4 (executive) | **true** (required) | true | required, non-empty | `fork` recommended |
+
+`tools/validate_invocation_control.py` enforces these invariants. The check WARNs on violations during the rollout window; failures will become errors once at least 80% of L3 / L4 skills are backfilled.
+
+---
+
 ## Optional Metadata Fields
 
 ### `metadata.context_file`

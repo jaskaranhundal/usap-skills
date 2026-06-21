@@ -18,6 +18,17 @@ metadata:
   #   owasp_top10:  [A01, A03]
   #   d3fend:       ["Process Termination"]
   #   nist_ai_rmf:  [MAP-1.1, MEASURE-2.7]
+# ---------------- Invocation Control (Claude Code extensions) ----------------
+# Optional top-level fields layering onto agentskills.io. See
+# standards/frontmatter-spec.md "Invocation Control" for the L1-L4 invariants.
+# Uncomment and edit for L3 / L4 skills.
+#
+# disable-model-invocation: true     # required on L4 (mutating) skills
+# user-invocable: true
+# allowed-tools: "Bash(git:*) Read"  # required non-empty on L3/L4 with tool deps
+# disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+# context: fork                       # recommended for L3 evidence-handling
+# paths: ["target/**"]                # recommended for L3/L4 file mutators
 ---
 
 # <Title>

@@ -8,9 +8,14 @@ metadata:
   category: usap-webapp
   updated: 2026-06-20
   agent_slug: "api-security-posture"
+  usap_level: "L3"
   frameworks:
     mitre_attack: [T1078, T1190]
     owasp_top10: [A01, A03, A07]
+user-invocable: true
+allowed-tools: "Read Grep Glob"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+context: inherit
 ---
 
 # API Security Posture

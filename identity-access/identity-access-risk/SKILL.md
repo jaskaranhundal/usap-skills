@@ -8,6 +8,7 @@ metadata:
   category: usap-identity-access
   updated: 2025-03-23
   agent_slug: identity-access-risk
+  usap_level: "L3"
   agent_id: 14
   level: L4
   plane: work
