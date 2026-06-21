@@ -8,6 +8,7 @@ metadata:
   category: usap-system-security
   updated: 2026-05-20
   agent_slug: "os-hardening"
+  usap_level: "L4"
   level: L4
   plane: endpoint
   phase: detect
@@ -15,6 +16,11 @@ metadata:
   can_execute: false
   providers: ["linux", "windows", "macos"]
   required_invoke_role: security-engineer
+disable-model-invocation: true
+user-invocable: true
+allowed-tools: "Read Grep Glob Bash(git diff:*)"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*) Bash(mv:*)"
+context: fork
 ---
 
 # OS Hardening Assessment Agent
