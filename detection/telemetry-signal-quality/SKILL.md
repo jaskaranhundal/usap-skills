@@ -8,6 +8,7 @@ metadata:
   category: usap-detection
   updated: 2025-03-23
   agent_slug: telemetry-signal-quality
+  usap_level: "L3"
   agent_id: 8
   level: L3
   plane: control
@@ -19,6 +20,10 @@ metadata:
   providers: [claude, openai, gemini, ollama, mock]
   required_invoke_role: system
   required_approver_role: admin
+user-invocable: true
+allowed-tools: "Read Grep Glob"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+context: inherit
 ---
 
 # Telemetry and Signal Quality Agent
