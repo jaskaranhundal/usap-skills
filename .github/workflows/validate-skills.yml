@@ -73,6 +73,13 @@ jobs:
         run: |
           python3 tools/framework_extractor.py --check
 
+
+      - name: Validate invocation-control frontmatter (Claude Code extensions)
+        # Strict — all 18 originally WARN'd skills were backfilled with explicit
+        # metadata.usap_level + invocation-control fields; the validator now
+        # blocks the build on any new WARN regression.
+        run: |
+          python3 tools/validate_invocation_control.py --all --strict --summary
       - name: Naming convention check (cs-* agents)
         run: |
           python3 - <<'PYEOF'

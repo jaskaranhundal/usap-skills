@@ -1,0 +1,21 @@
+{
+  "agent_slug": "patch-candidate",
+  "intent_type": "respond",
+  "action": "<one-sentence: N candidate patches written to <target>/patches/, awaiting human review>",
+  "rationale": "<patch summary: rule_ids covered, regression-risk distribution, files touched>",
+  "confidence": 0.8,
+  "severity": "high",
+  "key_findings": [
+    "<PATCH-001 for VF-id (rule_id) at path:line — regression risk: low, verify with: <command>>"
+  ],
+  "evidence_references": [
+    {"source": "patch", "ref": "<target>/patches/<finding_id>.patch", "quote": "<one-line diff hunk>"},
+    {"source": "triage", "ref": "<target>/TRIAGE.md", "quote": "<triage row consumed>"}
+  ],
+  "next_agents": ["finding-triage"],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1190"],
+  "affected_assets": ["<target>"],
+  "artifact_path": "<target>/PATCH-CANDIDATES.md"
+}

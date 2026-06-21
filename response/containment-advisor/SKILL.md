@@ -8,6 +8,7 @@ metadata:
   category: usap-response
   updated: 2025-03-23
   agent_slug: containment-advisor
+  usap_level: "L3"
   agent_id: 12
   level: L3
   plane: work
@@ -19,6 +20,10 @@ metadata:
   providers: [claude, openai, gemini, ollama, mock]
   required_invoke_role: soc_analyst
   required_approver_role: soc_lead
+user-invocable: true
+allowed-tools: "Read Grep Glob"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+context: inherit
 ---
 
 # Containment Advisor Agent
