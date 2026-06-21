@@ -8,6 +8,7 @@ metadata:
   category: usap-governance
   updated: 2026-03-10
   agent_slug: "security-debt-tracker"
+  usap_level: "L3"
   agent_id: 49
   level: L3
   plane: work
@@ -22,6 +23,10 @@ metadata:
   input_schema: findings_list
   output_schema: debt_summary, debt_buckets, accumulation_rate
   runtime_contract: ../../agents/security-debt-tracker.yaml
+user-invocable: true
+allowed-tools: "Read Grep Glob"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+context: inherit
 ---
 
 # Security Debt Tracker

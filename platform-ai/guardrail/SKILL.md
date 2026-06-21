@@ -8,6 +8,12 @@ metadata:
   category: usap-control-plane
   updated: 2026-03-01
   agent_slug: "guardrail"
+  usap_level: "L4"
+disable-model-invocation: true
+user-invocable: true
+allowed-tools: "Read Grep Glob Bash(git diff:*)"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*) Bash(mv:*)"
+context: fork
 ---
 
 # Guardrail Agent

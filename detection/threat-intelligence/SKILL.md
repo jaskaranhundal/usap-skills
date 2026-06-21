@@ -8,6 +8,7 @@ metadata:
   category: usap-detection
   updated: 2026-06-20
   agent_slug: "threat-intelligence"
+  usap_level: "L3"
   agent_id: 25
   level: L3
   plane: work
@@ -22,6 +23,10 @@ metadata:
   frameworks:
     mitre_attack: [T1078, T1041, T1055, T1059, T1110, T1133, T1190, T1195]
     nist_csf: [ID.RA-03, ID.RA-05, DE.AE-07]
+user-invocable: true
+allowed-tools: "Read Grep Glob"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+context: inherit
 ---
 
 # Threat Intelligence Agent

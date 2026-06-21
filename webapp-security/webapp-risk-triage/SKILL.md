@@ -8,9 +8,14 @@ metadata:
   category: usap-webapp
   updated: 2026-06-20
   agent_slug: "webapp-risk-triage"
+  usap_level: "L3"
   frameworks:
     mitre_attack: [T1190]
     owasp_top10: [A01, A03, A05, A07]
+user-invocable: true
+allowed-tools: "Read Grep Glob"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+context: inherit
 ---
 
 # Webapp Risk Triage

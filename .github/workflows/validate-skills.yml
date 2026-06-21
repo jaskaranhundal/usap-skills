@@ -75,12 +75,11 @@ jobs:
 
 
       - name: Validate invocation-control frontmatter (Claude Code extensions)
-        # WARN-first during rollout. Flip continue-on-error to false once
-        # at least 80% of L3 / L4 skills carry metadata.usap_level and the
-        # required invariant fields.
-        continue-on-error: true
+        # Strict — all 18 originally WARN'd skills were backfilled with explicit
+        # metadata.usap_level + invocation-control fields; the validator now
+        # blocks the build on any new WARN regression.
         run: |
-          python3 tools/validate_invocation_control.py --all --summary
+          python3 tools/validate_invocation_control.py --all --strict --summary
       - name: Naming convention check (cs-* agents)
         run: |
           python3 - <<'PYEOF'
