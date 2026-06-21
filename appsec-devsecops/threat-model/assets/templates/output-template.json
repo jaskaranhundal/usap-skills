@@ -1,0 +1,22 @@
+{
+  "agent_slug": "threat-model",
+  "intent_type": "analyze",
+  "action": "<one-sentence next action — name the downstream skill (typically vuln-scan)>",
+  "rationale": "<evidence-based summary of the model: top boundaries, top DREAD threats, top assumptions>",
+  "confidence": 0.85,
+  "severity": "high",
+  "key_findings": [
+    "<TM-001 threat id>: <STRIDE category> at <boundary> — DREAD sum <N>",
+    "<TM-002 threat id>: <STRIDE category> at <boundary> — DREAD sum <N>",
+    "<TM-003 threat id>: ..."
+  ],
+  "evidence_references": [
+    {"source": "spec", "ref": "<target_path or description>", "quote": "<short excerpt or null>"}
+  ],
+  "next_agents": ["vuln-scan"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1190"],
+  "affected_assets": ["<target_name>"],
+  "artifact_path": "<target>/THREAT_MODEL.md"
+}

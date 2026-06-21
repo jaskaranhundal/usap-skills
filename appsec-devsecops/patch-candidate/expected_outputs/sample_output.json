@@ -1,0 +1,25 @@
+{
+  "agent_slug": "patch-candidate",
+  "intent_type": "respond",
+  "action": "4 candidate patches written to /tmp/simple-store-api/patches/ — awaiting human review before apply.",
+  "rationale": "Generated patches for the 4 confirmed findings from TRIAGE.md. All patches are minimal (one-function blast radius), carry inline usap-patch: rationale comments, and pass git apply --check against the current SHA. Regression-risk: 3 low, 1 medium (VF-004 touches a route handler signature). No suspected or refuted findings produced patches.",
+  "confidence": 0.82,
+  "severity": "high",
+  "key_findings": [
+    "PATCH-001 for VF-001 (hardcoded-credential) at src/config.py:14 — risk: low, verify with: grep -RnE 'password\\s*=\\s*[\\\"][^\\\"]+[\\\"]' src/",
+    "PATCH-002 for VF-004 (missing-input-validation) at src/routes/profile.js:11 — risk: medium, verify with: oversized-body negative test",
+    "PATCH-003 for VF-002 (sql-string-concat) at src/db/profile.js:42 — risk: low, verify with: parameterized-query unit test",
+    "PATCH-004 for VF-003 (public-iac) at infra/storage.tf:21 — risk: low, verify with: terraform plan shows acl flip to private"
+  ],
+  "evidence_references": [
+    {"source": "patch", "ref": "/tmp/simple-store-api/patches/PATCH-001.patch", "quote": "- PASSWORD = \"changeme-prod\"\n+ PASSWORD = os.environ.get(\"DB_PASSWORD\")"},
+    {"source": "patch", "ref": "/tmp/simple-store-api/patches/PATCH-002.patch", "quote": "+ if not isinstance(req.body, dict) or len(req.body) > 1024: return 400"},
+    {"source": "triage", "ref": "/tmp/simple-store-api/TRIAGE.md", "quote": "4 confirmed findings ranked"}
+  ],
+  "next_agents": ["finding-triage"],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1190"],
+  "affected_assets": ["SimpleStoreAPI"],
+  "artifact_path": "/tmp/simple-store-api/PATCH-CANDIDATES.md"
+}
