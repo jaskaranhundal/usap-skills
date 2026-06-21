@@ -1,0 +1,25 @@
+{
+  "agent_slug": "threat-model",
+  "intent_type": "analyze",
+  "action": "Hand off the threat model + DREAD hit list to vuln-scan; scope its checks to the top-3 boundaries.",
+  "rationale": "SimpleStoreAPI exposes a confidential user table behind an Express server with no documented row-level authorization. Spoofing (S1) and Information disclosure (I1) at the client-server boundary score DREAD 38 and 34 respectively. Two assumptions remain unverified: presence of a transit TLS terminator and rate-limit posture on /api/v1/profile.",
+  "confidence": 0.82,
+  "severity": "high",
+  "key_findings": [
+    "TM-001 (Spoofing): unauthenticated PUT on /api/v1/profile — DREAD sum 38",
+    "TM-002 (Information disclosure): confidential user table without row-level authz — DREAD sum 34",
+    "TM-003 (Tampering): unsigned session cookie traversing client-server boundary — DREAD sum 27",
+    "TM-004 (Elevation of privilege): admin and customer routes share a controller — DREAD sum 25",
+    "Two unverified assumptions logged in THREAT_MODEL.md (TLS terminator presence, /api/v1/profile rate-limit posture)"
+  ],
+  "evidence_references": [
+    {"source": "spec", "ref": "/tmp/simple-store-api/", "quote": "auth_scheme: none on PUT /api/v1/profile"},
+    {"source": "spec", "ref": "/tmp/simple-store-api/db/schema.sql", "quote": "table users contains email, phone, hashed_password"}
+  ],
+  "next_agents": ["vuln-scan"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1190", "T1078"],
+  "affected_assets": ["SimpleStoreAPI"],
+  "artifact_path": "/tmp/simple-store-api/THREAT_MODEL.md"
+}

@@ -1,0 +1,21 @@
+{
+  "agent_slug": "vuln-scan",
+  "intent_type": "detect",
+  "action": "<one-sentence: hand off to finding-triage with N findings>",
+  "rationale": "<scan summary: how many findings, how many mapped to threats, top severity>",
+  "confidence": 0.82,
+  "severity": "high",
+  "key_findings": [
+    "<VF-001 rule_id at path:line — mapped to TM-001, proximity 9>",
+    "<VF-002 ...>"
+  ],
+  "evidence_references": [
+    {"source": "scanner", "ref": "<path>:<line>", "quote": "<evidence snippet>"}
+  ],
+  "next_agents": ["finding-triage"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1552.001"],
+  "affected_assets": ["<target>"],
+  "artifact_path": "<target>/VULN-FINDINGS.json"
+}

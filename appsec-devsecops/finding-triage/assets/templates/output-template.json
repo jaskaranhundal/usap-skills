@@ -1,0 +1,19 @@
+{
+  "agent_slug": "finding-triage",
+  "intent_type": "analyze",
+  "action": "<one-sentence: hand off the top-N hit list to patch-candidate>",
+  "rationale": "<triage summary: how many confirmed, how many refuted, top score>",
+  "confidence": 0.84,
+  "severity": "high",
+  "key_findings": [
+    "<rank #1: VF-id rule_id at path:line — confirmed, score N>",
+    "<rank #2 ...>"
+  ],
+  "evidence_references": [
+    {"source": "scanner", "ref": "<path>:<line>", "quote": "<evidence>"}
+  ],
+  "next_agents": ["patch-candidate"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "artifact_path": "<target>/TRIAGE.md"
+}

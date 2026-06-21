@@ -8,6 +8,11 @@ metadata:
   category: usap-devsecops
   updated: 2026-03-01
   agent_slug: "build-integrity"
+  usap_level: "L3"
+user-invocable: true
+allowed-tools: "Read Grep Glob"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+context: inherit
 ---
 
 # Build Integrity Agent

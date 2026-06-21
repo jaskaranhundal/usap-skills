@@ -8,6 +8,7 @@ metadata:
   category: usap-platform-ai
   updated: 2025-03-23
   agent_slug: tool-execution-broker
+  usap_level: "L3"
   agent_id: 35
   level: L3
   plane: work
@@ -19,6 +20,10 @@ metadata:
   providers: [claude, openai, anythingllm, gemini, ollama, mock]
   required_invoke_role: admin
   required_approver_role: admin
+user-invocable: true
+allowed-tools: "Read Grep Glob"
+disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
+context: inherit
 ---
 
 # Tool Execution Broker Agent
