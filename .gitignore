@@ -25,3 +25,8 @@ references/private-research/
 
 # Local-only launch playbook — never publish (paste-ready posts, awesome-list PR drafts)
 LAUNCH.md
+
+# Claude Code session-local files — hardcoded $HOME paths, auto-approve rules; never publish
+# (the rest of .claude/ — commands/, skills/ — IS load-bearing and stays tracked)
+.claude/settings.local.json
+.claude/launch.json
