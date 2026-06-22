@@ -1,0 +1,312 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="980" viewBox="0 0 920 980" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, 'Cascadia Mono', 'Roboto Mono', Consolas, 'Courier New', monospace" font-size="13">
+<rect x="0" y="0" width="920" height="980" rx="8" ry="8" fill="#0d1117"/>
+<rect x="0" y="0" width="920" height="28" fill="#161b22"/>
+<circle cx="16" cy="14" r="6" fill="#ff5f57"/>
+<circle cx="34" cy="14" r="6" fill="#febc2e"/>
+<circle cx="52" cy="14" r="6" fill="#28c840"/>
+<text x="460" y="18" fill="#c9d1d9" font-size="12" text-anchor="middle">usap-alex demo - cs-appsec-engineer</text>
+<g opacity="0">
+<text x="14.0" y="38" fill="#8b949e" xml:space="preserve"># USAP demo: cs-appsec-engineer -&gt; vuln-scan -&gt; finding-triage</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.00s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="54" fill="#8b949e" xml:space="preserve"># JSON below is byte-identical to expected_outputs/sample_output.json</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.16s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<animate attributeName="opacity" from="0" to="1" begin="0.32s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="86" fill="#7ee787" xml:space="preserve">you  [#e6edf3]Scan examples/SimpleStoreAPI and route any high findings to triage.</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.48s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<animate attributeName="opacity" from="0" to="1" begin="0.64s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="118" fill="#d2a8ff" xml:space="preserve">cs-appsec-engineer  [#e6edf3]Running vuln-scan against threat model TM-001..TM-005.</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.80s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<animate attributeName="opacity" from="0" to="1" begin="0.96s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="150" fill="#7ee787" xml:space="preserve">$ python3 appsec-devsecops/vuln-scan/scripts/vuln-scan_tool.py \</text>
+<animate attributeName="opacity" from="0" to="1" begin="1.12s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="166" fill="#7ee787" xml:space="preserve">    --input examples/SimpleStoreAPI/scan-context.json --output json</text>
+<animate attributeName="opacity" from="0" to="1" begin="1.28s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<animate attributeName="opacity" from="0" to="1" begin="1.44s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="198" fill="#c9d1d9" xml:space="preserve">{</text>
+<animate attributeName="opacity" from="0" to="1" begin="1.60s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="214" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="214" fill="#79c0ff" xml:space="preserve">&quot;agent_slug&quot;</text>
+<text x="119.0" y="214" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="126.5" y="214" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="134.0" y="214" fill="#a5d6ff" xml:space="preserve">&quot;vuln-scan&quot;</text>
+<text x="216.5" y="214" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="1.76s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="230" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="230" fill="#79c0ff" xml:space="preserve">&quot;intent_type&quot;</text>
+<text x="126.5" y="230" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="134.0" y="230" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="141.5" y="230" fill="#a5d6ff" xml:space="preserve">&quot;detect&quot;</text>
+<text x="201.5" y="230" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="1.92s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="246" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="246" fill="#79c0ff" xml:space="preserve">&quot;action&quot;</text>
+<text x="89.0" y="246" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="96.5" y="246" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="104.0" y="246" fill="#a5d6ff" xml:space="preserve">&quot;Hand off to finding-triage \u2014 4 mapped findings, 1 unmapped, top severity high.&quot;</text>
+<text x="741.5" y="246" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="2.08s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="262" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="262" fill="#79c0ff" xml:space="preserve">&quot;rationale&quot;</text>
+<text x="111.5" y="262" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="119.0" y="262" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="126.5" y="262" fill="#a5d6ff" xml:space="preserve">&quot;Scanned SimpleStoreAPI against TM-001..TM-005. Found 5 distinct findings after dedup: hardcoded credential (TM-001 proximity 9), SQL string concat (TM-002 proximity 8), public S3 ACL (TM-002 proximity 7), permissive CORS (unmapped), missing input validation on /api/v1/profile (TM-001 proximity 9). Confidence dampened 0.05 per merge.&quot;</text>
+<text x="2646.5" y="262" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="2.24s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="278" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="278" fill="#79c0ff" xml:space="preserve">&quot;confidence&quot;</text>
+<text x="119.0" y="278" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="126.5" y="278" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="134.0" y="278" fill="#ffa657" xml:space="preserve">0.82</text>
+<text x="164.0" y="278" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="2.40s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="294" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="294" fill="#79c0ff" xml:space="preserve">&quot;severity&quot;</text>
+<text x="104.0" y="294" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="111.5" y="294" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="119.0" y="294" fill="#a5d6ff" xml:space="preserve">&quot;high&quot;</text>
+<text x="164.0" y="294" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="2.56s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="310" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="310" fill="#79c0ff" xml:space="preserve">&quot;key_findings&quot;</text>
+<text x="134.0" y="310" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="141.5" y="310" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="149.0" y="310" fill="#c9d1d9" xml:space="preserve">[</text>
+<animate attributeName="opacity" from="0" to="1" begin="2.72s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="326" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="326" fill="#a5d6ff" xml:space="preserve">&quot;VF-001 hardcoded-credential at src/config.py:14 \u2014 mapped to TM-001, proximity 9&quot;</text>
+<text x="689.0" y="326" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="2.88s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="342" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="342" fill="#a5d6ff" xml:space="preserve">&quot;VF-002 sql-string-concat at src/db/profile.js:42 \u2014 mapped to TM-002, proximity 8&quot;</text>
+<text x="696.5" y="342" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="3.04s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="358" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="358" fill="#a5d6ff" xml:space="preserve">&quot;VF-003 public-iac at infra/storage.tf:21 \u2014 mapped to TM-002, proximity 7&quot;</text>
+<text x="636.5" y="358" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="3.20s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="374" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="374" fill="#a5d6ff" xml:space="preserve">&quot;VF-004 missing-input-validation at src/routes/profile.js:11 \u2014 mapped to TM-001, proximity 9&quot;</text>
+<text x="779.0" y="374" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="3.36s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="390" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="390" fill="#a5d6ff" xml:space="preserve">&quot;VF-005 permissive-cors at src/middleware/cors.js:6 \u2014 UNMAPPED (no top-5 threat covers this)&quot;</text>
+<animate attributeName="opacity" from="0" to="1" begin="3.52s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="406" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="406" fill="#c9d1d9" xml:space="preserve">]</text>
+<text x="36.5" y="406" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="3.68s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="422" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="422" fill="#79c0ff" xml:space="preserve">&quot;evidence_references&quot;</text>
+<text x="186.5" y="422" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="194.0" y="422" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="201.5" y="422" fill="#c9d1d9" xml:space="preserve">[</text>
+<animate attributeName="opacity" from="0" to="1" begin="3.84s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="438" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="438" fill="#c9d1d9" xml:space="preserve">{</text>
+<animate attributeName="opacity" from="0" to="1" begin="4.00s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="454" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="454" fill="#79c0ff" xml:space="preserve">&quot;source&quot;</text>
+<text x="119.0" y="454" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="126.5" y="454" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="134.0" y="454" fill="#a5d6ff" xml:space="preserve">&quot;scanner&quot;</text>
+<text x="201.5" y="454" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="4.16s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="470" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="470" fill="#79c0ff" xml:space="preserve">&quot;ref&quot;</text>
+<text x="96.5" y="470" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="104.0" y="470" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="111.5" y="470" fill="#a5d6ff" xml:space="preserve">&quot;src/config.py:14&quot;</text>
+<text x="246.5" y="470" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="4.32s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="486" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="486" fill="#79c0ff" xml:space="preserve">&quot;quote&quot;</text>
+<text x="111.5" y="486" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="119.0" y="486" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="126.5" y="486" fill="#a5d6ff" xml:space="preserve">&quot;PASSWORD = \&quot;changeme-prod\&quot;&quot;</text>
+<animate attributeName="opacity" from="0" to="1" begin="4.48s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="502" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="502" fill="#c9d1d9" xml:space="preserve">}</text>
+<text x="51.5" y="502" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="4.64s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="518" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="518" fill="#c9d1d9" xml:space="preserve">{</text>
+<animate attributeName="opacity" from="0" to="1" begin="4.80s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="534" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="534" fill="#79c0ff" xml:space="preserve">&quot;source&quot;</text>
+<text x="119.0" y="534" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="126.5" y="534" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="134.0" y="534" fill="#a5d6ff" xml:space="preserve">&quot;scanner&quot;</text>
+<text x="201.5" y="534" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="4.96s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="550" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="550" fill="#79c0ff" xml:space="preserve">&quot;ref&quot;</text>
+<text x="96.5" y="550" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="104.0" y="550" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="111.5" y="550" fill="#a5d6ff" xml:space="preserve">&quot;src/db/profile.js:42&quot;</text>
+<text x="276.5" y="550" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="5.12s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="566" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="566" fill="#79c0ff" xml:space="preserve">&quot;quote&quot;</text>
+<text x="111.5" y="566" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="119.0" y="566" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="126.5" y="566" fill="#a5d6ff" xml:space="preserve">&quot;db.query('SELECT * FROM users WHERE id = ' + req.params.id)&quot;</text>
+<animate attributeName="opacity" from="0" to="1" begin="5.28s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="582" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="582" fill="#c9d1d9" xml:space="preserve">}</text>
+<text x="51.5" y="582" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="5.44s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="598" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="598" fill="#c9d1d9" xml:space="preserve">{</text>
+<animate attributeName="opacity" from="0" to="1" begin="5.60s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="614" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="614" fill="#79c0ff" xml:space="preserve">&quot;source&quot;</text>
+<text x="119.0" y="614" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="126.5" y="614" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="134.0" y="614" fill="#a5d6ff" xml:space="preserve">&quot;scanner&quot;</text>
+<text x="201.5" y="614" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="5.76s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="630" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="630" fill="#79c0ff" xml:space="preserve">&quot;ref&quot;</text>
+<text x="96.5" y="630" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="104.0" y="630" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="111.5" y="630" fill="#a5d6ff" xml:space="preserve">&quot;infra/storage.tf:21&quot;</text>
+<text x="269.0" y="630" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="5.92s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="646" fill="#e6edf3" xml:space="preserve">      </text>
+<text x="59.0" y="646" fill="#79c0ff" xml:space="preserve">&quot;quote&quot;</text>
+<text x="111.5" y="646" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="119.0" y="646" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="126.5" y="646" fill="#a5d6ff" xml:space="preserve">&quot;acl = \&quot;public-read\&quot;&quot;</text>
+<animate attributeName="opacity" from="0" to="1" begin="6.08s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="662" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="662" fill="#c9d1d9" xml:space="preserve">}</text>
+<animate attributeName="opacity" from="0" to="1" begin="6.24s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="678" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="678" fill="#c9d1d9" xml:space="preserve">]</text>
+<text x="36.5" y="678" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="6.40s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="694" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="694" fill="#79c0ff" xml:space="preserve">&quot;next_agents&quot;</text>
+<text x="126.5" y="694" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="134.0" y="694" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="141.5" y="694" fill="#c9d1d9" xml:space="preserve">[</text>
+<animate attributeName="opacity" from="0" to="1" begin="6.56s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="710" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="710" fill="#a5d6ff" xml:space="preserve">&quot;finding-triage&quot;</text>
+<animate attributeName="opacity" from="0" to="1" begin="6.72s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="726" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="726" fill="#c9d1d9" xml:space="preserve">]</text>
+<text x="36.5" y="726" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="6.88s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="742" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="742" fill="#79c0ff" xml:space="preserve">&quot;human_approval_required&quot;</text>
+<text x="216.5" y="742" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="224.0" y="742" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="231.5" y="742" fill="#ffa657" xml:space="preserve">false</text>
+<text x="269.0" y="742" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="7.04s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="758" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="758" fill="#79c0ff" xml:space="preserve">&quot;timestamp_utc&quot;</text>
+<text x="141.5" y="758" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="149.0" y="758" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="156.5" y="758" fill="#a5d6ff" xml:space="preserve">&quot;2026-06-20T10:30:00Z&quot;</text>
+<text x="321.5" y="758" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="7.20s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="774" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="774" fill="#79c0ff" xml:space="preserve">&quot;mitre_ttps&quot;</text>
+<text x="119.0" y="774" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="126.5" y="774" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="134.0" y="774" fill="#c9d1d9" xml:space="preserve">[</text>
+<animate attributeName="opacity" from="0" to="1" begin="7.36s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="790" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="790" fill="#a5d6ff" xml:space="preserve">&quot;T1552.001&quot;</text>
+<text x="126.5" y="790" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="7.52s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="806" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="806" fill="#a5d6ff" xml:space="preserve">&quot;T1190&quot;</text>
+<animate attributeName="opacity" from="0" to="1" begin="7.68s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="822" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="822" fill="#c9d1d9" xml:space="preserve">]</text>
+<text x="36.5" y="822" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="7.84s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="838" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="838" fill="#79c0ff" xml:space="preserve">&quot;affected_assets&quot;</text>
+<text x="156.5" y="838" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="164.0" y="838" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="171.5" y="838" fill="#c9d1d9" xml:space="preserve">[</text>
+<animate attributeName="opacity" from="0" to="1" begin="8.00s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="854" fill="#e6edf3" xml:space="preserve">    </text>
+<text x="44.0" y="854" fill="#a5d6ff" xml:space="preserve">&quot;SimpleStoreAPI&quot;</text>
+<animate attributeName="opacity" from="0" to="1" begin="8.16s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="870" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="870" fill="#c9d1d9" xml:space="preserve">]</text>
+<text x="36.5" y="870" fill="#c9d1d9" xml:space="preserve">,</text>
+<animate attributeName="opacity" from="0" to="1" begin="8.32s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="886" fill="#e6edf3" xml:space="preserve">  </text>
+<text x="29.0" y="886" fill="#79c0ff" xml:space="preserve">&quot;artifact_path&quot;</text>
+<text x="141.5" y="886" fill="#c9d1d9" xml:space="preserve">:</text>
+<text x="149.0" y="886" fill="#e6edf3" xml:space="preserve"> </text>
+<text x="156.5" y="886" fill="#a5d6ff" xml:space="preserve">&quot;/tmp/simple-store-api/VULN-FINDINGS.json&quot;</text>
+<animate attributeName="opacity" from="0" to="1" begin="8.48s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="902" fill="#c9d1d9" xml:space="preserve">}</text>
+<animate attributeName="opacity" from="0" to="1" begin="8.64s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<animate attributeName="opacity" from="0" to="1" begin="8.80s" dur="0.18s" fill="freeze"/></g>
+<g opacity="0">
+<text x="14.0" y="934" fill="#d2a8ff" xml:space="preserve">cs-appsec-engineer  [#e6edf3]severity=high  next_agents=[finding-triage]  handing off.</text>
+<animate attributeName="opacity" from="0" to="1" begin="8.96s" dur="0.18s" fill="freeze"/></g>
+</svg>
