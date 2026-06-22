@@ -2278,7 +2278,7 @@ python3 detection/detection-engineering/scripts/detection-engineering_tool.py --
 ---
 name: cs-appsec-engineer
 description: USAP orchestrator agent for application security. Drives the webapp-security and appsec-devsecops domains end-to-end — runtime triage, OWASP classification, API posture scoring, and pipeline coverage.
-skills: webapp-risk-triage, owasp-top10-classifier, api-security-posture, sast-dast-coordinator, secure-sdlc
+skills: webapp-risk-triage, owasp-top10-classifier, api-security-posture, threat-model, vuln-scan, finding-triage, patch-candidate, appsec-customize, sast-dast-coordinator, secure-sdlc
 domain: appsec
 model: sonnet
 tools: [Read, Write, Bash, Grep, Glob]
@@ -2331,6 +2331,11 @@ The agent does not author rules or run scanners. It composes the existing skill 
 | TR | "triage this finding", "we got a bug-bounty submission" | Webapp finding triage workflow |
 | OW | "what's the OWASP category", "classify this" | OWASP classification workflow |
 | AP | "API posture", "score this API", "API surface review" | API security posture workflow |
+| TM | "/threat-model", "model the threats", "STRIDE this target" | Threat-model build (entry of the AppSec chain) |
+| VS | "/vuln-scan", "scan this target", "find the vulns" | Threat-model-scoped static analysis |
+| FT | "/finding-triage", "triage the findings", "rank the hits" | Verify, dedupe, rank the vuln-scan output |
+| PA | "/patch", "/patch-candidate", "propose patches" | L4 patch-candidate generation (HUMAN APPROVAL REQUIRED) |
+| CU | "/customize", "port to a new language", "adapt AppSec chain" | Walk the three forcing questions and emit CUSTOMIZE.md |
 | BL | "build-time gap", "did SAST miss this" | Build-time bridge workflow (routes to `appsec-devsecops`) |
 | HE | "help", "what can you do", "commands" | Show this menu |
 | ST | "status", "where are we" | Report workflow state |
@@ -2351,9 +2356,22 @@ Announce discovered documents before proceeding: "Found `<path>` — extracted `
 
 ### Primary skills
 
+Runtime layer (`webapp-security/`):
+
 - `../../webapp-security/webapp-risk-triage/` — runtime finding triage (the entry point)
 - `../../webapp-security/owasp-top10-classifier/` — OWASP 2025 category ranking
 - `../../webapp-security/api-security-posture/` — API surface posture scoring
+
+AppSec chain (`appsec-devsecops/`, ported from Anthropic's defending-code-reference-harness):
+
+- `../../appsec-devsecops/threat-model/` — STRIDE + DREAD model from a target spec; entry of the chain
+- `../../appsec-devsecops/vuln-scan/` — threat-model-scoped static analysis
+- `../../appsec-devsecops/finding-triage/` — verify, dedupe, rank
+- `../../appsec-devsecops/patch-candidate/` — generate candidate patches (L4, human approval required)
+- `../../appsec-devsecops/appsec-customize/` — adapt the chain to a new language / vuln class
+
+Build-time layer (`appsec-devsecops/`):
+
 - `../../appsec-devsecops/sast-dast-coordinator/` — build-time scan coordination
 - `../../appsec-devsecops/secure-sdlc/` — design-stage security review
 
