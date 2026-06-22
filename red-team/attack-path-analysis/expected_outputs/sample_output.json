@@ -1,6 +1,18 @@
 {
   "agent_slug": "attack-path-analysis",
-  "agent_name": "Attack Path Analysis",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Attack Path Analysis skill. Map and analyze attack paths from initial access vectors to crown jewel assets to identify the highest-priority defensive choke points. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Attack Path Analysis: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Map and analyze attack paths from initial access vectors to crown jewel assets to identify the highest-priority defensive choke points"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "safe-exploitation"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

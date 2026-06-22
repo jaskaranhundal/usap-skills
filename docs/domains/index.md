@@ -22,7 +22,7 @@ USAP covers 12 cybersecurity domains. Each is a directory in the [GitHub repo](h
 | [system-security](https://github.com/jaskaranhundal/usap-skills/tree/main/system-security) | 1 | Endpoint / OS hardening |
 | [webapp-security](webapp-security.md) | 3 | Application security engineer |
 
-Total: **74 skills** across **12 domains**.
+Total: **79 skills** across **12 domains**.
 
 ## Where to start
 

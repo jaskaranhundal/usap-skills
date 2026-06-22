@@ -1,6 +1,18 @@
 {
   "agent_slug": "cyber-insurance",
-  "agent_name": "Cyber Insurance",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Cyber Insurance skill. Model cyber risk exposure for insurance assessment purposes, producing loss scenarios and quantified risk estimates that support coverage, pricing, and risk transfer decisions. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Cyber Insurance: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Model cyber risk exposure for insurance assessment purposes, producing loss scenarios and quantified risk estimates that support coverage, pricing, and risk transfer decisions"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "compliance-mapping"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

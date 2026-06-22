@@ -1,6 +1,18 @@
 {
   "agent_slug": "telemetry-signal-quality",
-  "agent_name": "Telemetry & Signal Quality",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Telemetry Signal Quality skill. Assess the health, completeness, and fidelity of security telemetry to ensure detection verdicts are built on verified data foundations. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Telemetry Signal Quality: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Assess the health, completeness, and fidelity of security telemetry to ensure detection verdicts are built on verified data foundations"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "detection-engineering"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

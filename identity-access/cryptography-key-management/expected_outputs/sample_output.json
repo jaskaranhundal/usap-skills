@@ -1,6 +1,16 @@
 {
   "agent_slug": "cryptography-key-management",
-  "agent_name": "Cryptography & Key Management",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "advise",
+  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
+  "rationale": "Representative output for the Cryptography Key Management skill. Assess cryptographic implementations, key management practices, and PKI health to ensure cryptographic controls provide the intended security guarantees. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Cryptography Key Management: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Assess cryptographic implementations, key management practices, and PKI health to ensure cryptographic controls provide the intended security guarantees"
+  ],
+  "evidence_references": [],
+  "next_agents": [],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

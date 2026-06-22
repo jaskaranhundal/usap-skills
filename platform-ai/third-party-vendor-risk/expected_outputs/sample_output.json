@@ -1,6 +1,18 @@
 {
   "agent_slug": "third-party-vendor-risk",
-  "agent_name": "Third-Party & Vendor Risk",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "advise",
+  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
+  "rationale": "Representative output for the Third Party Vendor Risk skill. Assess, tier, and continuously monitor third-party vendor security posture to prevent supply chain risk from materializing into organizational incidents. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Third Party Vendor Risk: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Assess, tier, and continuously monitor third-party vendor security posture to prevent supply chain risk from materializing into organizational incidents"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "supply-chain-risk"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

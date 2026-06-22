@@ -1,0 +1,16 @@
+{
+  "agent_slug": "web-enumeration",
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Web Enumeration skill. Analyse active web enumeration results (ffuf, gobuster) and identify which discovered paths represent the highest-value attack targets \u2014 those most likely to contain exploitable vulnerabilities or sensitive data. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Web Enumeration: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Analyse active web enumeration results (ffuf, gobuster) and identify which discovered paths represent the highest-value attack targets \u2014 those most likely to contain exploitable vulnerabilities or sensitive data"
+  ],
+  "evidence_references": [],
+  "next_agents": [],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
+}
