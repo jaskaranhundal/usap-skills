@@ -1,14 +1,14 @@
 ---
 title: USAP — Open-Source AI Cybersecurity Agent Skills
-description: 79 open-source AI security skills + 12 cs-* orchestrator agents for SOC, incident response, threat hunting, red team, blue team, and DevSecOps. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM.
+description: 79 open-source AI security skills + 12 cs-* orchestrator agents for SOC, incident response, threat hunting, red team, blue team, AppSec, and DevSecOps. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM.
 ---
 
 # USAP — Open-Source AI Cybersecurity Agent Skills
 
-**The open-source alternative to paid AI security platforms.** 79 skills, 12 `cs-*` orchestrator agents, 12 cybersecurity domains. Apache 2.0. Runs in every major LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM). No SaaS, no vendor lock-in.
+**The open-source AI cybersecurity skills library.** 79 skills, 12 `cs-*` orchestrator agents, 12 cybersecurity domains. Apache 2.0. Runs in every major LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM). No SaaS, no vendor lock-in.
 
 [:fontawesome-brands-github: GitHub](https://github.com/jaskaranhundal/usap-skills){ .md-button .md-button--primary }
-[Compare USAP vs Casky.AI](comparisons/vs-casky-ai.md){ .md-button }
+[Get started](#get-started){ .md-button }
 
 ## What this is
 
@@ -16,17 +16,15 @@ USAP is a curated, machine-validated library of cybersecurity skills designed fo
 
 ## What makes it different
 
-| Capability | USAP | Most AI security SaaS |
-|---|---|---|
-| License | Apache 2.0 | Proprietary |
-| LLM runtime | Any (Claude, ChatGPT, Gemini, Ollama, AnythingLLM) | Vendor-locked |
-| Output contract | Typed 11-field JSON, published | Free-form, undocumented |
-| Skill source-of-truth | YAML frontmatter + body markdown | Hidden inside the platform |
-| Framework mappings | Machine-readable (`metadata.frameworks.*`) | Marketing-only |
-| Mutating-action gating | Explicit `human_approval_required: true` | Implicit / per-vendor |
-| Self-host | Yes (clone and run) | Vendor cloud only |
-
-Full positioning analysis: [USAP vs Casky.AI](comparisons/vs-casky-ai.md).
+| Capability | USAP |
+|---|---|
+| License | Apache 2.0 |
+| LLM runtime | Any (Claude, ChatGPT, Gemini, Ollama, AnythingLLM) |
+| Output contract | Typed 11-field JSON, published |
+| Skill source-of-truth | YAML frontmatter + body markdown |
+| Framework mappings | Machine-readable (`metadata.frameworks.*`) |
+| Mutating-action gating | Explicit `human_approval_required: true` |
+| Self-host | Yes (clone and run) |
 
 ## Who is this for
 
@@ -57,13 +55,11 @@ Full positioning analysis: [USAP vs Casky.AI](comparisons/vs-casky-ai.md).
 
 ## Quick links
 
-- [Compare USAP vs Casky.AI](comparisons/vs-casky-ai.md)
 - [GitHub repository](https://github.com/jaskaranhundal/usap-skills)
 - [README](https://github.com/jaskaranhundal/usap-skills/blob/main/README.md)
 - [Output contract spec](https://github.com/jaskaranhundal/usap-skills/blob/main/standards/output-contract.md)
 - [Frontmatter spec](https://github.com/jaskaranhundal/usap-skills/blob/main/standards/frontmatter-spec.md)
 - [Agent v2 contract](https://github.com/jaskaranhundal/usap-skills/blob/main/standards/agent-contract.md)
-- [Casky.AI competitive landscape research](https://github.com/jaskaranhundal/usap-skills/blob/main/docs/research/casky-ai-competitive-landscape.md)
 
 ## Get started
 
