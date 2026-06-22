@@ -60,6 +60,4 @@ nav:
   - Domains:
       - Overview: domains/index.md
       - webapp-security: domains/webapp-security.md
-  - Comparisons:
-      - USAP vs Casky.AI: comparisons/vs-casky-ai.md
   - GitHub: https://github.com/jaskaranhundal/usap-skills
