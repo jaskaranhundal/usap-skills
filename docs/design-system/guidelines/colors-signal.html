@@ -1,0 +1,31 @@
+<!-- @dsCard group="Colors" viewport="700x180" name="Signal Cyan" subtitle="The brand accent — data at the edge of perception" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--void); font-family: var(--font-mono); padding: 16px; }
+  .row { display: flex; gap: 8px; }
+  .sw { flex: 1; height: 84px; border-radius: 6px; display: flex; flex-direction: column; justify-content: flex-end; padding: 9px; box-sizing: border-box; }
+  .name { font-size: 11px; letter-spacing: 0.04em; }
+  .hex { font-size: 10px; margin-top: 2px; opacity: 0.7; }
+  .dark .name, .dark .hex { color: var(--ink-100); }
+  .light .name, .light .hex { color: var(--void); }
+  .glow { margin-top: 10px; height: 40px; border-radius: 6px; background: var(--cyan-400);
+          box-shadow: var(--glow-signal-hard); display: flex; align-items: center; padding: 0 14px;
+          color: var(--void); font-size: 11px; letter-spacing: 0.08em; font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw dark" style="background: var(--cyan-900)"><span class="name">cyan-900</span><span class="hex">#06222b</span></div>
+    <div class="sw dark" style="background: var(--cyan-700)"><span class="name">cyan-700</span><span class="hex">#0e4a5c</span></div>
+    <div class="sw light" style="background: var(--cyan-500)"><span class="name">cyan-500</span><span class="hex">#1a8aa3</span></div>
+    <div class="sw light" style="background: var(--cyan-400)"><span class="name">cyan-400 ★</span><span class="hex">#29d3f0</span></div>
+    <div class="sw light" style="background: var(--cyan-300)"><span class="name">cyan-300</span><span class="hex">#5ee6ff</span></div>
+    <div class="sw light" style="background: var(--cyan-200)"><span class="name">cyan-200</span><span class="hex">#a8f1ff</span></div>
+  </div>
+  <div class="glow">SIGNAL — glow emission on filled surface</div>
+</body>
+</html>
