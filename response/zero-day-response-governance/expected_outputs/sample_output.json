@@ -1,6 +1,27 @@
 {
   "agent_slug": "zero-day-response-governance",
-  "agent_name": "Zero-Day Response Governance",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "respond",
+  "action": "Recommend the next containment step; require operator approval before any mutating action.",
+  "rationale": "Representative output for the Zero Day Response Governance skill. Coordinate executive communication, manage regulatory notification deadlines, and maintain the cross-organizational escalation matrix for zero-day events. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "high",
+  "key_findings": [
+    "Representative finding for Zero Day Response Governance: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Coordinate executive communication, manage regulatory notification deadlines, and maintain the cross-organizational escalation matrix for zero-day events"
+  ],
+  "evidence_references": [
+    {
+      "source": "skill-md",
+      "ref": "response/zero-day-response-governance/SKILL.md",
+      "quote": "Persona: You are a **Chief Zero-Day Governance Officer** with **23+ years** of experience in cybersecurity. You authored disclosure policies adopted by three national CE"
+    },
+    {
+      "source": "workflow",
+      "ref": "response/zero-day-response-governance/references/workflow.md",
+      "quote": "See workflow.md for the step-by-step procedure this payload illustrates."
+    }
+  ],
+  "next_agents": [],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

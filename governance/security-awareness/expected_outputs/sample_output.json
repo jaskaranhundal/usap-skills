@@ -1,6 +1,18 @@
 {
   "agent_slug": "security-awareness",
-  "agent_name": "Security Awareness",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Security Awareness skill. Design, execute, and measure security awareness programs that change observable security behaviors across the organization. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Security Awareness: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Design, execute, and measure security awareness programs that change observable security behaviors across the organization"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "metrics-reporting"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }
