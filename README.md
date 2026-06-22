@@ -21,6 +21,25 @@
 
 Each `SKILL.md` is a complete LLM system prompt — paste into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no install. Apache 2.0, typed 11-field output contract, framework-mapped (MITRE ATT&CK, NIST CSF 2.0, OWASP Top 10, ATLAS, D3FEND, NIST AI RMF), L1–L4 autonomy with explicit human-approval gates.
 
+> If this is useful, **[star the repo](https://github.com/jaskaranhundal/usap-skills/stargazers)** — it's the cheapest signal to send and the only one that drives discovery. Want to contribute? The [open invitations in `ROADMAP.md`](ROADMAP.md#open-invitations) are picked tasks, not vague areas.
+
+## Try it in 60 seconds
+
+```bash
+# 1. Clone
+git clone https://github.com/jaskaranhundal/usap-skills.git
+cd usap-skills
+
+# 2. Bundle the kit (no dependencies; stdlib only)
+python3 shared/scripts/bundle_usap.py bundle --mode lite
+
+# 3. Paste dist/USAP_LITE.md as the system prompt in Claude / ChatGPT / Gemini
+#    (or open docs/design-system/ui_kits/platform/index.html in any browser
+#     for the interactive Console demo)
+```
+
+That's it. No npm, no Docker, no API key, no signup. The bundled file is one markdown blob that becomes Alex (`cs-security-analyst`) on any LLM.
+
 ---
 
 ## Architecture
