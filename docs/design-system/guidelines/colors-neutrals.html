@@ -1,0 +1,27 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Neutrals" subtitle="The human layer — text and hairlines on the dark field" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-1); font-family: var(--font-mono); padding: 16px; }
+  .row { display: flex; gap: 8px; }
+  .sw { flex: 1; height: 92px; border-radius: 6px; border: 1px solid var(--line-1); display: flex; flex-direction: column; justify-content: flex-end; padding: 9px; box-sizing: border-box; }
+  .name { font-size: 11px; letter-spacing: 0.04em; }
+  .hex { font-size: 10px; margin-top: 2px; opacity: 0.65; }
+  .light .name, .light .hex { color: var(--void); }
+  .dark .name, .dark .hex { color: var(--ink-100); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw light" style="background: var(--ink-50)"><span class="name">ink-50</span><span class="hex">#f4f8fb</span></div>
+    <div class="sw light" style="background: var(--ink-100)"><span class="name">ink-100</span><span class="hex">#e6edf3</span></div>
+    <div class="sw light" style="background: var(--ink-200)"><span class="name">ink-200</span><span class="hex">#c9d1d9</span></div>
+    <div class="sw light" style="background: var(--ink-300)"><span class="name">ink-300</span><span class="hex">#8b949e</span></div>
+    <div class="sw dark" style="background: var(--ink-400)"><span class="name">ink-400</span><span class="hex">#5a6573</span></div>
+    <div class="sw dark" style="background: var(--ink-500)"><span class="name">ink-500</span><span class="hex">#3a424d</span></div>
+  </div>
+</body>
+</html>

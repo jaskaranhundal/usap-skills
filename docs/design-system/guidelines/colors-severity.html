@@ -1,0 +1,30 @@
+<!-- @dsCard group="Colors" viewport="700x170" name="Severity & Status" subtitle="CVSS-aligned scale + agent identity, mirroring terminal syntax" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-1); font-family: var(--font-mono); padding: 16px; }
+  .row { display: flex; gap: 8px; }
+  .chip { flex: 1; border-radius: 6px; border: 1px solid var(--line-1); background: var(--void); padding: 11px 12px; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; vertical-align: middle; }
+  .lbl { color: var(--ink-100); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; margin-left: 8px; vertical-align: middle; }
+  .hex { color: var(--ink-300); font-size: 10px; margin-top: 8px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="chip"><span class="dot" style="background: var(--sev-critical)"></span><span class="lbl">Critical</span><div class="hex">--sev-critical · #ff5f57</div></div>
+    <div class="chip"><span class="dot" style="background: var(--sev-high)"></span><span class="lbl">High</span><div class="hex">--sev-high · #ffa657</div></div>
+    <div class="chip"><span class="dot" style="background: var(--sev-medium)"></span><span class="lbl">Medium</span><div class="hex">--sev-medium · #f0b429</div></div>
+    <div class="chip"><span class="dot" style="background: var(--sev-low)"></span><span class="lbl">Low</span><div class="hex">--sev-low · #7ee787</div></div>
+  </div>
+  <div class="row" style="margin-top: 8px;">
+    <div class="chip"><span class="dot" style="background: var(--sev-info)"></span><span class="lbl">Info</span><div class="hex">--sev-info · #79c0ff</div></div>
+    <div class="chip"><span class="dot" style="background: var(--status-ok)"></span><span class="lbl">OK / Pass</span><div class="hex">--status-ok · #7ee787</div></div>
+    <div class="chip"><span class="dot" style="background: var(--status-warn)"></span><span class="lbl">Warn</span><div class="hex">--status-warn · #f0b429</div></div>
+    <div class="chip"><span class="dot" style="background: var(--identity-agent)"></span><span class="lbl">Agent</span><div class="hex">--identity-agent · #d2a8ff</div></div>
+  </div>
+</body>
+</html>

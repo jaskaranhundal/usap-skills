@@ -1,0 +1,93 @@
+/* USAP — Color tokens
+   "Signal Architecture": deep-space near-black field, electric cyan signal,
+   warm-neutral human layer, and a CVSS-aligned severity scale.
+   Base values first, then semantic aliases. */
+
+:root {
+  /* ─── Base · Void & surfaces (deep space between stars) ─────────── */
+  --void:          #05080d;   /* deepest field — full-bleed backdrops      */
+  --bg-base:       #0a0e16;   /* default page background                   */
+  --surface-1:     #0d1117;   /* primary panel / terminal body             */
+  --surface-2:     #11161f;   /* raised panel                              */
+  --surface-3:     #161b22;   /* header bar, inputs, hover wells           */
+  --surface-4:     #1c2230;   /* highest raise / active                    */
+
+  /* ─── Base · Hairlines ─────────────────────────────────────────── */
+  --line-1:        #1f2630;   /* default border                            */
+  --line-2:        #2a323d;   /* stronger divider                          */
+  --line-faint:    #161b22;   /* barely-there grid line                    */
+
+  /* ─── Base · Signal cyan (data at the edge of perception) ──────── */
+  --cyan-900:      #06222b;   /* cyan-tinted well                          */
+  --cyan-700:      #0e4a5c;   /* dim trace                                 */
+  --cyan-500:      #1a8aa3;   /* muted signal                              */
+  --cyan-400:      #29d3f0;   /* PRIMARY electric cyan                     */
+  --cyan-300:      #5ee6ff;   /* bright pulse / hover                      */
+  --cyan-200:      #a8f1ff;   /* highlight tip                             */
+
+  /* ─── Base · Neutrals (the human layer) ────────────────────────── */
+  --ink-50:        #f4f8fb;
+  --ink-100:       #e6edf3;   /* hi-contrast text                          */
+  --ink-200:       #c9d1d9;   /* body text                                 */
+  --ink-300:       #8b949e;   /* muted / captions                          */
+  --ink-400:       #5a6573;   /* faint / disabled                          */
+  --ink-500:       #3a424d;   /* placeholder / ghost                       */
+
+  /* ─── Base · Severity & status (CVSS / terminal syntax) ────────── */
+  --red-400:       #ff5f57;   /* critical                                  */
+  --red-500:       #f85149;   /* critical (solid)                          */
+  --orange-400:    #ffa657;   /* high                                      */
+  --amber-400:     #f0b429;   /* medium / warning                          */
+  --amber-500:     #d29922;   /* medium (solid)                            */
+  --green-400:     #7ee787;   /* ok / pass / low                           */
+  --green-500:     #2ea043;   /* success (solid)                           */
+  --blue-400:      #79c0ff;   /* info / syntax key                         */
+  --blue-300:      #a5d6ff;   /* syntax string                             */
+  --violet-400:    #d2a8ff;   /* agent / orchestrator identity             */
+
+  /* ─── Semantic · Surfaces ──────────────────────────────────────── */
+  --bg:            var(--bg-base);
+  --surface-card:  var(--surface-1);
+  --surface-raised:var(--surface-2);
+  --surface-inset: var(--void);
+  --surface-hover: var(--surface-3);
+
+  /* ─── Semantic · Text ──────────────────────────────────────────── */
+  --text-strong:   var(--ink-100);
+  --text-body:     var(--ink-200);
+  --text-muted:    var(--ink-300);
+  --text-faint:    var(--ink-400);
+  --text-on-signal:var(--void);     /* text on a filled cyan surface       */
+
+  /* ─── Semantic · Signal (the brand accent) ─────────────────────── */
+  --signal:        var(--cyan-400);
+  --signal-bright: var(--cyan-300);
+  --signal-dim:    var(--cyan-500);
+  --signal-well:   var(--cyan-900);
+
+  /* ─── Semantic · Borders ───────────────────────────────────────── */
+  --border:        var(--line-1);
+  --border-strong: var(--line-2);
+  --border-signal: var(--cyan-700);
+  --border-active: var(--cyan-400);
+
+  /* ─── Semantic · Severity scale ────────────────────────────────── */
+  --sev-critical:  var(--red-400);
+  --sev-high:      var(--orange-400);
+  --sev-medium:    var(--amber-400);
+  --sev-low:       var(--green-400);
+  --sev-info:      var(--blue-400);
+  --status-ok:     var(--green-400);
+  --status-warn:   var(--amber-400);
+  --status-error:  var(--red-400);
+  --identity-agent:var(--violet-400);
+
+  /* ─── Semantic · Code syntax (matches the demo terminal) ───────── */
+  --code-key:      var(--blue-400);
+  --code-string:   var(--blue-300);
+  --code-number:   var(--orange-400);
+  --code-comment:  var(--ink-300);
+  --code-punct:    var(--ink-200);
+  --code-agent:    var(--violet-400);
+  --code-user:     var(--green-400);
+}

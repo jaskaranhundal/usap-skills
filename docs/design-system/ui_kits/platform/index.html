@@ -1,0 +1,51 @@
+<!-- @dsCard group="Platform" viewport="1280x720" name="USAP Platform" subtitle="Landing → agent console → findings, composed from DS components" -->
+<!-- @startingPoint section="Platform" subtitle="USAP platform — landing, agent console, findings dashboard" viewport="1280x800" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>USAP Platform</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg-base);
+    background-image: var(--grad-hub), var(--texture-grid);
+    background-size: auto, var(--grid-size) var(--grid-size), var(--grid-size) var(--grid-size);
+    background-attachment: fixed;
+    font-family: var(--font-sans);
+    color: var(--ink-200);
+  }
+  #root { height: 100vh; }
+  .usap-pulse { animation: usapPulse 1s var(--ease-signal) infinite; }
+  @keyframes usapPulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; box-shadow: 0 0 10px var(--cyan-400); } }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--surface-4); border-radius: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="Landing.jsx"></script>
+<script type="text/babel" src="Console.jsx"></script>
+<script type="text/babel" src="Findings.jsx"></script>
+<script type="text/babel">
+  function App() {
+    const [screen, setScreen] = React.useState("landing");
+    return (
+      <div style={{ height: "100%" }}>
+        {screen === "landing" && <window.Landing onLaunch={() => setScreen("console")} />}
+        {screen === "console" && <window.Console onOpenFindings={() => setScreen("findings")} />}
+        {screen === "findings" && <window.Findings onBack={() => setScreen("console")} />}
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
