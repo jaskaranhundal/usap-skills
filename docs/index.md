@@ -53,6 +53,11 @@ USAP is a curated, machine-validated library of cybersecurity skills designed fo
 | `cs-ciso-advisor` | Executive board advisor |
 | `cs-security-program-manager` | Passive lifecycle orchestrator |
 
+## Explainers
+
+* Explainers
+  * [USAP vs Prompt Libraries](explainers/usap-vs-prompt-libraries.md)
+
 ## Quick links
 
 - [GitHub repository](https://github.com/jaskaranhundal/usap-skills)
