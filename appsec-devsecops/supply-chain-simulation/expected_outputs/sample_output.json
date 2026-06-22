@@ -1,6 +1,16 @@
 {
   "agent_slug": "supply-chain-simulation",
-  "agent_name": "Supply Chain Simulation",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Supply Chain Simulation skill. Simulate software supply chain attack scenarios to validate the effectiveness of detection and prevention controls before real adversaries exploit the same vectors. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Supply Chain Simulation: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Simulate software supply chain attack scenarios to validate the effectiveness of detection and prevention controls before real adversaries exploit the same vectors"
+  ],
+  "evidence_references": [],
+  "next_agents": [],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

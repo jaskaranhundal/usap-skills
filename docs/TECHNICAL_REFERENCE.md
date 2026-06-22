@@ -1,7 +1,7 @@
 # USAP — Unified Security Agent Platform
 # Complete Technical Reference
 
-> **Version:** 2.1 | **Updated:** 2026-06-20 | **Scope:** All 71 skills · 7 agents · AnythingLLM integration
+> **Version:** 2.1 | **Updated:** 2026-06-20 | **Scope:** All 79 skills · 12 cs-* agents · AnythingLLM integration
 
 ---
 
@@ -26,7 +26,7 @@
 
 ## 1. Platform Overview
 
-USAP is a collection of **71 standalone LLM skill packages** and **7 cs-* orchestrator agents** for running structured security operations workflows. Each `SKILL.md` is a complete, self-contained LLM system prompt. Skills are usable standalone (paste into any LLM) or deployed as USAP git submodule or AnythingLLM plugins.
+USAP is a collection of **79 standalone LLM skill packages** and **12 cs-* orchestrator agents** for running structured security operations workflows. Each `SKILL.md` is a complete, self-contained LLM system prompt. Skills are usable standalone (paste into any LLM) or deployed as USAP git submodule or AnythingLLM plugins.
 
 ### Core Design Principles
 
@@ -63,7 +63,7 @@ graph TB
     DE --> A[appsec-devsecops/ skills]
     CA --> RC[risk-compliance/ skills]
 
-    G & D & R & T & A & RC --> TOOLS[Python _tool.py scripts<br/>69 total across 71 skills]
+    G & D & R & T & A & RC --> TOOLS[Python _tool.py scripts<br/>77 total across 79 skills]
     TOOLS --> OUTPUT[JSON Output Contract]
 ```
 

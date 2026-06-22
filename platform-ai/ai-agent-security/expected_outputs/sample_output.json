@@ -1,6 +1,18 @@
 {
   "agent_slug": "ai-agent-security",
-  "agent_name": "AI Agent Security",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Ai Agent Security skill. Identify, assess, and mitigate security vulnerabilities specific to AI agent systems including prompt injection, model extraction, capability misuse, and trust boundary violations. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Ai Agent Security: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Identify, assess, and mitigate security vulnerabilities specific to AI agent systems including prompt injection, model extraction, capability misuse, and trust boundary violations"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "agent-integrity-monitor"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

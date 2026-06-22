@@ -1,6 +1,18 @@
 {
   "agent_slug": "identity-access-risk",
-  "agent_name": "Identity & Access Risk",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "advise",
+  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
+  "rationale": "Representative output for the Identity Access Risk skill. Assess identity and access risks across the full IAM stack \u2014 entitlements, privilege escalation paths, authentication gaps, and access anomalies \u2014 and produce prioritized remediation recommendations. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Identity Access Risk: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Assess identity and access risks across the full IAM stack \u2014 entitlements, privilege escalation paths, authentication gaps, and access anomalies \u2014 and produce prioritized remediation recommendations"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "cryptography-key-management"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }
