@@ -25,6 +25,8 @@ USAP is built for three teams that already own LLM access and don't want to rent
 - **DevSecOps and platform-security engineers** at engineering-led orgs who use Claude Code or similar. Embed `cs-devsecops-engineer` and `cs-appsec-engineer` in CI; route runtime findings into `webapp-security/`.
 - **MSSPs, security consultancies, and red teamers** who need client-ready CVSS / MITRE / evidence-tagged deliverables. White-label the skills, embed in your own delivery stack, ship.
 
+---
+
 ## Quick Start
 
 > One agent. Any security question. Paste and go.
