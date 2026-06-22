@@ -1,6 +1,16 @@
 {
   "agent_slug": "tool-execution-broker",
-  "agent_name": "Tool Execution Broker",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "block",
+  "action": "Refuse the requested action and emit the policy violation that triggered the block.",
+  "rationale": "Representative output for the Tool Execution Broker skill. Authorize, log, and broker tool execution requests from USAP agents, enforcing approval gates for mutating operations and maintaining a complete audit trail of all automated actions. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Tool Execution Broker: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Authorize, log, and broker tool execution requests from USAP agents, enforcing approval gates for mutating operations and maintaining a complete audit trail of all automated actions"
+  ],
+  "evidence_references": [],
+  "next_agents": [],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

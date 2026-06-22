@@ -1,6 +1,18 @@
 {
   "agent_slug": "secrets-exposure",
-  "agent_name": "Secrets Exposure",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "detect",
+  "action": "Surface candidate findings to the operator and hand off to triage.",
+  "rationale": "Representative output for the Secrets Exposure skill. Detect, classify, and scope the blast radius of exposed secrets and credentials across code repositories, pipelines, and runtime environments. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Secrets Exposure: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Detect, classify, and scope the blast radius of exposed secrets and credentials across code repositories, pipelines, and runtime environments"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "incident-classification"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }
