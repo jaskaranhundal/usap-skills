@@ -8,6 +8,45 @@ Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Olla
 
 ---
 
+## Architecture
+
+```mermaid
+flowchart LR
+    SK["79 skills across<br/>12 domains<br/>(SKILL.md + scripts/)"]:::skill --> A
+    subgraph A ["12 cs-* orchestrator agents"]
+        direction TB
+        subgraph S ["agents/security/"]
+            S1[cs-security-analyst]
+            S2[cs-incident-responder]
+            S3[cs-red-teamer]
+            S4[cs-blue-team-analyst]
+            S5[cs-cloud-investigator]
+            S6[cs-supply-chain-defender]
+            S7[cs-threat-intel-lead]
+            S8[cs-purple-team-lead]
+        end
+        subgraph P ["agents/appsec/"]
+            P1[cs-appsec-engineer]
+        end
+        subgraph D ["agents/devsecops/"]
+            D1[cs-devsecops-engineer]
+        end
+        subgraph E ["agents/executive/"]
+            E1[cs-ciso-advisor]
+        end
+        subgraph G ["agents/governance/"]
+            G1[cs-security-program-manager]
+        end
+    end
+    A --> OUT["11-field JSON output contract<br/>agent_slug · intent_type · action<br/>rationale · confidence · severity<br/>key_findings · evidence_references<br/>next_agents · human_approval_required<br/>timestamp_utc"]:::out
+
+    classDef skill fill:#e8f0fe,stroke:#1a73e8,stroke-width:1px,color:#000
+    classDef out fill:#f3e8fe,stroke:#7b1fa2,stroke-width:1px,color:#000
+```
+
+Skills are stateless prompt + tool packages (`SKILL.md` + stdlib `scripts/`). Orchestrator agents compose them via the v2 agent contract (`standards/agent-contract.md`). Every output validates against the typed 11-field contract (`standards/output-contract.md`).
+
+
 ## Why USAP
 
 - **Open source, no SaaS, no waitlist.** Apache 2.0. Drop the skills into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no platform install. AI security platforms like Casky and Dropzone are paid SaaS; USAP is the open alternative your team owns.
