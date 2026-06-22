@@ -1,6 +1,21 @@
+<div align="center">
+
+<img src="docs/assets/usap-keyart.png" alt="USAP — hub-and-node key art" width="100%">
+
 # USAP — Open-Source AI Cybersecurity Agent Skills
 
-[![Skills](https://img.shields.io/badge/skills-79-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-12-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
+### `Signal Architecture` · agents reason · humans approve · MCP executes
+
+[![Skills](https://img.shields.io/badge/skills-79-29d3f0?style=flat-square&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills)
+[![Agents](https://img.shields.io/badge/agents-12_cs--*-d2a8ff?style=flat-square&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents)
+[![Domains](https://img.shields.io/badge/domains-12-29d3f0?style=flat-square&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills#domain-index)
+[![Contract](https://img.shields.io/badge/output-11_field_JSON-29d3f0?style=flat-square&labelColor=05080d)](standards/output-contract.md)
+[![Frameworks](https://img.shields.io/badge/mapped-MITRE_ATT&CK_·_NIST_CSF_2.0-29d3f0?style=flat-square&labelColor=05080d)](mappings/)
+[![License](https://img.shields.io/badge/license-Apache_2.0-7ee787?style=flat-square&labelColor=05080d)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.9%2B-29d3f0?style=flat-square&labelColor=05080d)](shared/scripts)
+[![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills?style=flat-square&color=8b949e&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills/commits/main)
+
+</div>
 
 **Open-source cybersecurity skills library that turns any LLM into an auditable, portable security workflow runtime for SOC and AppSec teams.**
 
@@ -9,6 +24,15 @@ Each `SKILL.md` is a complete LLM system prompt — paste into Claude, ChatGPT, 
 ---
 
 ## Architecture
+
+<p align="center">
+  <img src="docs/assets/usap-architecture.svg" alt="USAP architecture — central hub orbited by 12 cs-* orchestrator agents, each domain colour-coded, with the 11-field output contract caption" width="100%">
+</p>
+
+The diagram above is **the** architecture diagram — a Signal-Architecture-styled hex constellation with all 12 `cs-*` agents around the central USAP hub. Domain colour-coding on the border: <kbd>security/</kbd> cyan · <kbd>appsec/</kbd> violet · <kbd>devsecops/</kbd> orange · <kbd>executive/</kbd> blue · <kbd>governance/</kbd> green. Regenerate with `python3 tools/gen_architecture_svg.py`.
+
+<details>
+<summary>Same diagram as a plain Mermaid graph (for environments that don't render SVG)</summary>
 
 ```mermaid
 flowchart LR
@@ -40,9 +64,11 @@ flowchart LR
     end
     A --> OUT["11-field JSON output contract<br/>agent_slug · intent_type · action<br/>rationale · confidence · severity<br/>key_findings · evidence_references<br/>next_agents · human_approval_required<br/>timestamp_utc"]:::out
 
-    classDef skill fill:#e8f0fe,stroke:#1a73e8,stroke-width:1px,color:#000
-    classDef out fill:#f3e8fe,stroke:#7b1fa2,stroke-width:1px,color:#000
+    classDef skill fill:#06222b,stroke:#29d3f0,stroke-width:1px,color:#e6edf3
+    classDef out fill:#1c2230,stroke:#d2a8ff,stroke-width:1px,color:#e6edf3
 ```
+
+</details>
 
 Skills are stateless prompt + tool packages (`SKILL.md` + stdlib `scripts/`). Orchestrator agents compose them via the v2 agent contract (`standards/agent-contract.md`). Every output validates against the typed 11-field contract (`standards/output-contract.md`).
 
