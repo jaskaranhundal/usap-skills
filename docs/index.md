@@ -1,11 +1,11 @@
 ---
 title: USAP — Open-Source AI Cybersecurity Agent Skills
-description: 74 open-source AI security skills + 12 cs-* orchestrator agents for SOC, incident response, threat hunting, red team, blue team, and DevSecOps. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM.
+description: 79 open-source AI security skills + 12 cs-* orchestrator agents for SOC, incident response, threat hunting, red team, blue team, and DevSecOps. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM.
 ---
 
 # USAP — Open-Source AI Cybersecurity Agent Skills
 
-**The open-source alternative to paid AI security platforms.** 74 skills, 12 `cs-*` orchestrator agents, 12 cybersecurity domains. Apache 2.0. Runs in every major LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM). No SaaS, no vendor lock-in.
+**The open-source alternative to paid AI security platforms.** 79 skills, 12 `cs-*` orchestrator agents, 12 cybersecurity domains. Apache 2.0. Runs in every major LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM). No SaaS, no vendor lock-in.
 
 [:fontawesome-brands-github: GitHub](https://github.com/jaskaranhundal/usap-skills){ .md-button .md-button--primary }
 [Compare USAP vs Casky.AI](comparisons/vs-casky-ai.md){ .md-button }
