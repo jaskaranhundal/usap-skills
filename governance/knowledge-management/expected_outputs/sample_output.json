@@ -1,6 +1,16 @@
 {
   "agent_slug": "knowledge-management",
-  "agent_name": "Knowledge Management",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "advise",
+  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
+  "rationale": "Representative output for the Knowledge Management skill. Capture, organize, and surface security knowledge assets to accelerate analyst capability, prevent institutional knowledge loss, and enable consistent evidence-based decisions. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Knowledge Management: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Capture, organize, and surface security knowledge assets to accelerate analyst capability, prevent institutional knowledge loss, and enable consistent evidence-based decisions"
+  ],
+  "evidence_references": [],
+  "next_agents": [],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }
