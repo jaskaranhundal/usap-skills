@@ -75,8 +75,8 @@ jobs:
       - name: Framework-mappings drift check
         # Regenerates mappings/* in-memory and fails if the committed files
         # differ from what the source-of-truth metadata.frameworks would
-        # produce. Per gap-analysis anti-pattern 7.4 — never hand-edit
-        # files under mappings/ except the per-subdirectory README.md.
+        # produce. Never hand-edit files under mappings/ except the
+        # per-subdirectory README.md — the artifacts are always generated.
         run: |
           python3 tools/framework_extractor.py --check
 
