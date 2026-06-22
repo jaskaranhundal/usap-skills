@@ -2,9 +2,9 @@
 
 [![Skills](https://img.shields.io/badge/skills-79-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-12-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
 
-**Automate incident response, threat hunting, red team, blue team, AppSec, and DevSecOps with 79 open-source AI security skills and 12 `cs-*` orchestrator agents across 12 cybersecurity domains. Includes a five-skill AppSec chain (threat-model → vuln-scan → finding-triage → patch-candidate → appsec-customize) ported from Anthropic's defensive-AI reference harness. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM — no SaaS, no vendor lock-in.**
+**Open-source cybersecurity skills library that turns any LLM into an auditable, portable security workflow runtime for SOC and AppSec teams.**
 
-Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
+Each `SKILL.md` is a complete LLM system prompt — paste into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no install. Apache 2.0, typed 11-field output contract, framework-mapped (MITRE ATT&CK, NIST CSF 2.0, OWASP Top 10, ATLAS, D3FEND, NIST AI RMF), L1–L4 autonomy with explicit human-approval gates.
 
 ---
 
