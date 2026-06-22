@@ -8,6 +8,8 @@ metadata:
   category: usap-detection
   updated: 2025-03-23
   agent_slug: secrets-exposure
+  frameworks:
+    mitre_attack: [T1552.001, T1552.004, T1552.005]
   usap_level: "L3"
   agent_id: 19
   level: L4

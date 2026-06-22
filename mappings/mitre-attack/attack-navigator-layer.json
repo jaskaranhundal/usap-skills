@@ -144,9 +144,29 @@
     },
     {
       "techniqueID": "T1552.001",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/vuln-scan, detection/secrets-exposure",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1552.004",
       "score": 1,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/vuln-scan",
+      "comment": "USAP skills covering: detection/secrets-exposure",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1552.005",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/secrets-exposure",
       "enabled": true,
       "metadata": [],
       "links": [],
