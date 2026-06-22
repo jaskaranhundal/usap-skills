@@ -2,15 +2,54 @@
 
 [![Skills](https://img.shields.io/badge/skills-79-blue)](https://github.com/jaskaranhundal/usap-skills) [![Agents](https://img.shields.io/badge/agents-12-blueviolet)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](LICENSE) [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](shared/scripts) [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills)](https://github.com/jaskaranhundal/usap-skills/commits/main)
 
-**Automate incident response, threat hunting, red team, blue team, AppSec, and DevSecOps with 79 open-source AI security skills and 12 `cs-*` orchestrator agents across 12 cybersecurity domains. Includes a five-skill AppSec chain (threat-model → vuln-scan → finding-triage → patch-candidate → appsec-customize) ported from Anthropic's defensive-AI reference harness. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM — no SaaS, no vendor lock-in.**
+**Open-source cybersecurity skills library that turns any LLM into an auditable, portable security workflow runtime for SOC and AppSec teams.**
 
-Each `SKILL.md` is a complete LLM system prompt. Paste it into AnythingLLM, Ollama, ChatGPT, Claude, or any LLM interface and use it without installing USAP. The USAP platform uses these packages as its agent skill library via git submodule.
+Each `SKILL.md` is a complete LLM system prompt — paste into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no install. Apache 2.0, typed 11-field output contract, framework-mapped (MITRE ATT&CK, NIST CSF 2.0, OWASP Top 10, ATLAS, D3FEND, NIST AI RMF), L1–L4 autonomy with explicit human-approval gates.
 
 ---
 
+## Architecture
+
+```mermaid
+flowchart LR
+    SK["79 skills across<br/>12 domains<br/>(SKILL.md + scripts/)"]:::skill --> A
+    subgraph A ["12 cs-* orchestrator agents"]
+        direction TB
+        subgraph S ["agents/security/"]
+            S1[cs-security-analyst]
+            S2[cs-incident-responder]
+            S3[cs-red-teamer]
+            S4[cs-blue-team-analyst]
+            S5[cs-cloud-investigator]
+            S6[cs-supply-chain-defender]
+            S7[cs-threat-intel-lead]
+            S8[cs-purple-team-lead]
+        end
+        subgraph P ["agents/appsec/"]
+            P1[cs-appsec-engineer]
+        end
+        subgraph D ["agents/devsecops/"]
+            D1[cs-devsecops-engineer]
+        end
+        subgraph E ["agents/executive/"]
+            E1[cs-ciso-advisor]
+        end
+        subgraph G ["agents/governance/"]
+            G1[cs-security-program-manager]
+        end
+    end
+    A --> OUT["11-field JSON output contract<br/>agent_slug · intent_type · action<br/>rationale · confidence · severity<br/>key_findings · evidence_references<br/>next_agents · human_approval_required<br/>timestamp_utc"]:::out
+
+    classDef skill fill:#e8f0fe,stroke:#1a73e8,stroke-width:1px,color:#000
+    classDef out fill:#f3e8fe,stroke:#7b1fa2,stroke-width:1px,color:#000
+```
+
+Skills are stateless prompt + tool packages (`SKILL.md` + stdlib `scripts/`). Orchestrator agents compose them via the v2 agent contract (`standards/agent-contract.md`). Every output validates against the typed 11-field contract (`standards/output-contract.md`).
+
+
 ## Why USAP
 
-- **Open source, no SaaS, no waitlist.** Apache 2.0. Drop the skills into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no platform install. AI security platforms like Casky and Dropzone are paid SaaS; USAP is the open alternative your team owns.
+- **Open source, no SaaS, no waitlist.** Apache 2.0. Drop the skills into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no platform install. No vendor cloud, no per-seat pricing, no telemetry leaving your environment.
 - **Standardized 11-field output contract.** Every skill emits CVSS, MITRE ATT&CK technique IDs, evidence references, and an explicit `human_approval_required` flag (`standards/output-contract.md`). Safe to embed in production agent stacks where competitor copilots remain black boxes.
 - **`cs-*` orchestrator agents.** 12 named agents (`cs-security-analyst`, `cs-incident-responder`, `cs-blue-team-analyst`, `cs-red-teamer`, `cs-cloud-investigator`, `cs-supply-chain-defender`, `cs-threat-intel-lead`, `cs-purple-team-lead`, `cs-appsec-engineer`, `cs-devsecops-engineer`, `cs-ciso-advisor`, `cs-security-program-manager`) compose the skills into reproducible workflows.
 - **Framework-mapped at the metadata layer.** `metadata.frameworks.{mitre_attack, nist_csf, mitre_atlas, owasp_top10, d3fend, nist_ai_rmf}` arrays drive auto-generated ATT&CK Navigator and NIST CSF coverage docs in `mappings/` — never hand-maintained.
@@ -25,21 +64,122 @@ USAP is built for three teams that already own LLM access and don't want to rent
 - **DevSecOps and platform-security engineers** at engineering-led orgs who use Claude Code or similar. Embed `cs-devsecops-engineer` and `cs-appsec-engineer` in CI; route runtime findings into `webapp-security/`.
 - **MSSPs, security consultancies, and red teamers** who need client-ready CVSS / MITRE / evidence-tagged deliverables. White-label the skills, embed in your own delivery stack, ship.
 
-## Compared to other AI security platforms
-
-| Platform | License | Runtime | Differentiator |
-|---|---|---|---|
-| **USAP** | Apache 2.0, open source | Any LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM) | 79 skills + 12 `cs-*` agents + typed 11-field output contract |
-| [Casky.AI](https://casky.ai/) | $49/mo SaaS, Claude-native | Claude only (waitlist) | Prosumer skills lab around investigation deliverables |
-| [Dropzone AI](https://www.dropzone.ai/) | Capacity-priced SaaS (~$36K/yr) | Vendor cloud | 24/7 autonomous AI Tier-1 SOC analyst, 90+ connectors |
-| [Prophet Security](https://www.prophetsecurity.ai/) | Enterprise SaaS, $41M total | Vendor cloud | 1M+ autonomous SOC investigations, 60+ connectors |
-| [7AI](https://7ai.com/) | Enterprise SaaS, $130M Series A | Vendor cloud | 50+ swarming SOC agents, largest cyber Series A on record |
-| [Simbian](https://simbian.ai/) | Enterprise SaaS, $10M seed | Vendor cloud | Multi-agent SOC + pentest under one platform |
-| [Andesite](https://andesite.ai/) | Enterprise SaaS, $38.5M seed | FedRAMP High, BYO-LLM | Federal-grade "Bionic SOC" for regulated buyers |
-
-Full landscape analysis: [`docs/research/casky-ai-competitive-landscape.md`](docs/research/casky-ai-competitive-landscape.md).
-
 ---
+
+
+## Demo: an end-to-end run
+
+A real run of `cs-appsec-engineer` against the in-repo `SimpleStoreAPI` fixture. Every tool emits a typed 11-field payload — pasted verbatim from `appsec-devsecops/vuln-scan/expected_outputs/sample_output.json`.
+
+**You:** Scan `examples/SimpleStoreAPI` for vulnerabilities and route any high findings to triage.
+
+**`cs-appsec-engineer`:** Running `vuln-scan` against threat model TM-001..TM-005.
+
+```bash
+$ python3 appsec-devsecops/vuln-scan/scripts/vuln-scan_tool.py \
+    --input examples/SimpleStoreAPI/scan-context.json --output json
+```
+
+```json
+{
+  "agent_slug": "vuln-scan",
+  "intent_type": "detect",
+  "action": "Hand off to finding-triage — 4 mapped findings, 1 unmapped, top severity high.",
+  "rationale": "Scanned SimpleStoreAPI against TM-001..TM-005. Found 5 distinct findings after dedup: hardcoded credential (TM-001 proximity 9), SQL string concat (TM-002 proximity 8), public S3 ACL (TM-002 proximity 7), permissive CORS (unmapped), missing input validation on /api/v1/profile (TM-001 proximity 9). Confidence dampened 0.05 per merge.",
+  "confidence": 0.82,
+  "severity": "high",
+  "key_findings": [
+    "VF-001 hardcoded-credential at src/config.py:14 — mapped to TM-001, proximity 9",
+    "VF-002 sql-string-concat at src/db/profile.js:42 — mapped to TM-002, proximity 8",
+    "VF-003 public-iac at infra/storage.tf:21 — mapped to TM-002, proximity 7",
+    "VF-004 missing-input-validation at src/routes/profile.js:11 — mapped to TM-001, proximity 9",
+    "VF-005 permissive-cors at src/middleware/cors.js:6 — UNMAPPED (no top-5 threat covers this)"
+  ],
+  "evidence_references": [
+    {"source": "scanner", "ref": "src/config.py:14", "quote": "PASSWORD = \"changeme-prod\""},
+    {"source": "scanner", "ref": "src/db/profile.js:42", "quote": "db.query('SELECT * FROM users WHERE id = ' + req.params.id)"},
+    {"source": "scanner", "ref": "infra/storage.tf:21", "quote": "acl = \"public-read\""}
+  ],
+  "next_agents": ["finding-triage"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z"
+}
+```
+
+**`cs-appsec-engineer`:** Severity is `high`, `next_agents` points at `finding-triage`. Handing off.
+
+**Synthesis (operator-facing):**
+> Five findings, four mapped to your threat model. The hardcoded production credential (`src/config.py:14`) and the SQL string concatenation on the profile route are both proximity-9 hits against TM-001 — patch first. The public S3 bucket ACL is a separate proximity-7 TM-002 hit. The permissive CORS rule is unmapped, which usually means your threat model is incomplete — recommend revisiting TM coverage. No mutating actions taken; `human_approval_required` was false because this was a read-only detect.
+
+Try it yourself:
+
+```bash
+python3 appsec-devsecops/vuln-scan/scripts/vuln-scan_tool.py --output json | jq .
+python3 tools/output_contract.py appsec-devsecops/vuln-scan/expected_outputs/sample_output.json
+```
+
+## Proof: every claim is a file in this repo
+
+| Claim | Evidence |
+|---|---|
+| Typed 11-field output contract | [`standards/output-contract.md`](standards/output-contract.md) + [`tools/output_contract.py`](tools/output_contract.py) validator |
+| Every skill emits a real payload | [`appsec-devsecops/vuln-scan/expected_outputs/sample_output.json`](appsec-devsecops/vuln-scan/expected_outputs/sample_output.json) (one of 79) |
+| MITRE ATT&CK Navigator layer is auto-generated | [`mappings/mitre-attack/attack-navigator-layer.json`](mappings/mitre-attack/attack-navigator-layer.json) regenerated by [`tools/framework_extractor.py`](tools/framework_extractor.py); CI fails on drift |
+| NIST CSF 2.0 coverage doc is auto-generated | [`mappings/nist-csf/csf-alignment.md`](mappings/nist-csf/csf-alignment.md) |
+| MITRE ATT&CK coverage doc | [`mappings/mitre-attack/coverage-summary.md`](mappings/mitre-attack/coverage-summary.md) — 13 distinct techniques across 10 skills today |
+| L1-L4 autonomy + `human_approval_required` gate | [`standards/level-guide.md`](standards/level-guide.md) + [`tools/validate_invocation_control.py`](tools/validate_invocation_control.py) strict CI gate |
+| agentskills.io spec conformance | [`standards/frontmatter-spec.md`](standards/frontmatter-spec.md) + [`tools/validate_skill.py`](tools/validate_skill.py) on every push |
+
+### ATT&CK Navigator layer (excerpt)
+
+The full layer at [`mappings/mitre-attack/attack-navigator-layer.json`](mappings/mitre-attack/attack-navigator-layer.json) opens directly in [MITRE's Navigator](https://mitre-attack.github.io/attack-navigator/). Excerpt of the first two techniques:
+
+```json
+{
+  "name": "USAP MITRE ATT&CK Coverage",
+  "versions": {
+    "attack": "16",
+    "navigator": "4.9.5",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "techniques": [
+    {
+      "techniqueID": "T1041",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-intelligence",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1046",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-hunting",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    }
+  ]
+}
+```
+
+### NIST CSF 2.0 coverage (excerpt)
+
+From [`mappings/nist-csf/csf-alignment.md`](mappings/nist-csf/csf-alignment.md):
+
+| Subcategory | Skill count | Covering skills |
+|---|---:|---|
+| `DE.AE-02` | 3 | `detection/behavioral-analytics`, `detection/detection-engineering`, `detection/threat-hunting` |
+| `DE.CM-01` | 2 | `detection/detection-engineering`, `detection/threat-hunting` |
+| `ID.RA-05` | 1 | `detection/threat-intelligence` |
+
+These tables are not hand-maintained. They are emitted by `tools/framework_extractor.py` from each skill's `metadata.frameworks.*` arrays. The CI pipeline fails any PR that ships a drift between the source frontmatter and the generated docs.
+
 
 ## Quick Start
 

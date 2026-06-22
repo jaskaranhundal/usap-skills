@@ -43,9 +43,8 @@ jobs:
           python3 tools/validate_skill.py --all --summary
 
       - name: Validate output contract on changed sample/template files
-        # Non-blocking informational check until the 59 placeholder samples
-        # flagged in docs/research/anthropic-cybersec-skills-gap-analysis.md
-        # are rewritten (gap-analysis quick-win 1, follow-up phase).
+        # Non-blocking informational check until the placeholder sample
+        # outputs across the skills are rewritten to be contract-compliant.
         continue-on-error: true
         env:
           BASE_REF: ${{ github.event.pull_request.base.ref || github.event.repository.default_branch }}
@@ -68,8 +67,8 @@ jobs:
       - name: Framework-mappings drift check
         # Regenerates mappings/* in-memory and fails if the committed files
         # differ from what the source-of-truth metadata.frameworks would
-        # produce. Per gap-analysis anti-pattern 7.4 — never hand-edit
-        # files under mappings/ except the per-subdirectory README.md.
+        # produce. Never hand-edit files under mappings/ except the
+        # per-subdirectory README.md — the artifacts are always generated.
         run: |
           python3 tools/framework_extractor.py --check
 
