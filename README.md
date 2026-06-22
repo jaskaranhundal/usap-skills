@@ -461,36 +461,6 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 
 ---
 
-## Architecture
-
-```mermaid
-graph TB
-    User([User / Operator]) --> ORCH
-
-    subgraph USAP["USAP — AnythingLLM Workspace"]
-        ORCH[cs-usap-orchestrator<br/>Master Router]
-    end
-
-    ORCH --> PM[cs-security-program-manager<br/>Governance · Passive Lifecycle]
-    ORCH --> SA[cs-security-analyst<br/>SOC · Threat Hunting]
-    ORCH --> IR[cs-incident-responder<br/>Incident Lifecycle]
-    ORCH --> RT[cs-red-teamer<br/>Offensive Security]
-    ORCH --> DE[cs-devsecops-engineer<br/>Pipeline · AppSec]
-    ORCH --> CA[cs-ciso-advisor<br/>Executive · Board]
-
-    PM --> G[governance/ skills]
-    SA --> D[detection/ skills]
-    IR --> R[response/ skills]
-    RT --> T[red-team/ skills]
-    DE --> A[appsec-devsecops/ skills]
-    CA --> RC[risk-compliance/ skills]
-
-    G & D & R & T & A & RC --> TOOLS[Python _tool.py scripts<br/>69 total]
-    TOOLS --> OUTPUT[JSON Output Contract]
-```
-
----
-
 ## Domain Index
 
 | Domain | Skills |
