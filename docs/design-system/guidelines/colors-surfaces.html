@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Surfaces & Void" subtitle="Deep-space field — backgrounds from void to raised panel" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--bg-base); font-family: var(--font-mono); }
+  .row { display: flex; gap: 1px; padding: 18px; background: var(--line-1); border-radius: 8px; margin: 16px; }
+  .sw { flex: 1; height: 104px; display: flex; flex-direction: column; justify-content: flex-end; padding: 10px; box-sizing: border-box; }
+  .name { color: var(--ink-100); font-size: 11px; letter-spacing: 0.04em; }
+  .hex { color: var(--ink-300); font-size: 10px; margin-top: 2px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw" style="background: var(--void)"><span class="name">void</span><span class="hex">#05080d</span></div>
+    <div class="sw" style="background: var(--bg-base)"><span class="name">bg-base</span><span class="hex">#0a0e16</span></div>
+    <div class="sw" style="background: var(--surface-1)"><span class="name">surface-1</span><span class="hex">#0d1117</span></div>
+    <div class="sw" style="background: var(--surface-2)"><span class="name">surface-2</span><span class="hex">#11161f</span></div>
+    <div class="sw" style="background: var(--surface-3)"><span class="name">surface-3</span><span class="hex">#161b22</span></div>
+    <div class="sw" style="background: var(--surface-4)"><span class="name">surface-4</span><span class="hex">#1c2230</span></div>
+  </div>
+</body>
+</html>

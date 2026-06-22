@@ -1,0 +1,51 @@
+/* USAP — Effects: shadows, glows, gradients, motion
+   The signal glow is the brand's signature: cyan light bleeding into void. */
+
+:root {
+  /* ─── Elevation shadows (deep, low-key against near-black) ─────── */
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md:  0 4px 16px rgba(0, 0, 0, 0.55);
+  --shadow-lg:  0 12px 40px rgba(0, 0, 0, 0.65);
+  --shadow-xl:  0 24px 70px rgba(0, 0, 0, 0.7);
+
+  /* ─── Signal glows (cyan emission) ─────────────────────────────── */
+  --glow-signal:      0 0 0 1px rgba(41, 211, 240, 0.4), 0 0 18px rgba(41, 211, 240, 0.35);
+  --glow-signal-soft: 0 0 24px rgba(41, 211, 240, 0.22);
+  --glow-signal-hard: 0 0 0 1px rgba(41, 211, 240, 0.7), 0 0 28px rgba(41, 211, 240, 0.5);
+  --glow-text:        0 0 12px rgba(94, 230, 255, 0.55);
+  --glow-inset:       inset 0 0 22px rgba(41, 211, 240, 0.12);
+
+  /* ─── Focus ring ───────────────────────────────────────────────── */
+  --ring: 0 0 0 2px var(--void), 0 0 0 3.5px var(--cyan-400);
+
+  /* ─── Gradients ────────────────────────────────────────────────── */
+  /* radial spotlight behind a central node */
+  --grad-hub: radial-gradient(60% 60% at 50% 45%, rgba(41,211,240,0.14), transparent 70%); /* @kind other */
+  /* vertical fade for protection over imagery / headers */
+  --grad-protect: linear-gradient(180deg, rgba(5,8,13,0) 0%, rgba(5,8,13,0.85) 100%); /* @kind other */
+  /* subtle surface lift */
+  --grad-surface: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0)); /* @kind other */
+  /* signal sweep for active rails / loaders */
+  --grad-signal: linear-gradient(90deg, var(--cyan-500), var(--cyan-300)); /* @kind other */
+
+  /* ─── Circuit substrate (faint grid, the engraver's texture) ──── */
+  --grid-line: rgba(41, 211, 240, 0.045);
+  --grid-size: 32px;
+  --texture-grid:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); /* @kind other */
+
+  /* ─── Motion (precise, no bounce — signals don't overshoot) ───── */
+  --ease-signal:  cubic-bezier(0.2, 0.7, 0.2, 1); /* @kind other */
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --ease-in-out:  cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --dur-fast:     120ms; /* @kind other */
+  --dur-base:     200ms; /* @kind other */
+  --dur-slow:     360ms; /* @kind other */
+  /* ambient signal-line pulse */
+  --dur-pulse:    2400ms; /* @kind other */
+
+  /* ─── Backdrop blur (HUD glass) ────────────────────────────────── */
+  --blur-sm: blur(6px); /* @kind other */
+  --blur-md: blur(14px); /* @kind other */
+}

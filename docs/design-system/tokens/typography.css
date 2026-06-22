@@ -1,0 +1,52 @@
+/* USAP — Typography tokens
+   Display: Space Grotesk (wordmark, headlines)
+   UI/Body: IBM Plex Sans
+   Mono:    IBM Plex Mono (telemetry, labels, code, designations) */
+
+:root {
+  /* ─── Families ─────────────────────────────────────────────────── */
+  --font-display: "Space Grotesk", "IBM Plex Sans", system-ui, sans-serif;
+  --font-sans:    "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* ─── Weights ──────────────────────────────────────────────────── */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ─── Type scale (1.250 major-third, 16px base) ───────────────── */
+  --text-3xs:  10px;   /* micro labels, telemetry footnotes  */
+  --text-2xs:  11px;   /* node designations, badges          */
+  --text-xs:   12px;   /* captions, mono labels              */
+  --text-sm:   13px;   /* dense UI, table cells              */
+  --text-base: 15px;   /* body                               */
+  --text-md:   17px;   /* lead body                          */
+  --text-lg:   20px;   /* card titles                        */
+  --text-xl:   25px;   /* section titles                     */
+  --text-2xl:  32px;   /* page headings                      */
+  --text-3xl:  42px;   /* display                            */
+  --text-4xl:  56px;   /* hero                               */
+  --text-5xl:  76px;   /* wordmark                           */
+
+  /* ─── Line heights ─────────────────────────────────────────────── */
+  --leading-tight:  1.1;
+  --leading-snug:   1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed:1.65;
+
+  /* ─── Letter spacing ───────────────────────────────────────────── */
+  --tracking-tighter: -0.02em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.08em;   /* mono labels                        */
+  --tracking-caps:    0.14em;   /* uppercase HUD designations         */
+
+  /* ─── Semantic roles ───────────────────────────────────────────── */
+  --type-wordmark-family: var(--font-display);
+  --type-wordmark-weight: var(--weight-bold);
+  --type-heading-family:  var(--font-display);
+  --type-body-family:     var(--font-sans);
+  --type-label-family:    var(--font-mono);
+}
