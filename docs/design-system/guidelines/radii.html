@@ -1,0 +1,28 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Radii" subtitle="Tight and engineered — not pillowy; capsule reserved for status pills" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-1); font-family: var(--font-mono); padding: 20px; }
+  .row { display: flex; gap: 14px; }
+  .item { flex: 1; text-align: center; }
+  .box { height: 64px; background: var(--surface-3); border: 1px solid var(--cyan-700); }
+  .item span { display: block; color: var(--ink-300); font-size: 10px; margin-top: 8px; }
+  .item b { color: var(--ink-100); }
+  .pill { border-radius: var(--radius-pill); background: var(--cyan-900); border-color: var(--cyan-400);
+          display: flex; align-items: center; justify-content: center; color: var(--cyan-300); font-size: 10px; letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="box" style="border-radius:var(--radius-xs)"></div><span><b>xs</b> · 2px</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-sm)"></div><span><b>sm</b> · 4px</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-md)"></div><span><b>md</b> · 6px</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-lg)"></div><span><b>lg</b> · 10px</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-xl)"></div><span><b>xl</b> · 14px</span></div>
+    <div class="item"><div class="box pill">PILL</div><span><b>pill</b> · 999px</span></div>
+  </div>
+</body>
+</html>
