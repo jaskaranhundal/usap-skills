@@ -1,0 +1,25 @@
+<!-- @dsCard group="Spacing" viewport="700x190" name="Elevation & Signal Glow" subtitle="Low-key shadows on near-black; cyan emission is the signature" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--bg-base); font-family: var(--font-mono); padding: 26px 22px; }
+  .row { display: flex; gap: 20px; }
+  .item { flex: 1; text-align: center; }
+  .box { height: 70px; background: var(--surface-2); border: 1px solid var(--line-1); border-radius: 8px; }
+  .item span { display: block; color: var(--ink-300); font-size: 10px; margin-top: 12px; }
+  .item b { color: var(--ink-100); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-sm)"></div><span><b>shadow-sm</b></span></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-md)"></div><span><b>shadow-md</b></span></div>
+    <div class="item"><div class="box" style="box-shadow:var(--shadow-lg)"></div><span><b>shadow-lg</b></span></div>
+    <div class="item"><div class="box" style="box-shadow:var(--glow-signal-soft)"></div><span><b>glow-soft</b></span></div>
+    <div class="item"><div class="box" style="box-shadow:var(--glow-signal-hard);border-color:var(--cyan-400)"></div><span><b>glow-hard</b></span></div>
+  </div>
+</body>
+</html>

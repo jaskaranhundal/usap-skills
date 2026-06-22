@@ -46,6 +46,8 @@ flowchart LR
 
 Skills are stateless prompt + tool packages (`SKILL.md` + stdlib `scripts/`). Orchestrator agents compose them via the v2 agent contract (`standards/agent-contract.md`). Every output validates against the typed 11-field contract (`standards/output-contract.md`).
 
+> **Interactive UI kit:** for the same flow as a clickable web demo (Landing → Agent Console → Findings), open [`docs/design-system/ui_kits/platform/index.html`](docs/design-system/ui_kits/platform/index.html) — built on the [USAP Design System](docs/design-system/README.md): Signal Architecture visual language, 10 React components, 160+ CSS tokens.
+
 ### What a real payload looks like
 
 Every skill emits the same shape. Below is a fully-populated payload from one run of `vuln-scan` against the in-repo `SimpleStoreAPI` fixture — all 11 required fields plus the optional tail (`mitre_ttps`, `affected_assets`, `artifact_path`). Byte-identical to [`appsec-devsecops/vuln-scan/expected_outputs/sample_output.json`](appsec-devsecops/vuln-scan/expected_outputs/sample_output.json), validated against [`tools/output_contract.py`](tools/output_contract.py) in CI on every push.
