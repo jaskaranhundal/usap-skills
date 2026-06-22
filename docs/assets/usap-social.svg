@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640" font-family="'IBM Plex Sans', system-ui, sans-serif">
+<defs>
+<filter id="hub-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="7"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="node-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<radialGradient id="hub-fill" cx="50%" cy="45%" r="65%"><stop offset="0%" stop-color="#06222b"/><stop offset="100%" stop-color="#05080d"/></radialGradient>
+<radialGradient id="bg-spot" cx="960" cy="340" r="380" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="rgba(41,211,240,0.20)"/><stop offset="100%" stop-color="rgba(41,211,240,0)"/></radialGradient>
+<pattern id="grid" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(41,211,240,0.05)" stroke-width="1"/></pattern>
+<linearGradient id="link" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(41,211,240,0.06)"/><stop offset="50%" stop-color="rgba(41,211,240,0.5)"/><stop offset="100%" stop-color="rgba(41,211,240,0.06)"/></linearGradient>
+<linearGradient id="left-shade" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(5,8,13,0.95)"/><stop offset="55%" stop-color="rgba(5,8,13,0.4)"/><stop offset="100%" stop-color="rgba(5,8,13,0)"/></linearGradient>
+</defs>
+<rect x="0" y="0" width="1280" height="640" fill="#05080d"/>
+<rect x="0" y="0" width="1280" height="640" fill="url(#grid)"/>
+<rect x="0" y="0" width="1280" height="640" fill="url(#bg-spot)"/>
+<rect x="0" y="0" width="768" height="640" fill="url(#left-shade)"/>
+<text x="80" y="115" fill="#29d3f0" font-family="'IBM Plex Mono', monospace" font-size="13" letter-spacing="0.24em">UNIFIED SECURITY AGENT PLATFORM</text>
+<text x="80" y="240" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="138" letter-spacing="-0.025em">USA<tspan fill="#29d3f0">P</tspan></text>
+<text x="80" y="295" fill="#e6edf3" font-family="'Space Grotesk', sans-serif" font-weight="500" font-size="30" letter-spacing="-0.01em">Agents reason · Humans approve · MCP executes</text>
+<text x="80" y="335" fill="#8b949e" font-family="'IBM Plex Sans', sans-serif" font-size="18" letter-spacing="0.01em">Open-source AI cybersecurity skills · runs in any LLM · Apache 2.0</text>
+<text x="80" y="445" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="52" letter-spacing="-0.01em">79</text>
+<text x="80" y="478" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.14em">SKILLS</text>
+<text x="240" y="445" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="52" letter-spacing="-0.01em">12</text>
+<text x="240" y="478" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.14em">CS-* AGENTS</text>
+<text x="400" y="445" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="52" letter-spacing="-0.01em">12</text>
+<text x="400" y="478" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.14em">DOMAINS</text>
+<text x="560" y="445" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="52" letter-spacing="-0.01em">11</text>
+<text x="560" y="478" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.14em">FIELD CONTRACT</text>
+<rect x="80" y="510" width="200" height="28" rx="14" fill="#06222b" stroke="#0e4a5c"/><text x="94" y="529" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.12em">MITRE ATT&CK</text>
+<rect x="292" y="510" width="180" height="28" rx="14" fill="#06222b" stroke="#0e4a5c"/><text x="306" y="529" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.12em">NIST CSF 2.0</text>
+<rect x="484" y="510" width="180" height="28" rx="14" fill="#06222b" stroke="#0e4a5c"/><text x="498" y="529" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.12em">OWASP TOP 10</text>
+<rect x="676" y="510" width="160" height="28" rx="14" fill="#06222b" stroke="#0e4a5c"/><text x="690" y="529" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.12em">APACHE 2.0</text>
+<text x="80" y="595" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="14" letter-spacing="0.04em">github.com/jaskaranhundal/usap-skills</text>
+<line x1="960" y1="340" x2="960.0" y2="120.0" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<line x1="960" y1="340" x2="1150.5" y2="230.0" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<line x1="960" y1="340" x2="1150.5" y2="450.0" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<line x1="960" y1="340" x2="960.0" y2="560.0" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<line x1="960" y1="340" x2="769.5" y2="450.0" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<line x1="960" y1="340" x2="769.5" y2="230.0" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5"/>
+<polygon points="960.0,59.5 1015.0,89.8 1015.0,150.2 960.0,180.5 905.0,150.2 905.0,89.8" fill="#29d3f0" filter="url(#node-glow)"/>
+<polygon points="960.0,60.9 1013.8,90.4 1013.8,149.6 960.0,179.1 906.2,149.6 906.2,90.4" fill="#0d1117"/>
+<text x="960" y="118" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="11" letter-spacing="0.1em" text-anchor="middle">ALERT TRIAGE</text>
+<text x="960" y="134" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="8.5" letter-spacing="0.04em" text-anchor="middle">cs-security-analyst</text>
+<polygon points="1150.5,169.5 1205.5,199.8 1205.5,260.2 1150.5,290.5 1095.5,260.2 1095.5,199.8" fill="#d2a8ff" filter="url(#node-glow)"/>
+<polygon points="1150.5,170.9 1204.3,200.4 1204.3,259.6 1150.5,289.1 1096.8,259.6 1096.8,200.4" fill="#0d1117"/>
+<text x="1150.52" y="228.0" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="11" letter-spacing="0.1em" text-anchor="middle">APPSEC</text>
+<text x="1150.52" y="244.0" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="8.5" letter-spacing="0.04em" text-anchor="middle">cs-appsec-engineer</text>
+<polygon points="1150.5,389.5 1205.5,419.8 1205.5,480.2 1150.5,510.5 1095.5,480.2 1095.5,419.8" fill="#79c0ff" filter="url(#node-glow)"/>
+<polygon points="1150.5,390.9 1204.3,420.4 1204.3,479.6 1150.5,509.1 1096.8,479.6 1096.8,420.4" fill="#0d1117"/>
+<text x="1150.52" y="448.0" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="11" letter-spacing="0.1em" text-anchor="middle">EXEC BRIEF</text>
+<text x="1150.52" y="464.0" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="8.5" letter-spacing="0.04em" text-anchor="middle">cs-ciso-advisor</text>
+<polygon points="960.0,499.5 1015.0,529.8 1015.0,590.2 960.0,620.5 905.0,590.2 905.0,529.8" fill="#29d3f0" filter="url(#node-glow)"/>
+<polygon points="960.0,500.9 1013.8,530.4 1013.8,589.6 960.0,619.1 906.2,589.6 906.2,530.4" fill="#0d1117"/>
+<text x="960" y="558" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="11" letter-spacing="0.1em" text-anchor="middle">INCIDENT</text>
+<text x="960" y="574" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="8.5" letter-spacing="0.04em" text-anchor="middle">cs-incident-responder</text>
+<polygon points="769.5,389.5 824.5,419.8 824.5,480.2 769.5,510.5 714.5,480.2 714.5,419.8" fill="#ffa657" filter="url(#node-glow)"/>
+<polygon points="769.5,390.9 823.2,420.4 823.2,479.6 769.5,509.1 715.7,479.6 715.7,420.4" fill="#0d1117"/>
+<text x="769.48" y="448.0" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="11" letter-spacing="0.1em" text-anchor="middle">DEVSECOPS</text>
+<text x="769.48" y="464.0" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="8.5" letter-spacing="0.04em" text-anchor="middle">cs-devsecops-engineer</text>
+<polygon points="769.5,169.5 824.5,199.8 824.5,260.2 769.5,290.5 714.5,260.2 714.5,199.8" fill="#29d3f0" filter="url(#node-glow)"/>
+<polygon points="769.5,170.9 823.2,200.4 823.2,259.6 769.5,289.1 715.7,259.6 715.7,200.4" fill="#0d1117"/>
+<text x="769.48" y="228.0" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="11" letter-spacing="0.1em" text-anchor="middle">THREAT HUNT</text>
+<text x="769.48" y="244.0" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="8.5" letter-spacing="0.04em" text-anchor="middle">cs-threat-intel-lead</text>
+<polygon points="960.0,213.5 1075.0,276.8 1075.0,403.2 960.0,466.5 845.0,403.2 845.0,276.8" fill="#29d3f0" filter="url(#hub-glow)"/>
+<polygon points="960.0,215.1 1073.5,277.6 1073.5,402.4 960.0,464.9 846.5,402.4 846.5,277.6" fill="url(#hub-fill)"/>
+<text x="960" y="362" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="70" text-anchor="middle" letter-spacing="-0.02em">USA<tspan fill="#29d3f0">P</tspan></text>
+</svg>
