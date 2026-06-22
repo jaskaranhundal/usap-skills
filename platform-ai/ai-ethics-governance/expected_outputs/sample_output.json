@@ -1,6 +1,16 @@
 {
   "agent_slug": "ai-ethics-governance",
-  "agent_name": "AI Ethics & Governance",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Ai Ethics Governance skill. Assess and govern the ethical and societal risk dimensions of AI deployments to ensure systems operate within sanctioned boundaries and comply with emerging regulatory requirements. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Ai Ethics Governance: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Assess and govern the ethical and societal risk dimensions of AI deployments to ensure systems operate within sanctioned boundaries and comply with emerging regulatory requirements"
+  ],
+  "evidence_references": [],
+  "next_agents": [],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

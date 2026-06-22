@@ -1,6 +1,29 @@
 {
   "agent_slug": "containment-advisor",
-  "agent_name": "Containment Advisor",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "respond",
+  "action": "Recommend the next containment step; require operator approval before any mutating action.",
+  "rationale": "Representative output for the Containment Advisor skill. Recommend the most targeted containment action for confirmed threats while quantifying production impact and enforcing human approval gates for all mutating operations. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "high",
+  "key_findings": [
+    "Representative finding for Containment Advisor: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Recommend the most targeted containment action for confirmed threats while quantifying production impact and enforcing human approval gates for all mutating operations"
+  ],
+  "evidence_references": [
+    {
+      "source": "skill-md",
+      "ref": "response/containment-advisor/SKILL.md",
+      "quote": "Persona: You are a **Principal Containment Strategist** with **22+ years** of experience in cybersecurity. You directed containment operations for 200+ network isolation"
+    },
+    {
+      "source": "workflow",
+      "ref": "response/containment-advisor/references/workflow.md",
+      "quote": "See workflow.md for the step-by-step procedure this payload illustrates."
+    }
+  ],
+  "next_agents": [
+    "forensics"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

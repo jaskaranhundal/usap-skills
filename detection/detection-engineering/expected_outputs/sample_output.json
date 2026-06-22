@@ -1,6 +1,20 @@
 {
   "agent_slug": "detection-engineering",
-  "agent_name": "Detection Engineering",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "detect",
+  "action": "Surface candidate findings to the operator and hand off to triage.",
+  "rationale": "Representative output for the Detection Engineering skill. Author, validate, and maintain detection rules that provide measurable ATT&CK coverage with documented fidelity thresholds. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Detection Engineering: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Author, validate, and maintain detection rules that provide measurable ATT&CK coverage with documented fidelity thresholds",
+    "MITRE ATT&CK techniques in scope for this run: T1059.001, T1098.001, T1110, T1562.008",
+    "NIST CSF 2.0 subcategories touched: DE.AE-02, DE.AE-07, DE.CM-01, DE.CM-09"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "threat-hunting"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }
