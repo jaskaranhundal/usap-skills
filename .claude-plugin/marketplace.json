@@ -1,12 +1,12 @@
 {
   "name": "usap-skills",
-  "version": "1.0.0",
-  "description": "66 LLM security agent skills for the Unified Security Agent Platform (USAP). Covers threat detection, incident response, red team operations, cloud security, identity risk, compliance mapping, DevSecOps, and AI security. Use any skill standalone or as part of a USAP orchestration chain.",
+  "version": "1.1.0",
+  "description": "79 open-source AI cybersecurity agent skills + 12 cs-* orchestrator agents for the Unified Security Agent Platform (USAP). Covers threat detection, incident response, red team operations, cloud security, identity risk, compliance mapping, DevSecOps, AppSec, and AI security. Every skill emits a typed 11-field JSON output contract mapped to MITRE ATT&CK and NIST CSF 2.0. Use any skill standalone or as part of a USAP orchestration chain.",
   "author": {
     "name": "Jaskarn Singh",
     "email": "jaskaranhundal0001@gmail.com"
   },
   "homepage": "https://github.com/jaskaranhundal/usap-skills",
   "repository": "https://github.com/jaskaranhundal/usap-skills",
-  "license": "MIT"
+  "license": "Apache-2.0"
 }
