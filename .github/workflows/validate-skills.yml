@@ -15,15 +15,18 @@ on:
       - 'tools/validate_skill.py'
       - 'tools/output_contract.py'
       - 'tools/framework_extractor.py'
+      - 'tools/regen_samples.py'
       - '.github/workflows/validate-skills.yml'
   push:
     paths:
       - '**/SKILL.md'
+      - '**/sample_output.json'
       - 'standards/**'
       - 'mappings/**'
       - 'tools/validate_skill.py'
       - 'tools/output_contract.py'
       - 'tools/framework_extractor.py'
+      - 'tools/regen_samples.py'
       - '.github/workflows/validate-skills.yml'
 
 jobs:
@@ -42,27 +45,32 @@ jobs:
         run: |
           python3 tools/validate_skill.py --all --summary
 
-      - name: Validate output contract on changed sample/template files
-        # Non-blocking informational check until the placeholder sample
-        # outputs across the skills are rewritten to be contract-compliant.
-        continue-on-error: true
-        env:
-          BASE_REF: ${{ github.event.pull_request.base.ref || github.event.repository.default_branch }}
+      - name: Validate 11-field output contract across every committed sample
+        # Blocking. The 59 stub samples from the original 71-skill seed have
+        # been backfilled to contract-conformant payloads by
+        # tools/regen_samples.py (see SELF-AUDIT.md). Any new sample that
+        # fails the contract — or any regression on an existing one — now
+        # fails the build.
         run: |
-          set -u
-          git fetch origin "$BASE_REF" --depth=1 2>/dev/null || true
-          CHANGED=$(git diff --name-only "origin/${BASE_REF}...HEAD" 2>/dev/null \
-            | grep -E '/expected_outputs/sample_output\.json$|/assets/templates/output-template\.json$' || true)
-          if [ -z "$CHANGED" ]; then
-            echo "No sample output files changed in this PR — skipping."
-            exit 0
-          fi
+          set -eu
           rc=0
           while IFS= read -r f; do
             [ -z "$f" ] && continue
             python3 tools/output_contract.py "$f" || rc=1
-          done <<< "$CHANGED"
+          done < <(find appsec-devsecops cloud-infra detection governance \
+                        identity-access pentest platform-ai red-team response \
+                        risk-compliance system-security webapp-security \
+                        -name sample_output.json -path '*/expected_outputs/*' 2>/dev/null)
           exit $rc
+
+      - name: Sample generator drift check
+        # Re-runs tools/regen_samples.py in --check mode. Fails if the
+        # generator would produce a different payload than what is committed
+        # for any skill whose existing sample is NOT already a hand-authored
+        # contract-conformant payload. Hand-authored faithful samples (like
+        # appsec-devsecops/vuln-scan) are left alone by design.
+        run: |
+          python3 tools/regen_samples.py --check
 
       - name: Framework-mappings drift check
         # Regenerates mappings/* in-memory and fails if the committed files

@@ -1,6 +1,18 @@
 {
   "agent_slug": "cloud-security-posture",
-  "agent_name": "Cloud Security Posture",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Cloud Security Posture skill. Assess and score cloud security posture across all major providers, prioritizing misconfigurations by exploitability and blast radius. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Cloud Security Posture: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Assess and score cloud security posture across all major providers, prioritizing misconfigurations by exploitability and blast radius"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "cloud-workload-protection"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

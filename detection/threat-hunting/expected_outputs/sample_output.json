@@ -1,6 +1,20 @@
 {
   "agent_slug": "threat-hunting",
-  "agent_name": "Threat Hunting",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "detect",
+  "action": "Surface candidate findings to the operator and hand off to triage.",
+  "rationale": "Representative output for the Threat Hunting skill. Execute hypothesis-driven adversary hunts across all telemetry sources to surface active threats that have bypassed automated controls. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Threat Hunting: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Execute hypothesis-driven adversary hunts across all telemetry sources to surface active threats that have bypassed automated controls",
+    "MITRE ATT&CK techniques in scope for this run: T1078, T1046, T1059.001, T1110",
+    "NIST CSF 2.0 subcategories touched: DE.AE-02, DE.AE-08, DE.CM-01, DE.CM-09"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "incident-classification"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }

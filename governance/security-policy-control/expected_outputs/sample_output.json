@@ -1,6 +1,18 @@
 {
   "agent_slug": "security-policy-control",
-  "agent_name": "Security Policy & Control",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "advise",
+  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
+  "rationale": "Representative output for the Security Policy Control skill. Author, maintain, and validate security policies and control frameworks that are auditable, proportionate, and operationally implementable. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Security Policy Control: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Author, maintain, and validate security policies and control frameworks that are auditable, proportionate, and operationally implementable"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "compliance-mapping"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }
