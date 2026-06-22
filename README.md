@@ -25,22 +25,6 @@ USAP is built for three teams that already own LLM access and don't want to rent
 - **DevSecOps and platform-security engineers** at engineering-led orgs who use Claude Code or similar. Embed `cs-devsecops-engineer` and `cs-appsec-engineer` in CI; route runtime findings into `webapp-security/`.
 - **MSSPs, security consultancies, and red teamers** who need client-ready CVSS / MITRE / evidence-tagged deliverables. White-label the skills, embed in your own delivery stack, ship.
 
-## Compared to other AI security platforms
-
-| Platform | License | Runtime | Differentiator |
-|---|---|---|---|
-| **USAP** | Apache 2.0, open source | Any LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM) | 79 skills + 12 `cs-*` agents + typed 11-field output contract |
-| [Casky.AI](https://casky.ai/) | $49/mo SaaS, Claude-native | Claude only (waitlist) | Prosumer skills lab around investigation deliverables |
-| [Dropzone AI](https://www.dropzone.ai/) | Capacity-priced SaaS (~$36K/yr) | Vendor cloud | 24/7 autonomous AI Tier-1 SOC analyst, 90+ connectors |
-| [Prophet Security](https://www.prophetsecurity.ai/) | Enterprise SaaS, $41M total | Vendor cloud | 1M+ autonomous SOC investigations, 60+ connectors |
-| [7AI](https://7ai.com/) | Enterprise SaaS, $130M Series A | Vendor cloud | 50+ swarming SOC agents, largest cyber Series A on record |
-| [Simbian](https://simbian.ai/) | Enterprise SaaS, $10M seed | Vendor cloud | Multi-agent SOC + pentest under one platform |
-| [Andesite](https://andesite.ai/) | Enterprise SaaS, $38.5M seed | FedRAMP High, BYO-LLM | Federal-grade "Bionic SOC" for regulated buyers |
-
-Full landscape analysis: [`docs/research/casky-ai-competitive-landscape.md`](docs/research/casky-ai-competitive-landscape.md).
-
----
-
 ## Quick Start
 
 > One agent. Any security question. Paste and go.

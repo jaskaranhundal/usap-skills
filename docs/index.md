@@ -8,7 +8,6 @@ description: 74 open-source AI security skills + 12 cs-* orchestrator agents for
 **The open-source alternative to paid AI security platforms.** 74 skills, 12 `cs-*` orchestrator agents, 12 cybersecurity domains. Apache 2.0. Runs in every major LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM). No SaaS, no vendor lock-in.
 
 [:fontawesome-brands-github: GitHub](https://github.com/jaskaranhundal/usap-skills){ .md-button .md-button--primary }
-[Compare USAP vs Casky.AI](comparisons/vs-casky-ai.md){ .md-button }
 
 ## What this is
 
@@ -26,7 +25,6 @@ USAP is a curated, machine-validated library of cybersecurity skills designed fo
 | Mutating-action gating | Explicit `human_approval_required: true` | Implicit / per-vendor |
 | Self-host | Yes (clone and run) | Vendor cloud only |
 
-Full positioning analysis: [USAP vs Casky.AI](comparisons/vs-casky-ai.md).
 
 ## Who is this for
 
@@ -57,13 +55,11 @@ Full positioning analysis: [USAP vs Casky.AI](comparisons/vs-casky-ai.md).
 
 ## Quick links
 
-- [Compare USAP vs Casky.AI](comparisons/vs-casky-ai.md)
 - [GitHub repository](https://github.com/jaskaranhundal/usap-skills)
 - [README](https://github.com/jaskaranhundal/usap-skills/blob/main/README.md)
 - [Output contract spec](https://github.com/jaskaranhundal/usap-skills/blob/main/standards/output-contract.md)
 - [Frontmatter spec](https://github.com/jaskaranhundal/usap-skills/blob/main/standards/frontmatter-spec.md)
 - [Agent v2 contract](https://github.com/jaskaranhundal/usap-skills/blob/main/standards/agent-contract.md)
-- [Casky.AI competitive landscape research](https://github.com/jaskaranhundal/usap-skills/blob/main/docs/research/casky-ai-competitive-landscape.md)
 
 ## Get started
 
