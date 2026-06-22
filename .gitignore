@@ -22,3 +22,6 @@ USAP_ClaudeCode_Handover.md
 
 # Strategic research / competitive analysis kept on local disk only.
 references/private-research/
+
+# Local-only launch playbook — never publish (paste-ready posts, awesome-list PR drafts)
+LAUNCH.md
