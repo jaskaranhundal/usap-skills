@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/usap-keyart.png" alt="USAP — hub-and-node key art" width="100%">
+<img src="docs/assets/usap-banner.svg" alt="USAP banner — wordmark, tagline 'Agents reason · Humans approve · MCP executes', live stats (79 skills · 12 cs-* agents · 12 domains), and a hex constellation of representative agents around the central USAP hub" width="100%">
 
 # USAP — Open-Source AI Cybersecurity Agent Skills
 
