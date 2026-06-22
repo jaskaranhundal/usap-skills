@@ -1,0 +1,52 @@
+/* USAP — Spacing, sizing & layout tokens
+   4px base grid — disciplined, lattice-like. */
+
+:root {
+  /* ─── Space scale (4px grid) ───────────────────────────────────── */
+  --space-0:   0;
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-32:  128px;
+
+  /* ─── Radii (tight, engineered — not pillowy) ─────────────────── */
+  --radius-none: 0;
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;    /* default control / card                   */
+  --radius-lg:   10px;
+  --radius-xl:   14px;
+  --radius-pill: 999px;  /* capsule tags, status pills               */
+
+  /* ─── Control sizing ───────────────────────────────────────────── */
+  --control-sm: 28px;
+  --control-md: 36px;
+  --control-lg: 44px;    /* minimum comfortable hit target            */
+
+  /* ─── Layout ───────────────────────────────────────────────────── */
+  --container-narrow: 720px;
+  --container:        1080px;
+  --container-wide:   1320px;
+  --sidebar-width:    264px;
+  --gutter:           var(--space-6);
+
+  /* ─── Borders ──────────────────────────────────────────────────── */
+  --border-width:      1px; /* @kind spacing */
+  --border-width-thick:1.5px; /* @kind spacing */
+
+  /* ─── Z-index ──────────────────────────────────────────────────── */
+  --z-base:    0; /* @kind other */
+  --z-raised:  10; /* @kind other */
+  --z-sticky:  100; /* @kind other */
+  --z-overlay: 1000; /* @kind other */
+  --z-toast:   1100; /* @kind other */
+}

@@ -1,0 +1,29 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Space Scale" subtitle="4px base grid — disciplined, lattice-like" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-1); font-family: var(--font-mono); padding: 20px 22px; }
+  .row { display: flex; align-items: flex-end; gap: 14px; }
+  .item { text-align: center; }
+  .bar { background: var(--cyan-700); border-top: 2px solid var(--cyan-400); width: 100%; }
+  .item span { display: block; color: var(--ink-300); font-size: 10px; margin-top: 8px; }
+  .item b { color: var(--ink-100); font-weight: 500; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item" style="width:14px"><div class="bar" style="height:4px"></div><span><b>1</b><br>4</span></div>
+    <div class="item" style="width:18px"><div class="bar" style="height:8px"></div><span><b>2</b><br>8</span></div>
+    <div class="item" style="width:22px"><div class="bar" style="height:12px"></div><span><b>3</b><br>12</span></div>
+    <div class="item" style="width:26px"><div class="bar" style="height:16px"></div><span><b>4</b><br>16</span></div>
+    <div class="item" style="width:30px"><div class="bar" style="height:24px"></div><span><b>6</b><br>24</span></div>
+    <div class="item" style="width:38px"><div class="bar" style="height:32px"></div><span><b>8</b><br>32</span></div>
+    <div class="item" style="width:46px"><div class="bar" style="height:48px"></div><span><b>12</b><br>48</span></div>
+    <div class="item" style="width:60px"><div class="bar" style="height:64px"></div><span><b>16</b><br>64</span></div>
+    <div class="item" style="width:74px"><div class="bar" style="height:80px"></div><span><b>20</b><br>80</span></div>
+  </div>
+</body>
+</html>
