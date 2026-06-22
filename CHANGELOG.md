@@ -4,6 +4,10 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
+_No unreleased changes yet._
+
+## [1.1.0] — 2026-06-22
+
 ### Added
 
 - 5-skill AppSec chain ported from Anthropic's defensive-AI reference harness: `threat-model`, `vuln-scan`, `finding-triage`, `patch-candidate`, `appsec-customize`. Each emits an 11-field payload and chains through `next_agents`.
@@ -46,5 +50,6 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jaskaranhundal/usap-skills/releases/tag/v1.0.0
