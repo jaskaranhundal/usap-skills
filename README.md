@@ -66,6 +66,58 @@ USAP is built for three teams that already own LLM access and don't want to rent
 
 ---
 
+
+## Demo: an end-to-end run
+
+A real run of `cs-appsec-engineer` against the in-repo `SimpleStoreAPI` fixture. Every tool emits a typed 11-field payload — pasted verbatim from `appsec-devsecops/vuln-scan/expected_outputs/sample_output.json`.
+
+**You:** Scan `examples/SimpleStoreAPI` for vulnerabilities and route any high findings to triage.
+
+**`cs-appsec-engineer`:** Running `vuln-scan` against threat model TM-001..TM-005.
+
+```bash
+$ python3 appsec-devsecops/vuln-scan/scripts/vuln-scan_tool.py \
+    --input examples/SimpleStoreAPI/scan-context.json --output json
+```
+
+```json
+{
+  "agent_slug": "vuln-scan",
+  "intent_type": "detect",
+  "action": "Hand off to finding-triage — 4 mapped findings, 1 unmapped, top severity high.",
+  "rationale": "Scanned SimpleStoreAPI against TM-001..TM-005. Found 5 distinct findings after dedup: hardcoded credential (TM-001 proximity 9), SQL string concat (TM-002 proximity 8), public S3 ACL (TM-002 proximity 7), permissive CORS (unmapped), missing input validation on /api/v1/profile (TM-001 proximity 9). Confidence dampened 0.05 per merge.",
+  "confidence": 0.82,
+  "severity": "high",
+  "key_findings": [
+    "VF-001 hardcoded-credential at src/config.py:14 — mapped to TM-001, proximity 9",
+    "VF-002 sql-string-concat at src/db/profile.js:42 — mapped to TM-002, proximity 8",
+    "VF-003 public-iac at infra/storage.tf:21 — mapped to TM-002, proximity 7",
+    "VF-004 missing-input-validation at src/routes/profile.js:11 — mapped to TM-001, proximity 9",
+    "VF-005 permissive-cors at src/middleware/cors.js:6 — UNMAPPED (no top-5 threat covers this)"
+  ],
+  "evidence_references": [
+    {"source": "scanner", "ref": "src/config.py:14", "quote": "PASSWORD = \"changeme-prod\""},
+    {"source": "scanner", "ref": "src/db/profile.js:42", "quote": "db.query('SELECT * FROM users WHERE id = ' + req.params.id)"},
+    {"source": "scanner", "ref": "infra/storage.tf:21", "quote": "acl = \"public-read\""}
+  ],
+  "next_agents": ["finding-triage"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z"
+}
+```
+
+**`cs-appsec-engineer`:** Severity is `high`, `next_agents` points at `finding-triage`. Handing off.
+
+**Synthesis (operator-facing):**
+> Five findings, four mapped to your threat model. The hardcoded production credential (`src/config.py:14`) and the SQL string concatenation on the profile route are both proximity-9 hits against TM-001 — patch first. The public S3 bucket ACL is a separate proximity-7 TM-002 hit. The permissive CORS rule is unmapped, which usually means your threat model is incomplete — recommend revisiting TM coverage. No mutating actions taken; `human_approval_required` was false because this was a read-only detect.
+
+Try it yourself:
+
+```bash
+python3 appsec-devsecops/vuln-scan/scripts/vuln-scan_tool.py --output json | jq .
+python3 tools/output_contract.py appsec-devsecops/vuln-scan/expected_outputs/sample_output.json
+```
+
 ## Quick Start
 
 > One agent. Any security question. Paste and go.
