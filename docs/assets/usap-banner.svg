@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 440" width="100%" font-family="'IBM Plex Sans', system-ui, sans-serif">
+<defs>
+<filter id="hub-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="5"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="node-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceGraphic" stdDeviation="1.6"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<radialGradient id="hub-fill" cx="50%" cy="45%" r="65%"><stop offset="0%" stop-color="#06222b"/><stop offset="100%" stop-color="#05080d"/></radialGradient>
+<radialGradient id="hub-spot" cx="970" cy="220" r="280" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="rgba(41,211,240,0.18)"/><stop offset="100%" stop-color="rgba(41,211,240,0)"/></radialGradient>
+<pattern id="grid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M 28 0 L 0 0 0 28" fill="none" stroke="rgba(41,211,240,0.045)" stroke-width="1"/></pattern>
+<linearGradient id="link" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(41,211,240,0.06)"/><stop offset="50%" stop-color="rgba(41,211,240,0.45)"/><stop offset="100%" stop-color="rgba(41,211,240,0.06)"/></linearGradient>
+<linearGradient id="left-shade" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="rgba(5,8,13,0.95)"/><stop offset="60%" stop-color="rgba(5,8,13,0.4)"/><stop offset="100%" stop-color="rgba(5,8,13,0)"/></linearGradient>
+</defs>
+<rect x="0" y="0" width="1280" height="440" fill="#05080d"/>
+<rect x="0" y="0" width="1280" height="440" fill="url(#grid)"/>
+<rect x="0" y="0" width="1280" height="440" fill="url(#hub-spot)"/>
+<rect x="0" y="0" width="768" height="440" fill="url(#left-shade)"/>
+<g opacity="0"><text x="60" y="78" fill="#29d3f0" font-family="'IBM Plex Mono', monospace" font-size="11" letter-spacing="0.22em">UNIFIED SECURITY AGENT PLATFORM</text><animate attributeName="opacity" from="0" to="1" begin="0.1s" dur="0.4s" fill="freeze"/></g>
+<g opacity="0"><text x="60" y="170" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="98" letter-spacing="-0.025em">USA<tspan fill="#29d3f0">P</tspan></text><animate attributeName="opacity" from="0" to="1" begin="0.0s" dur="0.5s" fill="freeze"/></g>
+<g opacity="0"><text x="60" y="215" fill="#e6edf3" font-family="'Space Grotesk', sans-serif" font-weight="500" font-size="26" letter-spacing="-0.01em">Agents reason · Humans approve · MCP executes</text><animate attributeName="opacity" from="0" to="1" begin="0.4s" dur="0.5s" fill="freeze"/></g>
+<g opacity="0"><text x="60" y="252" fill="#8b949e" font-family="'IBM Plex Sans', sans-serif" font-size="15" letter-spacing="0.01em">Open-source AI cybersecurity skills · runs in any LLM · Apache 2.0</text><animate attributeName="opacity" from="0" to="1" begin="0.6s" dur="0.5s" fill="freeze"/></g>
+<g opacity="0">
+<text x="60" y="335" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="40" letter-spacing="-0.01em">79</text>
+<text x="60" y="360" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.14em">SKILLS</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.80s" dur="0.4s" fill="freeze"/>
+</g>
+<g opacity="0">
+<text x="210" y="335" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="40" letter-spacing="-0.01em">12</text>
+<text x="210" y="360" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.14em">CS-* AGENTS</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.92s" dur="0.4s" fill="freeze"/>
+</g>
+<g opacity="0">
+<text x="360" y="335" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="40" letter-spacing="-0.01em">12</text>
+<text x="360" y="360" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.14em">DOMAINS</text>
+<animate attributeName="opacity" from="0" to="1" begin="1.04s" dur="0.4s" fill="freeze"/>
+</g>
+<g opacity="0"><rect x="60" y="378" width="170" height="22" rx="11" fill="#06222b" stroke="#0e4a5c"/><text x="70" y="393" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.12em">MITRE ATT&amp;CK</text><rect x="240" y="378" width="150" height="22" rx="11" fill="#06222b" stroke="#0e4a5c"/><text x="250" y="393" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.12em">NIST CSF 2.0</text><rect x="400" y="378" width="190" height="22" rx="11" fill="#06222b" stroke="#0e4a5c"/><text x="410" y="393" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.12em">11-FIELD JSON OUTPUT</text><animate attributeName="opacity" from="0" to="1" begin="1.3s" dur="0.4s" fill="freeze"/></g>
+<line x1="970" y1="220" x2="970.0" y2="55.0" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.50s" dur="0.3s" fill="freeze"/></line>
+<line x1="970" y1="220" x2="1112.9" y2="137.5" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.57s" dur="0.3s" fill="freeze"/></line>
+<line x1="970" y1="220" x2="1112.9" y2="302.5" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.64s" dur="0.3s" fill="freeze"/></line>
+<line x1="970" y1="220" x2="970.0" y2="385.0" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.71s" dur="0.3s" fill="freeze"/></line>
+<line x1="970" y1="220" x2="827.1" y2="302.5" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.78s" dur="0.3s" fill="freeze"/></line>
+<line x1="970" y1="220" x2="827.1" y2="137.5" stroke="url(#link)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="0.85s" dur="0.3s" fill="freeze"/></line>
+<g opacity="0">
+<polygon points="970.0,2.2 1018.0,28.6 1018.0,81.4 970.0,107.8 922.0,81.4 922.0,28.6" fill="#29d3f0" filter="url(#node-glow)"/>
+<polygon points="970.0,3.6 1016.8,29.3 1016.8,80.7 970.0,106.4 923.2,80.7 923.2,29.3" fill="#0d1117"/>
+<text x="970" y="53" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="9.5" letter-spacing="0.1em" text-anchor="middle">ALERT TRIAGE</text>
+<text x="970" y="67" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="7.5" letter-spacing="0.04em" text-anchor="middle">cs-security-analyst</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.70s" dur="0.35s" fill="freeze"/>
+</g>
+<g opacity="0">
+<polygon points="1112.9,84.7 1160.9,111.1 1160.9,163.9 1112.9,190.3 1064.9,163.9 1064.9,111.1" fill="#d2a8ff" filter="url(#node-glow)"/>
+<polygon points="1112.9,86.1 1159.6,111.8 1159.6,163.2 1112.9,188.9 1066.1,163.2 1066.1,111.8" fill="#0d1117"/>
+<text x="1112.8899999999999" y="135.5" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="9.5" letter-spacing="0.1em" text-anchor="middle">APPSEC</text>
+<text x="1112.8899999999999" y="149.5" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="7.5" letter-spacing="0.04em" text-anchor="middle">cs-appsec-engineer</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.78s" dur="0.35s" fill="freeze"/>
+</g>
+<g opacity="0">
+<polygon points="1112.9,249.7 1160.9,276.1 1160.9,328.9 1112.9,355.3 1064.9,328.9 1064.9,276.1" fill="#79c0ff" filter="url(#node-glow)"/>
+<polygon points="1112.9,251.1 1159.6,276.8 1159.6,328.2 1112.9,353.9 1066.1,328.2 1066.1,276.8" fill="#0d1117"/>
+<text x="1112.8899999999999" y="300.5" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="9.5" letter-spacing="0.1em" text-anchor="middle">EXEC BRIEF</text>
+<text x="1112.8899999999999" y="314.5" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="7.5" letter-spacing="0.04em" text-anchor="middle">cs-ciso-advisor</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.86s" dur="0.35s" fill="freeze"/>
+</g>
+<g opacity="0">
+<polygon points="970.0,332.2 1018.0,358.6 1018.0,411.4 970.0,437.8 922.0,411.4 922.0,358.6" fill="#29d3f0" filter="url(#node-glow)"/>
+<polygon points="970.0,333.6 1016.8,359.3 1016.8,410.7 970.0,436.4 923.2,410.7 923.2,359.3" fill="#0d1117"/>
+<text x="970" y="383" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="9.5" letter-spacing="0.1em" text-anchor="middle">INCIDENT</text>
+<text x="970" y="397" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="7.5" letter-spacing="0.04em" text-anchor="middle">cs-incident-responder</text>
+<animate attributeName="opacity" from="0" to="1" begin="0.94s" dur="0.35s" fill="freeze"/>
+</g>
+<g opacity="0">
+<polygon points="827.1,249.7 875.1,276.1 875.1,328.9 827.1,355.3 779.1,328.9 779.1,276.1" fill="#ffa657" filter="url(#node-glow)"/>
+<polygon points="827.1,251.1 873.9,276.8 873.9,328.2 827.1,353.9 780.4,328.2 780.4,276.8" fill="#0d1117"/>
+<text x="827.11" y="300.5" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="9.5" letter-spacing="0.1em" text-anchor="middle">DEVSECOPS</text>
+<text x="827.11" y="314.5" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="7.5" letter-spacing="0.04em" text-anchor="middle">cs-devsecops-engineer</text>
+<animate attributeName="opacity" from="0" to="1" begin="1.02s" dur="0.35s" fill="freeze"/>
+</g>
+<g opacity="0">
+<polygon points="827.1,84.7 875.1,111.1 875.1,163.9 827.1,190.3 779.1,163.9 779.1,111.1" fill="#29d3f0" filter="url(#node-glow)"/>
+<polygon points="827.1,86.1 873.9,111.8 873.9,163.2 827.1,188.9 780.4,163.2 780.4,111.8" fill="#0d1117"/>
+<text x="827.11" y="135.5" fill="#5ee6ff" font-family="'IBM Plex Mono', monospace" font-weight="600" font-size="9.5" letter-spacing="0.1em" text-anchor="middle">THREAT HUNT</text>
+<text x="827.11" y="149.5" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="7.5" letter-spacing="0.04em" text-anchor="middle">cs-threat-intel-lead</text>
+<animate attributeName="opacity" from="0" to="1" begin="1.10s" dur="0.35s" fill="freeze"/>
+</g>
+<g opacity="0">
+<polygon points="970.0,126.5 1055.0,173.2 1055.0,266.8 970.0,313.5 885.0,266.8 885.0,173.2" fill="#29d3f0" filter="url(#hub-glow)"/>
+<polygon points="970.0,128.1 1053.5,174.1 1053.5,265.9 970.0,311.9 886.5,265.9 886.5,174.1" fill="url(#hub-fill)"/>
+<text x="970" y="234" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="46" text-anchor="middle" letter-spacing="-0.02em">USA<tspan fill="#29d3f0">P</tspan></text>
+<animate attributeName="opacity" from="0" to="1" begin="0.20s" dur="0.35s" fill="freeze"/>
+</g>
+<circle cx="970" cy="220" r="97" fill="none" stroke="#29d3f0" stroke-width="1" opacity="0"><animate attributeName="opacity" values="0;0.5;0" dur="2.4s" begin="2.0s" repeatCount="indefinite"/><animate attributeName="r" values="97;119;97" dur="2.4s" begin="2.0s" repeatCount="indefinite"/></circle>
+</svg>
