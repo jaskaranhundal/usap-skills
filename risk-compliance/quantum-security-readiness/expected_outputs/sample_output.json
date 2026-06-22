@@ -1,6 +1,18 @@
 {
   "agent_slug": "quantum-security-readiness",
-  "agent_name": "Quantum Security Readiness",
-  "status": "sample",
-  "notes": "Representative output for validation and QA checks."
+  "intent_type": "analyze",
+  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
+  "rationale": "Representative output for the Quantum Security Readiness skill. Assess an organization's cryptographic exposure to quantum computing threats and produce a prioritized migration roadmap to post-quantum algorithms. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
+  "confidence": 0.78,
+  "severity": "medium",
+  "key_findings": [
+    "Representative finding for Quantum Security Readiness: baseline pass against documented decision tables in SKILL.md",
+    "Skill mandate observed: Assess an organization's cryptographic exposure to quantum computing threats and produce a prioritized migration roadmap to post-quantum algorithms"
+  ],
+  "evidence_references": [],
+  "next_agents": [
+    "security-roadmap-planner"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-22T12:00:00Z"
 }
