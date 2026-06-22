@@ -16,3 +16,6 @@ push_usap.py
 # references/ is a local-only scratch space for inspecting upstream skill repos.
 # Do not check anything under references/ into git.
 references/
+
+# Strategic research / competitive analysis kept on local disk only.
+references/private-research/

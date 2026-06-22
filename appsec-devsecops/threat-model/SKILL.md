@@ -119,4 +119,3 @@ python3 appsec-devsecops/threat-model/scripts/threat-model_tool.py --output json
 ## References
 
 - Anthropic's defending-code-reference-harness `/threat-model` skill pattern: <https://github.com/anthropics/defending-code-reference-harness>
-- USAP roadmap research, section 8.3 (Quick Win 3): `docs/research/usap-enhancement-roadmap.md`
