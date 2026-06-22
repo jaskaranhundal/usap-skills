@@ -25,7 +25,8 @@ Usage::
 
 ``--check`` regenerates in-memory and compares against the committed files.
 Exits 1 if any drift is detected; prints a unified diff. Use this in CI to
-forbid hand-maintained coverage docs (gap-analysis report anti-pattern 7.4).
+forbid hand-maintained coverage docs — the source of truth lives in each
+skill's ``metadata.frameworks.*`` frontmatter, never in these artifacts.
 """
 from __future__ import annotations
 
