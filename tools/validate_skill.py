@@ -130,7 +130,9 @@ SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 # Matches MITRE ATT&CK technique IDs in body prose: T1234 or T1234.567.
 # Non-capturing group so re.findall returns the full ID, not just ".567".
-BODY_MITRE_RE = re.compile(r"\bT\d{4}(?:\.\d{3})?\b")
+# Negative lookahead (?!\.\d) rejects malformed sub-techniques (e.g. T1552.01,
+# T1552.0012) instead of partial-matching them to the base ID T1552.
+BODY_MITRE_RE = re.compile(r"\bT\d{4}(?:\.\d{3})?(?!\.\d)\b")
 MAX_NAME_LEN = 64
 MIN_DESC_LEN = 50
 
