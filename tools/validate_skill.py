@@ -23,6 +23,8 @@ Emits non-blocking WARNs (does not fail the run) for:
     providers, required_invoke_role, required_approver_role, input_schema,
     output_schema, runtime_contract, approval_required) — see Phase 4 of the
     roadmap for migration
+  - MITRE ATT&CK technique IDs cited in the body that are absent from
+    metadata.frameworks.mitre_attack (frontmatter is authoritative)
 
 Usage::
 
@@ -126,6 +128,9 @@ LEGACY_KEYS = {
 KEBAB_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+# Matches MITRE ATT&CK technique IDs in body prose: T1234 or T1234.567.
+# Non-capturing group so re.findall returns the full ID, not just ".567".
+BODY_MITRE_RE = re.compile(r"\bT\d{4}(?:\.\d{3})?\b")
 MAX_NAME_LEN = 64
 MIN_DESC_LEN = 50
 
@@ -409,6 +414,27 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
                 ".ps1 files not permitted in scripts/ "
                 f"({', '.join(p.name for p in ps1_files)})"
             )
+
+    # Non-blocking WARN: MITRE technique IDs cited in the body but not
+    # declared in metadata.frameworks.mitre_attack. Frontmatter is
+    # authoritative, so body prose that drifts from it is surfaced for review.
+    body = content[content.find("\n---", 3) + 4:]
+    cited = set(BODY_MITRE_RE.findall(body))
+    declared = set()
+    if isinstance(metadata, dict):
+        frameworks = metadata.get("frameworks")
+        if isinstance(frameworks, dict) and isinstance(
+            frameworks.get("mitre_attack"), list
+        ):
+            declared = {
+                x for x in frameworks["mitre_attack"] if isinstance(x, str)
+            }
+    drift = sorted(cited - declared)
+    if drift:
+        warnings.append(
+            "MITRE technique IDs cited in body but not declared in "
+            f"metadata.frameworks.mitre_attack: {', '.join(drift)}"
+        )
 
     return errors, warnings
 
