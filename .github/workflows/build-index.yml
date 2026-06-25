@@ -1,6 +1,6 @@
 name: build-index
 
-# Regenerate index.json from per-skill frontmatter and commit any drift back
+# Regenerate api/index.json from per-skill frontmatter and commit any drift back
 # to main. The registry is the canonical "what does USAP ship" artifact every
 # external client (Claude Code, Cursor, Goose, OpenCode, search engines)
 # fetches once instead of crawling the repo.
@@ -29,18 +29,18 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Generate index.json
+      - name: Generate api/index.json
         run: python3 tools/build_index.py
 
-      - name: Commit updated index.json
+      - name: Commit updated api/index.json
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.json
+          git add api/index.json
           if git diff --staged --quiet; then
-            echo "No index.json changes to commit"
+            echo "No api/index.json changes to commit"
           else
-            SKILLS=$(python3 -c "import json; print(json.load(open('index.json'))['counts']['skills'])")
-            git commit -m "chore(index): regenerate index.json ($SKILLS skills) [skip ci]"
+            SKILLS=$(python3 -c "import json; print(json.load(open('api/index.json'))['counts']['skills'])")
+            git commit -m "chore(index): regenerate api/index.json ($SKILLS skills) [skip ci]"
             git push
           fi
