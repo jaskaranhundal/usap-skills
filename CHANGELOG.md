@@ -6,6 +6,31 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.1.1] — 2026-06-25
+
+### Added
+
+- Documented Claude Code plugin install path in `README.md` (`/plugin marketplace add jaskaranhundal/usap-skills` then `/plugin install usap-skills@usap`).
+- `LAUNCH.md` removed from public tree and added to `.gitignore`; preserved locally as the private launch playbook.
+- "Try it in 60 seconds" block restructured into three labelled options (Claude Code plugin, paste-into-any-LLM bundle, no-install web demo).
+
+### Fixed
+
+- `.claude-plugin/marketplace.json` was a copy of `plugin.json`; rewritten as a proper Claude Code marketplace catalogue with `owner`, `metadata`, and `plugins[]` listing USAP as the single offering.
+- `.claude-plugin/plugin.json` expanded with `keywords[]`, structured `repository` block, and a description that names the 7 slash commands and 6 user-invocable skills the plugin actually installs.
+- Stale plugin manifest claiming "66 skills / v1.0.0 / MIT" corrected to "79 / v1.1.0 / Apache-2.0" (introduced in v1.1.0, missed at tag).
+
+### Removed
+
+- `skills/` (74 broken/stale symlinks into the domain dirs — nothing referenced the flat path, and it was stale at 74 vs the actual 79).
+- Root-level `assets/usap-linkedin.png` (duplicate of `docs/design-system/assets/usap-linkedin.png`).
+- `.claude/launch.json` (local debug config referencing non-existent /tmp paths).
+- `.claude/settings.local.json` and `push_usap.py` (working-tree-only files that were already gitignored).
+
+### Relocated
+
+- `assets/usap-linkedin-philosophy.md` → `docs/design-system/brand/design-philosophy.md` (Signal Architecture brand material belongs in the design-system tree).
+
 ## [1.1.0] — 2026-06-22
 
 ### Added
@@ -50,6 +75,7 @@ _No unreleased changes yet._
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jaskaranhundal/usap-skills/releases/tag/v1.0.0
