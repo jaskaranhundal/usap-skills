@@ -1,26 +1,30 @@
 {
   "name": "usap",
+  "description": "USAP — Unified Security Agent Platform. Open-source AI cybersecurity skills marketplace.",
   "owner": {
     "name": "Jaskarn Singh",
     "email": "jaskaranhundal0001@gmail.com",
     "url": "https://github.com/jaskaranhundal"
   },
+  "homepage": "https://github.com/jaskaranhundal/usap-skills",
+  "repository": "https://github.com/jaskaranhundal/usap-skills",
   "metadata": {
-    "description": "USAP \u2014 Unified Security Agent Platform. Open-source AI cybersecurity skills marketplace.",
-    "version": "1.1.1"
+    "description": "USAP — Unified Security Agent Platform. Open-source AI cybersecurity skills marketplace.",
+    "version": "1.1.2"
   },
   "plugins": [
     {
       "name": "usap-skills",
       "source": "./",
-      "description": "79 open-source AI cybersecurity agent skills + 12 cs-* orchestrator agents. 7 slash commands (/usap:run, /usap:fortigate, /usap:orchestrate, /usap:challenge, /usap:compare, /usap:test, /usap:README) and 6 user-invocable skills (Alex, CISO, DevSecOps, IR, Program Manager, Red Team). Every skill emits a typed 11-field JSON output contract mapped to MITRE ATT&CK and NIST CSF 2.0. Apache 2.0, runs in any LLM.",
-      "version": "1.1.1",
-      "license": "Apache-2.0",
-      "homepage": "https://github.com/jaskaranhundal/usap-skills",
-      "repository": {
-        "type": "git",
-        "url": "https://github.com/jaskaranhundal/usap-skills.git"
+      "description": "79 cybersecurity skills + 12 cs-* orchestrator agents. Bundles 7 slash commands (usap:run, usap:fortigate, usap:orchestrate, usap:challenge, usap:compare, usap:test, usap:README) and 6 user-invocable orchestrator skills (Alex, CISO, DevSecOps, IR, Program Manager, Red Team). Every skill emits a typed 11-field JSON output contract mapped to MITRE ATT&CK and NIST CSF 2.0. Apache 2.0, runs in any LLM.",
+      "version": "1.1.2",
+      "author": {
+        "name": "Jaskarn Singh",
+        "email": "jaskaranhundal0001@gmail.com"
       },
+      "homepage": "https://github.com/jaskaranhundal/usap-skills",
+      "repository": "https://github.com/jaskaranhundal/usap-skills",
+      "license": "Apache-2.0",
       "keywords": [
         "cybersecurity",
         "soc-automation",
@@ -35,8 +39,7 @@
         "ai-security",
         "agentic-security"
       ],
-      "category": "security",
-      "strict": false
+      "category": "security"
     }
   ]
 }
