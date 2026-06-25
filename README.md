@@ -25,20 +25,40 @@ Each `SKILL.md` is a complete LLM system prompt — paste into Claude, ChatGPT, 
 
 ## Try it in 60 seconds
 
-```bash
-# 1. Clone
-git clone https://github.com/jaskaranhundal/usap-skills.git
-cd usap-skills
+### Option 1 — Claude Code plugin (one command, no clone)
 
-# 2. Bundle the kit (no dependencies; stdlib only)
-python3 shared/scripts/bundle_usap.py bundle --mode lite
+If you have [Claude Code](https://claude.ai/code) installed, type these two slash commands in any project:
 
-# 3. Paste dist/USAP_LITE.md as the system prompt in Claude / ChatGPT / Gemini
-#    (or open docs/design-system/ui_kits/platform/index.html in any browser
-#     for the interactive Console demo)
+```
+/plugin marketplace add jaskaranhundal/usap-skills
+/plugin install usap-skills@usap
 ```
 
-That's it. No npm, no Docker, no API key, no signup. The bundled file is one markdown blob that becomes Alex (`cs-security-analyst`) on any LLM.
+That activates 7 slash commands (`/usap:run`, `/usap:fortigate`, `/usap:orchestrate`, `/usap:challenge`, `/usap:compare`, `/usap:test`, `/usap:README`) and 6 user-invocable orchestrator skills (`@usap-alex`, `@usap-ciso`, `@usap-devsecops`, `@usap-incident-responder`, `@usap-program-manager`, `@usap-red-teamer`).
+
+Smoke test it:
+
+```
+/usap:fortigate
+```
+
+Alex runs the AT + CA workflows against the bundled Fintech FortiGate zero-day scenario and produces a 7-task scorecard.
+
+### Option 2 — paste-into-any-LLM bundle (Claude.ai, ChatGPT, Gemini, Ollama)
+
+```bash
+git clone https://github.com/jaskaranhundal/usap-skills.git
+cd usap-skills
+python3 shared/scripts/bundle_usap.py bundle --mode lite   # → dist/USAP_LITE.md  (32 KB)
+# python3 shared/scripts/bundle_usap.py bundle --mode pro  # → dist/USAP_PRO.md   (185 KB — Gemini 1.5 Pro / 2.0 Flash)
+# python3 shared/scripts/bundle_usap.py bundle --mode full # → dist/USAP_BUNDLE.md (744 KB — Claude Opus / GPT-5 / Gemini 2.5 Pro)
+```
+
+Paste `dist/USAP_LITE.md` as the system prompt in any LLM. No npm, no Docker, no API key, no signup. The bundled file is one markdown blob that becomes Alex (`cs-security-analyst`) on any model.
+
+### Option 3 — interactive web demo (no install)
+
+Open [`docs/design-system/ui_kits/platform/index.html`](docs/design-system/ui_kits/platform/index.html) in any browser for the 3-screen click-through (Landing → Agent Console → Findings).
 
 ---
 
