@@ -49,7 +49,7 @@ Shape::
 
 Usage::
 
-    python3 tools/build_index.py             # write index.json
+    python3 tools/build_index.py             # write api/index.json
     python3 tools/build_index.py --check     # CI drift gate (exit 1 on diff)
 
 Stdlib only. Shares the frontmatter parser with ``tools/validate_skill.py``
@@ -72,7 +72,7 @@ from validate_skill import (  # noqa: E402  (import after sys.path tweak)
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-INDEX_PATH = REPO_ROOT / "index.json"
+INDEX_PATH = REPO_ROOT / "api" / "index.json"
 
 # Optional skill-frontmatter keys to surface in the index. Required keys
 # (name, description, license, metadata.*) are always emitted.
@@ -218,7 +218,7 @@ def main() -> int:
         "--output",
         type=Path,
         default=INDEX_PATH,
-        help="Where to write index.json (default: <repo>/index.json).",
+        help="Where to write index.json (default: <repo>/api/index.json).",
     )
     args = parser.parse_args()
 
