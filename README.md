@@ -31,7 +31,7 @@ If you have [Claude Code](https://claude.ai/code) installed, type these two slas
 
 ```
 /plugin marketplace add jaskaranhundal/usap-skills
-/plugin install usap-skills@usap
+/plugin install usap@usap
 ```
 
 That activates 7 slash commands (`/usap:run`, `/usap:fortigate`, `/usap:orchestrate`, `/usap:challenge`, `/usap:compare`, `/usap:test`, `/usap:README`) and 6 user-invocable orchestrator skills (`@usap-alex`, `@usap-ciso`, `@usap-devsecops`, `@usap-incident-responder`, `@usap-program-manager`, `@usap-red-teamer`).
