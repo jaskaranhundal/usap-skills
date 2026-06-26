@@ -6,6 +6,38 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.7.0] — 2026-06-26
+
+### Added — completes the master-MCP architecture
+
+- **Scheduled persistence runner (Phase 4).** `tools/usap_runner.py` (~310 LOC) is a cron-style scheduler that fires skill workflows on a clock and dispatches results through the routing layer to a downstream MCP. Supports `M H * * *`, `*/N * * * *`, `@every Ns`, `@hourly`, `@daily`. Run modes: `--validate`, `--list`, `--once <job-id>`, `--run` (foreground daemon with graceful SIGTERM).
+- `runner/runner.yaml` — declares scheduled jobs with skill / schedule / dispatch_to / dispatch_args. Four sample jobs shipped, all `enabled: false` by default.
+- **Tamper-resistant audit log.** `tools/mcp_audit.py` rewritten with:
+  - SHA-256 hash chain — every line carries `prev_hash` = SHA-256 of the previous line. Insertion, deletion, or modification of any line is detected.
+  - Optional HMAC-SHA256 signatures — if `USAP_AUDIT_KEY` is set in the environment, every line carries a signature. The verifier checks both chain AND every signature.
+  - `--verify` CLI mode walks the chain and reports any tampering.
+  - `USAP_AUDIT_KEY` accepts hex bytes, a path to a keyfile, or a passphrase.
+- `docs/mcp-scheduled.md` — Phase 4 docs: runner config schema, supported cron syntax, audit chain + signature design, production deployment notes (systemd, key management, log rotation, daily verification).
+- `tools/mcp_server_test.py` extended from 27 to 32 assertions. Tests audit-log creation, `prev_hash` presence on every entry, `GENESIS` on the first entry, and full chain verification.
+
+### How Phase 4 completes the vision
+
+After v1.7.0 USAP is:
+- An MCP server any client can connect to (Phase 1).
+- A routing layer that gates mutating actions behind human approval (Phase 2).
+- A dispatcher that actually invokes downstream adapters (Phase 3).
+- A scheduler that fires workflows on a clock (Phase 4).
+- A tamper-resistant audit log of every event (Phase 4).
+
+That's the "minimum human intervention, maximum tool capability" architecture, complete: safe actions auto-execute, dangerous actions gate behind approval, scheduled workflows need no human, and the audit trail any compliance reviewer would demand is built in by default.
+
+### Safety invariants (carried forward)
+
+- Mutating capabilities MUST declare `approval_required: true` in the registry. Loader rejects violators.
+- Every routing / approval / dispatch / scheduled-run event writes an audit line.
+- Runner refuses to invoke mutating capabilities — only the human-gated `dispatch_after_approval` path can call those.
+- Stdlib only.
+
 ## [1.6.0] — 2026-06-26
 
 ### Added
@@ -143,7 +175,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.7.0...HEAD
+[1.7.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.1...v1.4.0

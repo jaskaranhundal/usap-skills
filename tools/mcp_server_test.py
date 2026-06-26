@@ -11,6 +11,7 @@ Stdlib only — no external dependencies.
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import time
@@ -258,6 +259,30 @@ def main() -> int:
         decision = json.loads(text)
         check("dispatch_after_approval on disabled MCP returns dispatch_failed",
               decision.get("status") == "dispatch_failed" and "disabled" in decision.get("error", ""))
+
+        # ─── Phase 4 audit chain assertions ─────────────────────────────
+        # 17. Audit chain has the expected events from this run.
+        audit_dir = os.environ.get("USAP_AUDIT_DIR")
+        if audit_dir:
+            log_paths = list(Path(audit_dir).glob("*.jsonl"))
+            check("audit log file exists", bool(log_paths))
+            if log_paths:
+                events = []
+                for raw in log_paths[0].read_text().splitlines():
+                    if raw.strip():
+                        events.append(json.loads(raw))
+                check("audit log non-empty", len(events) > 0)
+                check("every audit entry has prev_hash",
+                      all("prev_hash" in e for e in events))
+                # First entry's prev_hash is GENESIS
+                check("first audit entry prev_hash is GENESIS",
+                      events[0].get("prev_hash") == "GENESIS")
+
+                # 18. Verify chain
+                sys.path.insert(0, str(REPO_ROOT / "tools"))
+                from mcp_audit import verify  # noqa: E402
+                ok, errors = verify(log_paths[0])
+                check("audit chain verifies", ok, f"errors: {errors[:3]}")
 
     finally:
         try:
