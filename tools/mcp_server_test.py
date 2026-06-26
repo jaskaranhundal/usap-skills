@@ -74,10 +74,11 @@ def main() -> int:
         r = recv(proc)
         tools = r.get("result", {}).get("tools", [])
         tool_names = {t["name"] for t in tools}
-        check("tools/list returns 7 tools", len(tools) == 7, f"got {len(tools)}")
+        check("tools/list returns 8 tools", len(tools) == 8, f"got {len(tools)}")
         for expected in (
             "list_skills", "list_agents", "get_skill", "get_agent",
             "validate_payload", "route_payload", "list_mcps",
+            "dispatch_after_approval",
         ):
             check(f"tools/list includes {expected!r}", expected in tool_names)
 
@@ -177,20 +178,25 @@ def main() -> int:
         check("list_mcps mentions slack + github + crowdstrike",
               all(x in text for x in ("slack", "github", "crowdstrike")))
 
-        # 13. route_payload — no enabled MCP matches (all disabled by default)
-        no_match_payload = {
+        # 13. route_payload — detect intent dispatches to splunk (enabled in Phase 3)
+        detect_payload = {
             "intent_type": "detect",
-            "next_agents": [],
+            "next_agents": ["cs-security-analyst"],
             "human_approval_required": False,
+            "dispatch_args": {"spl": "index=okta_logs failed_login"},
         }
         send(proc, {
             "jsonrpc": "2.0", "id": 13, "method": "tools/call",
-            "params": {"name": "route_payload", "arguments": {"payload": no_match_payload}},
+            "params": {"name": "route_payload", "arguments": {"payload": detect_payload}},
         })
-        r = recv(proc)
+        r = recv(proc, timeout=30.0)
         text = r.get("result", {}).get("content", [{}])[0].get("text", "")
-        check("route_payload returns no_match when all MCPs disabled",
-              '"status": "no_match"' in text)
+        decision = json.loads(text)
+        check("route_payload(detect) dispatches to splunk",
+              decision.get("status") == "dispatched" and decision.get("selected_mcp") == "splunk",
+              f"got {decision}")
+        check("route_payload(detect) dispatch outcome is ok",
+              decision.get("outcome", {}).get("ok") is True)
 
         # 14. route_payload — human_approval_required: true on a real sample
         sample = json.loads((REPO_ROOT / "appsec-devsecops/threat-model/expected_outputs/sample_output.json").read_text())
@@ -200,15 +206,58 @@ def main() -> int:
         })
         r = recv(proc)
         text = r.get("result", {}).get("content", [{}])[0].get("text", "")
-        # Either no_match (no MCP matches the appsec intent without enabled
-        # adapters) OR approval_required if the payload's approval flag fires.
         # The contract: routing returns a known status, not an error.
+        # Valid Phase 3 statuses: dispatched, dispatch_failed, approval_required,
+        # no_match (and the legacy would_dispatch from Phase 2 if anyone holds an
+        # old client open).
         decision = json.loads(text)
         check("route_payload returns a known status",
-              decision.get("status") in ("no_match", "approval_required", "would_dispatch"),
+              decision.get("status") in (
+                  "no_match", "approval_required", "would_dispatch",
+                  "dispatched", "dispatch_failed",
+              ),
               f"got {decision.get('status')!r}")
-        check("route_payload result includes 'phase': 2 marker",
-              decision.get("phase") == 2 or decision.get("status") == "no_match")
+        check("route_payload result includes a phase marker",
+              decision.get("phase") in (2, 3) or decision.get("status") == "no_match")
+
+        # ─── Phase 3 dispatch assertions ─────────────────────────────────
+        # 15. dispatch_after_approval to slack/post_message (mutating, gated)
+        send(proc, {
+            "jsonrpc": "2.0", "id": 15, "method": "tools/call",
+            "params": {
+                "name": "dispatch_after_approval",
+                "arguments": {
+                    "mcp_id": "slack",
+                    "capability_id": "post_message",
+                    "arguments": {"channel": "#ir-channel", "text": "SEV-2 declared at 15:24Z"},
+                    "approval_token": "smoke-test-approved",
+                },
+            },
+        })
+        r = recv(proc, timeout=30.0)
+        text = r.get("result", {}).get("content", [{}])[0].get("text", "")
+        decision = json.loads(text)
+        check("dispatch_after_approval(slack/post_message) succeeds",
+              decision.get("status") == "dispatched" and decision.get("outcome", {}).get("ok") is True,
+              f"got {decision}")
+
+        # 16. dispatch_after_approval on a disabled MCP fails cleanly
+        send(proc, {
+            "jsonrpc": "2.0", "id": 16, "method": "tools/call",
+            "params": {
+                "name": "dispatch_after_approval",
+                "arguments": {
+                    "mcp_id": "crowdstrike",
+                    "capability_id": "isolate_host",
+                    "arguments": {"host_id": "abc123"},
+                },
+            },
+        })
+        r = recv(proc, timeout=15.0)
+        text = r.get("result", {}).get("content", [{}])[0].get("text", "")
+        decision = json.loads(text)
+        check("dispatch_after_approval on disabled MCP returns dispatch_failed",
+              decision.get("status") == "dispatch_failed" and "disabled" in decision.get("error", ""))
 
     finally:
         try:
