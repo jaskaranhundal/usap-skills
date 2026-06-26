@@ -60,6 +60,23 @@ Paste `dist/USAP_LITE.md` as the system prompt in any LLM. No npm, no Docker, no
 
 Open [`docs/design-system/ui_kits/platform/index.html`](docs/design-system/ui_kits/platform/index.html) in any browser for the 3-screen click-through (Landing → Agent Console → Findings).
 
+### Option 4 — MCP server (Cursor, Codex CLI, Gemini CLI, Goose, any MCP client)
+
+USAP also runs as a stdlib-only **Model Context Protocol** server. Add to your client's MCP config:
+
+```json
+{
+  "mcpServers": {
+    "usap": {
+      "command": "python3",
+      "args": ["/absolute/path/to/usap-skills/tools/mcp_server.py"]
+    }
+  }
+}
+```
+
+Connect, then ask plain-English security questions — your client discovers and loads USAP skills and `cs-*` agents on demand. Read-only Phase 1 today; Phase 2 turns USAP into the master MCP routing security intents to downstream vendor MCPs (SIEM, EDR, firewall) with the contract's `human_approval_required` gate enforcing the human approval step. Full docs at [`docs/mcp-server.md`](docs/mcp-server.md).
+
 ---
 
 ## Architecture

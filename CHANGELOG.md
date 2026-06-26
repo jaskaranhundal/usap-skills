@@ -6,6 +6,27 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.4.0] — 2026-06-26
+
+### Added
+
+- **MCP server (Phase 1).** `tools/mcp_server.py` exposes USAP as a [Model Context Protocol](https://modelcontextprotocol.io) server over stdio. Any MCP-compatible client — Claude Code, Cursor, Codex CLI, Gemini CLI, Goose, OpenCode — can now:
+  - Discover the 79 USAP skills and 12 `cs-*` orchestrator agents via the `list_skills`, `list_agents` tools or via `resources/list`.
+  - Load any skill or agent definition into the client's LLM context via `get_skill`, `get_agent`, or `resources/read`.
+  - Validate a JSON payload against the typed 11-field output contract via `validate_payload`.
+- `tools/mcp_server_test.py` smoke test covering 17 assertions across the JSON-RPC handshake, all 5 tools, resource enumeration, resource read, and error handling.
+- `docs/mcp-server.md` install + usage docs with client-specific config examples (Claude Code, Cursor, Codex CLI, Gemini CLI).
+- "Option 4 — MCP server" section in `README.md` pointing at the new install path.
+
+### Why this matters
+
+Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this server into the **master MCP** that routes security intents to downstream vendor MCPs (Splunk, CrowdStrike, FortiGate, Okta, AWS Security Hub, GitHub, Slack), with the contract's `human_approval_required` field enforcing the human gate before any mutating downstream call. The Phase 1 transport, discovery model, and contract validator are the foundation that work builds on.
+
+### Notes
+
+- Stdlib only — no new dependencies.
+- ~440 lines of Python over JSON-RPC 2.0 / newline-delimited JSON, the standard MCP stdio transport.
+
 ## [1.1.1] — 2026-06-25
 
 ### Added
@@ -75,7 +96,8 @@ _No unreleased changes yet._
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.1...v1.4.0
 [1.1.1]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jaskaranhundal/usap-skills/releases/tag/v1.0.0
