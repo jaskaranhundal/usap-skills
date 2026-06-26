@@ -37,7 +37,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 PROTOCOL_VERSION = "2025-06-18"
 SERVER_NAME = "usap"
-SERVER_VERSION = "1.4.0"
+SERVER_VERSION = "1.5.0"
 
 ACTIVE_DOMAINS = [
     "appsec-devsecops", "cloud-infra", "detection", "governance",
@@ -255,6 +255,39 @@ TOOLS = [
             "required": ["payload"],
         },
     },
+    {
+        "name": "route_payload",
+        "description": (
+            "Phase 2 routing. Take an 11-field USAP payload and look up which "
+            "specialist MCP would handle it (Splunk / CrowdStrike / FortiGate "
+            "/ Okta / Slack / GitHub / AWS Security Hub, etc.) per the "
+            "registry at registry/usap-mcp-registry.yaml. If the payload or "
+            "the matched capability sets human_approval_required: true, "
+            "returns an approval prompt instead of dispatching. Phase 3 will "
+            "actually invoke the adapter; Phase 2 confirms routing logic + "
+            "approval gate. Every decision is written to "
+            "~/.usap/audit/YYYY-MM-DD.jsonl."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "payload": {
+                    "type": "object",
+                    "description": "The 11-field USAP payload from a skill or agent.",
+                },
+            },
+            "required": ["payload"],
+        },
+    },
+    {
+        "name": "list_mcps",
+        "description": (
+            "List all specialist MCPs the router knows about, with their "
+            "enabled/disabled status, declared capabilities, and which "
+            "intent_type values route to them."
+        ),
+        "inputSchema": {"type": "object", "properties": {}},
+    },
 ]
 
 
@@ -316,6 +349,32 @@ def handle_tools_call(params: dict) -> dict:
         violations = vp(payload)
         text = "PASS" if not violations else "\n".join(violations)
         return {"content": [{"type": "text", "text": text}]}
+
+    if name == "route_payload":
+        payload = args.get("payload")
+        if not isinstance(payload, dict):
+            return _err("payload must be a JSON object")
+        sys.path.insert(0, str(REPO_ROOT / "tools"))
+        from mcp_router import route  # noqa: E402
+        decision = route(payload)
+        return {"content": [{"type": "text", "text": json.dumps(decision, indent=2)}]}
+
+    if name == "list_mcps":
+        sys.path.insert(0, str(REPO_ROOT / "tools"))
+        from mcp_registry import load_registry  # noqa: E402
+        try:
+            reg = load_registry()
+        except (FileNotFoundError, ValueError) as exc:
+            return _err(str(exc))
+        lines = []
+        for m in reg["mcps"]:
+            status = "enabled" if m.get("enabled") else "disabled"
+            caps = ", ".join(c["id"] for c in m["capabilities"])
+            lines.append(
+                f"- {m['id']:<20} {status:<10} "
+                f"intents={m['routes_intent']} caps=[{caps}]"
+            )
+        return {"content": [{"type": "text", "text": "\n".join(lines)}]}
 
     return _err(f"Unknown tool: {name}")
 
