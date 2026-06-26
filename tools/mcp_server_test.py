@@ -74,8 +74,11 @@ def main() -> int:
         r = recv(proc)
         tools = r.get("result", {}).get("tools", [])
         tool_names = {t["name"] for t in tools}
-        check("tools/list returns 5 tools", len(tools) == 5, f"got {len(tools)}")
-        for expected in ("list_skills", "list_agents", "get_skill", "get_agent", "validate_payload"):
+        check("tools/list returns 7 tools", len(tools) == 7, f"got {len(tools)}")
+        for expected in (
+            "list_skills", "list_agents", "get_skill", "get_agent",
+            "validate_payload", "route_payload", "list_mcps",
+        ):
             check(f"tools/list includes {expected!r}", expected in tool_names)
 
         # 3. resources/list
@@ -162,6 +165,50 @@ def main() -> int:
             r.get("error", {}).get("code") == -32601,
             json.dumps(r)[:200],
         )
+
+        # ─── Phase 2 routing assertions ─────────────────────────────────
+        # 12. list_mcps shows 7 entries from the registry
+        send(proc, {
+            "jsonrpc": "2.0", "id": 12, "method": "tools/call",
+            "params": {"name": "list_mcps", "arguments": {}},
+        })
+        r = recv(proc)
+        text = r.get("result", {}).get("content", [{}])[0].get("text", "")
+        check("list_mcps mentions slack + github + crowdstrike",
+              all(x in text for x in ("slack", "github", "crowdstrike")))
+
+        # 13. route_payload — no enabled MCP matches (all disabled by default)
+        no_match_payload = {
+            "intent_type": "detect",
+            "next_agents": [],
+            "human_approval_required": False,
+        }
+        send(proc, {
+            "jsonrpc": "2.0", "id": 13, "method": "tools/call",
+            "params": {"name": "route_payload", "arguments": {"payload": no_match_payload}},
+        })
+        r = recv(proc)
+        text = r.get("result", {}).get("content", [{}])[0].get("text", "")
+        check("route_payload returns no_match when all MCPs disabled",
+              '"status": "no_match"' in text)
+
+        # 14. route_payload — human_approval_required: true on a real sample
+        sample = json.loads((REPO_ROOT / "appsec-devsecops/threat-model/expected_outputs/sample_output.json").read_text())
+        send(proc, {
+            "jsonrpc": "2.0", "id": 14, "method": "tools/call",
+            "params": {"name": "route_payload", "arguments": {"payload": sample}},
+        })
+        r = recv(proc)
+        text = r.get("result", {}).get("content", [{}])[0].get("text", "")
+        # Either no_match (no MCP matches the appsec intent without enabled
+        # adapters) OR approval_required if the payload's approval flag fires.
+        # The contract: routing returns a known status, not an error.
+        decision = json.loads(text)
+        check("route_payload returns a known status",
+              decision.get("status") in ("no_match", "approval_required", "would_dispatch"),
+              f"got {decision.get('status')!r}")
+        check("route_payload result includes 'phase': 2 marker",
+              decision.get("phase") == 2 or decision.get("status") == "no_match")
 
     finally:
         try:
