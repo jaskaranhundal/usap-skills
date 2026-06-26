@@ -36,7 +36,7 @@ mcps:
   # ------------------------------------------------------------------
   - id: slack
     name: Slack
-    enabled: false
+    enabled: true
     transport: stdio
     command: python3
     args: ["./adapters/slack/server.py"]
@@ -54,7 +54,7 @@ mcps:
 
   - id: github
     name: GitHub
-    enabled: false
+    enabled: true
     transport: stdio
     command: python3
     args: ["./adapters/github/server.py"]
@@ -81,7 +81,7 @@ mcps:
   # ------------------------------------------------------------------
   - id: splunk
     name: Splunk
-    enabled: false
+    enabled: true
     transport: stdio
     command: python3
     args: ["./adapters/splunk/server.py"]
