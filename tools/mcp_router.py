@@ -133,29 +133,116 @@ def route(payload: dict, registry: dict | None = None) -> dict:
             "mutating": chosen_cap.get("mutating", False) if chosen_cap else False,
             "approval_prompt": _build_approval_prompt(payload, chosen_mcp, chosen_cap),
             "alternatives": [m["id"] for m, _ in candidates[1:5]],
-            "phase": 2,
+            "phase": 3,
             "phase_note": (
-                "Phase 2 returns the approval prompt only. Phase 3 will "
-                "dispatch once the user approves."
+                "Caller must surface the approval prompt and then re-route "
+                "with `human_approval_required: false` to dispatch."
             ),
         }
         write_audit({"event": "route", "payload": payload, "decision": result})
         return result
 
+    # Phase 3: actually dispatch. The router decides → dispatch executes.
+    from mcp_dispatch import dispatch, DispatchError  # noqa: E402
+    dispatch_args = (payload.get("dispatch_args") or {}) if isinstance(payload, dict) else {}
+    try:
+        outcome = dispatch(chosen_mcp, chosen_cap["id"], dispatch_args)
+    except DispatchError as exc:
+        outcome = {
+            "ok": False,
+            "adapter": chosen_mcp["id"],
+            "capability": chosen_cap["id"] if chosen_cap else None,
+            "response": None,
+            "error": str(exc),
+        }
+
     result = {
-        "status": "would_dispatch",
+        "status": "dispatched" if outcome["ok"] else "dispatch_failed",
         "selected_mcp": chosen_mcp["id"],
         "selected_mcp_name": chosen_mcp["name"],
         "selected_capability": chosen_cap["id"] if chosen_cap else None,
         "alternatives": [m["id"] for m, _ in candidates[1:5]],
-        "phase": 2,
-        "phase_note": (
-            "Phase 2 does not dispatch. Phase 3 will launch the adapter "
-            f"({chosen_mcp.get('command')} {' '.join(chosen_mcp.get('args', []))}) "
-            "and invoke the capability."
-        ),
+        "phase": 3,
+        "outcome": outcome,
     }
-    write_audit({"event": "route", "payload": payload, "decision": result})
+    write_audit({
+        "event": "dispatch",
+        "payload": payload,
+        "decision": result,
+    })
+    return result
+
+
+def dispatch_after_approval(
+    mcp_id: str,
+    capability_id: str,
+    arguments: dict | None = None,
+    approval_token: str = "approved",
+    registry: dict | None = None,
+) -> dict:
+    """Dispatch a capability after the calling client has surfaced the
+    approval prompt and received user consent.
+
+    Phase 3 trust model: the client is trusted to actually show the prompt
+    and capture the user's response. Phase 4 will tighten this with a
+    signed approval token that USAP issues on the original route call and
+    verifies on this call.
+
+    The audit log records both the approval (event: "approval_granted")
+    and the subsequent dispatch (event: "dispatch") so the chain is
+    auditable end-to-end.
+    """
+    reg = registry or load_registry()
+    mcp = next((m for m in reg["mcps"] if m["id"] == mcp_id), None)
+    if mcp is None:
+        result = {
+            "status": "dispatch_failed",
+            "error": f"Unknown MCP: {mcp_id}",
+        }
+        write_audit({"event": "approval_granted_dispatch_failed", "decision": result})
+        return result
+    if not mcp.get("enabled", False):
+        result = {
+            "status": "dispatch_failed",
+            "error": f"MCP {mcp_id} is disabled in the registry.",
+        }
+        write_audit({"event": "approval_granted_dispatch_failed", "decision": result})
+        return result
+
+    write_audit({
+        "event": "approval_granted",
+        "decision": {
+            "mcp": mcp_id,
+            "capability": capability_id,
+            "approval_token": approval_token,
+        },
+    })
+
+    from mcp_dispatch import dispatch, DispatchError  # noqa: E402
+    try:
+        outcome = dispatch(mcp, capability_id, arguments or {})
+    except DispatchError as exc:
+        outcome = {
+            "ok": False,
+            "adapter": mcp_id,
+            "capability": capability_id,
+            "response": None,
+            "error": str(exc),
+        }
+
+    result = {
+        "status": "dispatched" if outcome["ok"] else "dispatch_failed",
+        "selected_mcp": mcp_id,
+        "selected_mcp_name": mcp.get("name"),
+        "selected_capability": capability_id,
+        "phase": 3,
+        "outcome": outcome,
+    }
+    write_audit({
+        "event": "dispatch",
+        "approval_token": approval_token,
+        "decision": result,
+    })
     return result
 
 

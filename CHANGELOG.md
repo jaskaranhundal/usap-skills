@@ -6,6 +6,29 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.6.0] — 2026-06-26
+
+### Added
+
+- **MCP adapters + dispatch (Phase 3).** Three reference adapters land under `adapters/` — Slack, GitHub, Splunk. Each is a small (~70 LOC) MCP server the router launches as a subprocess on demand. Default mode is `USAP_ADAPTER_MODE=fixture` so CI and first-time users get realistic responses with zero credentials. Live mode is one env-var flip + the documented per-adapter token.
+- `adapters/_lib.py` (~145 LOC) — shared scaffolding so each adapter only declares capabilities + fixtures; the MCP protocol plumbing is reused.
+- `tools/mcp_dispatch.py` (~190 LOC) — launches an adapter as a subprocess, walks the JSON-RPC handshake, invokes a capability, captures the response, terminates cleanly. Bounded timeout (default 20s).
+- Router auto-dispatches non-mutating, no-approval-needed routes. Returns `status: dispatched` with `outcome.response` carrying the adapter's actual reply.
+- New `dispatch_after_approval` MCP tool. When `route_payload` returns `approval_required`, the calling client surfaces the prompt to the user, then calls `dispatch_after_approval(mcp_id, capability_id, arguments, approval_token)` to actually invoke the capability. Writes paired `approval_granted` + `dispatch` audit lines.
+- `registry/usap-mcp-registry.yaml` updates: `slack`, `github`, `splunk` flipped to `enabled: true` (Phase 3 adapters land). `crowdstrike`, `fortigate`, `okta`, `aws-security-hub` stay `enabled: false` until their production adapters land in a follow-up.
+- `docs/mcp-adapters.md` — adapter authoring guide, Phase 3 flow diagram, the four reservation entries and their planned landing order.
+- `tools/mcp_server_test.py` extended from 23 to 27 assertions. Adds `dispatch_after_approval` to the tool list, exercises actual splunk dispatch end-to-end, exercises a Slack approval-flow dispatch, and exercises the disabled-MCP failure path.
+
+### Why this matters
+
+Phase 1 + 2 proved discovery + routing + audit. Phase 3 closes the loop by making the router actually invoke vendor MCPs. The four production-security adapters (CrowdStrike / FortiGate / Okta / AWS Security Hub) are declared in the registry but disabled — they ship as follow-up PRs against a tested decision model.
+
+### Safety invariants (carried forward)
+
+- Mutating capabilities MUST declare `approval_required: true` in the registry. Loader rejects violators.
+- Every dispatch writes audit lines (route → approval_granted? → dispatch).
+- Deterministic routing. Stdlib only.
+
 ## [1.5.0] — 2026-06-26
 
 ### Added
@@ -120,7 +143,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.1...v1.4.0
 [1.1.1]: https://github.com/jaskaranhundal/usap-skills/compare/v1.1.0...v1.1.1
