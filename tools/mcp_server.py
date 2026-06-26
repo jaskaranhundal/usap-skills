@@ -37,7 +37,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 PROTOCOL_VERSION = "2025-06-18"
 SERVER_NAME = "usap"
-SERVER_VERSION = "1.5.0"
+SERVER_VERSION = "1.6.0"
 
 ACTIVE_DOMAINS = [
     "appsec-devsecops", "cloud-infra", "detection", "governance",
@@ -288,6 +288,26 @@ TOOLS = [
         ),
         "inputSchema": {"type": "object", "properties": {}},
     },
+    {
+        "name": "dispatch_after_approval",
+        "description": (
+            "Phase 3 explicit dispatch. After `route_payload` returned an "
+            "approval_required decision and the calling client surfaced the "
+            "prompt to the user, the client calls this to actually invoke "
+            "the downstream capability. Writes approval_granted + dispatch "
+            "audit lines so the chain is recoverable end-to-end."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "mcp_id": {"type": "string", "description": "The MCP id from the prior route decision."},
+                "capability_id": {"type": "string", "description": "The capability id to invoke."},
+                "arguments": {"type": "object", "description": "Arguments passed to the capability."},
+                "approval_token": {"type": "string", "description": "Audit token for the approval. Phase 4 will require this to be USAP-signed."},
+            },
+            "required": ["mcp_id", "capability_id"],
+        },
+    },
 ]
 
 
@@ -375,6 +395,18 @@ def handle_tools_call(params: dict) -> dict:
                 f"intents={m['routes_intent']} caps=[{caps}]"
             )
         return {"content": [{"type": "text", "text": "\n".join(lines)}]}
+
+    if name == "dispatch_after_approval":
+        mcp_id = args.get("mcp_id")
+        capability_id = args.get("capability_id")
+        arguments = args.get("arguments", {}) or {}
+        approval_token = args.get("approval_token", "approved")
+        if not mcp_id or not capability_id:
+            return _err("mcp_id and capability_id are required")
+        sys.path.insert(0, str(REPO_ROOT / "tools"))
+        from mcp_router import dispatch_after_approval  # noqa: E402
+        result = dispatch_after_approval(mcp_id, capability_id, arguments, approval_token)
+        return {"content": [{"type": "text", "text": json.dumps(result, indent=2)}]}
 
     return _err(f"Unknown tool: {name}")
 
