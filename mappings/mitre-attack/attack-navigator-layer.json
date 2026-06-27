@@ -33,10 +33,220 @@
   "hideDisabled": false,
   "techniques": [
     {
-      "techniqueID": "T1041",
+      "techniqueID": "T0018",
       "score": 1,
       "color": "",
-      "comment": "USAP skills covering: detection/threat-intelligence",
+      "comment": "USAP skills covering: red-team/ai-red-teaming",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0020",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/ai-red-teaming",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0020.000",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/ai-red-teaming",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0024",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/ai-red-teaming",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0051",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/ai-red-teaming",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0802",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0806",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, cloud-infra/ot-iot-device-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0812",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/ot-iot-device-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0817",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/ot-iot-device-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0819",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/ot-iot-device-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0833",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/ot-iot-device-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T0838",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/ot-iot-device-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1003",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/endpoint-os-security, response/forensics",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1003.006",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/red-team-operations",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1005",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, red-team/continuous-pentesting",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1021",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: red-team/continuous-pentesting, response/incident-commander",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1021.002",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/red-team-operations",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1021.004",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: system-security/os-hardening",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1021.006",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/red-team-operations",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1039",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/continuous-pentesting",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1040",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: pentest/web-app-pentest, system-security/os-hardening",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1041",
+      "score": 4,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence, red-team/continuous-pentesting, response/forensics",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -44,6 +254,16 @@
     },
     {
       "techniqueID": "T1046",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-hunting, governance/security-roadmap-planner",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1047",
       "score": 1,
       "color": "",
       "comment": "USAP skills covering: detection/threat-hunting",
@@ -53,10 +273,40 @@
       "showSubtechniques": true
     },
     {
-      "techniqueID": "T1055",
+      "techniqueID": "T1048",
       "score": 1,
       "color": "",
-      "comment": "USAP skills covering: detection/threat-intelligence",
+      "comment": "USAP skills covering: red-team/continuous-pentesting",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1053.003",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: system-security/os-hardening",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1053.005",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/endpoint-os-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1055",
+      "score": 5,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/endpoint-os-security, detection/threat-intelligence, red-team/continuous-pentesting, response/forensics, system-security/os-hardening",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -64,9 +314,9 @@
     },
     {
       "techniqueID": "T1059",
-      "score": 2,
+      "score": 5,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/threat-model, detection/threat-intelligence",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, appsec-devsecops/threat-model, detection/threat-intelligence, red-team/continuous-pentesting, response/forensics",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -74,9 +324,29 @@
     },
     {
       "techniqueID": "T1059.001",
-      "score": 2,
+      "score": 3,
       "color": "",
-      "comment": "USAP skills covering: detection/detection-engineering, detection/threat-hunting",
+      "comment": "USAP skills covering: cloud-infra/endpoint-os-security, detection/detection-engineering, detection/threat-hunting",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1068",
+      "score": 3,
+      "color": "",
+      "comment": "USAP skills covering: governance/security-debt-tracker, red-team/continuous-pentesting, system-security/os-hardening",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1070",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: response/forensics",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -84,9 +354,49 @@
     },
     {
       "techniqueID": "T1078",
-      "score": 7,
+      "score": 12,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, detection/behavioral-analytics, detection/threat-hunting, detection/threat-intelligence, webapp-security/api-security-posture",
+      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, detection/behavioral-analytics, detection/threat-hunting, detection/threat-intelligence, identity-access/identity-access-risk, pentest/web-app-pentest, red-team/continuous-pentesting, response/forensics, response/incident-commander, webapp-security/api-security-posture",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1078.002",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: identity-access/identity-access-risk",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1078.004",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: identity-access/identity-access-risk, red-team/continuous-pentesting",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1082",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: governance/security-roadmap-planner",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1090",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: pentest/web-app-pentest",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -104,9 +414,19 @@
     },
     {
       "techniqueID": "T1110",
-      "score": 4,
+      "score": 6,
       "color": "",
-      "comment": "USAP skills covering: detection/behavioral-analytics, detection/detection-engineering, detection/threat-hunting, detection/threat-intelligence",
+      "comment": "USAP skills covering: detection/behavioral-analytics, detection/detection-engineering, detection/threat-hunting, detection/threat-intelligence, pentest/web-app-pentest, system-security/os-hardening",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1110.004",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-intelligence, identity-access/identity-access-risk",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -114,9 +434,39 @@
     },
     {
       "techniqueID": "T1133",
-      "score": 3,
+      "score": 4,
       "color": "",
-      "comment": "USAP skills covering: detection/behavioral-analytics, detection/threat-hunting, detection/threat-intelligence",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, detection/behavioral-analytics, detection/threat-hunting, detection/threat-intelligence",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1134",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-intelligence",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1134.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/red-team-operations",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1136",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: response/forensics",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -124,9 +474,9 @@
     },
     {
       "techniqueID": "T1190",
-      "score": 7,
+      "score": 10,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/patch-candidate, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, detection/threat-intelligence, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
+      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/patch-candidate, appsec-devsecops/security-requirements-review, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, detection/threat-intelligence, pentest/web-app-pentest, red-team/continuous-pentesting, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -134,6 +484,186 @@
     },
     {
       "techniqueID": "T1195",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-intelligence, pentest/web-app-pentest",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1195.001",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1195.002",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1203",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: pentest/web-app-pentest, system-security/os-hardening",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1210",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1218",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/endpoint-os-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1222",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: system-security/os-hardening",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1484.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: identity-access/identity-access-risk",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1486",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: response/forensics",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1530",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1547",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: governance/security-debt-tracker",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1547.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/endpoint-os-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1548",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-intelligence",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1548.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: system-security/os-hardening",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1550",
+      "score": 3,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-intelligence, red-team/continuous-pentesting, response/incident-commander",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1550.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: identity-access/identity-access-risk",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1550.002",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/red-team-operations",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1550.003",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/red-team-operations",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1552",
       "score": 1,
       "color": "",
       "comment": "USAP skills covering: detection/threat-intelligence",
@@ -144,9 +674,59 @@
     },
     {
       "techniqueID": "T1552.001",
+      "score": 4,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, appsec-devsecops/vuln-scan, detection/secrets-exposure, detection/threat-intelligence",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1552.004",
       "score": 1,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/vuln-scan",
+      "comment": "USAP skills covering: detection/secrets-exposure",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1552.005",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/secrets-exposure",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1556.006",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: identity-access/identity-access-risk",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1562",
+      "score": 4,
+      "color": "",
+      "comment": "USAP skills covering: governance/security-debt-tracker, governance/security-roadmap-planner, pentest/web-app-pentest, response/incident-commander",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1562.002",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: system-security/os-hardening",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -161,6 +741,86 @@
       "metadata": [],
       "links": [],
       "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1563.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/red-team-operations",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1566",
+      "score": 2,
+      "color": "",
+      "comment": "USAP skills covering: governance/security-roadmap-planner, red-team/continuous-pentesting",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1566.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/red-team-planner",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1567",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/threat-intelligence",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1574.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/endpoint-os-security",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1590",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: governance/security-roadmap-planner",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1592",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: pentest/web-app-pentest",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1619",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: identity-access/identity-access-risk",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
     }
   ],
   "gradient": {
@@ -170,7 +830,7 @@
       "#8ec843ff"
     ],
     "minValue": 1,
-    "maxValue": 7
+    "maxValue": 12
   },
   "legendItems": [],
   "metadata": [],
