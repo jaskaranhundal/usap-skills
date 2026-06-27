@@ -2,11 +2,13 @@
 name: behavioral-analytics
 description: USAP agent skill for Behavioral Analytics (UEBA). Use for Analyze behavioral anomalies across users and entities.
 license: MIT
+mitre_attack: [T1078, T1110, T1133]
+nist_csf: [DE.AE-02, DE.CM-03]
 metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-20
+  updated: 2026-06-27
   agent_slug: "behavioral-analytics"
   frameworks:
     mitre_attack: [T1078, T1110, T1133]

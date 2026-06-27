@@ -64,6 +64,77 @@ ACTIVE_DOMAINS = [
     "webapp-security",
 ]
 
+# Canonical domain alias map. Pinned in standards/canonical-domains.md.
+# If a SKILL.md path's first segment matches a key in DOMAIN_ALIASES, validation
+# FAILs and tells the contributor to rename to the value (canonical slug).
+DOMAIN_ALIASES = {
+    # appsec-devsecops
+    "appsec": "appsec-devsecops",
+    "dev-sec-ops": "appsec-devsecops",
+    "devsecops": "appsec-devsecops",
+    "app-sec": "appsec-devsecops",
+    # cloud-infra
+    "cloud": "cloud-infra",
+    "cloud-security": "cloud-infra",
+    "infra": "cloud-infra",
+    "infrastructure": "cloud-infra",
+    "cloud-infrastructure": "cloud-infra",
+    # detection
+    "detect": "detection",
+    "detections": "detection",
+    "siem": "detection",
+    "soc": "detection",
+    # governance
+    "gov": "governance",
+    "exec": "governance",
+    "executive": "governance",
+    "board": "governance",
+    # identity-access
+    "iam": "identity-access",
+    "identity": "identity-access",
+    "idam": "identity-access",
+    "access": "identity-access",
+    # pentest
+    "pentesting": "pentest",
+    "penetration-testing": "pentest",
+    "pen-test": "pentest",
+    "pen-testing": "pentest",
+    # platform-ai
+    "ai-platform": "platform-ai",
+    "ai": "platform-ai",
+    "mlops": "platform-ai",
+    "ml-platform": "platform-ai",
+    "ml": "platform-ai",
+    # red-team
+    "red-teaming": "red-team",
+    "offensive-security": "red-team",
+    "redteam": "red-team",
+    "adversary-emulation": "red-team",
+    "offensive": "red-team",
+    # response
+    "ir": "response",
+    "incident-response": "response",
+    "dfir": "response",
+    "forensics": "response",
+    # risk-compliance
+    "risk": "risk-compliance",
+    "compliance": "risk-compliance",
+    "grc": "risk-compliance",
+    "risk-and-compliance": "risk-compliance",
+    # system-security
+    "endpoint": "system-security",
+    "endpoint-security": "system-security",
+    "host": "system-security",
+    "host-security": "system-security",
+    "os-security": "system-security",
+    # webapp-security
+    "web-application-security": "webapp-security",
+    "webapp": "webapp-security",
+    "appsec-web": "webapp-security",
+    "web": "webapp-security",
+    "web-security": "webapp-security",
+}
+
 REQUIRED_TOP = ("name", "description", "license")
 REQUIRED_METADATA = ("version", "author", "category", "updated", "agent_slug")
 
@@ -270,6 +341,17 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
 
     slug = skill_dir.name
 
+    # Canonical-domain check: first path segment must not be a known alias.
+    # The dir layout is <repo>/<domain>/<slug>/SKILL.md, so the parent of
+    # skill_dir is the domain directory.
+    domain_segment = skill_dir.parent.name
+    if domain_segment in DOMAIN_ALIASES:
+        canonical = DOMAIN_ALIASES[domain_segment]
+        errors.append(
+            f"domain '{domain_segment}' is a non-canonical alias — rename "
+            f"the directory to '{canonical}' (see standards/canonical-domains.md)"
+        )
+
     # Non-blocking warning: legacy extended-frontmatter keys at top level.
     legacy_present = sorted(k for k in LEGACY_KEYS if k in fm)
     if legacy_present:
@@ -277,6 +359,31 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
             "legacy extended-frontmatter keys at top level "
             f"({', '.join(legacy_present)}) — see Phase 4 migration"
         )
+
+    # Top-level framework keys (agentskills.io conformant placement).
+    # See standards/frontmatter-spec.md "Framework keys: top-level".
+    for fname, pattern in FRAMEWORK_PATTERNS.items():
+        if fname not in fm:
+            continue
+        ids = fm[fname]
+        if not isinstance(ids, list) or not all(isinstance(x, str) for x in ids):
+            errors.append(
+                f"top-level {fname} must be an array of strings"
+            )
+            continue
+        if len(ids) > FRAMEWORK_CAP:
+            errors.append(
+                f"top-level {fname} has {len(ids)} entries "
+                f"(cap {FRAMEWORK_CAP} per framework — split skills "
+                "or trim to highest-signal IDs)"
+            )
+        if pattern is not None:
+            for entry in ids:
+                if not pattern.match(entry):
+                    errors.append(
+                        f"top-level {fname} '{entry}' does not match "
+                        f"expected pattern {pattern.pattern}"
+                    )
 
     # Required top-level fields.
     for field in REQUIRED_TOP:
@@ -361,6 +468,30 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
             errors.append(
                 f"metadata.agent_slug '{agent_slug}' must equal name '{name}'"
             )
+
+        # Optional metadata.requires block (external CLI binaries).
+        requires = metadata.get("requires")
+        if requires is not None:
+            if not isinstance(requires, dict):
+                errors.append(
+                    "metadata.requires must be an object with optional "
+                    "'bins' (array[string]) and 'install' (object) keys"
+                )
+            else:
+                bins = requires.get("bins")
+                if bins is not None:
+                    if not isinstance(bins, list) or not all(
+                        isinstance(x, str) for x in bins
+                    ):
+                        errors.append(
+                            "metadata.requires.bins must be an array of strings"
+                        )
+                install = requires.get("install")
+                if install is not None and not isinstance(install, dict):
+                    errors.append(
+                        "metadata.requires.install must be an object "
+                        "(e.g. {macos: '...', linux: '...'})"
+                    )
 
         # Optional metadata.frameworks block.
         frameworks = metadata.get("frameworks")
