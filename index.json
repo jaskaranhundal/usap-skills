@@ -1,10 +1,10 @@
 {
   "schema_version": "1",
-  "generated_at_utc": "2026-06-27T10:21:25Z",
+  "generated_at_utc": "2026-06-27T10:29:10Z",
   "repository": "github.com/jaskaranhundal/usap-skills",
   "usap_version": "1.7.0",
   "total_skills": 79,
-  "total_agents": 12,
+  "total_agents": 13,
   "total_domains": 12,
   "domains": [
     "appsec-devsecops",
@@ -680,6 +680,12 @@
       "path": "agents/governance/cs-security-program-manager.md"
     },
     {
+      "name": "cs-usap-next",
+      "domain": "meta",
+      "description": "Decision-grade \"where am I, what's next\" advisor for USAP operators. Reads local runner + audit + registry state and recommends 1-3 next actions per turn.",
+      "path": "agents/meta/cs-usap-next.md"
+    },
+    {
       "name": "cs-blue-team-analyst",
       "domain": "security",
       "description": "Blue Team operations orchestrator for detection, threat hunting, DFIR, and detection engineering across the detection and response domains",
@@ -700,7 +706,7 @@
     {
       "name": "cs-purple-team-lead",
       "domain": "security",
-      "description": "USAP orchestrator agent for purple team operations. Drives detection-validation loops by exercising red team plays against blue team detections and surfacing the single highest-leverage detection gap or hardening recommendation.",
+      "description": "USAP orchestrator agent for purple team operations. Runs tabletop exercises and detection-vs-attack drills by orchestrating cs-blue-team-analyst, cs-red-teamer, and cs-incident-responder in one coordinated session.",
       "path": "agents/security/cs-purple-team-lead.md"
     },
     {

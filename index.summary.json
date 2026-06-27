@@ -1,10 +1,10 @@
 {
   "schema_version": "1",
-  "generated_at_utc": "2026-06-27T10:21:25Z",
+  "generated_at_utc": "2026-06-27T10:29:10Z",
   "repository": "github.com/jaskaranhundal/usap-skills",
   "usap_version": "1.7.0",
   "total_skills": 79,
-  "total_agents": 12,
+  "total_agents": 13,
   "total_domains": 12,
   "domains": [
     "appsec-devsecops",
