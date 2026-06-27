@@ -1,0 +1,1 @@
+../../red-team/red-team-operations/SKILL.md
