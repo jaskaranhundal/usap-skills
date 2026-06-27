@@ -6,6 +6,38 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.8.0] — 2026-06-27
+
+### Added — polyglot + discoverability + operator UX bundle
+
+This is a six-slice bundle shipped by parallel worktree agents into one PR. The thread is: USAP was Claude-Code-only with no machine-discoverable index, no MITRE Navigator artefact, no operator self-diagnosis. After v1.8.0 it's a polyglot AI-security library that registers with `agentskills.io`-style external tools, ships an auto-generated ATT&CK Navigator layer, and self-checks its own runtime state.
+
+- **Polyglot sync (1 of 6).** `scripts/sync_codex_skills.py`, `sync_gemini_skills.py`, `sync_cursor_skills.py`, `sync_windsurf_skills.py`, `sync_aider_skills.py` + `sync_all.py` walk every `SKILL.md` and mirror them as relative symlinks under `.codex/`, `.gemini/`, `.cursor/`, `.windsurf/`, `.aider/`, with a `skills-index.json` per platform. The same SKILL.md is the source of truth for all 6 LLM clients. `--check` is idempotent and CI-friendly.
+- **ATT&CK Navigator + ATTACK_COVERAGE.md (2 of 6).** `tools/framework_extractor.py` extended to scan body T-IDs (`T\d{4}(\.\d{3})?`) in addition to optional top-level `mitre_attack:` keys. Emits `mappings/mitre-attack/attack-navigator-layer.json` (Navigator v4.5+ schema; 79 T-IDs covered across 26 skills) and `mappings/mitre-attack/ATTACK_COVERAGE.md` (per-tactic kill-chain rollup). Load the JSON at `https://mitre-attack.github.io/attack-navigator/` for the visual.
+- **Frontmatter conformance + validator hardening (3 of 6, biggest slice).** `standards/frontmatter-spec.md` now documents optional top-level framework keys (`mitre_attack`, `nist_csf`, `mitre_atlas`, `owasp_top10`, `d3fend`, `nist_ai_rmf`) — agentskills.io-conformant placement. Earlier `metadata.frameworks` nesting is deprecated but still validated for back-compat. New `standards/SKILL-AUTHORING-STANDARD.md` is the canonical contributor "DNA" doc. `standards/canonical-domains.md` pins 11 canonical domain slugs + aliases; `tools/validate_skill.py` rejects non-canonical paths. New `tools/validate_description.py` (third-person voice + trigger phrase) and `tools/validate_structure.py` (required package files) surface 22 over-long descriptions and 2 packages with missing structure as backlog. `metadata.requires.{bins,install}` schema reserved.
+- **Operator UX (4 of 6).** `agents/meta/cs-usap-next.md` (Nova persona, v2 contract, ST/NX/AC/RJ/HE command menu) — state-aware "what's next" advisor that reads `~/.usap/`, runner state, registry, and git. `tools/usap_doctor.py --check / --fix / --report yaml` diagnoses operator defects (mixed-mode audit logs, stale runner.pid, missing audit key). `tools/usap_onboard.py --quiet / --enable <job>` does first-time setup with `~/.usap/.audit_key` (chmod 600) and prints the env-var export line. `audit/2026-Q2/RUBRIC.md` is a Pocock-style 7-dimension scoring rubric; `audit/2026-Q2/00-MASTER.md` is the scoring scaffold.
+- **Root `index.json` + drift gate (5 of 6).** Repo root carries `index.json` (37 KB; 79 skills + 12 agents + 12 domains; agentskills.io-style schema) and `index.summary.json` (counts-only for badges). `.github/workflows/regen-index.yml` runs `tools/build_index.py --check` on every push and fails if regen would change anything. Agent discovery now walks `agents/**/cs-*.md` instead of a hard-coded list.
+- **`cs-purple-team-lead` + themed scenario harness (6 of 6).** `agents/security/cs-purple-team-lead.md` rewritten to v2 contract: orchestrates `cs-red-teamer` + `cs-blue-team-analyst` + `cs-incident-responder` per session; PT/TT/DR/AC/HE command menu; MANDATORY EXECUTION RULES enforce ≥2 sub-agents per workflow + 11-field contract output. `tests/scenarios/themes/` adds a YAML manifest + three substantive scenarios (`ransomware/2026-q3-fintech-ransomware.yaml`, `supply-chain/2026-q3-npm-malicious-dep.yaml`, `cloud-misconfig/2026-q3-iam-overpermission.yaml`).
+
+### Verified
+
+- `tools/validate_skill.py --all` — 79/79 PASS (with new canonical-domain + framework + requires-bins checks active)
+- `tools/mcp_server_test.py` — 32/32 PASS
+- `tools/usap_loop_demo.py` — end-to-end chain valid, signed
+- `tools/build_index.py --check`, `tools/framework_extractor.py --check`, `scripts/sync_all.py --check` — all OK (deterministic)
+- `tools/usap_runner.py --validate`, `tools/mcp_registry.py --validate` — both OK
+- `tools/usap_doctor.py --check` — surfaces the documented mixed-mode audit warning; runner + registry green
+
+### Backlog surfaced (not blocking)
+
+- 22/79 skills have over-long descriptions (`tools/validate_description.py --all`)
+- 2/79 skill packages missing scripts (red-team domain)
+- Live `~/.usap/audit/2026-06-27.jsonl` has mixed signed/unsigned lines from earlier-in-day runs without `USAP_AUDIT_KEY` exported — documented gotcha (`docs/mcp-scheduled.md` §7), operator action only
+
+### Planning correction (carried in this bundle)
+
+The plan file's Phase 2.1 specified `metadata.frameworks.*` for framework keys. ACS (the agentskills.io-conformant reference repo) uses YAML top-level placement. v1.8.0 adopts the top-level placement as canonical and validates both shapes for the rollout window. Future Phase 6 (agentskills.io listing submission) builds on the corrected placement.
+
 ## [1.7.0] — 2026-06-26
 
 ### Added — completes the master-MCP architecture
@@ -175,7 +207,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.7.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.8.0...HEAD
+[1.8.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.4.0...v1.5.0

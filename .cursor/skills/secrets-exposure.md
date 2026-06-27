@@ -1,0 +1,1 @@
+../../detection/secrets-exposure/SKILL.md

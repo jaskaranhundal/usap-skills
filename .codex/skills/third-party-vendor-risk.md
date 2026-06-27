@@ -1,0 +1,1 @@
+../../platform-ai/third-party-vendor-risk/SKILL.md
