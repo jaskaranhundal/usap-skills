@@ -1,47 +1,45 @@
 #!/usr/bin/env python3
-"""Build a machine-readable skill registry at the repo root.
+"""Build the machine-readable USAP skill registries.
 
-Walks every active-domain ``<domain>/<slug>/SKILL.md`` plus every ``cs-*``
-agent under ``agents/``, parses frontmatter via the validator's stdlib YAML
-parser, and emits ``index.json`` at the repo root.
+Walks every active-domain ``<domain>/<slug>/SKILL.md`` and every agent
+markdown file under ``agents/**/cs-*.md``, parses frontmatter via the
+validator's stdlib YAML parser, and emits three files:
 
-The registry is the canonical answer to "what does USAP ship?" — every
-external client (Claude Code, Cursor, Goose, OpenCode, search engines)
-fetches one URL instead of crawling the repo.
+* ``index.json`` at the **repo root** — the canonical discovery payload
+  read by external tools (agentskills.io, awesome-list scrapers).
+* ``index.summary.json`` at the **repo root** — a reduced counts-only
+  payload for badges and lightweight consumers.
+* ``api/index.json`` — the legacy per-skill registry preserved for
+  existing tooling that already points at it.
 
-Shape::
+Root ``index.json`` shape::
 
     {
-      "version": "1.0",
-      "generated_by": "tools/build_index.py",
-      "counts": {
-        "skills": 74,
-        "agents": 12,
-        "domains": 12
-      },
-      "domains": [
-        {"slug": "appsec-devsecops", "skill_count": 9}, ...
-      ],
+      "schema_version": "1",
+      "generated_at_utc": "<ISO 8601 UTC>",
+      "repository": "github.com/jaskaranhundal/usap-skills",
+      "usap_version": "1.7.0",
+      "total_skills": 79,
+      "total_agents": 12,
+      "total_domains": 12,
+      "domains": ["appsec-devsecops", "cloud-infra", ...],
       "skills": [
         {
-          "name": "threat-hunting",
-          "domain": "detection",
-          "path": "detection/threat-hunting",
-          "description": "...",
-          "license": "MIT",
-          "category": "usap-operations",
-          "version": "1.0.0",
-          "frameworks": {"mitre_attack": [...], "nist_csf": [...]},
-          "agent_slug": "threat-hunting"
+          "name": "<slug>",
+          "domain": "<domain>",
+          "description": "<from frontmatter>",
+          "level": "L1|L2|L3|L4|null",
+          "category": "<metadata.category>",
+          "frontmatter_path": "<domain>/<slug>/SKILL.md"
         },
         ...
       ],
       "agents": [
         {
-          "name": "cs-security-analyst",
-          "domain": "security",
-          "path": "agents/security/cs-security-analyst.md",
-          "description": "..."
+          "name": "<slug>",
+          "domain": "<dir>",
+          "description": "<from frontmatter>",
+          "path": "agents/<dir>/<file>.md"
         },
         ...
       ]
@@ -49,8 +47,13 @@ Shape::
 
 Usage::
 
-    python3 tools/build_index.py             # write api/index.json
-    python3 tools/build_index.py --check     # CI drift gate (exit 1 on diff)
+    python3 tools/build_index.py                # regen index.json + index.summary.json + api/index.json
+    python3 tools/build_index.py --check        # CI drift gate (exit 1 on diff)
+    python3 tools/build_index.py --output X.json  # override root index path
+
+The ``--check`` flag normalises the ``generated_at_utc`` field before
+diffing so timestamps alone never cause drift; any content change in
+skills or agents will still surface.
 
 Stdlib only. Shares the frontmatter parser with ``tools/validate_skill.py``
 so YAML rules stay in one place.
@@ -61,8 +64,9 @@ import argparse
 import difflib
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 # Re-use the validator's parser to keep YAML rules in one place.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -72,31 +76,26 @@ from validate_skill import (  # noqa: E402  (import after sys.path tweak)
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-INDEX_PATH = REPO_ROOT / "api" / "index.json"
 
-# Optional skill-frontmatter keys to surface in the index. Required keys
-# (name, description, license, metadata.*) are always emitted.
+# Default output paths.
+ROOT_INDEX_PATH = REPO_ROOT / "index.json"
+ROOT_SUMMARY_PATH = REPO_ROOT / "index.summary.json"
+LEGACY_API_INDEX_PATH = REPO_ROOT / "api" / "index.json"
+
+USAP_VERSION = "1.7.0"
+REPOSITORY = "github.com/jaskaranhundal/usap-skills"
+SCHEMA_VERSION = "1"
+
+# Stable placeholder substituted for `generated_at_utc` during --check
+# comparisons so wall-clock drift never trips the CI gate.
+TIMESTAMP_PLACEHOLDER = "__GENERATED_AT_UTC__"
+
+# Optional skill-frontmatter keys to surface in the legacy api/index.json.
+# Required keys (name, description, license, metadata.*) are always emitted.
 OPTIONAL_SKILL_KEYS = (
     "compatibility",
     "allowed-tools",
 )
-
-# Agents catalog. Mirrors agents/CLAUDE.md to avoid silently dropping agents
-# from the registry; bump when a new orchestrator ships.
-AGENTS = [
-    ("cs-security-analyst",         "agents/security/cs-security-analyst.md"),
-    ("cs-incident-responder",       "agents/security/cs-incident-responder.md"),
-    ("cs-red-teamer",               "agents/security/cs-red-teamer.md"),
-    ("cs-blue-team-analyst",        "agents/security/cs-blue-team-analyst.md"),
-    ("cs-cloud-investigator",       "agents/security/cs-cloud-investigator.md"),
-    ("cs-supply-chain-defender",    "agents/security/cs-supply-chain-defender.md"),
-    ("cs-threat-intel-lead",        "agents/security/cs-threat-intel-lead.md"),
-    ("cs-purple-team-lead",         "agents/security/cs-purple-team-lead.md"),
-    ("cs-appsec-engineer",          "agents/appsec/cs-appsec-engineer.md"),
-    ("cs-devsecops-engineer",       "agents/devsecops/cs-devsecops-engineer.md"),
-    ("cs-ciso-advisor",             "agents/executive/cs-ciso-advisor.md"),
-    ("cs-security-program-manager", "agents/governance/cs-security-program-manager.md"),
-]
 
 
 def _read_frontmatter(path: Path) -> Dict[str, Any]:
@@ -108,7 +107,107 @@ def _read_frontmatter(path: Path) -> Dict[str, Any]:
     return parsed if isinstance(parsed, dict) else {}
 
 
-def _skill_entry(domain: str, skill_dir: Path) -> Dict[str, Any]:
+# ---------------------------------------------------------------------------
+# Root index.json (agentskills.io / awesome-list discovery format)
+# ---------------------------------------------------------------------------
+
+def _root_skill_entry(domain: str, skill_dir: Path) -> Dict[str, Any]:
+    skill_md = skill_dir / "SKILL.md"
+    fm = _read_frontmatter(skill_md)
+    metadata = fm.get("metadata") if isinstance(fm.get("metadata"), dict) else {}
+
+    level_value = fm.get("level")
+    if isinstance(level_value, str) and level_value.upper() in {"L1", "L2", "L3", "L4"}:
+        level: Any = level_value.upper()
+    else:
+        level = None
+
+    category = metadata.get("category", "") if isinstance(metadata, dict) else ""
+
+    return {
+        "name": fm.get("name", skill_dir.name),
+        "domain": domain,
+        "description": fm.get("description", ""),
+        "level": level,
+        "category": category or "",
+        "frontmatter_path": f"{domain}/{skill_dir.name}/SKILL.md",
+    }
+
+
+def _root_agent_entry(agent_path: Path) -> Dict[str, Any]:
+    rel_path = agent_path.relative_to(REPO_ROOT).as_posix()
+    fm = _read_frontmatter(agent_path)
+    return {
+        "name": fm.get("name", agent_path.stem),
+        "domain": fm.get("domain", agent_path.parent.name),
+        "description": fm.get("description", ""),
+        "path": rel_path,
+    }
+
+
+def _discover_root_payload(timestamp: str) -> Dict[str, Any]:
+    skill_records: List[Dict[str, Any]] = []
+    populated_domains: List[str] = []
+
+    for domain in ACTIVE_DOMAINS:
+        droot = REPO_ROOT / domain
+        if not droot.is_dir():
+            continue
+        skills_in_domain = sorted(
+            p for p in droot.iterdir()
+            if p.is_dir() and (p / "SKILL.md").is_file()
+        )
+        if not skills_in_domain:
+            continue
+        populated_domains.append(domain)
+        for sdir in skills_in_domain:
+            skill_records.append(_root_skill_entry(domain, sdir))
+
+    skill_records.sort(key=lambda e: (e["domain"], e["name"]))
+
+    agents_dir = REPO_ROOT / "agents"
+    agent_paths: List[Path] = []
+    if agents_dir.is_dir():
+        agent_paths = sorted(
+            p for p in agents_dir.rglob("cs-*.md") if p.is_file()
+        )
+    agent_records = [_root_agent_entry(p) for p in agent_paths]
+    agent_records.sort(key=lambda e: (e["domain"], e["name"]))
+
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "generated_at_utc": timestamp,
+        "repository": REPOSITORY,
+        "usap_version": USAP_VERSION,
+        "total_skills": len(skill_records),
+        "total_agents": len(agent_records),
+        "total_domains": len(populated_domains),
+        "domains": sorted(populated_domains),
+        "skills": skill_records,
+        "agents": agent_records,
+    }
+
+
+def _summary_payload(root_index: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "generated_at_utc": root_index["generated_at_utc"],
+        "repository": REPOSITORY,
+        "usap_version": USAP_VERSION,
+        "total_skills": root_index["total_skills"],
+        "total_agents": root_index["total_agents"],
+        "total_domains": root_index["total_domains"],
+        "domains": list(root_index["domains"]),
+        "index_path": "index.json",
+        "legacy_index_path": "api/index.json",
+    }
+
+
+# ---------------------------------------------------------------------------
+# Legacy api/index.json (preserved for tooling already pointed at it)
+# ---------------------------------------------------------------------------
+
+def _legacy_skill_entry(domain: str, skill_dir: Path) -> Dict[str, Any]:
     skill_md = skill_dir / "SKILL.md"
     fm = _read_frontmatter(skill_md)
     metadata = fm.get("metadata") if isinstance(fm.get("metadata"), dict) else {}
@@ -124,17 +223,14 @@ def _skill_entry(domain: str, skill_dir: Path) -> Dict[str, Any]:
         "agent_slug": metadata.get("agent_slug", "") if isinstance(metadata, dict) else "",
     }
 
-    # Frameworks block, if present.
     if isinstance(metadata, dict):
         frameworks = metadata.get("frameworks")
         if isinstance(frameworks, dict) and frameworks:
-            # Drop empty arrays for cleanliness.
             entry["frameworks"] = {
                 k: v for k, v in frameworks.items()
                 if isinstance(v, list) and v
             }
 
-    # Spec-conformance optional fields, if present.
     for key in OPTIONAL_SKILL_KEYS:
         if key in fm and fm[key]:
             entry[key] = fm[key]
@@ -142,13 +238,12 @@ def _skill_entry(domain: str, skill_dir: Path) -> Dict[str, Any]:
     return entry
 
 
-def _agent_entry(name: str, rel_path: str) -> Dict[str, Any]:
-    path = REPO_ROOT / rel_path
-    fm = _read_frontmatter(path)
-
+def _legacy_agent_entry(agent_path: Path) -> Dict[str, Any]:
+    rel_path = agent_path.relative_to(REPO_ROOT).as_posix()
+    fm = _read_frontmatter(agent_path)
     entry: Dict[str, Any] = {
-        "name": fm.get("name", name),
-        "domain": fm.get("domain", path.parent.name),
+        "name": fm.get("name", agent_path.stem),
+        "domain": fm.get("domain", agent_path.parent.name),
         "path": rel_path,
         "description": fm.get("description", ""),
         "model": fm.get("model", "") if "model" in fm else "",
@@ -158,7 +253,7 @@ def _agent_entry(name: str, rel_path: str) -> Dict[str, Any]:
     return entry
 
 
-def build_index() -> Dict[str, Any]:
+def _build_legacy_index() -> Dict[str, Any]:
     domain_records = []
     skill_records: List[Dict[str, Any]] = []
 
@@ -172,7 +267,7 @@ def build_index() -> Dict[str, Any]:
             if p.is_dir() and (p / "SKILL.md").is_file()
         )
         for sdir in skills_in_domain:
-            skill_records.append(_skill_entry(domain, sdir))
+            skill_records.append(_legacy_skill_entry(domain, sdir))
         domain_records.append({
             "slug": domain,
             "skill_count": len(skills_in_domain),
@@ -180,10 +275,14 @@ def build_index() -> Dict[str, Any]:
 
     skill_records.sort(key=lambda e: (e["domain"], e["name"]))
 
-    agent_records = [
-        _agent_entry(name, rel) for name, rel in AGENTS
-        if (REPO_ROOT / rel).is_file()
-    ]
+    agents_dir = REPO_ROOT / "agents"
+    agent_paths: List[Path] = []
+    if agents_dir.is_dir():
+        agent_paths = sorted(
+            p for p in agents_dir.rglob("cs-*.md") if p.is_file()
+        )
+    agent_records = [_legacy_agent_entry(p) for p in agent_paths]
+    agent_records.sort(key=lambda e: (e["domain"], e["name"]))
 
     return {
         "version": "1.0",
@@ -201,62 +300,142 @@ def build_index() -> Dict[str, Any]:
     }
 
 
-def _serialize(index: Dict[str, Any]) -> str:
-    return json.dumps(index, indent=2, sort_keys=False, ensure_ascii=False) + "\n"
+# Backwards-compatible alias for any external import.
+def build_index() -> Dict[str, Any]:
+    """Return the legacy api/index.json payload (unchanged shape)."""
+    return _build_legacy_index()
+
+
+# ---------------------------------------------------------------------------
+# IO helpers
+# ---------------------------------------------------------------------------
+
+def _serialize(payload: Dict[str, Any]) -> str:
+    return json.dumps(payload, indent=2, sort_keys=False, ensure_ascii=False) + "\n"
+
+
+def _normalize_timestamp_for_diff(text: str) -> str:
+    """Replace `generated_at_utc` value with a stable placeholder.
+
+    Used only by --check so wall-clock drift never causes a false-positive
+    drift report; structural changes still surface.
+    """
+    out_lines = []
+    for line in text.splitlines(keepends=True):
+        stripped = line.lstrip()
+        if stripped.startswith('"generated_at_utc":'):
+            indent = line[: len(line) - len(stripped)]
+            trailing_comma = "," if line.rstrip().endswith(",") else ""
+            out_lines.append(
+                f'{indent}"generated_at_utc": "{TIMESTAMP_PLACEHOLDER}"{trailing_comma}\n'
+            )
+        else:
+            out_lines.append(line)
+    return "".join(out_lines)
+
+
+def _build_payloads(timestamp: str) -> Tuple[Dict[str, Any], Dict[str, Any], Dict[str, Any]]:
+    root = _discover_root_payload(timestamp)
+    summary = _summary_payload(root)
+    legacy = _build_legacy_index()
+    return root, summary, legacy
+
+
+def _utc_now_iso() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _check_file(target: Path, fresh: str) -> Tuple[bool, str]:
+    rel = target.relative_to(REPO_ROOT)
+    if not target.is_file():
+        return False, f"MISS {rel} does not exist on disk\n"
+    on_disk = target.read_text(encoding="utf-8")
+    a = _normalize_timestamp_for_diff(on_disk)
+    b = _normalize_timestamp_for_diff(fresh)
+    if a == b:
+        return True, f"OK   {rel}\n"
+    diff = "".join(difflib.unified_diff(
+        a.splitlines(keepends=True),
+        b.splitlines(keepends=True),
+        fromfile=f"{rel} (committed)",
+        tofile=f"{rel} (regenerated)",
+        n=3,
+    ))
+    return False, f"DRIFT {rel}\n{diff}"
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Build index.json from every active-domain SKILL.md."
+        description=(
+            "Build the USAP skill registries: root index.json + "
+            "root index.summary.json + legacy api/index.json. "
+            "Default invocation regenerates all three files in place. "
+            "Use --check to gate CI on registry drift; the "
+            "`generated_at_utc` timestamp is normalised before diff so "
+            "only structural changes fail the check."
+        ),
     )
     parser.add_argument(
         "--check",
         action="store_true",
-        help="Regenerate in memory; fail if committed index.json drifted.",
+        help=(
+            "Regenerate in memory; exit 1 if any committed registry file "
+            "differs from the freshly built payload."
+        ),
     )
     parser.add_argument(
         "--output",
         type=Path,
-        default=INDEX_PATH,
-        help="Where to write index.json (default: <repo>/api/index.json).",
+        default=ROOT_INDEX_PATH,
+        help=(
+            "Path for the root index.json (default: <repo>/index.json). "
+            "The companion index.summary.json is always written next to it."
+        ),
     )
     args = parser.parse_args()
 
-    serialized = _serialize(build_index())
+    timestamp = _utc_now_iso()
+    root_payload, summary_payload, legacy_payload = _build_payloads(timestamp)
+
+    root_text = _serialize(root_payload)
+    summary_text = _serialize(summary_payload)
+    legacy_text = _serialize(legacy_payload)
+
+    root_out: Path = args.output
+    summary_out: Path = root_out.parent / "index.summary.json"
+    legacy_out: Path = LEGACY_API_INDEX_PATH
 
     if args.check:
-        if not args.output.is_file():
-            print(f"FAIL {args.output.relative_to(REPO_ROOT)} does not exist", file=sys.stderr)
-            print("Run: python3 tools/build_index.py", file=sys.stderr)
-            return 1
-        on_disk = args.output.read_text(encoding="utf-8")
-        if on_disk == serialized:
-            print(
-                f"OK   {args.output.relative_to(REPO_ROOT)} matches "
-                f"source-of-truth frontmatter."
+        results = [
+            _check_file(root_out, root_text),
+            _check_file(summary_out, summary_text),
+            _check_file(legacy_out, legacy_text),
+        ]
+        ok = all(r[0] for r in results)
+        report = "".join(r[1] for r in results)
+        stream = sys.stdout if ok else sys.stderr
+        stream.write(report)
+        if not ok:
+            sys.stderr.write(
+                "\nRun: python3 tools/build_index.py  # then commit.\n"
             )
-            return 0
-        print(
-            f"DRIFT {args.output.relative_to(REPO_ROOT)} differs from "
-            "the freshly regenerated registry:",
-            file=sys.stderr,
-        )
-        diff = difflib.unified_diff(
-            on_disk.splitlines(keepends=True),
-            serialized.splitlines(keepends=True),
-            fromfile=str(args.output.relative_to(REPO_ROOT)) + " (committed)",
-            tofile=str(args.output.relative_to(REPO_ROOT)) + " (regenerated)",
-            n=3,
-        )
-        sys.stderr.writelines(diff)
-        print(
-            "\nRun: python3 tools/build_index.py — then commit.",
-            file=sys.stderr,
-        )
-        return 1
+            return 1
+        return 0
 
-    args.output.write_text(serialized, encoding="utf-8")
-    print(f"wrote {args.output.relative_to(REPO_ROOT)} ({len(serialized):,} bytes)")
+    legacy_out.parent.mkdir(parents=True, exist_ok=True)
+    root_out.write_text(root_text, encoding="utf-8")
+    summary_out.write_text(summary_text, encoding="utf-8")
+    legacy_out.write_text(legacy_text, encoding="utf-8")
+
+    def _rel(p: Path) -> str:
+        try:
+            return str(p.relative_to(REPO_ROOT))
+        except ValueError:
+            return str(p)
+
+    print(f"wrote {_rel(root_out)} ({len(root_text):,} bytes)")
+    print(f"wrote {_rel(summary_out)} ({len(summary_text):,} bytes)")
+    print(f"wrote {_rel(legacy_out)} ({len(legacy_text):,} bytes)")
     return 0
 
 
