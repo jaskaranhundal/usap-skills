@@ -54,9 +54,9 @@ jobs:
     intent_type: detect
     dispatch_to: github
     dispatch_args:
-      org: acme
+      org: jaskaranhundal
       visibility: private
-    enabled: false
+    enabled: true   # Stage A dogfood — fixture-mode adapter, no real GitHub calls yet
 
   - id: every-15min-okta-anomalies
     skill: identity-access-risk
