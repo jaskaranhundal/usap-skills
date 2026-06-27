@@ -1,0 +1,111 @@
+id: npm-malicious-dep-2026q3
+theme: supply-chain
+severity: high
+initial_event: >
+  At 09:42 UTC on a Wednesday, a developer at a SaaS analytics vendor (180
+  engineers, B2B product, SOC 2 Type II audited) opens a Dependabot PR that
+  pins `chart-tooltip-utils` from 4.7.1 to 4.7.2. The PR sits in CI for nine
+  minutes — twice the usual build time. The developer notices the runner is
+  spending time in a postinstall script and pings #infra. Forty minutes
+  later, the platform team discovers that the 4.7.2 release was pushed by a
+  maintainer account that had its 2FA disabled three days prior, that the
+  postinstall script makes an outbound HTTPS call to a domain registered 96
+  hours ago, and that 14 of the company's microservice CI pipelines have
+  already built and pushed Docker images using 4.7.2 to the internal
+  registry. None of those images have been deployed to production yet, but
+  the staging environment has pulled three of them.
+
+prerequisites_unverified:
+  - exfiltration_of_npm_token  # whether the postinstall script harvested NPM_TOKEN from CI env
+  - exfiltration_of_aws_creds  # whether GHA OIDC tokens or AWS_ACCESS_KEY_ID leaked
+  - downstream_customer_impact  # whether any compiled artifact was published to customers
+  - maintainer_account_attribution  # whether the maintainer's account was sold, phished, or sessio-hijacked
+  - registry_replay_risk  # whether other malicious versions of dep are pending publish
+  - sbom_drift  # whether the company's published SBOM still lists 4.7.1
+  - staging_to_prod_blast_radius  # whether the postinstall script reached the staging k8s control plane
+
+timeline:
+  - t: T+0min
+    event: >
+      Dependabot PR opened for chart-tooltip-utils 4.7.1 -> 4.7.2. Eight
+      parallel CI jobs begin.
+  - t: T+9min
+    event: >
+      Developer flags slow build time on #infra. Platform engineer pulls
+      build logs.
+  - t: T+22min
+    event: >
+      Platform engineer notices postinstall script with obfuscated
+      JavaScript. Decodes one layer; finds outbound HTTPS to
+      `cdn-metrics-v3.io` (registered 96 hours ago per WHOIS).
+  - t: T+27min
+    event: >
+      DevSecOps lead pulls 4.7.2 from the internal registry mirror.
+      GitHub Actions cache is purged for the package. Fourteen pipelines
+      that already ran are inventoried.
+  - t: T+38min
+    event: >
+      Security engineer pulls the CI secret manifest. NPM_TOKEN, GITHUB_TOKEN,
+      and AWS_OIDC_ROLE_ARN are present in every runner environment.
+  - t: T+44min
+    event: >
+      First CloudTrail finding: an STS AssumeRoleWithWebIdentity call from
+      one of the GHA OIDC role chains succeeded at T+12min, then immediately
+      called s3:ListBuckets across the analytics-data account.
+  - t: T+61min
+    event: >
+      Identity team confirms the maintainer's npm account had 2FA disabled at
+      T-72h by what npm logs describe as a "user-initiated security setting
+      change". The maintainer denies making that change.
+  - t: T+78min
+    event: >
+      Three staging k8s pods are confirmed running the malicious image. None
+      have been promoted to production. Pod-level network logs show the
+      postinstall callback fired exactly once per pod startup.
+  - t: T+95min
+    event: >
+      The maintainer publishes a clean 4.7.3 release attempting to overwrite
+      the malicious version. npm declines (no semver overwrite). SBOM tooling
+      flags 4.7.2 as installed across 14 internal repos.
+
+target_agents:
+  - cs-purple-team-lead
+  - cs-supply-chain-defender
+  - cs-incident-responder
+  - cs-devsecops-engineer
+
+expected_outputs:
+  - 11-field USAP payload from cs-purple-team-lead
+  - "Attack-chain table with >=4 MITRE ATT&CK techniques cited"
+  - SBOM-aligned blast-radius assessment (repos, images, environments)
+  - Containment column with explicit cs-incident-responder quote on whether
+    the AWS analytics-data account is contained
+  - ">=3 compensating controls with human_approval_required true"
+  - Gap report naming exactly one detection-engineering sprint focus
+
+evaluation_criteria:
+  pass:
+    - Attack chain cites Initial Access via Supply Chain Compromise
+      (T1195.002 Compromise Software Supply Chain), Execution (T1059.007
+      JavaScript), Credential Access (T1552 Unsecured Credentials -
+      Credentials in Files), and Exfiltration (T1567 Exfiltration over
+      Web Service) at minimum.
+    - Detection-coverage table identifies that CI runners have no egress
+      allowlist as the highest-leverage gap.
+    - Containment narrative quotes cs-incident-responder verbatim on
+      whether the AWS analytics-data account is contained.
+    - Recommendation surfaces NPM_TOKEN, GITHUB_TOKEN, and AWS OIDC role
+      rotation with human_approval_required true for each.
+    - SBOM is regenerated and the 4.7.2 dependency is purged from the
+      internal mirror.
+  fail:
+    - Verdict declares production safe because the malicious image was not
+      promoted, without quoting cs-incident-responder.
+    - Recommendation focuses only on the npm maintainer 2FA issue and
+      misses the CI runner egress and credential-rotation requirements.
+    - Attack chain cites fewer than 4 MITRE TTPs.
+    - Containment column claims "no AWS impact" without a CloudTrail
+      timeline cross-check from cs-supply-chain-defender or
+      cs-incident-responder.
+    - Verdict assumes the maintainer account was phished (single-cause
+      attribution failure) without evidence.

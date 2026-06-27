@@ -1,0 +1,1 @@
+../../detection/deception-honeypot/SKILL.md

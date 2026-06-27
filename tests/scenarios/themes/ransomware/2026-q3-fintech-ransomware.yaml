@@ -1,0 +1,102 @@
+id: fintech-ransomware-2026q3
+theme: ransomware
+severity: critical
+initial_event: >
+  At 02:14 UTC on a Tuesday, the SOC at a mid-sized US fintech (250 employees,
+  ~$80M ARR, regulated under GLBA and NYDFS Part 500) receives a Wazuh alert
+  for unusual SMB traffic from a finance-shared Windows file server to fourteen
+  workstations in the accounting subnet within a 90-second window. Three of
+  those workstations subsequently emit alerts for `vssadmin delete shadows
+  /all`. By the time the on-call analyst opens the alert at T+18min, three
+  endpoints are showing `.lkr3` extension on every file in their user
+  profiles, and a ransom note (`RECOVER-FILES.txt`) is on the desktop of a
+  fourth. The on-call analyst is uncertain whether the file server is the
+  initial access vector or a relay; uncertain whether the EDR (CrowdStrike
+  Falcon) blocked the encryption or only logged it; and uncertain whether the
+  threat actor has reached the AWS environment where the customer database
+  lives.
+
+prerequisites_unverified:
+  - initial_access_vector  # phishing vs vulnerable VPN vs valid account compromise
+  - threat_actor_attribution  # LockBit affiliate vs BlackCat vs unaffiliated copycat
+  - aws_blast_radius  # whether the EC2 / RDS environment is compromised at all
+  - okta_session_token_theft  # whether SSO tokens have been exfiltrated
+  - exfiltration_status  # whether data was staged or transferred before encryption
+  - shadow_copy_recovery_viability  # whether VSS snapshots exist anywhere
+  - immutable_backup_integrity  # whether the offline backup tier was modified
+
+timeline:
+  - t: T+0min
+    event: >
+      Wazuh fires on anomalous SMB traffic from FILESRV-01 to fourteen
+      accounting workstations. No human eyes on alert yet.
+  - t: T+12min
+    event: >
+      Three workstations trigger `vssadmin delete shadows` rule. CrowdStrike
+      logs the event but does not block (Falcon prevention policy was set to
+      "detect-only" for this rule six weeks ago after a noisy false-positive).
+  - t: T+18min
+    event: >
+      On-call analyst opens the alert queue, sees the cluster, escalates to
+      SOC lead.
+  - t: T+24min
+    event: >
+      First user reports "my files have weird extensions" via the internal
+      help desk Slack channel. Ransom note discovered.
+  - t: T+31min
+    event: >
+      SOC lead requests EDR isolation on the 14 endpoints. CrowdStrike network
+      containment applied. SMB session count to FILESRV-01 drops to zero.
+  - t: T+47min
+    event: >
+      Forensics agent on FILESRV-01 surfaces a scheduled task created six
+      hours earlier under a service account (svc-backup-runner) with a
+      base64-encoded PowerShell payload that pulled the encryptor from a
+      domain registered 72 hours ago.
+  - t: T+58min
+    event: >
+      Identity team finds the svc-backup-runner account was logged into from
+      a corporate VPN session originating from a residential ISP in Eastern
+      Europe at T-7h. The legitimate service does not use interactive logon.
+  - t: T+90min
+    event: >
+      AWS CloudTrail review shows three failed AssumeRole attempts to the
+      production data role from an EC2 instance in the management VPC at
+      T-2h. The instance is the GitLab runner that builds CI/CD pipelines.
+
+target_agents:
+  - cs-purple-team-lead
+  - cs-incident-responder
+  - cs-blue-team-analyst
+  - cs-red-teamer
+
+expected_outputs:
+  - 11-field USAP payload from cs-purple-team-lead
+  - "Attack-chain table with >=4 MITRE ATT&CK techniques cited"
+  - Per-step detection coverage column with fired/missed verdict
+  - Containment column with explicit quote from cs-incident-responder for the encryption step
+  - ">=3 compensating controls with human_approval_required true"
+  - Gap report naming exactly one detection-engineering sprint focus
+
+evaluation_criteria:
+  pass:
+    - Attack chain cites Initial Access (T1078 or T1133), Execution (T1059.001),
+      Defense Evasion (T1490 Inhibit System Recovery), and Impact (T1486 Data
+      Encrypted for Impact) at minimum.
+    - Detection-coverage table identifies the T1490 detect-only policy as a
+      missed prevention opportunity and recommends switching to block.
+    - Containment narrative quotes cs-incident-responder verbatim on whether
+      the AWS blast radius is contained or unverified.
+    - Recommendation surfaces svc-backup-runner credential rotation with
+      human_approval_required true.
+    - Output payload contains all 11 USAP contract fields.
+  fail:
+    - Verdict declares the AWS environment safe without an explicit
+      cs-incident-responder confirmation line.
+    - Recommendation set spans more than one detection-engineering tactic
+      (lose-focus failure).
+    - Attack chain cites fewer than 4 MITRE TTPs.
+    - Containment column populated with phrases like "likely contained" or
+      "appears contained" without a responder quote.
+    - Verdict treats the absence of a ransom payment demand as evidence the
+      threat actor is unaffiliated (assumption failure).
