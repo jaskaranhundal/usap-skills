@@ -1,0 +1,1 @@
+../../appsec-devsecops/vuln-scan/SKILL.md

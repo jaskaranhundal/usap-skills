@@ -1,0 +1,1 @@
+../../response/containment-advisor/SKILL.md

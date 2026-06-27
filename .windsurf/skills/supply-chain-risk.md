@@ -1,0 +1,1 @@
+../../appsec-devsecops/supply-chain-risk/SKILL.md

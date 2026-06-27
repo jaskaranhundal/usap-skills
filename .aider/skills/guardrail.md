@@ -1,0 +1,1 @@
+../../platform-ai/guardrail/SKILL.md
