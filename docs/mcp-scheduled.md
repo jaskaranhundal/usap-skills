@@ -179,6 +179,7 @@ When running for real (not just smoke tests):
 4. **Run under systemd** or another process supervisor — `python3 tools/usap_runner.py --run` runs in the foreground and handles SIGTERM gracefully.
 5. **Rotate audit logs** by date — they're already date-partitioned. Archive previous days off the running host once they've been verified.
 6. **Verify daily.** Schedule a separate cron job that runs `python3 tools/mcp_audit.py --verify` against yesterday's log and alerts on FAIL.
+7. **Keep `USAP_AUDIT_KEY` consistent.** Once you set the signing key, every USAP process that writes audit lines that day must have the same key in its environment. If you run anything that writes audit lines without the key set (smoke tests, ad-hoc `--once` invocations, etc.), the verifier will flag those unsigned lines as `missing sig` and `--verify` will FAIL even though the chain itself is intact. The safest pattern: export `USAP_AUDIT_KEY` from a shell init script (`~/.zshrc`) or a systemd `EnvironmentFile`, so it's set before any USAP process starts.
 
 ## See also
 
