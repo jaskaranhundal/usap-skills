@@ -1,0 +1,1 @@
+../../appsec-devsecops/pipeline-security-scan/SKILL.md

@@ -1,0 +1,78 @@
+# USAP Scheduled Persistence Runner — Phase 4
+# --------------------------------------------
+# Declares scheduled jobs that fire skill workflows on a clock and dispatch
+# the result through the routing layer (Phase 2/3) to a downstream MCP
+# (Phase 3 adapter).
+#
+# Schema:
+#   version  Schema version. Currently 1.
+#   jobs[]   List of scheduled jobs.
+#     id              Unique identifier (audit log surfaces this).
+#     skill           Skill slug (e.g. "attack-surface-management",
+#                     "secrets-exposure"). The runner loads the matching
+#                     SKILL.md to derive a synthetic 11-field payload.
+#     schedule        Cron-style. Phase 4 supports:
+#                       - "M H * * *"    fixed minute/hour every day
+#                       - "*/N * * * *"  every N minutes
+#                       - "@every Ns"    every N seconds (testing)
+#                       - "@hourly", "@daily" macros
+#     dispatch_to     MCP id the result should route to (must exist in
+#                     registry/usap-mcp-registry.yaml and be `enabled: true`).
+#     dispatch_args   Arguments passed to the dispatched capability.
+#     intent_type     Optional override (defaults to "report"). One of the
+#                     7 USAP intent enums.
+#     enabled         If false, the runner skips the job.
+#
+# Validate locally:
+#   python3 tools/usap_runner.py --validate
+#
+# Run in foreground (Ctrl-C to stop):
+#   python3 tools/usap_runner.py --run
+#
+# Run a single job once, ignoring schedule (useful for testing):
+#   python3 tools/usap_runner.py --once <job-id>
+#
+# Default registry uses fixture-mode adapters, so the runner is safe to
+# enable on first install — it will dispatch to canned-data Slack / GitHub
+# / Splunk without touching real systems.
+
+version: 1
+
+jobs:
+  - id: hourly-attack-surface
+    skill: attack-surface-management
+    schedule: "@hourly"
+    intent_type: detect
+    dispatch_to: splunk
+    dispatch_args:
+      spl: "index=netflow earliest=-1h | stats count by src_ip"
+    enabled: false
+
+  - id: daily-secrets-scan
+    skill: secrets-exposure
+    schedule: "0 9 * * *"
+    intent_type: detect
+    dispatch_to: github
+    dispatch_args:
+      org: jaskaranhundal
+      visibility: private
+    enabled: true   # Stage A dogfood — fixture-mode adapter, no real GitHub calls yet
+
+  - id: every-15min-okta-anomalies
+    skill: identity-access-risk
+    schedule: "*/15 * * * *"
+    intent_type: detect
+    dispatch_to: splunk
+    dispatch_args:
+      spl: "index=okta_logs eventTypeId=failed_login | stats count by user, src_ip"
+    enabled: false
+
+  - id: smoke-test-job
+    skill: vuln-scan
+    schedule: "@every 60s"
+    intent_type: detect
+    dispatch_to: github
+    dispatch_args:
+      repo: acme/payments-api
+      number: 1234
+    enabled: false

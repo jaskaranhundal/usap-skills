@@ -62,6 +62,7 @@ agents/
 | cs-devsecops-engineer | `devsecops/cs-devsecops-engineer.md` | Security-in-pipeline engineer | Pipeline-triggered + doc intake |
 | cs-ciso-advisor | `executive/cs-ciso-advisor.md` | Executive security advisor | Scheduled (board reporting) |
 | cs-security-program-manager | `governance/cs-security-program-manager.md` | Passive lifecycle orchestrator | Passive (planning, scanning, facilitation) |
+| cs-usap-next | `meta/cs-usap-next.md` | Operator co-pilot — "where am I, what's next" | Read-only (advisory) |
 
 ## Required Frontmatter
 

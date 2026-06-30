@@ -2,11 +2,13 @@
 name: threat-hunting
 description: USAP agent skill for Threat Hunting. Use for Perform hypothesis-driven threat hunting across telemetry.
 license: MIT
+mitre_attack: [T1046, T1047, T1059.001, T1078, T1110, T1133]
+nist_csf: [DE.AE-02, DE.AE-08, DE.CM-01, DE.CM-09]
 metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-20
+  updated: 2026-06-27
   agent_slug: "threat-hunting"
   frameworks:
     mitre_attack: [T1078, T1046, T1059.001, T1110, T1133]

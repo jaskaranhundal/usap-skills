@@ -1,0 +1,178 @@
+# USAP MCP Registry — Phase 2
+# ----------------------------
+# Declares the downstream specialist MCPs that the USAP master MCP knows how
+# to route to. Phase 2 ships the schema, loader, validator, and router. The
+# actual adapter binaries land in Phase 3.
+#
+# Schema:
+#   version           Schema version. Currently 1.
+#   mcps[]            List of specialist MCPs.
+#     id              Stable identifier — used in audit logs and route results.
+#     name            Human-readable name shown in approval prompts.
+#     enabled         If false, the router skips this MCP entirely.
+#                     Phase 2 default: all false (no real adapters yet).
+#     transport       Currently only "stdio" is supported.
+#     command, args   How the master MCP would launch the adapter
+#                     (executed in Phase 3, validated structurally in Phase 2).
+#     capabilities[]  Per-action declarations.
+#       id                  Action name.
+#       mutating            true if this changes state in the downstream system.
+#       approval_required   true gates this through human_approval_required.
+#       description         One-line summary.
+#     routes_intent[]    Which 11-field intent_type values send work here.
+#                        Subset of: detect, respond, analyze, advise,
+#                        escalate, report, block.
+#     relevant_agents[]  cs-* agents whose `next_agents` arrays should pull
+#                        this MCP into the candidate set.
+#
+# Validation:
+#   python3 tools/mcp_registry.py --validate
+
+version: 1
+
+mcps:
+  # ------------------------------------------------------------------
+  # Phase 2 safe testbeds — no security state to mutate.
+  # ------------------------------------------------------------------
+  - id: slack
+    name: Slack
+    enabled: true
+    transport: stdio
+    command: python3
+    args: ["./adapters/slack/server.py"]
+    capabilities:
+      - id: read_channel
+        mutating: false
+        approval_required: false
+        description: Read the last N messages from a Slack channel.
+      - id: post_message
+        mutating: true
+        approval_required: true
+        description: Post a message to a Slack channel. Requires human approval.
+    routes_intent: [report, escalate]
+    relevant_agents: [cs-incident-responder, cs-ciso-advisor, cs-security-analyst]
+
+  - id: github
+    name: GitHub
+    enabled: true
+    transport: stdio
+    command: python3
+    args: ["./adapters/github/server.py"]
+    capabilities:
+      - id: list_repos
+        mutating: false
+        approval_required: false
+        description: List repositories visible to the configured token.
+      - id: open_issue
+        mutating: true
+        approval_required: true
+        description: Open a new issue. Requires human approval.
+      - id: get_pr_diff
+        mutating: false
+        approval_required: false
+        description: Fetch a pull-request diff for review.
+    routes_intent: [report, advise, analyze]
+    relevant_agents: [cs-devsecops-engineer, cs-appsec-engineer, cs-supply-chain-defender]
+
+  # ------------------------------------------------------------------
+  # Phase 3 reservations — placeholders so the routing tables compile.
+  # `enabled: false` so the router skips them until Phase 3 ships their
+  # real adapters.
+  # ------------------------------------------------------------------
+  - id: splunk
+    name: Splunk
+    enabled: true
+    transport: stdio
+    command: python3
+    args: ["./adapters/splunk/server.py"]
+    capabilities:
+      - id: search
+        mutating: false
+        approval_required: false
+        description: Run an SPL search and return results.
+      - id: list_indexes
+        mutating: false
+        approval_required: false
+        description: List available indexes and their EPS health.
+    routes_intent: [detect, analyze]
+    relevant_agents: [cs-security-analyst, cs-threat-intel-lead, cs-blue-team-analyst]
+
+  - id: crowdstrike
+    name: CrowdStrike Falcon
+    enabled: false
+    transport: stdio
+    command: python3
+    args: ["./adapters/crowdstrike/server.py"]
+    capabilities:
+      - id: list_detections
+        mutating: false
+        approval_required: false
+        description: Pull recent detections for a host or tenant.
+      - id: isolate_host
+        mutating: true
+        approval_required: true
+        description: Network-isolate a host. High-impact mutating action.
+      - id: lift_isolation
+        mutating: true
+        approval_required: true
+        description: Restore network connectivity to an isolated host.
+    routes_intent: [respond, block]
+    relevant_agents: [cs-incident-responder, cs-blue-team-analyst]
+
+  - id: fortigate
+    name: FortiGate
+    enabled: false
+    transport: stdio
+    command: python3
+    args: ["./adapters/fortigate/server.py"]
+    capabilities:
+      - id: list_policies
+        mutating: false
+        approval_required: false
+        description: Read current firewall policies.
+      - id: block_ip
+        mutating: true
+        approval_required: true
+        description: Add a deny rule for a source IP. Requires human approval.
+      - id: unblock_ip
+        mutating: true
+        approval_required: true
+        description: Remove a deny rule. Requires human approval.
+    routes_intent: [block, respond]
+    relevant_agents: [cs-incident-responder, cs-cloud-investigator]
+
+  - id: okta
+    name: Okta Admin
+    enabled: false
+    transport: stdio
+    command: python3
+    args: ["./adapters/okta/server.py"]
+    capabilities:
+      - id: list_events
+        mutating: false
+        approval_required: false
+        description: Read audit events from the System Log.
+      - id: suspend_user
+        mutating: true
+        approval_required: true
+        description: Suspend a user account. High-impact mutating action.
+    routes_intent: [respond, block]
+    relevant_agents: [cs-incident-responder]
+
+  - id: aws-security-hub
+    name: AWS Security Hub
+    enabled: false
+    transport: stdio
+    command: python3
+    args: ["./adapters/aws-security-hub/server.py"]
+    capabilities:
+      - id: list_findings
+        mutating: false
+        approval_required: false
+        description: Read findings from Security Hub.
+      - id: update_finding
+        mutating: true
+        approval_required: true
+        description: Update a finding's workflow status. Requires human approval.
+    routes_intent: [analyze, report]
+    relevant_agents: [cs-cloud-investigator, cs-ciso-advisor]

@@ -1,0 +1,17 @@
+version: 1
+themes:
+  - id: ransomware
+    description: Ransomware deployment and recovery
+    scenarios:
+      - scenario_id: fintech-ransomware-2026q3
+        file: ransomware/2026-q3-fintech-ransomware.yaml
+  - id: supply-chain
+    description: Supply chain compromise
+    scenarios:
+      - scenario_id: npm-malicious-dep-2026q3
+        file: supply-chain/2026-q3-npm-malicious-dep.yaml
+  - id: cloud-misconfig
+    description: Cloud misconfiguration exploitation
+    scenarios:
+      - scenario_id: iam-overpermission-2026q3
+        file: cloud-misconfig/2026-q3-iam-overpermission.yaml

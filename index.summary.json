@@ -1,0 +1,25 @@
+{
+  "schema_version": "1",
+  "generated_at_utc": "2026-06-27T10:29:10Z",
+  "repository": "github.com/jaskaranhundal/usap-skills",
+  "usap_version": "1.7.0",
+  "total_skills": 79,
+  "total_agents": 13,
+  "total_domains": 12,
+  "domains": [
+    "appsec-devsecops",
+    "cloud-infra",
+    "detection",
+    "governance",
+    "identity-access",
+    "pentest",
+    "platform-ai",
+    "red-team",
+    "response",
+    "risk-compliance",
+    "system-security",
+    "webapp-security"
+  ],
+  "index_path": "index.json",
+  "legacy_index_path": "api/index.json"
+}

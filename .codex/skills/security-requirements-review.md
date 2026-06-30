@@ -1,0 +1,1 @@
+../../appsec-devsecops/security-requirements-review/SKILL.md
