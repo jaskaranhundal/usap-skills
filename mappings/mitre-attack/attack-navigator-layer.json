@@ -674,6 +674,9 @@
     },
     {
       "techniqueID": "T1552.001",
+      "score": 4,
+      "color": "",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, appsec-devsecops/vuln-scan, detection/secrets-exposure, detection/threat-intelligence",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -691,6 +694,39 @@
     },
     {
       "techniqueID": "T1552.005",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/secrets-exposure",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1556.006",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: identity-access/identity-access-risk",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1562",
+      "score": 4,
+      "color": "",
+      "comment": "USAP skills covering: governance/security-debt-tracker, governance/security-roadmap-planner, pentest/web-app-pentest, response/incident-commander",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1562.002",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: system-security/os-hardening",
       "enabled": true,
       "metadata": [],
       "links": [],
