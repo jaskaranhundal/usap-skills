@@ -1,0 +1,17 @@
+{
+  "agent_slug": "container-image-scan",
+  "intent_type": "detect",
+  "action": "<string>",
+  "rationale": "<string>",
+  "confidence": 0.0,
+  "severity": "<critical|high|medium|low|informational>",
+  "key_findings": ["<string>"],
+  "evidence_references": [
+    {"source": "<mcp:<group>:<tool>:<call_id> | https://... | s3://... | local://...>", "ref": "<string>", "quote": "<string>"}
+  ],
+  "next_agents": ["<skill-slug>"],
+  "human_approval_required": false,
+  "timestamp_utc": "<ISO8601>",
+  "mitre_ttps": ["T1525", "T1190"],
+  "affected_assets": ["<image-ref>"]
+}

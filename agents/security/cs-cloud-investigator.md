@@ -1,7 +1,7 @@
 ---
 name: cs-cloud-investigator
 description: USAP orchestrator agent for cloud-incident investigation. Drives misconfiguration triage, workload-runtime analysis, and IAM anomaly attribution across AWS, Azure, and GCP findings.
-skills: cloud-security-posture, cloud-workload-protection, identity-access-risk, threat-hunting
+skills: cloud-security-posture, cloud-workload-protection, container-image-scan, identity-access-risk, threat-hunting
 domain: security
 model: sonnet
 tools: [Read, Write, Bash, Grep, Glob]
@@ -90,6 +90,7 @@ Announce discovered documents before proceeding: "Found `<path>` — extracted `
 
 - `../../cloud-infra/cloud-security-posture/` — CSPM posture across AWS/Azure/GCP, CIS Benchmark scoring, drift detection.
 - `../../cloud-infra/cloud-workload-protection/` — Container / serverless runtime anomalies, escape detection.
+- `../../cloud-infra/container-image-scan/` — Trivy/Grype/Snyk finding classification for the workload's image: base-image OS package vs. application dependency vs. unexpected/implanted layer (T1525).
 - `../../identity-access/identity-access-risk/` — IAM anomaly detection, privilege escalation, CloudTrail pattern matching.
 - `../../detection/threat-hunting/` — Hypothesis-driven hunt across the corroborating signals.
 
@@ -164,6 +165,7 @@ Announce discovered documents before proceeding: "Found `<path>` — extracted `
 2. Fetch the parent account's posture via `mcp:cloud:list_findings`, map the runtime MITRE T-IDs to a posture hypothesis, and run `cloud-workload-protection_tool.py` and `cloud-security-posture_tool.py` on the FETCHED evidence.
 3. If escape-detection signals are present in the fetched events, cascade to `cs-incident-responder` immediately with `human_approval_required: true`.
 4. Every verdict cites ≥1 resolvable `mcp:` source in `evidence_references[].source` (`mcp:<logical>:<tool>:<tool_call_id>`); the contract rejects verdicts with no resolvable source.
+5. Run `container-image-scan_tool.py` against the workload's image reference to separate known base-image/application-dependency CVE noise from genuinely novel runtime behavior. If it flags an unexpected/implanted layer (T1525), escalate to `cs-incident-responder` immediately regardless of runtime confirmation status.
 
 **Steps:**
 
@@ -176,17 +178,22 @@ Announce discovered documents before proceeding: "Found `<path>` — extracted `
    ```bash
    python3 cloud-infra/cloud-workload-protection/scripts/cloud-workload-protection_tool.py --output json
    ```
-3. **Cross-check posture** — run posture on the FETCHED account findings:
+3. **Classify the image's known findings** — separate pre-existing scanner CVE noise from novel behavior, and check for an implanted layer:
+   ```bash
+   python3 cloud-infra/container-image-scan/scripts/container-image-scan_tool.py --image <workload-image-ref> --output json
+   ```
+4. **Cross-check posture** — run posture on the FETCHED account findings:
    ```bash
    python3 cloud-infra/cloud-security-posture/scripts/cloud-security-posture_tool.py --output json
    ```
-4. **Emit triage payload** — runtime + posture correlated; every `evidence_references[].source` is the `mcp:` URI it came from.
+5. **Emit triage payload** — runtime + posture + image classification correlated; every `evidence_references[].source` is the `mcp:` URI it came from.
 
 **FAILURE MODES:**
 - `mcp:siem:search` resolves to None → the runtime signal cannot be confirmed; state this explicitly, do NOT emit an "informational / noise" verdict from absence, and recommend connecting a runtime/SIEM source.
 - `mcp:cloud:list_findings` resolves to None → the posture axis is UNKNOWN (never "clean"); cap confidence, note the gap.
 - Workload signature flagged as known-noise in the fetched events → emit `severity: informational`, route to `cs-security-program-manager`.
 - Escape-detection signal present → route to `cs-incident-responder` with `human_approval_required: true`.
+- `container-image-scan_tool.py` flags an unexpected/implanted layer (T1525) → treat as a possible active supply-chain compromise; route to `cs-incident-responder` with `human_approval_required: true` regardless of what the runtime signal alone would otherwise suggest.
 
 **Expected Output:** Triage payload with runtime + posture signals correlated, each cited to a resolvable `mcp:` source.
 
@@ -295,6 +302,7 @@ python3 detection/threat-hunting/scripts/threat-hunting_tool.py --playbook cloud
 
 - `../../cloud-infra/cloud-security-posture/SKILL.md`
 - `../../cloud-infra/cloud-workload-protection/SKILL.md`
+- `../../cloud-infra/container-image-scan/SKILL.md`
 - `../../identity-access/identity-access-risk/SKILL.md`
 - `../../detection/threat-hunting/SKILL.md`
 - `../../standards/output-contract.md`
