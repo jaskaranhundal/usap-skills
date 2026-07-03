@@ -4,7 +4,7 @@
   "spec": "agentskills.io 1.0",
   "repository": "https://github.com/jaskaranhundal/usap-skills",
   "counts": {
-    "skills": 79,
+    "skills": 80,
     "agents": 13,
     "domains": 12
   },
@@ -15,7 +15,7 @@
     },
     {
       "slug": "cloud-infra",
-      "skill_count": 5
+      "skill_count": 6
     },
     {
       "slug": "detection",
@@ -272,6 +272,28 @@
       "category": "usap-operations",
       "version": "1.0.0",
       "agent_slug": "cloud-workload-protection"
+    },
+    {
+      "name": "container-image-scan",
+      "domain": "cloud-infra",
+      "path": "cloud-infra/container-image-scan",
+      "description": "USAP agent skill for Container Image Scan. Use for classifying container-image vulnerability scan findings from Trivy, Grype, or Snyk into a block-deploy, fix-by-SLA-window, track, or accept decision across base-image OS packages, application dependencies, and unexpected image layers.",
+      "license": "MIT",
+      "category": "usap-devsecops",
+      "version": "1.0.0",
+      "agent_slug": "container-image-scan",
+      "frameworks": {
+        "mitre_attack": [
+          "T1525",
+          "T1190"
+        ],
+        "nist_csf": [
+          "ID.RA-05",
+          "DE.CM-08"
+        ]
+      },
+      "compatibility": "Requires scanner output (Trivy / Grype / Snyk) as JSON, or a connected registry/CSPM connector for on-demand image scanning. Read-only layer and manifest analysis — no runtime access, no image or registry mutation.",
+      "allowed-tools": "trivy grype snyk docker-scout syft"
     },
     {
       "name": "endpoint-os-security",
@@ -1093,7 +1115,7 @@
       "path": "agents/security/cs-cloud-investigator.md",
       "description": "USAP orchestrator agent for cloud-incident investigation. Drives misconfiguration triage, workload-runtime analysis, and IAM anomaly attribution across AWS, Azure, and GCP findings.",
       "model": "sonnet",
-      "skills": "cloud-security-posture, cloud-workload-protection, identity-access-risk, threat-hunting"
+      "skills": "cloud-security-posture, cloud-workload-protection, container-image-scan, identity-access-risk, threat-hunting"
     },
     {
       "name": "cs-incident-responder",
