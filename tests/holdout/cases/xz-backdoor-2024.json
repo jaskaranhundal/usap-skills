@@ -1,0 +1,20 @@
+{
+  "id": "xz-backdoor-2024",
+  "source": "public: xz-utils CVE-2024-3094 supply-chain backdoor, Mar 2024",
+  "input": {
+    "description": "A distro package build pulls xz 5.6.1; sshd links liblzma and an extra ifunc resolver hooks RSA_public_decrypt, adding ~500ms to failed logins.",
+    "signals": [
+      "sbom: xz-utils 5.6.1",
+      "sshd latency anomaly on auth failure",
+      "modified liblzma ifunc resolver"
+    ]
+  },
+  "labels": {
+    "intent_type": "detect",
+    "severity": "critical",
+    "is_true_positive": true,
+    "min_evidence_sources": 2,
+    "detection_deadline_minutes": 60,
+    "rationale_for_label": "Deliberately planted upstream backdoor granting SSH RCE; a genuine supply-chain compromise."
+  }
+}
