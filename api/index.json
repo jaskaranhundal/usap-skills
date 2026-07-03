@@ -389,6 +389,13 @@
       "category": "usap-detection",
       "version": "1.0.0",
       "agent_slug": "secrets-exposure",
+      "frameworks": {
+        "mitre_attack": [
+          "T1552.001",
+          "T1552.004",
+          "T1552.005"
+        ]
+      },
       "allowed-tools": "Read Grep Glob"
     },
     {
@@ -833,6 +840,14 @@
       "category": "usap-response",
       "version": "1.0.0",
       "agent_slug": "incident-classification",
+      "frameworks": {
+        "nist_csf": [
+          "DE.AE-02",
+          "DE.AE-08",
+          "RS.MA-02",
+          "RS.MA-03"
+        ]
+      },
       "allowed-tools": "Read Grep Glob"
     },
     {
