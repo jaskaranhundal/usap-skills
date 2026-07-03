@@ -6,6 +6,30 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.12.0] — 2026-07-03
+
+### Pillar 1 rollout — the whole cs-* fleet drives on the data backend
+
+v1.9.0 wired the flagship `cs-security-analyst` to the connector-agnostic MCP data backend. This rolls that exact pattern across the **remaining 10 cs-* agents**, so every persona now fetches evidence from live connectors and cites resolvable sources instead of reasoning from pasted logs.
+
+### Added / Changed
+
+- **10 cs-* agents wired to MCP:** `cs-incident-responder`, `cs-cloud-investigator`, `cs-supply-chain-defender`, `cs-blue-team-analyst`, `cs-red-teamer`, `cs-purple-team-lead`, `cs-threat-intel-lead`, `cs-devsecops-engineer`, `cs-ciso-advisor`, `cs-appsec-engineer`. Each declares a connector-agnostic `usap_mcp` frontmatter whitelist (domain read capabilities + gated mutating ones), fetches evidence in its workflows via logical `mcp:` names and cites `evidence_references[].source` as `mcp:<logical>:<tool>:<tool_call_id>` (or `https://` / `local://`), carries a "Live MCP Data Backend" section, and has all "Future: MCP Connector Integration" / "paste logs" prose removed.
+- **Registry logical vocabulary extended** (`registry/usap-mcp-registry.yaml`): added `edr.list_detections`, `identity.list_events`, `firewall.list_policies` (read) plus gated `edr.isolate_host`, `firewall.block_ip`, `identity.suspend_user`, `code.open_issue` (mutating). 12 logical names total; every agent `mcp:` reference is a verified subset.
+
+### How it was built (resilience note)
+
+The 10 agents were fanned out to parallel worktree subagents. Most hit a shared session-token limit mid-edit and died before committing. Their edits were recovered from the worktrees, validated (YAML parses, no paste prose, Live MCP section), and the ones that died just before their final section — plus `cs-threat-intel-lead`, whose worktree never persisted — were completed by hand. All 10 verified complete.
+
+### Completes Pillar 1
+
+All 11 verdict-producing cs-* agents (analyst from v1.9.0 + these 10) now fetch from the connector-agnostic backend. Mutating actions (host isolation, IP block, user suspension, issue creation) are declared only as `gated` capabilities requiring `human_approval_required: true`.
+
+### Verified
+
+- Registry validates (12 logical names); every agent `mcp:` reference resolves to a declared logical name (0 unknown).
+- `validate_skill --all` 79/79, `mcp_server_test` 32/32, `regen_samples --check` green.
+
 ## [1.11.0] — 2026-07-03
 
 ### Pillar 4 — independent evaluation (stop grading USAP against itself)
@@ -286,7 +310,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.11.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.12.0...HEAD
+[1.12.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.11.0...v1.12.0
 [1.11.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.8.0...v1.9.0
