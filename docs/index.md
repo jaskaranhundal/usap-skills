@@ -55,8 +55,7 @@ USAP is a curated, machine-validated library of cybersecurity skills designed fo
 
 ## Explainers
 
-* Explainers
-  * [USAP vs Prompt Libraries](explainers/usap-vs-prompt-libraries.md)
+* [USAP vs Prompt Libraries](explainers/usap-vs-prompt-libraries.md)
 
 ## Quick links
 
