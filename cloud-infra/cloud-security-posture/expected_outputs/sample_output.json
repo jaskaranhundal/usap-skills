@@ -1,18 +1,31 @@
 {
   "agent_slug": "cloud-security-posture",
   "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Cloud Security Posture skill. Assess and score cloud security posture across all major providers, prioritizing misconfigurations by exploitability and blast radius. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "action": "Escalate the public-S3 -> IMDSv1 -> IAM-wildcard exposure chain: hand off to cloud-workload-protection for runtime containment and identity-access-risk for the over-permissive role.",
+  "rationale": "CSPM scan of AWS account 123456789012 (us-east-1, us-west-2) against CIS AWS Foundations 1.5. 5 findings across 22 checks; 4 form a single exploitable chain: a public-read S3 bucket holding customer exports (CIS 2.1.5), an internet-facing EC2 still permitting IMDSv1 (CIS 5.6), an app-runtime IAM role with Action:*/Resource:* (CIS 1.16), and CloudTrail disabled in us-west-2 (CIS 3.1) masking the path. Internet-facing + production + regulated-data modifiers upgrade the chain to high. Confidence 0.86: 3 agreeing sources (Security Hub finding, config snapshot, IAM policy read); best tier secondary, corroboration lift (per standards/confidence-rubric.md).",
+  "confidence": 0.86,
+  "severity": "high",
   "key_findings": [
-    "Representative finding for Cloud Security Posture: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Assess and score cloud security posture across all major providers, prioritizing misconfigurations by exploitability and blast radius"
+    "CSP-001 public-s3-bucket - arn:aws:s3:::acme-prod-customer-exports has a public-read ACL (CIS AWS 2.1.5); bucket holds customer PII exports",
+    "CSP-002 imdsv1-enabled - instance i-0a1b2c3d4e5f6a7b8 (internet-facing) permits IMDSv1 with HttpTokens=optional (CIS AWS 5.6); SSRF -> instance-credential theft path",
+    "CSP-003 iam-wildcard - role/app-runtime policy allows Action:* on Resource:* (CIS AWS 1.16); enables lateral movement once instance credentials are stolen",
+    "CSP-004 cloudtrail-disabled - CloudTrail is off in us-west-2 (CIS AWS 3.1); masks the S3 read and API activity in the exfiltration path",
+    "CSP-005 rds-unencrypted - db-prod-billing lacks encryption at rest (CIS AWS 2.3.1); medium severity, outside the primary chain"
   ],
-  "evidence_references": [],
-  "next_agents": [
-    "cloud-workload-protection"
+  "evidence_references": [
+    {"source": "mcp:cloud:list_findings:call_csp7f21", "ref": "arn:aws:s3:::acme-prod-customer-exports", "quote": "Grantee=http://acs.amazonaws.com/groups/global/AllUsers, Permission=READ"},
+    {"source": "mcp:cloud:list_findings:call_csp7f21", "ref": "arn:aws:ec2:us-east-1:123456789012:instance/i-0a1b2c3d4e5f6a7b8", "quote": "MetadataOptions.HttpTokens = optional"},
+    {"source": "mcp:cloud:list_findings:call_csp7f21", "ref": "arn:aws:iam::123456789012:role/app-runtime", "quote": "Statement[0]: Effect=Allow, Action=*, Resource=*"}
   ],
+  "next_agents": ["cloud-workload-protection", "identity-access-risk"],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-07-04T09:15:00Z",
+  "mitre_ttps": ["T1530", "T1552.005", "T1078.004", "T1562.008"],
+  "affected_assets": [
+    "arn:aws:s3:::acme-prod-customer-exports",
+    "arn:aws:ec2:us-east-1:123456789012:instance/i-0a1b2c3d4e5f6a7b8",
+    "arn:aws:iam::123456789012:role/app-runtime",
+    "arn:aws:rds:us-east-1:123456789012:db:db-prod-billing"
+  ],
+  "compliance_mappings": ["CIS-AWS-2.1.5", "CIS-AWS-5.6", "CIS-AWS-1.16", "CIS-AWS-3.1", "NIST-800-53-AC-6", "PCI-DSS-1.2.1"]
 }
