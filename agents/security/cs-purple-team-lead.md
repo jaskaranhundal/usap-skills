@@ -5,6 +5,19 @@ skills: red-team-planner, red-team-operations, detection-engineering, threat-hun
 domain: security
 model: sonnet
 tools: [Read, Write, Bash, Grep, Glob]
+# usap_mcp — connector-agnostic MCP whitelist (read-only for detection-validation
+# evidence; gated for the single mutating capability). Devon declares LOGICAL
+# capabilities, not physical tools: `mcp:siem:search` resolves to whichever SIEM the
+# operator connected (Splunk, Elastic, Sentinel) and `mcp:edr:list_detections` to
+# whichever EDR (CrowdStrike, Defender, SentinelOne) via registry/usap-mcp-registry.yaml.
+# The purple-team question every read answers: did the emulated TTP get DETECTED?
+# Resolve with: python3 tools/mcp_router.py --resolve mcp:siem:search
+usap_mcp:
+  read_only:
+    - mcp:siem:search          # did the SIEM detect the emulated TTP?
+    - mcp:edr:list_detections  # did the EDR fire on the emulated technique?
+  gated:
+    - mcp:slack:post_message   # mutating — exercise coordination (human_approval_required)
 state:
   active_workflow: null
   steps_completed: []
@@ -278,6 +291,21 @@ python3 response/incident-classification/scripts/incident-classification_tool.py
 - Kill-chain step with empty `mitre_ttp` cell.
 - Containment column populated without quoting `cs-incident-responder`.
 
+## Live MCP Data Backend (connector-agnostic)
+
+This agent fetches evidence from live MCP connectors rather than pasted logs. It declares LOGICAL capabilities — the router (`tools/mcp_router.py::resolve_logical`) maps each to whichever physical MCP the operator connected, so the same agent works in any environment. If a capability resolves to `None`, the agent degrades gracefully: it names the missing connector, caps confidence, and marks that data class UNKNOWN — it never narrates assumed telemetry as observed.
+
+| Logical capability | Fetches | Resolves to (operator's connected MCP) |
+|---|---|---|
+| `mcp:siem:search` | did the SIEM detect the emulated TTP? | Splunk, Elastic, or Sentinel |
+| `mcp:edr:list_detections` | did the EDR fire on the emulated technique? | CrowdStrike or SentinelOne |
+| `mcp:slack:post_message` | exercise coordination — mutating, gated | Slack |
+
+**Evidence discipline.** Every verdict cites its evidence as a resolvable `evidence_references[].source`: the `mcp:<logical>:<tool>:<tool_call_id>` of the call that produced it (or `https://` / `s3://` / `local://`). The output contract rejects verdicts with no resolvable source.
+
+**Mutating actions stay gated.** Only `post_message` is mutating and runs through the human-approval path. A DETECTED/MISSED verdict must cite the `mcp:` query it rests on — a MISSED verdict cites the query that returned no detection.
+
+---
 ## Integration Examples
 
 ```bash

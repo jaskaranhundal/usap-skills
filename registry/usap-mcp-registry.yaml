@@ -213,3 +213,30 @@ logical_names:
   slack.post_message:
     implementations:
       - mcp__slack__post_message     # mutating — gated by human_approval_required
+  # --- read capabilities (evidence) added for the cs-* agent rollout ---
+  edr.list_detections:
+    implementations:
+      - mcp__crowdstrike__list_detections   # preferred
+      - mcp__sentinelone__list_threats      # fallback
+  identity.list_events:
+    implementations:
+      - mcp__okta__list_events              # preferred
+      - mcp__azure-ad__list_signins         # fallback
+  firewall.list_policies:
+    implementations:
+      - mcp__fortigate__list_policies       # preferred
+      - mcp__paloalto__list_rules           # fallback
+  # --- gated mutating actions (require human_approval_required: true) ---
+  edr.isolate_host:
+    implementations:
+      - mcp__crowdstrike__isolate_host      # mutating — gated
+  firewall.block_ip:
+    implementations:
+      - mcp__fortigate__block_ip            # mutating — gated
+  identity.suspend_user:
+    implementations:
+      - mcp__okta__suspend_user             # mutating — gated
+  code.open_issue:
+    implementations:
+      - mcp__github__open_issue             # mutating — gated
+      - mcp__gitlab__create_issue           # fallback
