@@ -13,9 +13,9 @@
     "VF-005 permissive-cors at src/middleware/cors.js:6 — UNMAPPED (no top-5 threat covers this)"
   ],
   "evidence_references": [
-    {"source": "scanner", "ref": "src/config.py:14", "quote": "PASSWORD = \"changeme-prod\""},
-    {"source": "scanner", "ref": "src/db/profile.js:42", "quote": "db.query('SELECT * FROM users WHERE id = ' + req.params.id)"},
-    {"source": "scanner", "ref": "infra/storage.tf:21", "quote": "acl = \"public-read\""}
+    {"source": "mcp:code:get_pr_diff:call_a1b2c3", "ref": "src/config.py:14", "quote": "PASSWORD = \"changeme-prod\""},
+    {"source": "mcp:code:get_pr_diff:call_a1b2c3", "ref": "src/db/profile.js:42", "quote": "db.query('SELECT * FROM users WHERE id = ' + req.params.id)"},
+    {"source": "mcp:code:get_pr_diff:call_a1b2c3", "ref": "infra/storage.tf:21", "quote": "acl = \"public-read\""}
   ],
   "next_agents": ["finding-triage"],
   "human_approval_required": false,
