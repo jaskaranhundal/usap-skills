@@ -1,0 +1,19 @@
+{
+  "id": "authorized-vuln-scan",
+  "source": "benign: scheduled Nessus scan from the approved scanner during the change window",
+  "input": {
+    "description": "A burst of port scans and version probes across the /24 originated from the approved scanner host during the documented Tuesday maintenance window.",
+    "signals": [
+      "source = 10.0.9.5 (asset tag: nessus-scanner)",
+      "change ticket CHG-4412 covers this window",
+      "no exploitation payloads, only version probes"
+    ]
+  },
+  "labels": {
+    "intent_type": "report",
+    "severity": "informational",
+    "is_true_positive": false,
+    "min_evidence_sources": 1,
+    "rationale_for_label": "Authorized, ticketed vulnerability scan from a known scanner \u2014 benign; flagging it as a threat is a false positive."
+  }
+}

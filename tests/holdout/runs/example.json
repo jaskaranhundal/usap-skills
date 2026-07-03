@@ -1,0 +1,159 @@
+{
+  "graded": 12,
+  "missing_predictions": [],
+  "confusion": {
+    "tp": 6,
+    "fp": 1,
+    "fn": 1,
+    "tn": 4
+  },
+  "precision": 0.8571,
+  "recall": 0.8571,
+  "f1": 0.8571,
+  "false_positive_rate": 0.2,
+  "severity_accuracy_exact": 0.8571,
+  "severity_accuracy_within1": 0.8571,
+  "intent_accuracy": 0.8333,
+  "mttd_minutes": 17.5,
+  "mttd_note": null,
+  "per_case": [
+    {
+      "id": "admin-bulk-offboarding",
+      "truth_positive": false,
+      "flagged": false,
+      "intent": {
+        "expected": "report",
+        "got": "report"
+      }
+    },
+    {
+      "id": "authorized-vuln-scan",
+      "truth_positive": false,
+      "flagged": true,
+      "intent": {
+        "expected": "report",
+        "got": "escalate"
+      }
+    },
+    {
+      "id": "aws-example-key-in-fixture",
+      "truth_positive": false,
+      "flagged": false,
+      "intent": {
+        "expected": "report",
+        "got": "report"
+      }
+    },
+    {
+      "id": "capital-one-ssrf-2019",
+      "truth_positive": true,
+      "flagged": true,
+      "severity": {
+        "expected": "critical",
+        "got": "critical"
+      },
+      "intent": {
+        "expected": "detect",
+        "got": "detect"
+      }
+    },
+    {
+      "id": "ci-service-account-burst",
+      "truth_positive": false,
+      "flagged": false,
+      "intent": {
+        "expected": "report",
+        "got": "report"
+      }
+    },
+    {
+      "id": "contracted-pentest-window",
+      "truth_positive": false,
+      "flagged": false,
+      "intent": {
+        "expected": "report",
+        "got": "report"
+      }
+    },
+    {
+      "id": "log4shell-2021",
+      "truth_positive": true,
+      "flagged": true,
+      "severity": {
+        "expected": "critical",
+        "got": "critical"
+      },
+      "intent": {
+        "expected": "detect",
+        "got": "detect"
+      }
+    },
+    {
+      "id": "midnight-blizzard-oauth-2024",
+      "truth_positive": true,
+      "flagged": false,
+      "severity": {
+        "expected": "high",
+        "got": "low"
+      },
+      "intent": {
+        "expected": "detect",
+        "got": "report"
+      }
+    },
+    {
+      "id": "moveit-cl0p-2023",
+      "truth_positive": true,
+      "flagged": true,
+      "severity": {
+        "expected": "critical",
+        "got": "critical"
+      },
+      "intent": {
+        "expected": "detect",
+        "got": "detect"
+      }
+    },
+    {
+      "id": "okta-session-theft-2023",
+      "truth_positive": true,
+      "flagged": true,
+      "severity": {
+        "expected": "high",
+        "got": "high"
+      },
+      "intent": {
+        "expected": "detect",
+        "got": "detect"
+      }
+    },
+    {
+      "id": "secrets-live-aws-key-2024",
+      "truth_positive": true,
+      "flagged": true,
+      "severity": {
+        "expected": "critical",
+        "got": "critical"
+      },
+      "intent": {
+        "expected": "respond",
+        "got": "respond"
+      }
+    },
+    {
+      "id": "xz-backdoor-2024",
+      "truth_positive": true,
+      "flagged": true,
+      "severity": {
+        "expected": "critical",
+        "got": "critical"
+      },
+      "intent": {
+        "expected": "detect",
+        "got": "detect"
+      }
+    }
+  ],
+  "label": "example",
+  "corpus_size": 12
+}

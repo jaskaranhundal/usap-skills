@@ -1,0 +1,56 @@
+{
+  "log4shell-2021": {
+    "severity": "critical",
+    "intent_type": "detect",
+    "detection_latency_minutes": 8
+  },
+  "xz-backdoor-2024": {
+    "severity": "critical",
+    "intent_type": "detect",
+    "detection_latency_minutes": 40
+  },
+  "capital-one-ssrf-2019": {
+    "severity": "critical",
+    "intent_type": "detect",
+    "detection_latency_minutes": 12
+  },
+  "okta-session-theft-2023": {
+    "severity": "high",
+    "intent_type": "detect",
+    "detection_latency_minutes": 25
+  },
+  "moveit-cl0p-2023": {
+    "severity": "critical",
+    "intent_type": "detect",
+    "detection_latency_minutes": 15
+  },
+  "midnight-blizzard-oauth-2024": {
+    "severity": "low",
+    "intent_type": "report"
+  },
+  "secrets-live-aws-key-2024": {
+    "severity": "critical",
+    "intent_type": "respond",
+    "detection_latency_minutes": 5
+  },
+  "authorized-vuln-scan": {
+    "severity": "high",
+    "intent_type": "escalate"
+  },
+  "admin-bulk-offboarding": {
+    "severity": "informational",
+    "intent_type": "report"
+  },
+  "ci-service-account-burst": {
+    "severity": "informational",
+    "intent_type": "report"
+  },
+  "contracted-pentest-window": {
+    "severity": "informational",
+    "intent_type": "report"
+  },
+  "aws-example-key-in-fixture": {
+    "severity": "low",
+    "intent_type": "report"
+  }
+}

