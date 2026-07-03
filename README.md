@@ -170,6 +170,8 @@ The 11 required fields are: `agent_slug`, `intent_type`, `action`, `rationale`, 
 
 ## Why USAP
 
+> New here? Read: [USAP vs Prompt Libraries](docs/explainers/usap-vs-prompt-libraries.md) — why a `SKILL.md` is more than a folder of prompts.
+
 - **Open source, no SaaS, no waitlist.** Apache 2.0. Drop the skills into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no platform install. No vendor cloud, no per-seat pricing, no telemetry leaving your environment.
 - **Standardized 11-field output contract.** Every skill emits CVSS, MITRE ATT&CK technique IDs, evidence references, and an explicit `human_approval_required` flag (`standards/output-contract.md`). Safe to embed in production agent stacks where competitor copilots remain black boxes.
 - **`cs-*` orchestrator agents.** 12 named agents (`cs-security-analyst`, `cs-incident-responder`, `cs-blue-team-analyst`, `cs-red-teamer`, `cs-cloud-investigator`, `cs-supply-chain-defender`, `cs-threat-intel-lead`, `cs-purple-team-lead`, `cs-appsec-engineer`, `cs-devsecops-engineer`, `cs-ciso-advisor`, `cs-security-program-manager`) compose the skills into reproducible workflows.
