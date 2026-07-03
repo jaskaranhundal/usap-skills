@@ -1,0 +1,28 @@
+{
+  "agent_slug": "container-image-scan",
+  "intent_type": "detect",
+  "action": "Block deploy — a critical base-image CVE, a critical application-dependency CVE, and an unexpected image layer are all present. Rebuild from a patched debian:12-slim base tag, bump log4j-core to 2.17.1, and escalate the unexpected layer to incident-commander before this image ships.",
+  "rationale": "Trivy and Grype scans of registry.example.com/acme/payments-api@sha256:8f3e1c2b9a4d5e6f7c8d9e0f1a2b3c4d5e6f7089abcdef0123456789fedcba98 (a public-facing payments API) found: liblzma5 5.6.0 (CVE-2024-3094, CVSS 10.0) in the debian:12-slim base layer; log4j-core 2.14.1 (CVE-2021-44228, CVSS 10.0) in the application dependency layer; and a fourth image layer (sha256:9c2a1fe3...) with no matching step in the Dockerfile, CI build log, or SBOM generated at build time. The base-image and application CVEs each have a documented fix (rebuild from a patched base tag; bump to log4j-core 2.17.1). The unexpected layer carries no CVE of its own but is a finding by presence alone (T1525) because it postdates every recorded build step. The image backs an internet-facing payments API, so both CVEs are reachable from the public path (T1190). Confidence 0.97: 3 agreeing sources (2 primary NVD CVE records + 1 secondary cloud-connector layer-provenance finding); best tier primary, corroboration lift over 2 extra source(s) (per standards/confidence-rubric.md).",
+  "confidence": 0.97,
+  "severity": "critical",
+  "key_findings": [
+    "CVE-2024-3094 in liblzma5 5.6.0 (fixed in 5.6.2) — base-image OS package in debian:12-slim; CVSS 10.0 Critical; remediation = rebuild FROM a patched base tag/digest",
+    "CVE-2021-44228 (Log4Shell) in log4j-core 2.14.1 (fixed in 2.17.1) — application dependency declared in pom.xml; CVSS 10.0 Critical; remediation = bump dependency version and rebuild the app layer",
+    "Unexpected image layer sha256:9c2a1fe36b4d8095c7e2a9135f0d8b2641a9c3e708b5d2f46a1c9e307d4b8f52 has no matching Dockerfile step, CI build log entry, or SBOM component — classified as a possible implant (T1525); image preserved, not deleted, for forensic pull",
+    "registry.example.com/acme/payments-api@sha256:8f3e1c2b9a4d... backs an internet-facing payments API (Kubernetes Service type=LoadBalancer) — both CVEs are reachable from the public path (T1190)",
+    "No CISA KEV listing found for either CVE at scan time; block-deploy is driven by CVSS severity and the implant finding, not KEV status"
+  ],
+  "evidence_references": [
+    {"source": "https://nvd.nist.gov/vuln/detail/CVE-2024-3094", "ref": "liblzma5 5.6.0", "quote": "CVSS:3.1 Base Score 10.0 CRITICAL — malicious code embedded in the xz/liblzma build tarball"},
+    {"source": "https://nvd.nist.gov/vuln/detail/CVE-2021-44228", "ref": "log4j-core 2.14.1", "quote": "CVSS:3.1 Base Score 10.0 CRITICAL — JNDI lookup in message-lookup substitution allows remote code execution"},
+    {"source": "mcp:cloud:list_findings:call_cis8a12", "ref": "registry.example.com/acme/payments-api@sha256:8f3e1c2b9a4d..., layer sha256:9c2a1fe3...", "quote": "layer digest sha256:9c2a1fe3... has no corresponding build step in the recorded CI provenance or SBOM"}
+  ],
+  "next_agents": ["incident-commander", "cloud-workload-protection"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-07-04T14:30:00Z",
+  "mitre_ttps": ["T1525", "T1190"],
+  "affected_assets": [
+    "registry.example.com/acme/payments-api@sha256:8f3e1c2b9a4d5e6f7c8d9e0f1a2b3c4d5e6f7089abcdef0123456789fedcba98",
+    "layer:sha256:9c2a1fe36b4d8095c7e2a9135f0d8b2641a9c3e708b5d2f46a1c9e307d4b8f52"
+  ]
+}

@@ -24,6 +24,7 @@ All five skills are `read_only` for discovery and analysis. Configuration change
 |---|---|---|---|
 | Cloud Security Posture | `cloud-infra/cloud-security-posture` | `cloud-security-posture_tool.py` | CIS Benchmarks (AWS/Azure/GCP), CSPM, drift detection, compliance mapping |
 | IaC Security | `cloud-infra/iac-security` | `iac-security_tool.py` | Terraform/CloudFormation misconfigs, Kubernetes RBAC, Helm hardening, CI/CD gate policy |
+| Container Image Scan | `cloud-infra/container-image-scan` | `container-image-scan_tool.py` | Trivy/Grype/Snyk finding classification, base-image vs. app-dependency vs. implanted-layer triage, CI/CD block/fix/track/accept gate |
 | Endpoint & OS Security | `cloud-infra/endpoint-os-security` | `endpoint-os-security_tool.py` | CIS OS Benchmarks, DISA STIG, EDR coverage, Windows/Linux/macOS hardening |
 | OT/IoT Device Security | `cloud-infra/ot-iot-device-security` | `ot-iot-device-security_tool.py` | ICS/SCADA, NIST SP 800-82, IEC 62443, NERC CIP, Purdue Model, IoT baseline |
 | Cloud Workload Protection | `cloud-infra/cloud-workload-protection` | `cloud-workload-protection_tool.py` | CWPP, container runtime security, serverless permission sprawl, escape detection |
@@ -36,6 +37,7 @@ All five skills are `read_only` for discovery and analysis. Configuration change
 |---|---|---|---|
 | `cloud-security-posture_tool.py` | `cloud-security-posture/scripts/` | `--provider aws\|azure\|gcp`, `--account-id`, `--output json\|table` | CSPM findings with CIS check IDs, severity, compliance mapping, drift flag |
 | `iac-security_tool.py` | `iac-security/scripts/` | `--target terraform\|cloudformation\|kubernetes\|helm`, `--dir`, `--output json` | Misconfiguration findings with `block_pr` flag, compliance score |
+| `container-image-scan_tool.py` | `container-image-scan/scripts/` | `--image`, `--scanner trivy\|grype\|snyk`, `--output json\|table` | 11-field contract payload with per-finding component classification (base-image OS package / application dependency / unexpected layer) and block-deploy/fix-by-sla-window/track/accept action |
 | `endpoint-os-security_tool.py` | `endpoint-os-security/scripts/` | `--os windows\|linux\|macos`, `--host`, `--output json` | Hardening score, EDR coverage status, CIS drift, patch priority matrix |
 | `ot-iot-device-security_tool.py` | `ot-iot-device-security/scripts/` | `--zone 0-5`, `--env ot\|iot\|mixed`, `--output json` | Purdue zone risk assessment, segmentation gaps, compensating controls |
 | `cloud-workload-protection_tool.py` | `cloud-workload-protection/scripts/` | `--target containers\|serverless`, `--cluster`, `--output json` | CWPP coverage gaps, runtime anomalies, escape indicators |
@@ -207,7 +209,7 @@ The skills in this domain map to the MITRE ATT&CK Enterprise and ICS matrices as
 | Technique | ID | Detecting Skill |
 |---|---|---|
 | Valid Accounts — Cloud | T1078.004 | cloud-security-posture (IAM anomaly → cascade to identity-access-risk) |
-| Exploit Public-Facing Application | T1190 | cloud-security-posture (internet-facing resources), cloud-workload-protection |
+| Exploit Public-Facing Application | T1190 | cloud-security-posture (internet-facing resources), cloud-workload-protection, container-image-scan (vulnerable base-image/dependency component reachable from a public-facing image) |
 | Drive-by Compromise (HMI) | T1817 (ICS) | ot-iot-device-security |
 | Default Credentials (IoT) | T1812 (ICS) | ot-iot-device-security |
 
@@ -225,7 +227,7 @@ The skills in this domain map to the MITRE ATT&CK Enterprise and ICS matrices as
 | Technique | ID | Detecting Skill |
 |---|---|---|
 | Valid Accounts — Cloud | T1078.004 | cloud-security-posture, cloud-workload-protection |
-| Implant Container Image | T1525 | cloud-workload-protection (image scanning) |
+| Implant Container Image | T1525 | cloud-workload-protection (image scanning), container-image-scan (unexpected/implanted layer detection against Dockerfile, CI build log, and SBOM) |
 | Registry Run Keys / Startup Folder | T1547.001 | endpoint-os-security |
 | Scheduled Task/Job | T1053.005 | endpoint-os-security |
 
