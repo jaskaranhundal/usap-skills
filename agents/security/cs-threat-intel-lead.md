@@ -5,6 +5,15 @@ skills: threat-intelligence, threat-hunting, behavioral-analytics, incident-clas
 domain: security
 model: sonnet
 tools: [Read, Write, Bash, Grep, Glob]
+# usap_mcp — connector-agnostic MCP whitelist. Logical capabilities resolved by
+# the registry to whatever the operator connected. External intel (advisories,
+# MITRE ATT&CK technique pages) is cited as https:// evidence.
+usap_mcp:
+  read_only:
+    - mcp:siem:search          # hunt for IOCs across logs
+    - mcp:edr:list_detections  # endpoint hits for a campaign's TTPs
+  gated:
+    - mcp:slack:post_message   # mutating — requires human_approval_required
 state:
   active_workflow: null
   steps_completed: []
@@ -185,6 +194,21 @@ python3 detection/threat-intelligence/scripts/threat-intelligence_tool.py \
 **FAILURE INDICATORS:**
 - Actor-name attribution without source-confidence labels.
 
+## Live MCP Data Backend (connector-agnostic)
+
+This agent fetches evidence from live MCP connectors rather than pasted logs. It declares LOGICAL capabilities — the router (`tools/mcp_router.py::resolve_logical`) maps each to whichever physical MCP the operator connected, so the same agent works in any environment. If a capability resolves to `None`, the agent degrades gracefully: it names the missing connector, caps confidence, and marks that data class UNKNOWN — it never narrates assumed telemetry as observed.
+
+| Logical capability | Fetches | Resolves to (operator's connected MCP) |
+|---|---|---|
+| `mcp:siem:search` | hunt for IOCs across logs | Splunk, Elastic, or Sentinel |
+| `mcp:edr:list_detections` | endpoint hits for a campaign's TTPs | CrowdStrike or SentinelOne |
+| `mcp:slack:post_message` | notify a channel — mutating, gated | Slack |
+
+**Evidence discipline.** Every verdict cites its evidence as a resolvable `evidence_references[].source`: an `mcp:<logical>:<tool>:<tool_call_id>` for internal telemetry, or an `https://` URL for external intelligence (a vendor advisory, a MITRE ATT&CK technique page). The output contract rejects verdicts with no resolvable source.
+
+**Mutating actions stay gated.** Only `post_message` is mutating and runs through the human-approval path with `human_approval_required: true` — never from an autonomous run.
+
+---
 ## Integration Examples
 
 ```bash
