@@ -18,6 +18,15 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Reproducible confidence — computed from the evidence via the shared rubric,
+# not narrated. See standards/confidence-rubric.md.
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "shared" / "scripts"))
+try:
+    from confidence_rubric import score_confidence
+except Exception:  # repo layout guarantees availability; guard for isolated runs
+    def score_confidence(sources):
+        return {"confidence": 0.70, "rationale": "confidence_rubric unavailable; default 0.70"}
+
 SLUG = "vuln-scan"
 
 # (rule_id, regex, default_severity)
@@ -164,7 +173,13 @@ def scan(target: dict) -> dict:
     findings = _map_to_threats(findings, tm_present, tm_ids)
 
     severity = _overall_severity(findings)
-    confidence = max(0.4, 0.85 - 0.05 * max(0, sum(f["merged_count"] - 1 for f in findings)))
+    # Reproducible confidence: the SAST scanner is one secondary-tier source;
+    # a threat-model mapping that corroborates any finding is a second one.
+    conf_sources = [{"tier": "secondary"}]  # the scanner
+    if any(f.get("mapped_threat_id") for f in findings):
+        conf_sources.append({"tier": "secondary"})  # threat-model corroboration
+    conf_result = score_confidence(conf_sources)
+    confidence = conf_result["confidence"]
 
     artifact_path = _write_findings_artifact(target_path, tm_present, findings)
 
@@ -196,7 +211,7 @@ def scan(target: dict) -> dict:
         "rationale": (
             f"Scanned {target_path.name} against {len(tm_ids)} top-DREAD threats. "
             f"Found {len(findings)} distinct finding(s) after dedup. "
-            f"Confidence dampened 0.05 per merge step."
+            f"Confidence: {conf_result['rationale']}"
         ),
         "confidence": round(confidence, 2),
         "severity": severity,

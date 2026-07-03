@@ -2,8 +2,8 @@
   "agent_slug": "vuln-scan",
   "intent_type": "detect",
   "action": "Hand off to finding-triage — 4 mapped findings, 1 unmapped, top severity high.",
-  "rationale": "Scanned SimpleStoreAPI against TM-001..TM-005. Found 5 distinct findings after dedup: hardcoded credential (TM-001 proximity 9), SQL string concat (TM-002 proximity 8), public S3 ACL (TM-002 proximity 7), permissive CORS (unmapped), missing input validation on /api/v1/profile (TM-001 proximity 9). Confidence dampened 0.05 per merge.",
-  "confidence": 0.82,
+  "rationale": "Scanned SimpleStoreAPI against TM-001..TM-005. Found 5 distinct findings after dedup: hardcoded credential (TM-001 proximity 9), SQL string concat (TM-002 proximity 8), public S3 ACL (TM-002 proximity 7), permissive CORS (unmapped), missing input validation on /api/v1/profile (TM-001 proximity 9). Confidence: 2 agreeing source(s) (best tier=secondary, w=0.70); corroboration lift over 1 extra source(s) => confidence 0.84 (per standards/confidence-rubric.md).",
+  "confidence": 0.84,
   "severity": "high",
   "key_findings": [
     "VF-001 hardcoded-credential at src/config.py:14 — mapped to TM-001, proximity 9",
