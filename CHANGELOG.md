@@ -6,6 +6,28 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.11.0] — 2026-07-03
+
+### Pillar 4 — independent evaluation (stop grading USAP against itself)
+
+The fourth 7.5→9.5 pillar. The `fortigate`/`challenge`/`compare` commands grade USAP against USAP's own canonical scorecards — circular. This adds a held-out, hand-labeled corpus USAP did not write, and a metrics engine that scores against it.
+
+### Added
+
+- **Held-out corpus.** `tests/holdout/cases/*.json` — 12 hand-labeled cases: **7 real threats** (Log4Shell, xz-utils backdoor, Capital One SSRF→IMDS, Okta session theft, MOVEit/Cl0p, Midnight Blizzard OAuth abuse, a live-key leak) and **5 benign-but-noisy false-positive traps** (an authorized vuln scan, HR-driven bulk offboarding, a CI service-account burst, a contracted pentest window, the AWS documentation example key in a fixture). Each case names its public `source` and defends its label. The negatives are what make precision and false-positive-rate honest.
+- **Evaluation engine.** `tests/holdout_runner.py` (stdlib) computes precision / recall / F1 / false-positive-rate / severity-accuracy / intent-accuracy / MTTD from USAP predictions vs the labels. Pluggable responder: `--responder synthetic --predictions <file>` scores a pre-produced batch (and is how the engine is unit-tested); `--responder llm` is the documented seam to drive each cs-* persona live (needs an LLM endpoint — deliberately not run in CI).
+- `tests/holdout/README.md` (labeling rules + the LLM integration seam) and `tests/holdout/RELEASES.md` (per-release precision/recall/FPR/MTTD table, baseline pending a live run).
+- **CI self-check.** `validate-skills.yml` gains a deterministic step that runs the synthetic example (a deliberately-imperfect predictor) and asserts its fixed metrics (precision/recall 0.8571, FPR 0.20). If they move without a corpus change, the scoring engine regressed.
+
+### Why the LLM part isn't wired here
+
+Driving the personas live needs a model endpoint; this environment has none reachable (Ollama not running). The corpus, the metrics engine, and the CI protection are complete and verified — wiring a concrete `--responder llm` endpoint is the remaining integration step, and the first live run seeds the `RELEASES.md` baseline.
+
+### Verified
+
+- Engine metrics hand-verified: TP=6 FP=1 FN=1 TN=4 → precision 0.8571, recall 0.8571, FPR 0.20, F1 0.8571, MTTD 17.5.
+- Full `validate-skills.yml` suite (incl. the new self-check) + `mcp_server_test` 32/32 + `validate_skill --all` 79/79 all green.
+
 ## [1.10.0] — 2026-07-03
 
 ### Pillar 3 — reproducible scoring (kill the narrated number)
@@ -264,7 +286,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.10.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.11.0...HEAD
+[1.11.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.7.0...v1.8.0

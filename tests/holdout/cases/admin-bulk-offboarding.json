@@ -1,0 +1,19 @@
+{
+  "id": "admin-bulk-offboarding",
+  "source": "benign: HR-driven bulk account disable during a layoff",
+  "input": {
+    "description": "The IT admin account disabled 60 user accounts in 20 minutes, matching the HR offboarding list for an announced reduction in force.",
+    "signals": [
+      "actor = svc-iam-admin (sanctioned)",
+      "matches HR offboarding CSV for RIF-2026-02",
+      "no auth anomalies on the admin account"
+    ]
+  },
+  "labels": {
+    "intent_type": "report",
+    "severity": "informational",
+    "is_true_positive": false,
+    "min_evidence_sources": 1,
+    "rationale_for_label": "Sanctioned bulk offboarding matching an HR list \u2014 looks like mass account takeover but is authorized administration."
+  }
+}
