@@ -268,12 +268,82 @@ def load_registry(path: Path | None = None) -> dict:
                     f"approval_required: true"
                 )
 
+    # ─── logical_names block (connector-agnostic layer) ─────────────
+    # Structural errors are fatal; a logical name that resolves to zero
+    # *enabled* physical MCPs is a WARNING (the operator simply hasn't
+    # connected that class of tool yet), not a failure.
+    logical = parsed.get("logical_names")
+    warnings: list[str] = []
+    if logical is not None:
+        if not isinstance(logical, dict):
+            errors.append("logical_names must be a mapping")
+        else:
+            enabled_caps = {
+                (m["id"], c["id"])
+                for m in mcps
+                if isinstance(m, dict) and m.get("enabled")
+                for c in (m.get("capabilities") or [])
+                if isinstance(c, dict)
+            }
+            for lname, entry in logical.items():
+                lprefix = f"logical_names.{lname}"
+                if not isinstance(entry, dict):
+                    errors.append(f"{lprefix}: must be a mapping")
+                    continue
+                impls = entry.get("implementations")
+                if not isinstance(impls, list) or not impls:
+                    errors.append(f"{lprefix}: `implementations` must be a non-empty list")
+                    continue
+                resolvable = 0
+                for impl in impls:
+                    if not isinstance(impl, str):
+                        errors.append(f"{lprefix}: implementation must be a string, got {impl!r}")
+                        continue
+                    server, tool = _parse_physical(impl)
+                    if server is None:
+                        errors.append(
+                            f"{lprefix}: implementation {impl!r} must have the form "
+                            f"mcp__<mcp-id>__<capability-id>"
+                        )
+                        continue
+                    if (server, tool) in enabled_caps:
+                        resolvable += 1
+                if resolvable == 0:
+                    warnings.append(
+                        f"{lprefix}: no enabled MCP implements this logical name "
+                        f"(operator has not connected any of "
+                        f"{[i for i in impls if isinstance(i, str)]})"
+                    )
+
     if errors:
         raise ValueError(
             "Registry validation failed:\n  " + "\n  ".join(errors)
         )
 
+    # Non-fatal warnings ride along on a private key for the CLI to surface.
+    parsed["_logical_name_warnings"] = warnings
     return parsed
+
+
+def _parse_physical(impl: str) -> tuple[str | None, str | None]:
+    """Split ``mcp__<mcp-id>__<capability-id>`` into ``(mcp_id, capability_id)``.
+
+    Double-underscore separators mean hyphenated ids (e.g. ``aws-security-hub``)
+    parse correctly. Returns ``(None, None)`` if the shape is wrong.
+    """
+    if not isinstance(impl, str) or not impl.startswith("mcp__"):
+        return None, None
+    rest = impl[len("mcp__"):]
+    server, sep, tool = rest.partition("__")
+    if not sep or not server or not tool:
+        return None, None
+    return server, tool
+
+
+def logical_names(reg: dict) -> dict:
+    """Return the registry's ``logical_names`` block (empty dict if absent)."""
+    block = reg.get("logical_names")
+    return block if isinstance(block, dict) else {}
 
 
 # ─── CLI ────────────────────────────────────────────────────────────
@@ -312,7 +382,13 @@ def main() -> int:
         return 1
 
     if args.validate or not (args.list or args.explain):
-        print(f"OK  {len(reg['mcps'])} MCP(s) loaded from {args.registry}")
+        n_logical = len(logical_names(reg))
+        print(
+            f"OK  {len(reg['mcps'])} MCP(s), {n_logical} logical name(s) "
+            f"loaded from {args.registry}"
+        )
+        for w in reg.get("_logical_name_warnings", []):
+            print(f"WARN  {w}")
         return 0
 
 
