@@ -37,7 +37,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 PROTOCOL_VERSION = "2025-06-18"
 SERVER_NAME = "usap"
-SERVER_VERSION = "1.12.0"
+SERVER_VERSION = "1.13.0"
 
 ACTIVE_DOMAINS = [
     "appsec-devsecops", "cloud-infra", "detection", "governance",
