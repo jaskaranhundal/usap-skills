@@ -1,0 +1,20 @@
+{
+  "id": "midnight-blizzard-oauth-2024",
+  "source": "public: Microsoft password-spray to OAuth abuse, Jan 2024",
+  "input": {
+    "description": "A legacy non-prod tenant account was password-sprayed, then an attacker-controlled OAuth app was granted full_access_as_app to mailboxes.",
+    "signals": [
+      "sign-in log: password spray success on legacy account",
+      "new OAuth app consent full_access_as_app",
+      "mailbox access from the app principal"
+    ]
+  },
+  "labels": {
+    "intent_type": "detect",
+    "severity": "high",
+    "is_true_positive": true,
+    "min_evidence_sources": 2,
+    "detection_deadline_minutes": 120,
+    "rationale_for_label": "Password spray plus malicious OAuth grant for persistent mailbox access \u2014 a real identity intrusion."
+  }
+}

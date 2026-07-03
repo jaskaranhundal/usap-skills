@@ -1,0 +1,20 @@
+{
+  "id": "moveit-cl0p-2023",
+  "source": "public: MOVEit Transfer CVE-2023-34362 mass exploitation by Cl0p, 2023",
+  "input": {
+    "description": "A MOVEit Transfer web tier received crafted SQLi requests, then a human2.aspx webshell appeared and large archive downloads followed.",
+    "signals": [
+      "web log: SQLi to /moveitisapi/",
+      "new file human2.aspx in wwwroot",
+      "bulk archive egress to unknown host"
+    ]
+  },
+  "labels": {
+    "intent_type": "detect",
+    "severity": "critical",
+    "is_true_positive": true,
+    "min_evidence_sources": 2,
+    "detection_deadline_minutes": 30,
+    "rationale_for_label": "SQLi-to-webshell-to-exfil chain, mass-exploited for data theft \u2014 confirmed critical."
+  }
+}
