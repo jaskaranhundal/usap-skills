@@ -6,6 +6,25 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.13.0] — 2026-07-03
+
+### Adoption + reach — make the moat obvious
+
+USAP's architecture already leads the reference repos (none have a live MCP runtime, evidence gate, reproducible scoring, or independent eval). This release closes the credibility/reach gap so visitors see that in seconds.
+
+### Added
+
+- **`examples/README.md`** — a reproducible showcase: every one of the four pillars (connector-agnostic resolution, the evidence gate rejecting prose, reproducible EPSS/CVSS/confidence, the held-out eval) shown with **real command output** the reader can re-run. The best "prove it works" artifact in the repo.
+- **`INSTALLATION.md`** — one consolidated per-platform install guide (Claude Code plugin, Cursor/Windsurf/Codex/Gemini/Aider polyglot, ChatGPT Custom GPT, Ollama/AnythingLLM paste, the stdlib Python tooling, and MCP-server registration).
+- **`custom-gpt/README.md`** — a ChatGPT Custom GPT instruction set that runs USAP's 11-field contract + evidence discipline + gated mutation, extending USAP's reach beyond Claude.
+- **`CITATION.cff`** — standard citation metadata so USAP can be cited in research and shows a "Cite this repository" button on GitHub.
+- README links the examples showcase + installation guide prominently near the top.
+
+### Verified
+
+- Every command shown in `examples/README.md` re-runs to the documented output.
+- Full suite green: `validate_skill --all` 79/79, `mcp_server_test` 32/32, `regen_samples --check`.
+
 ## [1.12.0] — 2026-07-03
 
 ### Pillar 1 rollout — the whole cs-* fleet drives on the data backend
@@ -310,7 +329,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.12.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.13.0...HEAD
+[1.13.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.11.0...v1.12.0
 [1.11.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.9.0...v1.10.0

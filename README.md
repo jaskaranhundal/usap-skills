@@ -23,6 +23,8 @@ Each `SKILL.md` is a complete LLM system prompt — paste into Claude, ChatGPT, 
 
 > If this is useful, **[star the repo](https://github.com/jaskaranhundal/usap-skills/stargazers)** — it's the cheapest signal to send and the only one that drives discovery. Want to contribute? The [open invitations in `ROADMAP.md`](ROADMAP.md#open-invitations) are picked tasks, not vague areas.
 
+**▶ [See every pillar run with real, reproducible output → `examples/`](examples/README.md)** · **[Install on your platform → `INSTALLATION.md`](INSTALLATION.md)**
+
 ## Try it in 60 seconds
 
 ### Option 1 — Claude Code plugin (one command, no clone)
