@@ -55,6 +55,72 @@ INTENT_CAPABILITY_HINTS = {
 }
 
 
+# ─── Connector-agnostic logical-name resolution ─────────────────────
+# cs-* agents declare logical capabilities (mcp:siem:search) instead of
+# physical MCP tool names. The resolver maps a logical name to whichever
+# physical MCP the operator has actually enabled — so the same agent works
+# against Splunk, Elastic, or Sentinel with no edit. If nothing implements
+# the logical name, the agent degrades gracefully (resolve returns None).
+
+def _normalize_logical(name: str) -> str:
+    """Normalise an agent-declared logical name to the registry key form.
+
+    Accepts ``mcp:siem:search``, ``mcp.siem.search``, or ``siem.search`` —
+    all normalise to ``siem.search``. Pass the LOGICAL portion only; strip
+    any trailing tool-call-id from an evidence URI before calling.
+    """
+    n = (name or "").strip()
+    for pref in ("mcp:", "mcp."):
+        if n.startswith(pref):
+            n = n[len(pref):]
+            break
+    return n.replace(":", ".")
+
+
+def resolve_logical(name: str, registry: dict | None = None) -> str | None:
+    """Resolve a logical capability name to a physical MCP tool name.
+
+    Returns the first ``implementations`` entry (preferred-first) whose
+    physical MCP is ``enabled: true`` in the registry AND advertises the
+    capability, or ``None`` when the operator has connected no implementing
+    MCP. Deterministic: same registry + same name → same result.
+    """
+    from mcp_registry import logical_names as _logical_names, _parse_physical
+    reg = registry if registry is not None else load_registry()
+    entry = _logical_names(reg).get(_normalize_logical(name))
+    if not isinstance(entry, dict):
+        return None
+    by_id = {m["id"]: m for m in reg.get("mcps", []) if isinstance(m, dict)}
+    for impl in entry.get("implementations") or []:
+        if not isinstance(impl, str):
+            continue
+        server, tool = _parse_physical(impl)
+        mcp = by_id.get(server)
+        if mcp and mcp.get("enabled") and any(
+            c.get("id") == tool for c in (mcp.get("capabilities") or [])
+        ):
+            return impl
+    return None
+
+
+def resolve_logical_full(name: str, registry: dict | None = None) -> dict | None:
+    """Like :func:`resolve_logical` but returns full context.
+
+    Returns ``{logical, physical, mcp_id, capability}`` or ``None``.
+    """
+    from mcp_registry import _parse_physical
+    physical = resolve_logical(name, registry)
+    if physical is None:
+        return None
+    server, tool = _parse_physical(physical)
+    return {
+        "logical": _normalize_logical(name),
+        "physical": physical,
+        "mcp_id": server,
+        "capability": tool,
+    }
+
+
 def _score_mcp(mcp: dict, payload: dict) -> int:
     if not mcp.get("enabled", False):
         return -1
@@ -259,11 +325,27 @@ def _build_approval_prompt(payload: dict, mcp: dict, capability: dict | None) ->
 
 
 def main() -> int:
-    """CLI: route a payload from a file or stdin."""
+    """CLI: route a payload, or resolve a logical name."""
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("payload", nargs="?", help="Path to a JSON payload file (or - for stdin)")
+    ap.add_argument("--resolve", metavar="LOGICAL",
+                    help="Resolve a logical name (e.g. mcp:siem:search) to a "
+                         "physical MCP tool against the current registry.")
     args = ap.parse_args()
+
+    if args.resolve:
+        full = resolve_logical_full(args.resolve)
+        if full is None:
+            print(json.dumps({
+                "logical": _normalize_logical(args.resolve),
+                "resolved": None,
+                "note": "no enabled MCP implements this logical name",
+            }, indent=2))
+            return 0
+        print(json.dumps({"resolved": full["physical"], **full}, indent=2))
+        return 0
+
     if args.payload is None or args.payload == "-":
         data = json.loads(sys.stdin.read())
     else:

@@ -176,3 +176,40 @@ mcps:
         description: Update a finding's workflow status. Requires human approval.
     routes_intent: [analyze, report]
     relevant_agents: [cs-cloud-investigator, cs-ciso-advisor]
+
+# ------------------------------------------------------------------
+# Logical-name layer (connector-agnostic abstraction).
+# ------------------------------------------------------------------
+# cs-* agents declare LOGICAL capabilities (e.g. `mcp:siem:search`) instead
+# of physical MCP tool names. The router's resolve_logical() maps a logical
+# name to the first `implementations` entry whose physical MCP is
+# `enabled: true` above AND advertises the capability. Preferred first,
+# fallbacks after. If none resolve, the agent degrades gracefully (that
+# connector simply isn't available in this operator's environment).
+#
+# Physical form: mcp__<mcp-id>__<capability-id> (double underscore separators,
+# so hyphenated ids like aws-security-hub parse correctly).
+#
+# This is what makes USAP portable: the same cs-security-analyst works whether
+# the operator has connected Splunk, Elastic, or Sentinel — no agent edit.
+logical_names:
+  siem.search:
+    implementations:
+      - mcp__splunk__search          # preferred
+      - mcp__elastic__search         # fallback
+      - mcp__sentinel__search        # fallback
+  code.list_repos:
+    implementations:
+      - mcp__github__list_repos      # preferred
+      - mcp__gitlab__list_projects   # fallback
+  code.get_pr_diff:
+    implementations:
+      - mcp__github__get_pr_diff
+  cloud.list_findings:
+    implementations:
+      - mcp__aws-security-hub__list_findings   # preferred
+      - mcp__gcp-scc__list_findings            # fallback
+      - mcp__azure-sentinel__search            # fallback
+  slack.post_message:
+    implementations:
+      - mcp__slack__post_message     # mutating — gated by human_approval_required

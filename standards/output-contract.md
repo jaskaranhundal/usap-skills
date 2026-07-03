@@ -15,7 +15,7 @@ Every USAP agent skill must produce a JSON payload conforming to this schema. Th
 | `confidence` | float | 0.0–1.0; below 0.5 triggers inconclusive flag |
 | `severity` | string | One of: `critical`, `high`, `medium`, `low`, `informational` |
 | `key_findings` | array[string] | Ordered list of discrete findings supporting the recommendation |
-| `evidence_references` | array[object] | Source artifacts, log lines, timestamps used as evidence |
+| `evidence_references` | array[object] | Source artifacts used as evidence. Every verdict must cite **≥1 entry with a resolvable `source`** — see [Resolvable Evidence Gate](#resolvable-evidence-gate) |
 | `next_agents` | array[string] | Skill slugs to invoke next (empty if terminal) |
 | `human_approval_required` | boolean | True if a mutating action requires human gate |
 | `timestamp_utc` | string | ISO 8601 UTC timestamp of output generation |
@@ -80,10 +80,31 @@ Every USAP agent skill must produce a JSON payload conforming to this schema. Th
 2. `severity` must be exactly one of the five allowed values.
 3. `intent_type` must be one of the seven allowed values.
 4. `key_findings` must contain at least one entry.
-5. `evidence_references` must contain at least one entry for severity >= `high`.
+5. `evidence_references` must contain at least one entry with a **resolvable `source`**, at every severity — see the Resolvable Evidence Gate below.
 6. `human_approval_required` must be `true` for any action that mutates production state.
 7. `next_agents` must only reference valid USAP skill slugs.
 8. `timestamp_utc` must be a valid ISO 8601 string.
+
+---
+
+## Resolvable Evidence Gate
+
+USAP verdicts must be *verifiable*, not merely plausible. The gate is the hardest line in the contract: **every verdict — at any severity, including `informational` — must carry at least one `evidence_references` entry whose `source` resolves to a real artifact.** A verdict that cites no resolvable source is rejected at the contract boundary (`tools/output_contract.py::validate_payload`, enforced by the MCP server's `validate_payload` tool).
+
+A `source` is resolvable when it matches one of four forms:
+
+| Form | Meaning | Validation |
+|---|---|---|
+| `mcp:<group>:<tool>:<tool_call_id>` | Evidence fetched live from a connected MCP (e.g. `mcp:siem:search:call_a1b2`). `<group>.<tool>` names a logical capability. | `<group>.<tool>` must be declared in the registry `logical_names` block |
+| `https://<url>` | Canonical external source (CVE/NVD, EPSS feed, MITRE, vendor advisory) | Structural only — not fetched at validation time |
+| `s3://<bucket>/<key>` | Operator-controlled artifact store | Structural only |
+| `local://<repo-relative-path>` | An in-repo standard, runbook, or policy doc — the escape hatch for pure-advisory verdicts grounded in USAP's own contract (e.g. `local://standards/output-contract.md`) | Path **must exist** in the repo |
+
+`local://` is not an "I made this up" hatch — the validator checks the path exists. Prose sources like `"scanner"` or `"the SIEM showed it"` are rejected: they name a source class, not a resolvable artifact.
+
+**Connector-agnostic evidence.** Because the `mcp:` form cites a *logical* capability (`siem`, `code`, `cloud`), the same skill output is portable: whichever SIEM the operator has connected (Splunk, Elastic, Sentinel) resolves the same `mcp:siem:search` reference. See `registry/usap-mcp-registry.yaml` → `logical_names`.
+
+**Rollout.** The gate is enforced at the runtime boundary now. Committed skill samples are migrated to resolvable sources skill-by-skill; the corpus CI checks structure (blocking) and reports evidence-gate compliance (non-blocking) until every sample is migrated.
 
 ---
 
