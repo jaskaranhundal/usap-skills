@@ -61,4 +61,6 @@ nav:
   - Domains:
       - Overview: domains/index.md
       - webapp-security: domains/webapp-security.md
+  - Explainers:
+      - USAP vs Prompt Libraries: explainers/usap-vs-prompt-libraries.md
   - GitHub: https://github.com/jaskaranhundal/usap-skills
