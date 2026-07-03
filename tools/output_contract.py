@@ -181,6 +181,57 @@ def validate_evidence_resolvable(
     return []
 
 
+# ─── Reproducible-scoring checks ────────────────────────────────────
+# A payload that claims a cvss_score must match the CVSS vector it cites.
+# Narrowly scoped: fires only when a numeric cvss_score AND a vector are
+# both present, so it catches fabricated numbers without touching payloads
+# that carry neither.
+_CVSS_VECTOR_RE = re.compile(r"CVSS:3\.[01]/[A-Z]{1,2}:[A-Z](?:/[A-Z]{1,2}:[A-Z])+")
+
+
+def _find_cvss_vector(payload: dict) -> str | None:
+    v = payload.get("cvss_vector")
+    if isinstance(v, str):
+        m = _CVSS_VECTOR_RE.search(v)
+        if m:
+            return m.group(0)
+    for e in payload.get("evidence_references") or []:
+        if isinstance(e, dict):
+            m = _CVSS_VECTOR_RE.search(json.dumps(e))
+            if m:
+                return m.group(0)
+    m = _CVSS_VECTOR_RE.search(str(payload.get("rationale", "")))
+    return m.group(0) if m else None
+
+
+def validate_scores_reproducible(payload: Any) -> List[str]:
+    """FAIL when a claimed cvss_score disagrees with the vector it cites.
+
+    Only fires when the payload carries BOTH a numeric ``cvss_score`` and a
+    resolvable CVSS vector; otherwise returns [] (nothing to reproduce).
+    """
+    if not isinstance(payload, dict):
+        return []
+    cs = payload.get("cvss_score")
+    if isinstance(cs, bool) or not isinstance(cs, (int, float)):
+        return []
+    vector = _find_cvss_vector(payload)
+    if not vector:
+        return []
+    try:
+        sys.path.insert(0, str(REPO_ROOT / "shared" / "scripts"))
+        from cvss_scorer import score_from_vector  # noqa: E402
+        computed = float(score_from_vector(vector).base_score)
+    except Exception:
+        return []  # scorer unavailable — don't block on an environment issue
+    if abs(float(cs) - computed) > 0.1:
+        return [
+            f"cvss_score {cs} does not match its vector {vector} "
+            f"(cvss_scorer computes {computed:.1f}) — scores must be reproducible, not narrated"
+        ]
+    return []
+
+
 def _is_str(v: Any) -> bool:
     return isinstance(v, str)
 
@@ -197,6 +248,7 @@ def validate_payload(
     payload: Any,
     *,
     evidence_gate: bool = True,
+    score_checks: bool = True,
     registry: Any = None,
     repo_root: Any = None,
 ) -> List[str]:
@@ -303,6 +355,11 @@ def validate_payload(
         violations.extend(
             validate_evidence_resolvable(payload, registry, repo_root)
         )
+
+    # 13. Reproducible scoring — a claimed cvss_score must match its vector.
+    #     Independent of the evidence gate: correctness, not rollout.
+    if score_checks:
+        violations.extend(validate_scores_reproducible(payload))
 
     return violations
 

@@ -6,6 +6,28 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.10.0] — 2026-07-03
+
+### Pillar 3 — reproducible scoring (kill the narrated number)
+
+The second of the 7.5→9.5 pillars. Where v1.9.0 made every *claim* traceable to a fetched artifact, this makes every *number* reproducible. The rule: if a number can be computed, compute it from the canonical source; if it can't, say "qualitative" — never fabricate.
+
+### Added
+
+- **EPSS from the FIRST feed.** `shared/scripts/epss_scorer.py` (stdlib `urllib`) fetches the real EPSS probability + percentile for a CVE from `api.first.org`, caches to `~/.usap/cache/epss/<cve>.json` (24h TTL), and extracts CVE ids from free text. Unreachable feed or unknown CVE → a *qualitative* result (`epss: null` + note), never a fabricated score. CLI: `--cve CVE-2021-44228` / `--text "…"`. Verified live: Log4Shell → 0.99999, xz-backdoor → 0.85974.
+- **Written confidence rubric.** `shared/scripts/confidence_rubric.py` computes confidence deterministically from evidence: source-reliability tiers (primary 0.90 / secondary 0.70 / tertiary 0.50), a corroboration lift for additional agreeing sources, and a dissent penalty — clamped to a 0.99 ceiling (no finite evidence justifies certainty). `standards/confidence-rubric.md` is the human-readable spec that maps 1:1 to the code. CLI: `confidence_rubric.py --secondary 2` → 0.84.
+- **CVSS reproducibility check in the contract.** `tools/output_contract.py::validate_scores_reproducible()` rejects any payload whose claimed `cvss_score` disagrees (>0.1) with the CVSS vector it cites, recomputed via the existing `shared/scripts/cvss_scorer.py`. Narrowly scoped — fires only when a numeric `cvss_score` AND a vector are both present, so it catches fabricated numbers without touching the corpus. Wired into `validate_payload(score_checks=True)`, independent of the evidence gate.
+- **vuln-scan computes confidence from the rubric.** `appsec-devsecops/vuln-scan/scripts/vuln-scan_tool.py` replaces its `0.85 − 0.05·merges` heuristic with a `score_confidence()` call (scanner = secondary source; a threat-model mapping corroborates → second source). Output is now reproducible run-to-run and carries the rubric's rationale. Sample updated to the computed 0.84.
+
+### Fixed
+
+- **v1.9.0 regression in `tools/regen_samples.py`.** v1.9.0 made the evidence gate default-on in `validate_payload`; the sample generator validated its structural stubs with that default and errored (`GENERATOR ERROR … evidence gate`), and it stopped recognising hand-authored samples as "already clean." `regen_samples.py` now validates structurally (`evidence_gate=False`), matching the corpus CI's `--structural-only` pass. `regen_samples.py --check` is green again (0 written, 79 left alone). *(This CI step was not run during the v1.9.0 verification — added to the standard pre-ship suite going forward.)*
+
+### Verified
+
+- All 9 `validate-skills.yml` CI steps pass locally + `mcp_server_test` 32/32 + `validate_skill --all` 79/79 + `invocation-control --strict` exit 0.
+- EPSS live-feed, confidence-rubric determinism/monotonicity, CVSS cross-check (rejects fabricated, accepts matching), and vuln-scan reproducible-confidence all unit-tested.
+
 ## [1.9.0] — 2026-07-03
 
 ### The data-backend MVP — USAP verdicts become verifiable, not just plausible
@@ -242,7 +264,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.10.0...HEAD
+[1.10.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.9.0...v1.10.0
 [1.9.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.6.0...v1.7.0

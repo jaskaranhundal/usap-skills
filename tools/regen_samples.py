@@ -341,15 +341,23 @@ def main() -> int:
                 existing = json.loads(sample_path.read_text())
             except Exception:
                 existing = None
-        existing_violations = validate_payload(existing) if isinstance(existing, dict) else ["not a dict"]
-        # If existing is already a clean contract payload AND we're not in --all mode,
-        # leave it alone — we don't want to clobber hand-authored faithful samples
-        # like vuln-scan/threat-model.
+        # Structural validation only. The generator produces 11-field stubs;
+        # the hardest-line evidence gate is a per-skill rollout concern (samples
+        # gain resolvable evidence as their skill is wired to the data backend),
+        # so generation must not depend on it. Mirrors the corpus CI, which
+        # runs output_contract.py --structural-only.
+        existing_violations = (
+            validate_payload(existing, evidence_gate=False)
+            if isinstance(existing, dict) else ["not a dict"]
+        )
+        # If existing is already a structurally-clean contract payload AND we're
+        # not in --all mode, leave it alone — we don't want to clobber
+        # hand-authored faithful samples like vuln-scan/threat-model.
         if not args.all and isinstance(existing, dict) and not existing_violations:
             skipped += 1
             continue
         new_payload = _build_payload(skill_dir)
-        new_violations = validate_payload(new_payload)
+        new_violations = validate_payload(new_payload, evidence_gate=False)
         if new_violations:
             print(f"GENERATOR ERROR: payload for {skill_dir} still has violations:")
             for v in new_violations:
