@@ -6,6 +6,41 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 _No unreleased changes yet._
 
+## [1.9.0] — 2026-07-03
+
+### The data-backend MVP — USAP verdicts become verifiable, not just plausible
+
+v1.4–v1.8 built the MCP road (server, router, dispatcher, scheduler, audit chain). This release makes the flagship persona **drive on it**: `cs-security-analyst` (Alex) now fetches evidence from live MCP connectors and every verdict it emits must cite a resolvable source. Two locked design decisions shape it — a **connector-agnostic** abstraction (portable to any environment) and the **hardest-line** evidence gate (no verdict without a resolvable source, at any severity).
+
+### Added
+
+- **Connector-agnostic logical-name resolver.** `registry/usap-mcp-registry.yaml` gains a `logical_names:` block mapping logical capabilities (`siem.search`, `code.list_repos`, `code.get_pr_diff`, `cloud.list_findings`, `slack.post_message`) to an ordered list of physical MCP implementations. `tools/mcp_router.py::resolve_logical()` resolves a logical name to whichever physical MCP the operator has `enabled` — preferred-first, deterministic. The same `cs-security-analyst` works against Splunk, Elastic, or Sentinel with no edit; if nothing implements a capability it resolves to `None` and the agent degrades gracefully. `tools/mcp_registry.py` validates the block (structural errors fatal; zero-enabled implementations = non-fatal WARN). CLI: `python3 tools/mcp_router.py --resolve mcp:siem:search`.
+- **Hardest-line evidence gate.** `tools/output_contract.py::validate_evidence_resolvable()` requires every payload — at ANY severity, including `informational` — to cite ≥1 `evidence_references[].source` that resolves to one of four forms: `mcp:<logical>:<tool>:<tool_call_id>` (logical name must be declared in the registry), `https://…`, `s3://…`, or `local://<repo-relative-path>` (path must exist). Prose sources like `"scanner"` are rejected. Wired into `validate_payload(payload, evidence_gate=True)` (default on) and enforced at the runtime contract boundary — the MCP server's `validate_payload` tool. Documented in `standards/output-contract.md` → "Resolvable Evidence Gate".
+- **`cs-security-analyst` rewired to the data backend.** Frontmatter declares a connector-agnostic `usap_mcp` whitelist (read-only logical capabilities + the single gated mutating one). The AT / TH / CA workflows now fetch evidence via `mcp:siem:search` / `mcp:code:get_pr_diff` / `mcp:cloud:list_findings` and emit verdicts whose `evidence_references` cite the `mcp:` tool-call id that produced each finding. New "Live MCP Data Backend" section replaces the old "Future: MCP Connector Integration" / "paste logs" prose (deleted). Graceful degradation is a hard rule: no connector → mark the axis UNKNOWN, never narrate assumed telemetry as observed.
+- **Reference MCP adapters travel with the plugin.** `.claude-plugin/plugin.json` gains an `mcpServers` block declaring the three reference adapters (Splunk, GitHub, Slack) in safe `USAP_ADAPTER_MODE=fixture` by default, so a fresh install can demo routing/dispatch with zero credentials.
+
+### Changed
+
+- `.github/workflows/validate-skills.yml`: the blocking corpus contract check runs `--structural-only` (11-field structure, unchanged blocking behaviour); a **new non-blocking** step reports evidence-gate rollout status. This keeps `main` green while the gate rolls out sample-by-sample.
+- `appsec-devsecops/vuln-scan` sample migrated to `mcp:code:get_pr_diff:…` evidence sources — the first gate-compliant sample and the canonical pattern for the rollout.
+
+### Rollout backlog (failing the gate BY DESIGN)
+
+The gate is enforced at the runtime boundary now, but only **1 of 79** committed skill samples cites resolvable evidence today (vuln-scan). The other **78 samples fail the gate by design** — each is migrated as its owning skill/agent is wired to the data backend in the per-agent rollout. This is the intended "surface the gap loudly" signal, not a regression; structural CI stays green.
+
+### Deviations from plan (documented)
+
+- The agent's logical MCP whitelist lives in a dedicated `usap_mcp:` frontmatter block, not the Claude Code `tools:` grant field — `tools:` controls real tool access, and injecting non-existent logical names there would confuse the agent loader.
+- The `mcpServers` block lives in the **repo-root** `.claude-plugin/plugin.json` (where `${CLAUDE_PLUGIN_ROOT}/adapters/` resolves), not `plugins/usap/.claude-plugin/plugin.json` — the marketplace source is `./plugins/usap` but the adapters live at repo root. Bundling adapters under the marketplace plugin is a follow-up.
+
+### Verified
+
+- `tools/validate_skill.py --all` → 79/79 PASS; `tools/validate_invocation_control.py --all --strict` → exit 0.
+- `tools/mcp_server_test.py` → 32/32 PASS (gate now enforced at the server boundary).
+- Resolver: `siem.search`→`mcp__splunk__search`; with only GitHub enabled, `siem.search`→`None` (graceful), flip Splunk on → resolves. `mcp:siem:search` normalises to `siem.search`.
+- Gate: 1 positive + 4 negatives (empty / prose / missing local path / unknown logical) all correct; `--structural-only` bypass confirmed.
+- Structural corpus check stays green (79/79); loop demo chain verifies + signed.
+
 ## [1.8.0] — 2026-06-27
 
 ### Added — polyglot + discoverability + operator UX bundle
@@ -207,7 +242,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.8.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.9.0...HEAD
+[1.9.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.5.0...v1.6.0

@@ -37,7 +37,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 PROTOCOL_VERSION = "2025-06-18"
 SERVER_NAME = "usap"
-SERVER_VERSION = "1.8.0"
+SERVER_VERSION = "1.9.0"
 
 ACTIVE_DOMAINS = [
     "appsec-devsecops", "cloud-infra", "detection", "governance",
@@ -366,7 +366,8 @@ def handle_tools_call(params: dict) -> dict:
             return _err("payload must be a JSON object")
         sys.path.insert(0, str(REPO_ROOT / "tools"))
         from output_contract import validate_payload as vp  # noqa: E402
-        violations = vp(payload)
+        # Runtime contract boundary — enforce the hardest-line evidence gate.
+        violations = vp(payload, evidence_gate=True)
         text = "PASS" if not violations else "\n".join(violations)
         return {"content": [{"type": "text", "text": text}]}
 

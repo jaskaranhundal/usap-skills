@@ -1,6 +1,6 @@
 {
   "name": "usap-skills",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Unified Security Agent Platform \u2014 79 cybersecurity skills + 12 cs-* orchestrator agents that emit a typed 11-field JSON output contract, mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in any LLM. Bundles 7 slash commands (usap:run, usap:fortigate, usap:orchestrate, usap:challenge, usap:compare, usap:test, usap:README) and 6 user-invocable orchestrator skills (Alex, CISO, DevSecOps, Incident Responder, Program Manager, Red Team).",
   "author": {
     "name": "Jaskarn Singh",
@@ -9,5 +9,34 @@
   },
   "homepage": "https://github.com/jaskaranhundal/usap-skills",
   "repository": "https://github.com/jaskaranhundal/usap-skills",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "mcpServers": {
+    "usap-splunk": {
+      "command": "python3",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/adapters/splunk/server.py"
+      ],
+      "env": {
+        "USAP_ADAPTER_MODE": "fixture"
+      }
+    },
+    "usap-github": {
+      "command": "python3",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/adapters/github/server.py"
+      ],
+      "env": {
+        "USAP_ADAPTER_MODE": "fixture"
+      }
+    },
+    "usap-slack": {
+      "command": "python3",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/adapters/slack/server.py"
+      ],
+      "env": {
+        "USAP_ADAPTER_MODE": "fixture"
+      }
+    }
+  }
 }
