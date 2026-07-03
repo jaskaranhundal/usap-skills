@@ -1,6 +1,6 @@
 # USAP vs. Prompt Libraries: Why a Skill is More Than a Prompt
 
-When developers first encounter the Universal Security Agent Protocol (USAP), they often ask a fundamental question: *"Isn't this just a folder of prompts?"* 
+When developers first encounter the Unified Security Agent Platform (USAP), they often ask a fundamental question: *"Isn't this just a folder of prompts?"* 
 
 It is a fair question. At a glance, both prompt libraries and USAP store Markdown files containing instructions for Large Language Models (LLMs). However, while prompt libraries focus on packaging instructions for human use, USAP is designed to turn prompts into machine-readable software components. 
 
