@@ -474,9 +474,9 @@
     },
     {
       "techniqueID": "T1190",
-      "score": 10,
+      "score": 11,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/patch-candidate, appsec-devsecops/security-requirements-review, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, detection/threat-intelligence, pentest/web-app-pentest, red-team/continuous-pentesting, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
+      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/patch-candidate, appsec-devsecops/security-requirements-review, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, cloud-infra/container-image-scan, detection/threat-intelligence, pentest/web-app-pentest, red-team/continuous-pentesting, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -567,6 +567,16 @@
       "score": 1,
       "color": "",
       "comment": "USAP skills covering: response/forensics",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1525",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/container-image-scan",
       "enabled": true,
       "metadata": [],
       "links": [],

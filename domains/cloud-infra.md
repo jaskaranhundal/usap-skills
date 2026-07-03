@@ -8,6 +8,7 @@ Skills in this domain assess cloud security posture, infrastructure configuratio
 |---|---|---|
 | `cloud-security-posture` | L4 | CSPM: AWS/Azure/GCP posture evaluation against CIS Benchmarks, drift detection, compliance mapping |
 | `iac-security` | L3 | Infrastructure-as-Code security analysis: Terraform, CloudFormation, Kubernetes manifests |
+| `container-image-scan` | L3 | Container image scan triage: Trivy/Grype/Snyk findings classified as base-image OS package, application dependency, or unexpected/implanted layer (T1525) |
 | `endpoint-os-security` | L4 | Endpoint and OS security assessment: patch status, EDR coverage, hardening baselines |
 | `ot-iot-device-security` | L4 | OT/ICS/IoT device security: protocol analysis, firmware assessment, network segmentation gaps |
 | `cloud-workload-protection` | L4 | Container and serverless runtime security: anomaly detection, escape detection, CSPM gap analysis |

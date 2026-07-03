@@ -460,6 +460,7 @@ claude          # CLAUDE.md auto-loaded
 | Situation | Agent |
 |---|---|
 | AWS/Azure/GCP misconfiguration scan | `cloud-security-posture` |
+| Container image vulnerability scan (Trivy/Grype/Snyk) | `container-image-scan` |
 | Public attack surface mapping | `attack-surface-management` |
 | Network exposure and open ports | `network-exposure` |
 | Endpoint and OS security | `endpoint-os-security` |
@@ -556,7 +557,7 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 | [Detection](domains/detection.md) | threat-hunting, secrets-exposure, behavioral-analytics, telemetry-signal-quality, network-exposure, attack-surface-management, threat-intelligence, deception-honeypot |
 | [Response](domains/response.md) | incident-commander, incident-classification, containment-advisor, forensics, zero-day-response, zero-day-response-governance |
 | [Risk & Compliance](domains/risk-compliance.md) | enterprise-risk-assessment, risk-threat-modeling, compliance-mapping, regulatory-horizon, privacy-dpia, cyber-insurance, internal-audit-assurance, security-posture-score |
-| [Cloud & Infra](domains/cloud-infra.md) | cloud-security-posture, iac-security, endpoint-os-security, ot-iot-device-security, cloud-workload-protection |
+| [Cloud & Infra](domains/cloud-infra.md) | cloud-security-posture, iac-security, container-image-scan, endpoint-os-security, ot-iot-device-security, cloud-workload-protection |
 | [AppSec & DevSecOps](domains/appsec-devsecops.md) | secure-sdlc, sast-dast-coordinator, devsecops-pipeline, build-integrity, supply-chain-risk, supply-chain-simulation, appsec-code-review, pipeline-security-scan |
 | [Identity & Access](domains/identity-access.md) | identity-access-risk, data-security-classification, cryptography-key-management, insider-physical-risk |
 | [Red Team](domains/red-team.md) | red-team-operations, red-team-planner, safe-exploitation, continuous-pentesting, attack-path-analysis, ai-red-teaming |
@@ -581,6 +582,7 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 | `build-integrity` | L3 | Detection | Verifies software build pipeline integrity: artifact signing, provenance, reproducibility |
 | `cloud-security-posture` | L4 | Cloud | CSPM: AWS/Azure/GCP posture evaluation against CIS Benchmarks, drift detection, compliance mapping |
 | `compliance-mapping` | L2 | Compliance | Maps security findings to regulatory frameworks: GDPR, PCI DSS, HIPAA, SOC 2, ISO 27001 |
+| `container-image-scan` | L3 | Cloud | Classifies Trivy/Grype/Snyk findings by component (base-image OS package, app dependency, implanted layer) into block-deploy/fix/track/accept |
 | `containment-advisor` | L3 | Response | Recommends containment strategies across 10 threat types; assesses blast radius and production impact |
 | `continuous-pentesting` | L3 | Testing | Interprets and prioritizes automated continuous penetration testing results |
 | `cryptography-key-management` | L3 | Identity | Assesses cryptographic key lifecycle risk: weak algorithms, key rotation gaps, HSM gaps |
