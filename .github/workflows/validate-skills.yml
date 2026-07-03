@@ -106,6 +106,20 @@ jobs:
         run: |
           python3 tools/framework_extractor.py --check
 
+      - name: Held-out eval engine self-check
+        # Protects the scoring math in tests/holdout_runner.py. The synthetic
+        # example encodes a deliberately-imperfect predictor whose metrics are
+        # fixed (precision/recall 0.8571, FPR 0.20). If these move without a
+        # corpus change, the engine regressed. Deterministic + offline.
+        run: |
+          out=$(python3 tests/holdout_runner.py --responder synthetic \
+                  --predictions tests/holdout/example_predictions.json --label ci)
+          echo "$out"
+          echo "$out" | grep -q "precision    0.8571" \
+            && echo "$out" | grep -q "FPR          0.2" \
+            && echo "  PASS holdout eval engine self-check" \
+            || { echo "  FAIL eval engine metrics changed"; exit 1; }
+
 
       - name: Validate invocation-control frontmatter (Claude Code extensions)
         # Strict — all 18 originally WARN'd skills were backfilled with explicit
