@@ -14,6 +14,7 @@
 [![License](https://img.shields.io/badge/license-Apache_2.0-7ee787?style=flat-square&labelColor=05080d)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-29d3f0?style=flat-square&labelColor=05080d)](shared/scripts)
 [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills?style=flat-square&color=8b949e&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills/commits/main)
+[![usap-skills MCP server](https://glama.ai/mcp/servers/jaskaranhundal/usap-skills/badges/score.svg)](https://glama.ai/mcp/servers/jaskaranhundal/usap-skills)
 
 </div>
 
