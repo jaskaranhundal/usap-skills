@@ -10,9 +10,14 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Bundle mode: lite / pro / full / all'
+        description: 'Bundle mode'
         required: false
         default: 'all'
+        # type: choice constrains this to the four values below. Without it the
+        # input is free text, and it is interpolated into a shell step — a
+        # dispatcher could inject arbitrary commands onto the runner.
+        type: choice
+        options: [all, lite, pro, full]
 
 jobs:
   bundle:
@@ -33,8 +38,12 @@ jobs:
         run: pip install pyyaml
 
       - name: Generate bundles
+        # Defence in depth: the value reaches bash as an environment variable,
+        # never as text pasted into the script body. Even if the choice
+        # constraint above were removed, this step could not be injected.
+        env:
+          MODE: ${{ github.event.inputs.mode || 'all' }}
         run: |
-          MODE="${{ github.event.inputs.mode || 'all' }}"
           if [ "$MODE" = "all" ]; then
             python3 shared/scripts/bundle_usap.py bundle --mode lite
             python3 shared/scripts/bundle_usap.py bundle --mode pro
@@ -61,4 +70,4 @@ jobs:
             echo "::error::dist/ is out of date. Regenerate the bundles and commit the result."
             exit 1
           fi
-          echo "dist/ is current
+          echo "dist/ is current"
