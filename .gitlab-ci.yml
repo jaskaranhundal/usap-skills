@@ -16,6 +16,12 @@
 # green yet. Nothing here is advisory without a stated reason and exit test:
 # a pipeline where everything is allow_failure forever is theater.
 #
+# BRANCH MODEL: two branches, `dev` -> `main`. The `test` branch was removed on
+# 2026-08-14 (it held zero unique commits and was fully contained in `main`).
+# `dev` is the integration branch and the last stop before `main`, so the full
+# validate/test suite runs on both. `build:bundle` stays `main`-only — it
+# produces a release artifact, not an integration check.
+#
 # TARGET BRANCH: this is written against `dev`'s tooling. `dev` is ~60 commits
 # behind `main` and their tool interfaces differ. Two concrete examples found
 # while writing this:
@@ -64,7 +70,7 @@ validate:skills:
     - python3 tools/validate_skill.py --all --summary
   rules:
     - changes: ["**/SKILL.md", "tools/validate_skill.py", ".gitlab-ci.yml"]
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
 validate:contract:
   stage: validate
@@ -75,7 +81,7 @@ validate:contract:
     - python3 tools/output_contract.py --all-samples
   rules:
     - changes: ["**/expected_outputs/sample_output.json", "tools/output_contract.py", ".gitlab-ci.yml"]
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
 validate:invocation:
   # MEASURED 2026-08-14 on this branch: exit 0. BLOCKING.
@@ -84,7 +90,7 @@ validate:invocation:
     - python3 tools/validate_invocation_control.py --all --strict --summary
   rules:
     - changes: ["**/SKILL.md", "tools/validate_invocation_control.py", ".gitlab-ci.yml"]
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
 # ─── test ────────────────────────────────────────────────────
 
@@ -171,7 +177,7 @@ test:tools:
       PY
   rules:
     - changes: ["**/scripts/*_tool.py", ".gitlab-ci.yml"]
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
 test:determinism:
   # MEASURED 2026-08-14 on this branch: regen_samples 79 clean,
@@ -184,7 +190,7 @@ test:determinism:
     - python3 tools/framework_extractor.py --check
   rules:
     - changes: ["**/SKILL.md", "**/expected_outputs/sample_output.json", "mappings/**/*", ".gitlab-ci.yml"]
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
 # test:eval — holdout_runner.py precision/FPR self-check.
 # Deliberately absent: tests/holdout_runner.py exists on main, not on dev.
