@@ -8,6 +8,7 @@ metadata:
   category: usap-devsecops
   updated: 2026-07-04
   agent_slug: "container-image-scan"
+  usap_level: "L3"
   frameworks:
     mitre_attack: [T1525, T1190]
     nist_csf: [ID.RA-05, DE.CM-08]

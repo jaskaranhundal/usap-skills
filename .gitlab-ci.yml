@@ -123,14 +123,10 @@ test:tools:
   # --input, say), which is a defect in this job or in the tool's interface —
   # never a declared stub. Keeping 2 and 3 distinct is the whole point of #126.
   #
-  # MEASURED ON THIS BRANCH, 2026-08-14 (after #124 and #126 landed):
-  #   tools=77 implemented=10 declared-stub=66 errors=1
-  # The 66 stubs now declare themselves correctly. ONE error remains and it is
-  # a genuine pre-existing bug, not a stub problem:
-  #   governance/security-debt-tracker — JSONDecodeError traceback, exit 1.
-  # ADVISORY until that is fixed. FLIP CONDITION, mechanical:
-  # set allow_failure to false when errors=0. That is one bug away.
-  allow_failure: true
+  # MEASURED 2026-08-14: tools=78 implemented=12 declared-stub=66 errors=0.
+  # FLIPPED TO BLOCKING. It was advisory pending #129
+  # (governance/security-debt-tracker crashed on empty stdin); that is fixed,
+  # the stated flip condition (errors=0) is met, so the gate is now enforced.
   script:
     - |
       python3 - <<'PY'
