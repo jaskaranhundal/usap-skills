@@ -7,6 +7,10 @@ on:
       - '**/SKILL.md'
       - 'agents/**'
       - 'shared/scripts/bundle_usap.py'
+      # The workflow triggers on changes to itself, so a fix to this file is
+      # actually exercised. validate-skills.yml already does this; bundle-dist
+      # did not, which is why a broken step here sat undetected.
+      - '.github/workflows/bundle-dist.yml'
   workflow_dispatch:
     inputs:
       mode:
