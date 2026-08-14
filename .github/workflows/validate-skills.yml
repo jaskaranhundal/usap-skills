@@ -114,6 +114,16 @@ jobs:
             || { echo "  FAIL eval engine metrics changed"; exit 1; }
 
 
+      # plugins/usap/ is a distributed COPY of content whose source of truth is
+      # the repo root. 1.13.1 shipped five agent definitions taken from a branch
+      # 60 commits behind main, each missing the usap_mcp whitelist and the
+      # "never invoke a mutating capability autonomously" rule. The plugin loaded
+      # cleanly and answered with the human-approval gate removed. This gate
+      # makes that undetectable-by-eye failure a build failure.
+      - name: Plugin mirror drift gate
+        run: |
+          python3 tools/sync_plugin.py --check
+
       - name: Validate invocation-control frontmatter (Claude Code extensions)
         # Strict — all 18 originally WARN'd skills were backfilled with explicit
         # metadata.usap_level + invocation-control fields; the validator now
