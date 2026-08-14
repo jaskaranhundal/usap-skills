@@ -6,17 +6,10 @@ name: validate-skills
 # ALLOWED_CATEGORIES set is the spec's enum).
 on:
   pull_request:
-    paths:
-      - '**/SKILL.md'
-      - '**/sample_output.json'
-      - '**/output-template.json'
-      - 'standards/**'
-      - 'mappings/**'
-      - 'tools/validate_skill.py'
-      - 'tools/output_contract.py'
-      - 'tools/framework_extractor.py'
-      - 'tools/regen_samples.py'
-      - '.github/workflows/validate-skills.yml'
+  # No paths: filter. These jobs are required status checks on main, and a
+  # required check that is path-filtered never reports on a PR outside those
+  # paths — the PR then waits on "Expected" forever and cannot merge. They
+  # run in seconds, so running them on every PR is the cheaper trade.
   push:
     paths:
       - '**/SKILL.md'
