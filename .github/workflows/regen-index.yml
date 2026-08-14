@@ -24,11 +24,10 @@ on:
       - 'tools/build_index.py'
       - '.github/workflows/regen-index.yml'
   pull_request:
-    paths:
-      - '**/SKILL.md'
-      - 'agents/**/*.md'
-      - 'tools/build_index.py'
-      - '.github/workflows/regen-index.yml'
+  # No paths: filter. These jobs are required status checks on main, and a
+  # required check that is path-filtered never reports on a PR outside those
+  # paths — the PR then waits on "Expected" forever and cannot merge. They
+  # run in seconds, so running them on every PR is the cheaper trade.
   workflow_dispatch: {}
 
 permissions:
