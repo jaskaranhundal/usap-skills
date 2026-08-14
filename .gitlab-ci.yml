@@ -92,25 +92,28 @@ test:tools:
   stage: test
   # Executes every *_tool.py and asserts the output contract.
   #
-  # Exit-code contract, important: stub tools deliberately exit 2 with
-  # "status": "not_implemented" (see PR #124 / issue #120). That is the CORRECT
-  # behaviour — a tool that scanned nothing must never look like a pass. This
-  # job treats exit 2 + not_implemented as EXPECTED, and fails only on a crash,
-  # unparseable JSON, or a contract violation.
+  # Exit-code contract, important: stub tools deliberately exit 3 with
+  # "status": "not_implemented" (see issue #120, and #126 for why 3 and not 2).
+  # That is the CORRECT behaviour — a tool that scanned nothing must never look
+  # like a pass. This job treats exit 3 + not_implemented as EXPECTED.
   #
-  # MEASURED ON THIS BRANCH, 2026-08-14: tools=77 implemented=75 stub=0
-  # errors=661. It is RED today, because issue #120 / PR #124 has not merged —
-  # the stubs still return {"status": "ok"} with none of the 11 contract fields.
-  # ADVISORY until then, and this is not a judgement call:
-  # FLIP CONDITION: set allow_failure to false the day PR #124 lands on this
-  # branch. At that point the 66 stubs declare themselves and the count should
-  # read implemented=11 stub=66 errors=0. If it does not, the flip has found a
-  # real defect and should stay red.
+  # Exit 2 is NOT expected and fails the job: argparse returns 2 on a usage
+  # error, so a 2 here means the tool was invoked wrongly (a missing required
+  # --input, say), which is a defect in this job or in the tool's interface —
+  # never a declared stub. Keeping 2 and 3 distinct is the whole point of #126.
+  #
+  # MEASURED ON THIS BRANCH, 2026-08-14 (after #124 and #126 landed):
+  #   tools=77 implemented=10 declared-stub=66 errors=1
+  # The 66 stubs now declare themselves correctly. ONE error remains and it is
+  # a genuine pre-existing bug, not a stub problem:
+  #   governance/security-debt-tracker — JSONDecodeError traceback, exit 1.
+  # ADVISORY until that is fixed. FLIP CONDITION, mechanical:
+  # set allow_failure to false when errors=0. That is one bug away.
   allow_failure: true
   script:
     - |
       python3 - <<'PY'
-      import json, os, subprocess, sys
+      import json, os, subprocess, sys, tempfile
       REQUIRED = ["agent_slug","intent_type","action","rationale","confidence",
                   "severity","key_findings","evidence_references","next_agents",
                   "human_approval_required","timestamp_utc"]
@@ -123,10 +126,22 @@ test:tools:
           tools += [os.path.join(dp, f) for f in fn if f.endswith("_tool.py")]
       impl = stub = 0
       errors = []
+      # Some tools legitimately require --input. Retry those once with a
+      # minimal valid file rather than reporting a usage error as a defect.
+      probe = os.path.join(tempfile.mkdtemp(), "probe.md")
+      with open(probe, "w") as fh:
+          fh.write("# probe\nA short design note used to smoke-test tools that require --input.\n")
       for t in sorted(tools):
           r = subprocess.run([sys.executable, t, "--output", "json"],
                              capture_output=True, text=True, timeout=60)
-          if r.returncode not in (0, 2):
+          if r.returncode == 2 and "--input" in (r.stderr or ""):
+              r = subprocess.run([sys.executable, t, "--input", probe, "--output", "json"],
+                                 capture_output=True, text=True, timeout=60)
+          if r.returncode == 2:
+              errors.append(f"{t}: exit 2 (argparse usage error) - wrong invocation, "
+                            f"not a declared stub: {r.stderr.strip().splitlines()[-1] if r.stderr.strip() else ''}")
+              continue
+          if r.returncode not in (0, 3):
               errors.append(f"{t}: unexpected exit {r.returncode}")
               continue
           try:
@@ -136,10 +151,10 @@ test:tools:
               continue
           # Contract fields are required of implemented tools. Stubs that
           # correctly declare themselves are counted, not failed.
-          if r.returncode == 2 or d.get("status") == "not_implemented":
+          if r.returncode == 3 or d.get("status") == "not_implemented":
               stub += 1
               if d.get("status") != "not_implemented":
-                  errors.append(f"{t}: exit 2 but status != not_implemented")
+                  errors.append(f"{t}: exit 3 but status != not_implemented")
               continue
           impl += 1
           for f in REQUIRED:
