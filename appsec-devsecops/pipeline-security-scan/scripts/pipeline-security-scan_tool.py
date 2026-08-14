@@ -64,7 +64,7 @@ def main() -> int:
         "performed no analysis. Exit code 2 means NOT IMPLEMENTED, not a clean result.",
         file=sys.stderr,
     )
-    return 2
+    return 3
 
 
 if __name__ == "__main__":
