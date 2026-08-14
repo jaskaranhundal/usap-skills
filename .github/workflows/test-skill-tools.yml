@@ -2,10 +2,10 @@ name: test-skill-tools
 
 on:
   pull_request:
-    paths:
-      - '**/scripts/*_tool.py'
-      - '**/expected_outputs/sample_output.json'
-      - 'shared/scripts/*.py'
+  # No paths: filter. These jobs are required status checks on main, and a
+  # required check that is path-filtered never reports on a PR outside those
+  # paths — the PR then waits on "Expected" forever and cannot merge. They
+  # run in seconds, so running them on every PR is the cheaper trade.
 
 jobs:
   test-tools:
