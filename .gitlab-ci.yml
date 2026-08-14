@@ -1,0 +1,261 @@
+# ─────────────────────────────────────────────────────────────
+# GitLab CI for usap-skills — mirror of the GitHub Actions gates
+# ─────────────────────────────────────────────────────────────
+# This file exists so the repo is runnable on GitLab as well as GitHub.
+#
+# HONEST SCOPE NOTE, read this first:
+# The canonical remote is GitHub. Until this repo is mirrored to a GitLab
+# instance, THIS FILE NEVER EXECUTES. It is documentation of intent, not a
+# control. Do not cite it as evidence that these gates run — the GitHub
+# Actions workflows in .github/workflows/ are the gates that actually run today.
+#
+# Every job below was executed against this branch before being written here,
+# and the result is recorded on the job. Jobs are blocking where they are
+# green today — a gate that is already green costs nothing to enforce. Two
+# jobs are advisory, each with a NAMED flip condition, because they are not
+# green yet. Nothing here is advisory without a stated reason and exit test:
+# a pipeline where everything is allow_failure forever is theater.
+#
+# TARGET BRANCH: this is written against `dev`'s tooling. `dev` is ~60 commits
+# behind `main` and their tool interfaces differ. Two concrete examples found
+# while writing this:
+#   - tools/output_contract.py on dev has NO --structural-only flag (main does).
+#     Using main's flag here would fail all 79 samples on argparse alone.
+#   - tests/holdout_runner.py exists only on main.
+# When dev catches up with main, revisit the two marked spots below.
+# ─────────────────────────────────────────────────────────────
+
+stages:
+  - validate
+  - test
+  - security
+  - build
+
+variables:
+  PYTHON_IMAGE: "python:3.11-alpine"
+  # Scanner images pinned by DIGEST, not tag. A tag is mutable: if the upstream
+  # image is replaced under the same tag, a digest pin fails loud instead of
+  # silently running someone else's scanner.
+  # To refresh: pull the new tag, verify it scans clean, read the digest with
+  #   docker image inspect <image>:<tag> --format '{{.RepoDigests}}'
+  # then replace tag and digest together.
+  GITLEAKS_IMAGE: "zricethezav/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f"
+  SEMGREP_IMAGE: "semgrep/semgrep@sha256:3978a2b4e6c2cbd4eee04b0f05d5ca4a82e6526dc89e01a5dcbb941cedafb393"
+
+workflow:
+  rules:
+    # Keep only the MR pipeline when an MR is open for the source branch.
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH'
+
+default:
+  image: $PYTHON_IMAGE
+  interruptible: true
+
+# ─── validate ────────────────────────────────────────────────
+# Mirrors .github/workflows/validate-skills.yml
+
+validate:skills:
+  # MEASURED 2026-08-14 on this branch: exit 0, 79 skills. BLOCKING.
+  stage: validate
+  script:
+    - python3 tools/validate_skill.py --all --summary
+  rules:
+    - changes: ["**/SKILL.md", "tools/validate_skill.py", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+validate:contract:
+  stage: validate
+  # dev's interface is `--all-samples`. Verified on this branch: 76 passed, 0 failed.
+  # When dev catches up with main, main's per-file `--structural-only` mode
+  # becomes available and is the weaker/faster check.
+  script:
+    - python3 tools/output_contract.py --all-samples
+  rules:
+    - changes: ["**/expected_outputs/sample_output.json", "tools/output_contract.py", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+validate:invocation:
+  # MEASURED 2026-08-14 on this branch: exit 0. BLOCKING.
+  stage: validate
+  script:
+    - python3 tools/validate_invocation_control.py --all --strict --summary
+  rules:
+    - changes: ["**/SKILL.md", "tools/validate_invocation_control.py", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# ─── test ────────────────────────────────────────────────────
+
+test:tools:
+  stage: test
+  # Executes every *_tool.py and asserts the output contract.
+  #
+  # Exit-code contract, important: stub tools deliberately exit 2 with
+  # "status": "not_implemented" (see PR #124 / issue #120). That is the CORRECT
+  # behaviour — a tool that scanned nothing must never look like a pass. This
+  # job treats exit 2 + not_implemented as EXPECTED, and fails only on a crash,
+  # unparseable JSON, or a contract violation.
+  #
+  # MEASURED ON THIS BRANCH, 2026-08-14: tools=77 implemented=75 stub=0
+  # errors=661. It is RED today, because issue #120 / PR #124 has not merged —
+  # the stubs still return {"status": "ok"} with none of the 11 contract fields.
+  # ADVISORY until then, and this is not a judgement call:
+  # FLIP CONDITION: set allow_failure to false the day PR #124 lands on this
+  # branch. At that point the 66 stubs declare themselves and the count should
+  # read implemented=11 stub=66 errors=0. If it does not, the flip has found a
+  # real defect and should stay red.
+  allow_failure: true
+  script:
+    - |
+      python3 - <<'PY'
+      import json, os, subprocess, sys
+      REQUIRED = ["agent_slug","intent_type","action","rationale","confidence",
+                  "severity","key_findings","evidence_references","next_agents",
+                  "human_approval_required","timestamp_utc"]
+      INTENTS = {"detect","respond","analyze","advise","escalate","report","block"}
+      SEVERITIES = {"critical","high","medium","low","informational"}
+      tools = []
+      for dp, dn, fn in os.walk("."):
+          if "/.git" in dp or dp.startswith("./references"):
+              continue
+          tools += [os.path.join(dp, f) for f in fn if f.endswith("_tool.py")]
+      impl = stub = 0
+      errors = []
+      for t in sorted(tools):
+          r = subprocess.run([sys.executable, t, "--output", "json"],
+                             capture_output=True, text=True, timeout=60)
+          if r.returncode not in (0, 2):
+              errors.append(f"{t}: unexpected exit {r.returncode}")
+              continue
+          try:
+              d = json.loads(r.stdout)
+          except Exception as e:
+              errors.append(f"{t}: unparseable JSON ({e})")
+              continue
+          # Contract fields are required of implemented tools. Stubs that
+          # correctly declare themselves are counted, not failed.
+          if r.returncode == 2 or d.get("status") == "not_implemented":
+              stub += 1
+              if d.get("status") != "not_implemented":
+                  errors.append(f"{t}: exit 2 but status != not_implemented")
+              continue
+          impl += 1
+          for f in REQUIRED:
+              if f not in d:
+                  errors.append(f"{t}: missing '{f}'")
+          if d.get("intent_type") not in INTENTS:
+              errors.append(f"{t}: invalid intent_type")
+          if d.get("severity") not in SEVERITIES:
+              errors.append(f"{t}: invalid severity")
+      print(f"tools={len(tools)} implemented={impl} declared-stub={stub} errors={len(errors)}")
+      for e in errors[:40]:
+          print("  FAIL", e)
+      sys.exit(1 if errors else 0)
+      PY
+  rules:
+    - changes: ["**/scripts/*_tool.py", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+test:determinism:
+  # MEASURED 2026-08-14 on this branch: regen_samples 79 clean,
+  # framework_extractor 3 artifacts match. Both exit 0. BLOCKING.
+  stage: test
+  # Committed artifacts must match what the generators produce. Catches a
+  # hand-edited mapping or sample that no longer matches its source.
+  script:
+    - python3 tools/regen_samples.py --check
+    - python3 tools/framework_extractor.py --check
+  rules:
+    - changes: ["**/SKILL.md", "**/expected_outputs/sample_output.json", "mappings/**/*", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# test:eval — holdout_runner.py precision/FPR self-check.
+# Deliberately absent: tests/holdout_runner.py exists on main, not on dev.
+# Enable when dev catches up:
+#   test:eval:
+#     stage: test
+#     script:
+#       - python3 tests/holdout_runner.py --responder synthetic
+
+# ─── security ────────────────────────────────────────────────
+
+security:secrets:
+  # NOT MEASURED: gitleaks image not pulled locally. Expected to find
+  # historical findings on first run — see the baseline note below.
+  stage: security
+  # The highest real risk in this repo: it is PUBLIC and has never been
+  # secret-scanned. Full history, not just the working tree — a secret removed
+  # in a later commit is still published.
+  image:
+    name: $GITLEAKS_IMAGE
+    entrypoint: [""]
+  script:
+    - gitleaks detect --source . --redact --verbose --exit-code 1
+  # No baseline file is committed. If this fails on first run, triage the
+  # findings, rotate anything real, and only then add a REDACTED
+  # .gitleaks-baseline.json for confirmed historical false positives.
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH'
+
+security:sast:
+  stage: security
+  image:
+    name: $SEMGREP_IMAGE
+    entrypoint: [""]
+  script:
+    - semgrep --config p/python --error --skip-unknown-extensions .
+  # ADVISORY on purpose — the second of two, alongside test:tools.
+  # Semgrep has never run on this repo, so its false-positive rate is unknown.
+  # Not measured on this branch: the pinned image was not pulled locally.
+  # FLIP CONDITION: set allow_failure to false once two consecutive weeks of
+  # pipelines are green, or once findings are triaged to zero. Track the flip —
+  # an advisory job that stays advisory forever teaches the team to ignore it.
+  allow_failure: true
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH'
+
+# ─── build ───────────────────────────────────────────────────
+
+build:bundle:
+  stage: build
+  script:
+    - python3 shared/scripts/bundle_usap.py bundle --mode lite
+    - python3 shared/scripts/bundle_usap.py bundle --mode pro
+    - python3 shared/scripts/bundle_usap.py bundle --mode full
+    # SHA256 manifest over the produced bundles. This is a tamper-evidence
+    # record, NOT a signature — see the provenance note below.
+    - |
+      if [ -d dist ]; then
+        (cd dist && sha256sum *.md > SHA256SUMS) && cat dist/SHA256SUMS
+      fi
+  artifacts:
+    paths: ["dist/"]
+    expire_in: 30 days
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: manual
+      allow_failure: true
+
+# ─────────────────────────────────────────────────────────────
+# PROVENANCE — the real gap, deliberately NOT solved by a job here
+# ─────────────────────────────────────────────────────────────
+# A design review of this pipeline flagged artifact signing as a Critical gap,
+# on the standard reasoning that consumers install and execute this content.
+# The reasoning is right; the usual remedy is not. bundle-dist.yml writes
+# dist/*.md and COMMITS THEM BACK to the repo — the artifact is git-tracked
+# text, so cosign over it duplicates what git already content-addresses.
+#
+# The control that actually applies is upstream of CI and cannot be enforced
+# by a CI job:
+#   1. `main` has NO branch protection (API returns 404) — no required reviews,
+#      no required checks, admins unrestricted. Anyone with write access can
+#      push directly to the branch users install from.
+#   2. No commit in recent history carries a verified signature.
+#
+# Fix those two in repository settings. A pipeline cannot gate the branch it
+# runs on; claiming otherwise would be exactly the theater this file warns about.
+# ─────────────────────────────────────────────────────────────
