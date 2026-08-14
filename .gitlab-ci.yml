@@ -92,6 +92,18 @@ validate:contract:
     - changes: ["**/expected_outputs/sample_output.json", "tools/output_contract.py", ".gitlab-ci.yml"]
     - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
+validate:plugin-mirror:
+  # plugins/usap/ is a distributed copy; the root is the source of truth. See
+  # tools/sync_plugin.py for why this gate exists (1.13.1 shipped five agent
+  # definitions with the human-approval gate silently missing).
+  # MEASURED 2026-08-14: exit 0, mirrors 41 source files, no drift. BLOCKING.
+  stage: validate
+  script:
+    - python3 tools/sync_plugin.py --check
+  rules:
+    - changes: ["agents/**/*", "plugins/usap/**/*", "tools/sync_plugin.py", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
+
 validate:invocation:
   # MEASURED on the merged tree 2026-08-14: 80 total, 79 OK, 1 WARN, 0 FAIL,
   # exit 1. --strict treats WARN as failure. The single WARN is
@@ -138,7 +150,10 @@ test:tools:
       SEVERITIES = {"critical","high","medium","low","informational"}
       tools = []
       for dp, dn, fn in os.walk("."):
-          if "/.git" in dp or dp.startswith("./references"):
+          # plugins/ holds a verified mirror of these same scripts. Walking it
+          # would re-test byte-identical copies and inflate the counts; the
+          # mirror's integrity is validate:plugin-mirror's job, not this one.
+          if "/.git" in dp or dp.startswith("./references") or dp.startswith("./plugins"):
               continue
           tools += [os.path.join(dp, f) for f in fn if f.endswith("_tool.py")]
       impl = stub = 0
