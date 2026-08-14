@@ -214,7 +214,15 @@ def load_input(args) -> list:
         with open(args.input, "r") as fh:
             raw = json.load(fh)
     elif not sys.stdin.isatty():
-        raw = json.load(sys.stdin)
+        # stdin is a pipe but may be empty (CI, subprocess). Treat empty or
+        # unparseable stdin as "no findings supplied", not as a crash.
+        piped = sys.stdin.read().strip()
+        if piped:
+            try:
+                raw = json.loads(piped)
+            except json.JSONDecodeError as exc:
+                print(f"error: stdin is not valid JSON: {exc}", file=sys.stderr)
+                return []
 
     if raw is None:
         return []
