@@ -141,12 +141,17 @@ def classify_document_type(text: str) -> str:
     return best if scores[best] > 0 else "unknown"
 
 
+def contains_signal(text_lower: str, signal: str) -> bool:
+    """Match a signal on word boundaries, so short tokens cannot match inside longer words."""
+    return re.search(rf"\b{re.escape(signal)}\b", text_lower) is not None
+
+
 def detect_frameworks(text: str) -> list[str]:
     """Return all compliance frameworks whose keyword signals appear in the text."""
     text_lower = text.lower()
     detected = []
     for framework, signals in FRAMEWORK_SIGNALS.items():
-        if any(signal in text_lower for signal in signals):
+        if any(contains_signal(text_lower, signal) for signal in signals):
             detected.append(framework)
     return detected
 
@@ -166,7 +171,7 @@ def detect_trust_boundaries(text: str) -> bool:
 def extract_technology_keywords(text: str) -> list[str]:
     """Return all detected technology stack terms."""
     text_lower = text.lower()
-    return [kw for kw in TECH_KEYWORDS if kw in text_lower]
+    return [kw for kw in TECH_KEYWORDS if contains_signal(text_lower, kw)]
 
 
 def find_critical_keywords(text: str) -> list[str]:
