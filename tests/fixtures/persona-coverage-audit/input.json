@@ -1,0 +1,14 @@
+{
+  "since_days": 7,
+  "audit_entries": [
+    {"event": "gate_prompt", "session_id": "s-001", "persona": "usap-devsecops", "pass": "DR", "timestamp_utc": "2026-09-01T09:02:11Z"},
+    {"event": "persona_pass", "session_id": "s-001", "persona": "cs-devsecops-engineer", "pass": "DR", "residual_risk": "medium", "timestamp_utc": "2026-09-01T09:40:52Z"},
+    {"event": "gate_prompt", "session_id": "s-003", "persona": "usap-devsecops", "pass": "DR", "timestamp_utc": "2026-09-03T14:10:00Z"}
+  ],
+  "sessions": [
+    {"session_id": "s-001", "started_utc": "2026-09-01T09:01:40Z", "tools_used": ["Read", "Edit", "Bash"], "gated_paths_touched": ["/repo/.github/workflows/validate-skills.yml"], "hook_seen": true},
+    {"session_id": "s-002", "started_utc": "2026-09-02T11:15:03Z", "tools_used": ["Read", "Grep", "Edit"], "gated_paths_touched": [], "hook_seen": true},
+    {"session_id": "s-003", "started_utc": "2026-09-03T14:09:30Z", "tools_used": ["Read", "Write", "Bash"], "gated_paths_touched": ["/repo/infra/main.tf", "/repo/Dockerfile"], "hook_seen": true},
+    {"session_id": "s-004", "started_utc": "2026-09-03T18:44:12Z", "tools_used": ["Read", "Edit"], "gated_paths_touched": ["/other/.gitlab-ci.yml"], "hook_seen": false}
+  ]
+}
