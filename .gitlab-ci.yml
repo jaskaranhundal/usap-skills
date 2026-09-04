@@ -205,6 +205,16 @@ test:tools:
     - changes: ["**/scripts/*_tool.py", ".gitlab-ci.yml"]
     - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
+test:unit:
+  # Regression tests for controls and wires: tools/*_test.py and adapters/*_test.py.
+  stage: test
+  script:
+    - |
+      rc=0
+      for t in tools/*_test.py adapters/*_test.py; do [ -f "$t" ] || continue; echo "== $t"; python3 "$t" || rc=1; done
+      exit $rc
+  rules:
+    - changes: ["tools/**", "adapters/**", ".gitlab-ci.yml"]
 test:fixtures:
   # Implemented tools against their recorded fixtures (tests/fixtures/manifest.json).
   # Exit code and full output contract are both checked. BLOCKING.
