@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-79 standalone LLM skill packages + 12 `cs-*` orchestrator agents for the [Unified Security Agent Platform (USAP)](https://github.com/jaskaranhundal/usap). Each `SKILL.md` is a complete LLM system prompt. Skills are usable standalone (paste into any LLM) or as a USAP git submodule.
+80 standalone LLM skill packages + 13 `cs-*` orchestrator agents for the [Unified Security Agent Platform (USAP)](https://github.com/jaskaranhundal/usap). Each `SKILL.md` is a complete LLM system prompt. Skills are usable standalone (paste into any LLM) or as a USAP git submodule.
 
 ---
 

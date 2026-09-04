@@ -1,5 +1,5 @@
 site_name: USAP — Open-Source AI Cybersecurity Agent Skills
-site_description: Open-source AI cybersecurity agent skills for SOC, incident response, threat hunting, red team, blue team, and DevSecOps. 79 skills + 12 cs-* orchestrator agents across 12 security domains. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM with no SaaS lock-in.
+site_description: Open-source AI cybersecurity agent skills for SOC, incident response, threat hunting, red team, blue team, and DevSecOps. 80 skills + 13 cs-* orchestrator agents across 12 security domains. Mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in Claude, ChatGPT, Gemini, Ollama, AnythingLLM with no SaaS lock-in.
 site_url: https://jaskaranhundal.github.io/usap-skills/
 site_author: USAP Team
 

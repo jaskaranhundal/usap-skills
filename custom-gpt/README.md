@@ -6,7 +6,7 @@ You can run USAP inside a ChatGPT [Custom GPT](https://help.openai.com/en/articl
 
 1. ChatGPT → **Explore GPTs** → **Create** → **Configure**.
 2. Paste the **Instructions** below.
-3. Under **Knowledge**, upload the `SKILL.md` files you want it to specialize in (e.g. `detection/threat-hunting/SKILL.md`, `response/incident-classification/SKILL.md`), or upload `index.json` from the repo root so it can enumerate all 79 skills.
+3. Under **Knowledge**, upload the `SKILL.md` files you want it to specialize in (e.g. `detection/threat-hunting/SKILL.md`, `response/incident-classification/SKILL.md`), or upload `index.json` from the repo root so it can enumerate all 80 skills.
 4. Name it "USAP Security Analyst" and save.
 
 ## Instructions (paste verbatim)

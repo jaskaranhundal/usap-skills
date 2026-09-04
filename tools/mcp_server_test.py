@@ -88,8 +88,8 @@ def main() -> int:
         r = recv(proc)
         resources = r.get("result", {}).get("resources", [])
         check(
-            "resources/list returns ≥79 skills + 12 agents",
-            len(resources) >= 91,
+            "resources/list returns ≥80 skills + 13 agents",
+            len(resources) >= 93,
             f"got {len(resources)}",
         )
 

@@ -2,31 +2,28 @@
 
 USAP runs its own validators against its own tree. This file records the live result as of the date below. Failures are reported as-is, never hidden.
 
-**Date:** 2026-06-22
-**Branch under audit:** `dev` (post-cascade)
+**Date:** 2026-09-04
+**Branch under audit:** `fix/counts-and-versions` (branched from `main` @ 7f0f7c7)
 
 | Check | Tool | Scope | Result |
 |---|---|---|---|
-| Canonical frontmatter conformance | `tools/validate_skill.py --all` | 79 active-domain `SKILL.md` files | **79 PASS / 0 FAIL / 0 WARN** |
-| Invocation-control invariants (L1-L4) | `tools/validate_invocation_control.py --all --strict` | 79 active-domain `SKILL.md` files | **79 OK / 0 WARN / 0 FAIL** |
-| Python syntax across every tool script | `python3 -m py_compile` | 77 `*_tool.py` scripts + 2 `shared/scripts/*.py` | **0 failures** |
-| 11-field output-contract conformance | `tools/output_contract.py` | 79 committed `expected_outputs/sample_output.json` files | **79 PASS / 0 FAIL** |
+| Canonical frontmatter conformance | `tools/validate_skill.py --all` | 80 active-domain `SKILL.md` files | **80 PASS / 0 FAIL / 0 WARN** |
+| Invocation-control invariants (L1-L4) | `tools/validate_invocation_control.py --all --strict` | 80 active-domain `SKILL.md` files | **80 OK / 0 WARN / 0 FAIL** |
+| Python syntax across every tool script | `python3 -m py_compile` | 78 `*_tool.py` scripts + `shared/scripts/*.py` | **0 failures** |
+| 11-field output-contract conformance (structural) | `tools/output_contract.py --structural-only` | 80 committed `expected_outputs/sample_output.json` files | **80 PASS / 0 FAIL** |
 | Framework-mapping drift | `tools/framework_extractor.py --check` | `mappings/mitre-attack/*.{json,md}`, `mappings/nist-csf/*.md` | **OK — no drift** |
-| Sample-generator drift | `tools/regen_samples.py --check` | 79 committed samples | **OK — no drift** |
+| Sample-generator drift | `tools/regen_samples.py --check` | 80 committed samples | **OK — no drift** |
+| Executable-tool census | `grep -rl not_implemented --include='*_tool.py' <12 domains>` | 78 `*_tool.py` scripts | **12 implemented / 66 declared stubs** |
+
+## What the census row means
+
+A stub tool exits non-zero with `status: not_implemented`, confidence `0.0`, and an `action` string saying it did not read `--input`. That is the honest state of 66 scripts today. The 12 implemented tools are `appsec-customize`, `finding-triage`, `patch-candidate`, `security-requirements-review`, `threat-model`, `vuln-scan`, `container-image-scan`, `security-debt-tracker`, `security-roadmap-planner`, `api-security-posture`, `owasp-top10-classifier` and `webapp-risk-triage`. The row exists so that the skill count on the README can never again be read as an executable-tool count. Progress is tracked in [issue #138](https://github.com/jaskaranhundal/usap-skills/issues/138).
 
 ## What changed since the previous audit
 
-The previous run (2026-06-22 morning) reported **18 PASS / 59 FAIL** on the output-contract sweep. The 59 failures were stubs left over from the original 71-skill seed — two- or three-field placeholder JSON containing only `agent_slug`, `status`, and `notes`.
+The previous run (2026-06-22) reported 79 skills. The tree held 80: `cloud-infra/container-image-scan` was added after that audit and never counted. Every other check is unchanged in outcome; the contract sweep now runs in `--structural-only` mode, matching the CI gate, while the hardest-line evidence gate is reported non-blocking in CI during the connector-agnostic rollout.
 
-This audit closes that gap:
-
-- `tools/regen_samples.py` was added. It reads each skill's `SKILL.md` frontmatter (`metadata.frameworks.*`) plus the Persona and Overview prose, derives `intent_type` and `severity` from the slug, and emits a contract-conformant 11-field payload. The output is deterministic per skill; running the generator twice produces byte-identical JSON.
-- The generator preserves hand-authored faithful samples (such as `appsec-devsecops/vuln-scan/expected_outputs/sample_output.json` and `appsec-devsecops/threat-model/expected_outputs/sample_output.json`) by skipping any existing sample that already passes the contract.
-- `.github/workflows/validate-skills.yml` was upgraded to:
-  - Run `tools/output_contract.py` against **every** committed sample, blocking on any failure (previously `continue-on-error: true` and only checking changed samples).
-  - Run `tools/regen_samples.py --check` to fail the build if the generator would produce a different payload than what is committed for any skill whose sample was generated (drift detection).
-
-The generator-emitted samples are explicit baselines, not synthesized analyses. The `rationale` field in each generated payload states: *"Representative output for the {skill} skill. … This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package."* This keeps the contract gate honest while not pretending the skill has analyzed any specific input.
+The generator-emitted samples remain explicit baselines, not synthesized analyses. The `rationale` field in each generated payload states that a live run would substitute real findings derived from the operator-supplied input package.
 
 ## How to reproduce this audit locally
 

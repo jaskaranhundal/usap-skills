@@ -4,7 +4,13 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Fixed
+
+- **Counts and versions now match the tree.** Every claim site said 79 skills and 12 `cs-*` agents; the tree holds 80 skill packages (`cloud-infra/container-image-scan` was never counted) and 13 agents (`agents/meta/cs-usap-next`). Updated README, CLAUDE.md, GEMINI.md, docs, mkdocs.yml, CITATION.cff, INSTALLATION.md, ROADMAP.md, both plugin manifests, the MCP server docstrings and test label, the AnythingLLM and Custom GPT READMEs, and the banner and architecture SVG generators (SVGs regenerated).
+- **Version strings aligned.** `.claude-plugin/marketplace.json` moved from 1.13.0 to 1.13.2 to match `plugins/usap/.claude-plugin/plugin.json`; `tools/build_index.py` moved from the stale 1.7.0 to 1.13.0, the last tagged release (indexes regenerated).
+- **Polyglot mirrors resynced.** `.codex`, `.gemini`, `.cursor`, `.windsurf` and `.aider` were missing the `container-image-scan` symlink and their `skills-index.json` had drifted; `scripts/sync_all.py --check` is green again.
+- **MCP server lists all 13 agents.** `cs-usap-next` is now discoverable through `list_agents` and `resources/list`.
+- **README states the executable-tool census.** 12 of 78 `*_tool.py` scripts perform analysis; 66 are declared stubs. The number was previously visible only by reading the scripts. `SELF-AUDIT.md` re-run on 2026-09-04 and carries the census as a seventh check.
 
 ## [1.13.0] — 2026-07-03
 

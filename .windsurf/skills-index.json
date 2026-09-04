@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generated_at_utc": "2026-06-27T10:19:58Z",
+  "generated_at_utc": "2026-09-04T16:44:14Z",
   "target": ".windsurf",
   "skills": [
     {
@@ -130,6 +130,14 @@
       "description": "USAP agent skill for Cloud Workload Protection. Use for Container and serverless runtime security \u2014 anomaly detection, escape detection, CSPM gap analysis.",
       "path": ".windsurf/skills/cloud-workload-protection.md",
       "target_path": "cloud-infra/cloud-workload-protection/SKILL.md"
+    },
+    {
+      "slug": "container-image-scan",
+      "domain": "cloud-infra",
+      "name": "container-image-scan",
+      "description": "USAP agent skill for Container Image Scan. Use for classifying container-image vulnerability scan findings from Trivy, Grype, or Snyk into a block-deploy, fix-by-SLA-window, track, or accept decision across base-image OS packages, application dependencies, and unexpected image layers.",
+      "path": ".windsurf/skills/container-image-scan.md",
+      "target_path": "cloud-infra/container-image-scan/SKILL.md"
     },
     {
       "slug": "endpoint-os-security",
