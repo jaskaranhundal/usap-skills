@@ -237,6 +237,15 @@ test:persona-gate:
     - changes: ["plugins/usap/hooks/**", "tools/usap_gate_test.py", "governance/persona-coverage-audit/**", ".gitlab-ci.yml"]
     - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
+validate:polyglot-mirror:
+  # Generated symlink trees for Codex/Gemini/Cursor/Windsurf/Aider must match the tree.
+  stage: validate
+  script:
+    - python3 scripts/sync_all.py --check
+  rules:
+    - changes: ["**/SKILL.md", "scripts/**", ".codex/**", ".gemini/**", ".cursor/**", ".windsurf/**", ".aider/**", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
+
 test:determinism:
   # MEASURED 2026-08-14 on this branch: regen_samples 79 clean,
   # framework_extractor 3 artifacts match. Both exit 0. BLOCKING.
