@@ -10,8 +10,8 @@ repository-code: "https://github.com/jaskaranhundal/usap-skills"
 url: "https://jaskaranhundal.github.io/usap-skills/"
 abstract: >-
   USAP is an open-source cybersecurity skills library that turns any LLM into
-  an auditable, portable security workflow runtime. It ships 79 standalone
-  skills and 12 cs-* orchestrator agents across 12 security domains, a typed
+  an auditable, portable security workflow runtime. It ships 80 standalone
+  skills and 13 cs-* orchestrator agents across 12 security domains, a typed
   11-field JSON output contract with a hardest-line resolvable-evidence gate,
   a connector-agnostic Model Context Protocol runtime (server, router,
   dispatcher, scheduler, tamper-resistant audit chain), reproducible scoring

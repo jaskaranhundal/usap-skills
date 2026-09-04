@@ -17,12 +17,12 @@
 <g opacity="0"><text x="60" y="215" fill="#e6edf3" font-family="'Space Grotesk', sans-serif" font-weight="500" font-size="26" letter-spacing="-0.01em">Agents reason · Humans approve · MCP executes</text><animate attributeName="opacity" from="0" to="1" begin="0.4s" dur="0.5s" fill="freeze"/></g>
 <g opacity="0"><text x="60" y="252" fill="#8b949e" font-family="'IBM Plex Sans', sans-serif" font-size="15" letter-spacing="0.01em">Open-source AI cybersecurity skills · runs in any LLM · Apache 2.0</text><animate attributeName="opacity" from="0" to="1" begin="0.6s" dur="0.5s" fill="freeze"/></g>
 <g opacity="0">
-<text x="60" y="335" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="40" letter-spacing="-0.01em">79</text>
+<text x="60" y="335" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="40" letter-spacing="-0.01em">80</text>
 <text x="60" y="360" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.14em">SKILLS</text>
 <animate attributeName="opacity" from="0" to="1" begin="0.80s" dur="0.4s" fill="freeze"/>
 </g>
 <g opacity="0">
-<text x="210" y="335" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="40" letter-spacing="-0.01em">12</text>
+<text x="210" y="335" fill="#f4f8fb" font-family="'Space Grotesk', sans-serif" font-weight="600" font-size="40" letter-spacing="-0.01em">13</text>
 <text x="210" y="360" fill="#8b949e" font-family="'IBM Plex Mono', monospace" font-size="10" letter-spacing="0.14em">CS-* AGENTS</text>
 <animate attributeName="opacity" from="0" to="1" begin="0.92s" dur="0.4s" fill="freeze"/>
 </g>
