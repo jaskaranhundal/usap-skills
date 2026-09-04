@@ -4,7 +4,10 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Added
+
+- **`detection/secrets-exposure` is a real tool.** The first of the 66 declared stubs to be implemented. `secrets-exposure_tool.py` reads a SecurityFact, reuses the deterministic detectors in `pre_analysis.py`, and applies the SKILL.md reasoning procedure end to end: secret type and technique, false-positive indicators, confidence with each factor named, blast radius that is never downgraded without visible evidence, the attacker timeline against the exposure window, intent and approver roles, and a recommendation. Exit codes 0/1/2 match `pre_analysis.py` and `tests/run_all.sh`. It never prints a raw secret and never touches a system. `expected_outputs/sample_output.json` is now the recorded output of the committed fixture, not a generator baseline.
+- **Fixture runs in CI.** `tests/fixtures/manifest.json` lists implemented tools with the fixture each must analyse and the exit code it must return; `tests/run_fixtures.py` runs every entry and validates the payload with the full evidence gate. Wired into `test-skill-tools.yml` and a new `test:fixtures` GitLab job. Adding a row is how a de-stubbed skill proves it is real.
 
 ## [1.13.0] — 2026-07-03
 
