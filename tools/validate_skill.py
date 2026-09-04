@@ -562,11 +562,15 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
             declared = {
                 x for x in frameworks["mitre_attack"] if isinstance(x, str)
             }
+    # The spec-preferred top-level key counts as a declaration too.
+    top_level = fm.get("mitre_attack") if isinstance(fm, dict) else None
+    if isinstance(top_level, list):
+        declared |= {x for x in top_level if isinstance(x, str)}
     drift = sorted(cited - declared)
-    if drift:
+    if drift and not declared:
         warnings.append(
             "MITRE technique IDs cited in body but not declared in "
-            f"metadata.frameworks.mitre_attack: {', '.join(drift)}"
+            f"frontmatter (top-level mitre_attack or metadata.frameworks.mitre_attack): {', '.join(drift)}"
         )
 
     return errors, warnings
