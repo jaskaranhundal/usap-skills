@@ -4,7 +4,7 @@
 Exposes USAP as a Model Context Protocol server over stdio. Any MCP-compatible
 client (Claude Code, Cursor, Codex CLI, Gemini CLI, Goose, OpenCode) can:
 
-  * Discover the 80 USAP skills and 13 cs-* orchestrator agents
+  * Discover the 81 USAP skills and 13 cs-* orchestrator agents
   * Load any skill or agent definition into the client's LLM context
   * Validate a payload against the 11-field output contract
 
