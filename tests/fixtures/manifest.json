@@ -6,6 +6,12 @@
       "input": "tests/fixtures/secrets-exposure-input.json",
       "expect_exit": 2,
       "note": "AWS access key on a production branch, 72 h exposure: critical, escalate, human approval required"
+    },
+    {
+      "tool": "cloud-infra/container-image-scan/scripts/container-image-scan_tool.py",
+      "input": "tests/fixtures/container-image-scan-input.json",
+      "expect_exit": 0,
+      "note": "CVE, GHSA and unexpected-layer findings on an internet-facing image: block-deploy, resolvable NVD/GHSA/local evidence"
     }
   ]
 }
