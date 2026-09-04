@@ -4,7 +4,12 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Added
+
+- **Persona gate hooks (`plugins/usap/hooks/`).** The operating rule that every security-relevant decision routes through a USAP persona pass had no mechanism; transcript search found one mention and zero invocations in two months. `usap_gate.py` now ships with the plugin as three Claude Code hooks: UserPromptSubmit classifies the prompt and injects the persona instruction with the exact record command; PreToolUse blocks Edit/Write on CI, IaC, hooks, settings and credential paths until a design-review pass is recorded for the same session; Stop reports a session that wrote gated paths without a pass. Passes are recorded with a mandatory residual-risk rating in the hash-chained audit log. `tools/usap_router.py` is the repo-local entry point; `tools/usap_gate_test.py` covers the acceptance criteria and runs in CI.
+- **`check-skill`: the router refuses absent skills.** `usap_gate.py check-skill <slug>` emits a contract-conformant `block` payload and exits 3 when a routed slug does not resolve in the installed tree, instead of falling through silently.
+- **`governance/persona-coverage-audit` (L2).** Reads the audit log and session transcripts (keys only, never message content), pairs gated sessions with passes by session id, and reports uncovered sessions and sessions where the plugin gate was not loaded. Fixture under `tests/fixtures/persona-coverage-audit/`; runs in CI.
+- **Design and review on record.** `docs/design/2026-09-04-persona-gate-hooks-design.md` and the `cs-devsecops-engineer` design review (`…-dr.md`, residual risk medium, nine conditions applied) were recorded in the audit chain before the hook code was committed.
 
 ## [1.13.0] — 2026-07-03
 

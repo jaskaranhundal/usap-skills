@@ -69,6 +69,21 @@ jobs:
             print(f"  PASS {len(targets)} changed sample_output.json file(s) validated")
           PYEOF
 
+      - name: Persona gate tests
+        # plugins/usap/hooks/usap_gate.py is a control (blocks writes on gated
+        # paths). Its acceptance criteria and the DR conditions are the tests.
+        run: python3 tools/usap_gate_test.py
+
+      - name: persona-coverage-audit fixture run
+        # Exit 1 is the expected verdict for the fixture (one uncovered session);
+        # the payload must still pass the full output contract.
+        run: |
+          out=/tmp/persona-coverage.json
+          python3 governance/persona-coverage-audit/scripts/persona-coverage-audit_tool.py \
+            --input tests/fixtures/persona-coverage-audit/input.json --output json > "$out"; rc=$?
+          [ "$rc" -eq 1 ] || { echo "  FAIL expected exit 1 on fixture, got $rc"; exit 1; }
+          python3 tools/output_contract.py "$out"
+
       - name: Smoke-test shared scripts
         run: |
           if [ -f shared/scripts/cvss_scorer.py ]; then
