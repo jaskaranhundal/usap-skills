@@ -27,6 +27,7 @@ user-invocable: true
 allowed-tools: "Read Grep Glob"
 disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
 context: inherit
+mitre_attack: [T1068, T1547, T1562]
 ---
 
 # Security Debt Tracker

@@ -8,6 +8,7 @@ metadata:
   category: usap-operations
   updated: 2026-03-01
   agent_slug: "incident-commander"
+mitre_attack: [T1021, T1078, T1550, T1562]
 ---
 
 # Incident Commander Agent

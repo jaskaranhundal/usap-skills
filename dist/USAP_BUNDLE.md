@@ -5656,6 +5656,7 @@ metadata:
   category: usap-devsecops
   updated: 2026-03-10
   agent_slug: "security-requirements-review"
+mitre_attack: [T1005, T1059, T1133, T1190, T1210, T1530, T1552.001]
 ---
 
 # Security Requirements Review
@@ -6067,6 +6068,7 @@ metadata:
   category: usap-adversary
   updated: 2026-03-01
   agent_slug: "supply-chain-simulation"
+mitre_attack: [T1041, T1195.001, T1195.002]
 ---
 
 # Supply Chain Simulation Agent
@@ -6964,6 +6966,7 @@ metadata:
   category: usap-infrastructure
   updated: 2026-03-01
   agent_slug: "endpoint-os-security"
+mitre_attack: [T1003, T1053.005, T1055, T1059.001, T1218, T1547.001, T1574.001]
 ---
 
 # Endpoint & OS Security Agent
@@ -10195,6 +10198,7 @@ user-invocable: true
 allowed-tools: "Read Grep Glob"
 disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
 context: inherit
+mitre_attack: [T1068, T1547, T1562]
 ---
 
 # Security Debt Tracker
@@ -10772,6 +10776,7 @@ metadata:
   input_schema: posture_score_output, risk_assessment_output, compliance_gaps_output
   output_schema: roadmap_items, investment_priorities, quarterly_milestones
   runtime_contract: ../../agents/security-roadmap-planner.yaml
+mitre_attack: [T1046, T1082, T1562, T1566, T1590]
 ---
 
 # Security Roadmap Planner
@@ -11583,6 +11588,7 @@ metadata:
   required_approver_role: soc_lead
 compatibility: "Requires read access to AD / LDAP / Okta SCIM exports and CloudTrail / Azure Activity Log / GCP Cloud Audit Log streams. No mutation."
 allowed-tools: "ldapsearch powershell aws-cli az-cli"
+mitre_attack: [T1078, T1078.002, T1078.004, T1110.004, T1484.001, T1550.001, T1556.006, T1619]
 ---
 
 # Identity and Access Risk Agent
@@ -12052,6 +12058,7 @@ user-invocable: true
 allowed-tools: "Read Grep Glob Bash(git diff:*)"
 disallowed-tools: "Bash(rm:*) Bash(sudo:*) Bash(mv:*)"
 context: fork
+mitre_attack: [T1040, T1078, T1090, T1110, T1190, T1195, T1203, T1562]
 ---
 
 # Web Application Penetration Testing Agent
@@ -13667,6 +13674,7 @@ metadata:
   category: usap-adversary
   updated: 2026-03-01
   agent_slug: "continuous-pentesting"
+mitre_attack: [T1005, T1021, T1039, T1041, T1048, T1055, T1059, T1068]
 ---
 
 # Continuous Pentesting Agent
@@ -13930,6 +13938,7 @@ metadata:
   category: usap-adversary
   updated: 2026-02-28
   agent_slug: "red-team-operations"
+mitre_attack: [T1003.006, T1021.002, T1021.006, T1134.001, T1550.002, T1550.003, T1563.001]
 ---
 
 # Red Team Operations
@@ -14084,6 +14093,7 @@ metadata:
   category: usap-adversary
   updated: 2026-02-28
   agent_slug: "red-team-planner"
+mitre_attack: [T1566.001]
 ---
 
 # Red Team Planner
@@ -14892,6 +14902,7 @@ metadata:
   agent_slug: "forensics"
 compatibility: "Requires forensic acquisition tooling and a write-blocked evidence target. Read-only against original evidence; chain-of-custody enforced."
 allowed-tools: "volatility3 plaso dd ewfacquire ftk-imager"
+mitre_attack: [T1003, T1041, T1055, T1059, T1070, T1078, T1136, T1486]
 ---
 
 # Forensics Agent
@@ -15290,6 +15301,7 @@ metadata:
   category: usap-operations
   updated: 2026-03-01
   agent_slug: "incident-commander"
+mitre_attack: [T1021, T1078, T1550, T1562]
 ---
 
 # Incident Commander Agent
@@ -17393,6 +17405,7 @@ user-invocable: true
 allowed-tools: "Read Grep Glob Bash(git diff:*)"
 disallowed-tools: "Bash(rm:*) Bash(sudo:*) Bash(mv:*)"
 context: fork
+mitre_attack: [T1021.004, T1040, T1053.003, T1055, T1068, T1110, T1203, T1222]
 ---
 
 # OS Hardening Assessment Agent
