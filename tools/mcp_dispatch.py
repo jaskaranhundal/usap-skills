@@ -15,6 +15,8 @@ Stdlib only.
 from __future__ import annotations
 
 import json
+import os
+import selectors
 import subprocess
 import sys
 import time
@@ -53,17 +55,53 @@ def _send(proc: subprocess.Popen, msg: dict) -> None:
 
 
 def _recv(proc: subprocess.Popen, timeout: float) -> dict:
-    deadline = time.time() + timeout
-    while time.time() < deadline:
-        if proc.poll() is not None:
-            raise DispatchError(
-                f"Adapter exited prematurely (code={proc.returncode}). "
-                f"stderr: {proc.stderr.read() if proc.stderr else '(captured)'}"
-            )
-        line = proc.stdout.readline()
-        if line:
-            return json.loads(line)
-    raise DispatchError(f"Adapter did not respond within {timeout}s")
+    """Read one JSON-RPC line from the adapter within ``timeout`` seconds.
+
+    Reads the pipe descriptor non-blockingly and re-checks the deadline between
+    reads, so an adapter that stays alive without ever emitting a newline cannot
+    block past the deadline (Codex review on PR #147, comment 3936200734).
+    Bytes read past the first newline are kept on the process object for the
+    next call.
+    """
+    deadline = time.monotonic() + timeout
+    buf: bytes = getattr(proc, "_usap_buf", b"")
+    fd = proc.stdout.fileno()
+    sel = selectors.DefaultSelector()
+    sel.register(fd, selectors.EVENT_READ)
+    try:
+        while True:
+            nl = buf.find(b"\n")
+            if nl != -1:
+                line, buf = buf[:nl], buf[nl + 1:]
+                proc._usap_buf = buf  # type: ignore[attr-defined]
+                if line.strip():
+                    return json.loads(line.decode("utf-8", "replace"))
+                continue
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                proc._usap_buf = buf  # type: ignore[attr-defined]
+                raise DispatchError(f"Adapter did not respond within {timeout}s")
+            if not sel.select(timeout=min(remaining, 0.25)):
+                if proc.poll() is not None:
+                    raise DispatchError(_premature(proc))
+                continue
+            chunk = os.read(fd, 65536)
+            if not chunk:
+                raise DispatchError(_premature(proc))
+            buf += chunk
+    finally:
+        sel.close()
+
+
+def _premature(proc: subprocess.Popen) -> str:
+    code = proc.poll()
+    err = ""
+    if code is not None and proc.stderr is not None:
+        try:
+            err = proc.stderr.read()
+        except Exception:
+            err = "(unreadable)"
+    return f"Adapter exited prematurely (code={code}). stderr: {err or '(adapter closed stdout)'}"
 
 
 def dispatch(
