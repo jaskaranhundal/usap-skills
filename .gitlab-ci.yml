@@ -205,6 +205,14 @@ test:tools:
     - changes: ["**/scripts/*_tool.py", ".gitlab-ci.yml"]
     - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
+test:fixtures:
+  # Implemented tools against their recorded fixtures (tests/fixtures/manifest.json).
+  # Exit code and full output contract are both checked. BLOCKING.
+  stage: test
+  script:
+    - python3 tests/run_fixtures.py
+  rules:
+    - changes: ["**/scripts/*_tool.py", "tests/fixtures/**", "tests/run_fixtures.py", ".gitlab-ci.yml"]
 test:persona-gate:
   # plugins/usap/hooks/usap_gate.py is a control (blocks writes on gated paths).
   # Its acceptance criteria and the DR conditions are the tests. The coverage
