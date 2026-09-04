@@ -53,7 +53,7 @@ python3 tools/mcp_server.py                 # run USAP as an MCP server over std
 python3 tools/mcp_server_test.py            # 32-assertion end-to-end smoke test
 python3 tools/output_contract.py <payload>  # validate a payload against the contract + evidence gate
 python3 shared/scripts/epss_scorer.py --cve CVE-2021-44228   # reproducible EPSS from the FIRST feed
-python3 tools/validate_skill.py --all       # validate all 80 skills
+python3 tools/validate_skill.py --all       # validate all 81 skills
 ```
 
 ---

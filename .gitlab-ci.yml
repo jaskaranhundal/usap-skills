@@ -60,7 +60,7 @@ default:
 # Mirrors .github/workflows/validate-skills.yml
 
 validate:skills:
-  # MEASURED 2026-09-04 on this branch: exit 0, 80 skills. BLOCKING.
+  # MEASURED 2026-09-04 on this branch: exit 0, 81 skills. BLOCKING.
   stage: validate
   script:
     - python3 tools/validate_skill.py --all --summary

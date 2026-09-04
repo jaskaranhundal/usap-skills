@@ -6,7 +6,7 @@ Output: docs/assets/usap-banner.svg
 Replaces the legacy LinkedIn key art PNG (usap-keyart.png). The banner is
 a wide hero composition built from the design-system tokens:
 
-  - Left half: wordmark + tagline + the three forcing stats (80/13/12)
+  - Left half: wordmark + tagline + the three forcing stats (81/13/12)
   - Right half: central USAP hub orbited by 6 representative peripheral
     hexes (4 corners + top + bottom), with connective links from each
     back to the hub
@@ -79,7 +79,7 @@ DOMAIN_COLORS = {
 }
 
 STATS = [
-    ("80",  "Skills"),
+    ("81",  "Skills"),
     ("13",  "cs-* agents"),
     ("12",  "Domains"),
 ]

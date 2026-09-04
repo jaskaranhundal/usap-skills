@@ -5,7 +5,7 @@ description: 80 open-source AI security skills + 13 cs-* orchestrator agents for
 
 # USAP — Open-Source AI Cybersecurity Agent Skills
 
-**The open-source AI cybersecurity skills library.** 80 skills, 13 `cs-*` orchestrator agents, 12 cybersecurity domains. Apache 2.0. Runs in every major LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM). No SaaS, no vendor lock-in.
+**The open-source AI cybersecurity skills library.** 81 skills, 13 `cs-*` orchestrator agents, 12 cybersecurity domains. Apache 2.0. Runs in every major LLM (Claude, ChatGPT, Gemini, Ollama, AnythingLLM). No SaaS, no vendor lock-in.
 
 [:fontawesome-brands-github: GitHub](https://github.com/jaskaranhundal/usap-skills){ .md-button .md-button--primary }
 [Get started](#get-started){ .md-button }
