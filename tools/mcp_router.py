@@ -41,6 +41,72 @@ sys.path.insert(0, str(REPO_ROOT / "tools"))
 
 from mcp_registry import load_registry  # noqa: E402
 from mcp_audit import write_audit  # noqa: E402
+from mcp_audit import audit_dir  # noqa: E402
+
+# ─── Approval tokens ─────────────────────────────────────────────────
+# route() issues a server-side, single-use token whenever it returns
+# approval_required. dispatch_after_approval() dispatches only with that
+# token, bound to the same MCP, capability and arguments, once, within the
+# TTL. A free-text token was the gate's bypass (Codex review on PR #149,
+# comment 3936208945); design review docs/design/2026-09-04-approval-token-and-audit-lock-dr.md.
+import hashlib as _hashlib
+import re as _re
+import secrets as _secrets
+import time as _time
+
+APPROVAL_TTL_SECONDS = 3600
+_TOKEN_RE = _re.compile(r"^[A-Za-z0-9_-]{16,64}$")
+
+
+def _approvals_dir() -> Path:
+    d = audit_dir() / "approvals"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
+def _args_sha256(arguments: dict | None) -> str:
+    canon = json.dumps(arguments or {}, sort_keys=True, separators=(",", ":"))
+    return _hashlib.sha256(canon.encode()).hexdigest()
+
+
+def _token_sha256(token: str | None) -> str | None:
+    return _hashlib.sha256(token.encode()).hexdigest() if token else None
+
+
+def issue_approval_token(mcp_id: str, capability_id: str | None, arguments: dict | None) -> str:
+    token = _secrets.token_urlsafe(24)
+    now = _time.time()
+    rec = {"mcp": mcp_id, "capability": capability_id, "arguments_sha256": _args_sha256(arguments),
+           "issued_epoch": now, "expires_epoch": now + APPROVAL_TTL_SECONDS}
+    (_approvals_dir() / f"{token}.json").write_text(json.dumps(rec), encoding="utf-8")
+    return token
+
+
+def consume_approval_token(token: str | None, mcp_id: str, capability_id: str | None,
+                           arguments: dict | None) -> tuple[bool, str]:
+    """Validate and consume a token. Returns (ok, reason). Single use."""
+    if not token or not isinstance(token, str) or not _TOKEN_RE.match(token):
+        return False, "approval token missing or malformed"
+    path = _approvals_dir() / f"{token}.json"
+    if not path.is_file():
+        return False, "approval token unknown or already used"
+    try:
+        rec = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False, "approval token record unreadable"
+    if _time.time() > float(rec.get("expires_epoch", 0)):
+        return False, "approval token expired"
+    if rec.get("mcp") != mcp_id:
+        return False, "approval token was issued for a different MCP"
+    if rec.get("capability") != capability_id:
+        return False, "approval token was issued for a different capability"
+    if rec.get("arguments_sha256") != _args_sha256(arguments):
+        return False, "approval token was issued for different arguments"
+    try:
+        path.rename(path.with_suffix(".used"))  # consumed before dispatch: never twice
+    except OSError:
+        return False, "approval token unknown or already used"
+    return True, ""
 
 # Capability ↔ intent fallback map. If a payload's intent_type doesn't match
 # any capability id directly, pick the highest-trust capability for the intent.
@@ -201,11 +267,17 @@ def route(payload: dict, registry: dict | None = None) -> dict:
             "alternatives": [m["id"] for m, _ in candidates[1:5]],
             "phase": 3,
             "phase_note": (
-                "Caller must surface the approval prompt and then re-route "
-                "with `human_approval_required: false` to dispatch."
+                "Caller must surface the approval prompt; on consent call "
+                "dispatch_after_approval with this approval_token (single use, "
+                f"valid {APPROVAL_TTL_SECONDS // 60} min, bound to this MCP, capability and arguments)."
             ),
         }
-        write_audit({"event": "route", "payload": payload, "decision": result})
+        token = issue_approval_token(chosen_mcp["id"], result["selected_capability"],
+                                     payload.get("dispatch_args") or {})
+        result["approval_token"] = token
+        audit_decision = {k: v for k, v in result.items() if k != "approval_token"}
+        audit_decision["approval_token_sha256"] = _token_sha256(token)
+        write_audit({"event": "route", "payload": payload, "decision": audit_decision})
         return result
 
     # Phase 3: actually dispatch. The router decides → dispatch executes.
@@ -243,7 +315,7 @@ def dispatch_after_approval(
     mcp_id: str,
     capability_id: str,
     arguments: dict | None = None,
-    approval_token: str = "approved",
+    approval_token: str | None = None,
     registry: dict | None = None,
 ) -> dict:
     """Dispatch a capability after the calling client has surfaced the
@@ -275,12 +347,23 @@ def dispatch_after_approval(
         write_audit({"event": "approval_granted_dispatch_failed", "decision": result})
         return result
 
+    ok, why = consume_approval_token(approval_token, mcp_id, capability_id, arguments or {})
+    if not ok:
+        result = {
+            "status": "dispatch_failed",
+            "selected_mcp": mcp_id,
+            "selected_capability": capability_id,
+            "error": f"approval token rejected: {why}",
+        }
+        write_audit({"event": "approval_rejected", "decision": result})
+        return result
+
     write_audit({
         "event": "approval_granted",
         "decision": {
             "mcp": mcp_id,
             "capability": capability_id,
-            "approval_token": approval_token,
+            "approval_token_sha256": _token_sha256(approval_token),
         },
     })
 
@@ -357,3 +440,55 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def dispatch_unattended(
+    mcp_id: str,
+    capability_id: str,
+    arguments: dict | None = None,
+    registry: dict | None = None,
+) -> dict:
+    """Dispatch a capability with no human present.
+
+    Only capabilities that are neither approval_required nor mutating in the
+    registry may run this way; everything else is refused with
+    dispatch_failed. Used by the scheduled runner instead of a synthetic
+    approval token.
+    """
+    reg = registry or load_registry()
+    mcp = next((m for m in reg["mcps"] if m["id"] == mcp_id), None)
+    if mcp is None:
+        result = {"status": "dispatch_failed", "error": f"Unknown MCP: {mcp_id}"}
+        write_audit({"event": "unattended_dispatch_failed", "decision": result})
+        return result
+    if not mcp.get("enabled", False):
+        result = {"status": "dispatch_failed", "error": f"MCP {mcp_id} is disabled in the registry."}
+        write_audit({"event": "unattended_dispatch_failed", "decision": result})
+        return result
+    cap = next((c for c in mcp.get("capabilities", []) if c.get("id") == capability_id), None)
+    if cap is None or cap.get("approval_required") or cap.get("mutating"):
+        result = {
+            "status": "dispatch_failed",
+            "selected_mcp": mcp_id,
+            "selected_capability": capability_id,
+            "error": f"capability {mcp_id}/{capability_id} requires approval; unattended dispatch refused",
+        }
+        write_audit({"event": "unattended_dispatch_failed", "decision": result})
+        return result
+
+    from mcp_dispatch import dispatch, DispatchError  # noqa: E402
+    try:
+        outcome = dispatch(mcp, capability_id, arguments or {})
+    except DispatchError as exc:
+        outcome = {"ok": False, "adapter": mcp_id, "capability": capability_id, "response": None, "error": str(exc)}
+    result = {
+        "status": "dispatched" if outcome["ok"] else "dispatch_failed",
+        "selected_mcp": mcp_id,
+        "selected_capability": capability_id,
+        "phase": 4,
+        "outcome": outcome,
+    }
+    if not outcome["ok"]:
+        result["error"] = outcome.get("error") or "adapter error"
+    write_audit({"event": "unattended_dispatch", "decision": result})
+    return result
