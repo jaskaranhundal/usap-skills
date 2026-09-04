@@ -304,7 +304,7 @@ TOOLS = [
                 "mcp_id": {"type": "string", "description": "The MCP id from the prior route decision."},
                 "capability_id": {"type": "string", "description": "The capability id to invoke."},
                 "arguments": {"type": "object", "description": "Arguments passed to the capability."},
-                "approval_token": {"type": "string", "description": "Audit token for the approval. Phase 4 will require this to be USAP-signed."},
+                "approval_token": {"type": "string", "description": "Required. The single-use token returned by route_payload in its approval_required decision; bound to that MCP, capability and arguments, valid 60 minutes."},
             },
             "required": ["mcp_id", "capability_id"],
         },
@@ -402,9 +402,12 @@ def handle_tools_call(params: dict) -> dict:
         mcp_id = args.get("mcp_id")
         capability_id = args.get("capability_id")
         arguments = args.get("arguments", {}) or {}
-        approval_token = args.get("approval_token", "approved")
+        approval_token = args.get("approval_token")
         if not mcp_id or not capability_id:
             return _err("mcp_id and capability_id are required")
+        if not approval_token:
+            return _err("approval_token is required: call route_payload first and pass the "
+                        "approval_token from its approval_required decision (single use, 60 min)")
         sys.path.insert(0, str(REPO_ROOT / "tools"))
         from mcp_router import dispatch_after_approval  # noqa: E402
         result = dispatch_after_approval(mcp_id, capability_id, arguments, approval_token)

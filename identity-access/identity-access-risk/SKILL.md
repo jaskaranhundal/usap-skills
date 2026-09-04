@@ -22,6 +22,7 @@ metadata:
   required_approver_role: soc_lead
 compatibility: "Requires read access to AD / LDAP / Okta SCIM exports and CloudTrail / Azure Activity Log / GCP Cloud Audit Log streams. No mutation."
 allowed-tools: "ldapsearch powershell aws-cli az-cli"
+mitre_attack: [T1078, T1078.002, T1078.004, T1110.004, T1484.001, T1550.001, T1556.006, T1619]
 ---
 
 # Identity and Access Risk Agent

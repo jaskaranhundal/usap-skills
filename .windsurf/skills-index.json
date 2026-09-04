@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generated_at_utc": "2026-09-04T16:44:14Z",
+  "generated_at_utc": "2026-09-04T20:22:06Z",
   "target": ".windsurf",
   "skills": [
     {
@@ -266,6 +266,14 @@
       "description": "USAP agent skill for Security Metrics and Reporting. Use for producing MTTD/MTTR KPIs, patch coverage rates, SLA compliance metrics, false-positive rates, and board-level security dashboards \u2014 always with data provenance statements and period-over-period trend analysis.",
       "path": ".windsurf/skills/metrics-reporting.md",
       "target_path": "governance/metrics-reporting/SKILL.md"
+    },
+    {
+      "slug": "persona-coverage-audit",
+      "domain": "governance",
+      "name": "persona-coverage-audit",
+      "description": "USAP agent skill for Persona Coverage Audit. Use for measuring which security-relevant sessions carried a recorded USAP persona pass and reporting the uncovered ones.",
+      "path": ".windsurf/skills/persona-coverage-audit.md",
+      "target_path": "governance/persona-coverage-audit/SKILL.md"
     },
     {
       "slug": "security-architecture",

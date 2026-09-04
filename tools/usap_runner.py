@@ -41,7 +41,7 @@ DEFAULT_RUNNER_CONFIG = REPO_ROOT / "runner" / "runner.yaml"
 
 sys.path.insert(0, str(REPO_ROOT / "tools"))
 from mcp_registry import parse_yaml, load_registry  # noqa: E402
-from mcp_router import dispatch_after_approval  # noqa: E402
+from mcp_router import dispatch_unattended  # noqa: E402
 from mcp_audit import write_audit  # noqa: E402
 
 VALID_INTENTS = {"detect", "respond", "analyze", "advise", "escalate", "report", "block"}
@@ -199,13 +199,12 @@ def execute_job(job: Job) -> dict:
         "job_id": job.id,
         "payload": payload,
     })
-    # Use dispatch_after_approval directly — runner is trusted (it's local)
-    # and the payload doesn't trigger the gate.
-    result = dispatch_after_approval(
+    # Unattended dispatch: the router refuses any capability that requires
+    # approval, so a runner job can never stand in for a human decision.
+    result = dispatch_unattended(
         job.dispatch_to,
         _pick_capability_for_job(job),
         job.dispatch_args,
-        approval_token=f"runner:{job.id}",
     )
     return result
 
@@ -299,7 +298,9 @@ def main() -> int:
             return 1
         result = execute_job(target)
         print(json.dumps(result, indent=2))
-        return 0
+        # A one-shot job that did not dispatch is a failure for whatever
+        # automation invoked it (Codex review on PR #148, comment 3936197828).
+        return 0 if result.get("status") == "dispatched" else 2
 
     if args.run:
         return run_forever(args.config, poll_interval=args.poll_interval)

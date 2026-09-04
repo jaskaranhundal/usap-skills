@@ -8,6 +8,7 @@ metadata:
   category: usap-adversary
   updated: 2026-03-01
   agent_slug: "supply-chain-simulation"
+mitre_attack: [T1041, T1195.001, T1195.002]
 ---
 
 # Supply Chain Simulation Agent

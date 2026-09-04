@@ -222,24 +222,43 @@ def main() -> int:
               decision.get("phase") in (2, 3) or decision.get("status") == "no_match")
 
         # ─── Phase 3 dispatch assertions ─────────────────────────────────
-        # 15. dispatch_after_approval to slack/post_message (mutating, gated)
-        send(proc, {
-            "jsonrpc": "2.0", "id": 15, "method": "tools/call",
-            "params": {
-                "name": "dispatch_after_approval",
-                "arguments": {
-                    "mcp_id": "slack",
-                    "capability_id": "post_message",
-                    "arguments": {"channel": "#ir-channel", "text": "SEV-2 declared at 15:24Z"},
-                    "approval_token": "smoke-test-approved",
-                },
-            },
-        })
+        # 15. approval gate: route_payload issues a single-use token; dispatch
+        #     works with it once and never with a literal.
+        gated = {
+            "intent_type": "escalate", "next_agents": ["cs-incident-responder"],
+            "human_approval_required": True,
+            "dispatch_args": {"channel": "#ir-channel", "text": "SEV-2 declared at 15:24Z"},
+        }
+        send(proc, {"jsonrpc": "2.0", "id": 150, "method": "tools/call",
+                    "params": {"name": "route_payload", "arguments": {"payload": gated}}})
         r = recv(proc, timeout=30.0)
-        text = r.get("result", {}).get("content", [{}])[0].get("text", "")
-        decision = json.loads(text)
-        check("dispatch_after_approval(slack/post_message) succeeds",
+        gate = json.loads(r.get("result", {}).get("content", [{}])[0].get("text", "{}"))
+        check("route_payload(gated) returns approval_required with a token",
+              gate.get("status") == "approval_required" and bool(gate.get("approval_token")),
+              f"got {gate}")
+        dispatch_args = {"mcp_id": gate.get("selected_mcp"), "capability_id": gate.get("selected_capability"),
+                         "arguments": gated["dispatch_args"], "approval_token": gate.get("approval_token")}
+        send(proc, {"jsonrpc": "2.0", "id": 15, "method": "tools/call",
+                    "params": {"name": "dispatch_after_approval", "arguments": dispatch_args}})
+        r = recv(proc, timeout=30.0)
+        decision = json.loads(r.get("result", {}).get("content", [{}])[0].get("text", "{}"))
+        check("dispatch_after_approval with the issued token dispatches",
               decision.get("status") == "dispatched" and decision.get("outcome", {}).get("ok") is True,
+              f"got {decision}")
+        send(proc, {"jsonrpc": "2.0", "id": 151, "method": "tools/call",
+                    "params": {"name": "dispatch_after_approval", "arguments": dispatch_args}})
+        r = recv(proc, timeout=30.0)
+        decision = json.loads(r.get("result", {}).get("content", [{}])[0].get("text", "{}"))
+        check("a consumed token is rejected",
+              decision.get("status") == "dispatch_failed" and "already used" in decision.get("error", ""),
+              f"got {decision}")
+        send(proc, {"jsonrpc": "2.0", "id": 152, "method": "tools/call",
+                    "params": {"name": "dispatch_after_approval",
+                               "arguments": {**dispatch_args, "approval_token": "smoke-test-approved"}}})
+        r = recv(proc, timeout=30.0)
+        decision = json.loads(r.get("result", {}).get("content", [{}])[0].get("text", "{}"))
+        check("a literal token is rejected",
+              decision.get("status") == "dispatch_failed" and "approval token" in decision.get("error", ""),
               f"got {decision}")
 
         # 16. dispatch_after_approval on a disabled MCP fails cleanly
@@ -251,6 +270,9 @@ def main() -> int:
                     "mcp_id": "crowdstrike",
                     "capability_id": "isolate_host",
                     "arguments": {"host_id": "abc123"},
+                    # well-formed but never issued: the disabled-MCP check must
+                    # answer before the token is consulted
+                    "approval_token": "never-issued-token-0000000000",
                 },
             },
         })
