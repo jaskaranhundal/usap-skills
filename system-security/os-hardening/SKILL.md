@@ -21,6 +21,7 @@ user-invocable: true
 allowed-tools: "Read Grep Glob Bash(git diff:*)"
 disallowed-tools: "Bash(rm:*) Bash(sudo:*) Bash(mv:*)"
 context: fork
+mitre_attack: [T1021.004, T1040, T1053.003, T1055, T1068, T1110, T1203, T1222]
 ---
 
 # OS Hardening Assessment Agent

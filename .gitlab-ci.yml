@@ -205,6 +205,38 @@ test:tools:
     - changes: ["**/scripts/*_tool.py", ".gitlab-ci.yml"]
     - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
+test:unit:
+  # Regression tests for controls and wires: tools/*_test.py and adapters/*_test.py.
+  stage: test
+  script:
+    - |
+      rc=0
+      for t in tools/*_test.py adapters/*_test.py; do [ -f "$t" ] || continue; echo "== $t"; python3 "$t" || rc=1; done
+      exit $rc
+  rules:
+    - changes: ["tools/**", "adapters/**", ".gitlab-ci.yml"]
+test:fixtures:
+  # Implemented tools against their recorded fixtures (tests/fixtures/manifest.json).
+  # Exit code and full output contract are both checked. BLOCKING.
+  stage: test
+  script:
+    - python3 tests/run_fixtures.py
+  rules:
+    - changes: ["**/scripts/*_tool.py", "tests/fixtures/**", "tests/run_fixtures.py", ".gitlab-ci.yml"]
+test:persona-gate:
+  # plugins/usap/hooks/usap_gate.py is a control (blocks writes on gated paths).
+  # Its acceptance criteria and the DR conditions are the tests. The coverage
+  # fixture is expected to exit 1 (one uncovered session) and must still pass
+  # the full output contract.
+  stage: test
+  script:
+    - python3 tools/usap_gate_test.py
+    - python3 governance/persona-coverage-audit/scripts/persona-coverage-audit_tool.py --input tests/fixtures/persona-coverage-audit/input.json --output json > /tmp/persona-coverage.json || test $? -eq 1
+    - python3 tools/output_contract.py /tmp/persona-coverage.json
+  rules:
+    - changes: ["plugins/usap/hooks/**", "tools/usap_gate_test.py", "governance/persona-coverage-audit/**", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
+
 test:determinism:
   # MEASURED 2026-08-14 on this branch: regen_samples 79 clean,
   # framework_extractor 3 artifacts match. Both exit 0. BLOCKING.

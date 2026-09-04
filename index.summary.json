@@ -1,9 +1,9 @@
 {
   "schema_version": "1",
-  "generated_at_utc": "2026-09-04T16:46:09Z",
+  "generated_at_utc": "2026-09-04T20:22:06Z",
   "repository": "github.com/jaskaranhundal/usap-skills",
-  "usap_version": "1.13.0",
-  "total_skills": 80,
+  "usap_version": "1.7.0",
+  "total_skills": 81,
   "total_agents": 13,
   "total_domains": 12,
   "domains": [

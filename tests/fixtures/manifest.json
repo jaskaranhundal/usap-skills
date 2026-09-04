@@ -1,0 +1,17 @@
+{
+  "description": "Implemented tools and the recorded fixture each must analyse. tests/run_fixtures.py executes every entry on every PR and validates the payload with tools/output_contract.py (full evidence gate). Add a row when a stub becomes real; expect_exit is the tool's documented code for that fixture.",
+  "fixtures": [
+    {
+      "tool": "detection/secrets-exposure/scripts/secrets-exposure_tool.py",
+      "input": "tests/fixtures/secrets-exposure-input.json",
+      "expect_exit": 2,
+      "note": "AWS access key on a production branch, 72 h exposure: critical, escalate, human approval required"
+    },
+    {
+      "tool": "cloud-infra/container-image-scan/scripts/container-image-scan_tool.py",
+      "input": "tests/fixtures/container-image-scan-input.json",
+      "expect_exit": 0,
+      "note": "CVE, GHSA and unexpected-layer findings on an internet-facing image: block-deploy, resolvable NVD/GHSA/local evidence"
+    }
+  ]
+}
