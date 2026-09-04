@@ -5192,8 +5192,9 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-08
+  updated: 2026-09-04
   agent_slug: "pipeline-security-scan"
+mitre_attack: [T1552.001, T1195.002, T1078.004]
 ---
 
 # Pipeline Security Scan
