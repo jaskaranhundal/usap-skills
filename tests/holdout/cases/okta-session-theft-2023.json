@@ -1,0 +1,20 @@
+{
+  "id": "okta-session-theft-2023",
+  "source": "public: Okta support-system session-token theft, Oct 2023",
+  "input": {
+    "description": "An admin session token from an uploaded HAR file was replayed from a new ASN; the session performed privileged reads across multiple tenants.",
+    "signals": [
+      "okta system log: session reused from new ASN/geo",
+      "impossible travel on admin session",
+      "privileged reads across tenants"
+    ]
+  },
+  "labels": {
+    "intent_type": "detect",
+    "severity": "high",
+    "is_true_positive": true,
+    "min_evidence_sources": 2,
+    "detection_deadline_minutes": 60,
+    "rationale_for_label": "Stolen session token replayed by an external actor \u2014 a confirmed identity compromise, high (not critical: scoped to support-portal reads)."
+  }
+}

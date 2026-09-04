@@ -1,0 +1,20 @@
+{
+  "id": "capital-one-ssrf-2019",
+  "source": "public: Capital One breach, 2019 (SSRF to IMDS to S3)",
+  "input": {
+    "description": "A WAF-adjacent host made a request to 169.254.169.254 and then listed and copied 100+ S3 buckets using freshly minted role creds.",
+    "signals": [
+      "proxy log: GET http://169.254.169.254/latest/meta-data/iam/",
+      "cloudtrail: ListBuckets then GetObject burst from EC2 role",
+      "IMDSv1 enabled"
+    ]
+  },
+  "labels": {
+    "intent_type": "detect",
+    "severity": "critical",
+    "is_true_positive": true,
+    "min_evidence_sources": 2,
+    "detection_deadline_minutes": 30,
+    "rationale_for_label": "SSRF-to-IMDS credential theft with mass S3 exfiltration \u2014 textbook confirmed cloud breach."
+  }
+}

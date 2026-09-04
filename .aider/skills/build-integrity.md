@@ -1,0 +1,1 @@
+../../appsec-devsecops/build-integrity/SKILL.md

@@ -1,0 +1,745 @@
+{
+  "schema_version": "1",
+  "generated_at_utc": "2026-08-14T10:39:13Z",
+  "repository": "github.com/jaskaranhundal/usap-skills",
+  "usap_version": "1.7.0",
+  "total_skills": 80,
+  "total_agents": 13,
+  "total_domains": 12,
+  "domains": [
+    "appsec-devsecops",
+    "cloud-infra",
+    "detection",
+    "governance",
+    "identity-access",
+    "pentest",
+    "platform-ai",
+    "red-team",
+    "response",
+    "risk-compliance",
+    "system-security",
+    "webapp-security"
+  ],
+  "skills": [
+    {
+      "name": "appsec-code-review",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for AppSec Code Review. Use for Security-focused static code analysis — OWASP Top 10, logic flaws, dependency audits.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "appsec-devsecops/appsec-code-review/SKILL.md"
+    },
+    {
+      "name": "appsec-customize",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for adapting the AppSec chain to a new language or vulnerability class. Use for walking three forcing questions (language, threat patterns, deployment target) and emitting a CUSTOMIZE.md plan that defines the pattern catalog, exploitability scores, and patch recipes the threat-model / vuln-scan / finding-triage / patch-candidate skills will use for the new target.",
+      "level": null,
+      "category": "usap-appsec-devsecops",
+      "frontmatter_path": "appsec-devsecops/appsec-customize/SKILL.md"
+    },
+    {
+      "name": "build-integrity",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for Build Integrity. Verify build provenance, validate artifact signatures, check SLSA compliance, and detect signs of build pipeline compromise.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "appsec-devsecops/build-integrity/SKILL.md"
+    },
+    {
+      "name": "devsecops-pipeline",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for DevSecOps Pipeline Security. Use for assessing security gate completeness in CI/CD pipelines, pipeline configuration review, SAST/DAST integration gaps, secret scanning in pipeline YAML, and security toolchain hardening.",
+      "level": null,
+      "category": "usap-appsec-devsecops",
+      "frontmatter_path": "appsec-devsecops/devsecops-pipeline/SKILL.md"
+    },
+    {
+      "name": "finding-triage",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for AppSec finding triage. Use for reading VULN-FINDINGS.json from the vuln-scan skill, verifying each finding against the threat model, deduplicating across runs, ranking by exploitability + business impact, and emitting a TRIAGE.md hit list the patch-candidate skill consumes.",
+      "level": null,
+      "category": "usap-appsec-devsecops",
+      "frontmatter_path": "appsec-devsecops/finding-triage/SKILL.md"
+    },
+    {
+      "name": "patch-candidate",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for generating candidate patches against triaged AppSec findings. Use for reading TRIAGE.md from the finding-triage skill, producing per-finding patch proposals as unified diffs, and writing PATCH-CANDIDATES.md plus per-finding .patch files. Never auto-applies. L4 skill — requires explicit human approval before any patch is committed.",
+      "level": null,
+      "category": "usap-appsec-devsecops",
+      "frontmatter_path": "appsec-devsecops/patch-candidate/SKILL.md"
+    },
+    {
+      "name": "pipeline-security-scan",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for Pipeline Security Scan. Use for CI/CD pipeline security scanning — secrets in env vars, SAST integration, artifact signing check.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "appsec-devsecops/pipeline-security-scan/SKILL.md"
+    },
+    {
+      "name": "sast-dast-coordinator",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for SAST/DAST Coordinator. Orchestrate static and dynamic application security testing, correlate findings across tools, deduplicate results, and prioritize by exploitability.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "appsec-devsecops/sast-dast-coordinator/SKILL.md"
+    },
+    {
+      "name": "secure-sdlc",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for Secure SDLC. Embed security into every phase of development — design, coding, testing, deployment, and operations — with developer-friendly controls.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "appsec-devsecops/secure-sdlc/SKILL.md"
+    },
+    {
+      "name": "security-requirements-review",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for Security Requirements Review. Use for proactive analysis of design documents — POA&M, PRDs, architecture docs, requirements specs — to extract security gaps before any alerts fire.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "appsec-devsecops/security-requirements-review/SKILL.md"
+    },
+    {
+      "name": "supply-chain-risk",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for Supply Chain Risk. Evaluate software and hardware supply chain dependencies, detect malicious package injection, and assess build pipeline integrity.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "appsec-devsecops/supply-chain-risk/SKILL.md"
+    },
+    {
+      "name": "supply-chain-simulation",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for Supply Chain Simulation. Design and analyze supply chain attack scenarios in isolated environments to test detection coverage and response capabilities.",
+      "level": null,
+      "category": "usap-adversary",
+      "frontmatter_path": "appsec-devsecops/supply-chain-simulation/SKILL.md"
+    },
+    {
+      "name": "threat-model",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for application threat modeling. Use for building a STRIDE+DREAD threat model from a target spec, generating a structured THREAT_MODEL.md artifact, and seeding the downstream vuln-scan + finding-triage chain with a prioritized asset and trust-boundary inventory.",
+      "level": null,
+      "category": "usap-appsec-devsecops",
+      "frontmatter_path": "appsec-devsecops/threat-model/SKILL.md"
+    },
+    {
+      "name": "vuln-scan",
+      "domain": "appsec-devsecops",
+      "description": "USAP agent skill for threat-model-scoped vulnerability scanning. Use for running static analysis (SAST, secrets, dependency vuln) against a target the threat-model skill has already mapped, weighting findings by their proximity to the model's top-DREAD threats, and emitting structured VULN-FINDINGS.json for downstream triage.",
+      "level": null,
+      "category": "usap-appsec-devsecops",
+      "frontmatter_path": "appsec-devsecops/vuln-scan/SKILL.md"
+    },
+    {
+      "name": "cloud-security-posture",
+      "domain": "cloud-infra",
+      "description": "USAP agent skill for Cloud Security Posture. Use for Evaluate cloud misconfigurations and posture drift.",
+      "level": null,
+      "category": "usap-infrastructure",
+      "frontmatter_path": "cloud-infra/cloud-security-posture/SKILL.md"
+    },
+    {
+      "name": "cloud-workload-protection",
+      "domain": "cloud-infra",
+      "description": "USAP agent skill for Cloud Workload Protection. Use for Container and serverless runtime security — anomaly detection, escape detection, CSPM gap analysis.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "cloud-infra/cloud-workload-protection/SKILL.md"
+    },
+    {
+      "name": "container-image-scan",
+      "domain": "cloud-infra",
+      "description": "USAP agent skill for Container Image Scan. Use for classifying container-image vulnerability scan findings from Trivy, Grype, or Snyk into a block-deploy, fix-by-SLA-window, track, or accept decision across base-image OS packages, application dependencies, and unexpected image layers.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "cloud-infra/container-image-scan/SKILL.md"
+    },
+    {
+      "name": "endpoint-os-security",
+      "domain": "cloud-infra",
+      "description": "USAP agent skill for Endpoint & OS Security. Analyze endpoint security posture, evaluate EDR coverage, detect configuration drift, and recommend hardening for Windows, Linux, macOS, and containers.",
+      "level": null,
+      "category": "usap-infrastructure",
+      "frontmatter_path": "cloud-infra/endpoint-os-security/SKILL.md"
+    },
+    {
+      "name": "iac-security",
+      "domain": "cloud-infra",
+      "description": "USAP agent skill for IaC Security. Analyze Terraform, CloudFormation, Kubernetes manifests, and Helm charts for misconfigurations, insecure defaults, and compliance violations.",
+      "level": null,
+      "category": "usap-devsecops",
+      "frontmatter_path": "cloud-infra/iac-security/SKILL.md"
+    },
+    {
+      "name": "ot-iot-device-security",
+      "domain": "cloud-infra",
+      "description": "USAP agent skill for OT/IoT/Device Security. Evaluate operational technology and IoT security controls, identify OT network segmentation gaps, and assess ICS/SCADA security posture.",
+      "level": null,
+      "category": "usap-infrastructure",
+      "frontmatter_path": "cloud-infra/ot-iot-device-security/SKILL.md"
+    },
+    {
+      "name": "attack-surface-management",
+      "domain": "detection",
+      "description": "USAP agent skill for Attack Surface Management. Use for Continuously discover and assess exposed assets.",
+      "level": null,
+      "category": "usap-infrastructure",
+      "frontmatter_path": "detection/attack-surface-management/SKILL.md"
+    },
+    {
+      "name": "behavioral-analytics",
+      "domain": "detection",
+      "description": "USAP agent skill for Behavioral Analytics (UEBA). Use for Analyze behavioral anomalies across users and entities.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "detection/behavioral-analytics/SKILL.md"
+    },
+    {
+      "name": "deception-honeypot",
+      "domain": "detection",
+      "description": "USAP agent skill for Deception & Honeypot Strategy. Use for Deception technology planning — honeypot placement, canary token deployment, lateral movement traps.",
+      "level": null,
+      "category": "usap-detection",
+      "frontmatter_path": "detection/deception-honeypot/SKILL.md"
+    },
+    {
+      "name": "detection-engineering",
+      "domain": "detection",
+      "description": "USAP agent skill for Detection Engineering. Design, validate, and tune detection rules across SIEM, EDR, and cloud telemetry to minimize dwell time and maximize detection fidelity.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "detection/detection-engineering/SKILL.md"
+    },
+    {
+      "name": "network-exposure",
+      "domain": "detection",
+      "description": "USAP agent skill for Network Exposure. Use for Identify network segmentation and exposure weaknesses.",
+      "level": null,
+      "category": "usap-infrastructure",
+      "frontmatter_path": "detection/network-exposure/SKILL.md"
+    },
+    {
+      "name": "secrets-exposure",
+      "domain": "detection",
+      "description": "USAP agent skill for Secrets and Credential Exposure Detection. Use for scanning repositories, pipelines, and runtime environments for exposed secrets, API keys, tokens, and credentials — includes entropy analysis, blast-radius estimation, and revocation prioritization.",
+      "level": null,
+      "category": "usap-detection",
+      "frontmatter_path": "detection/secrets-exposure/SKILL.md"
+    },
+    {
+      "name": "telemetry-signal-quality",
+      "domain": "detection",
+      "description": "USAP agent skill for Telemetry and Signal Quality Assessment. Use for evaluating SIEM data source health, log completeness, normalization error rates, and detection data fidelity before running threat hunts or drawing conclusions from negative detection results.",
+      "level": null,
+      "category": "usap-detection",
+      "frontmatter_path": "detection/telemetry-signal-quality/SKILL.md"
+    },
+    {
+      "name": "threat-hunting",
+      "domain": "detection",
+      "description": "USAP agent skill for Threat Hunting. Use for Perform hypothesis-driven threat hunting across telemetry.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "detection/threat-hunting/SKILL.md"
+    },
+    {
+      "name": "threat-intelligence",
+      "domain": "detection",
+      "description": "USAP agent skill for Threat Intelligence Enrichment and Attribution. Use for IOC enrichment, adversary TTP mapping to MITRE ATT&CK, threat actor attribution, intelligence-driven detection prioritization, and converting raw indicators into actionable detection or control recommendations.",
+      "level": null,
+      "category": "usap-detection",
+      "frontmatter_path": "detection/threat-intelligence/SKILL.md"
+    },
+    {
+      "name": "ciso-brief-generator",
+      "domain": "governance",
+      "description": "USAP agent skill for CISO Brief Generator. Use for generating CISO-level security briefs — risk posture summaries, board-ready narratives.",
+      "level": null,
+      "category": "usap-executive",
+      "frontmatter_path": "governance/ciso-brief-generator/SKILL.md"
+    },
+    {
+      "name": "findings-tracker",
+      "domain": "governance",
+      "description": "USAP agent skill for Findings Tracker. Maintain authoritative registry of security findings, track remediation status, assign risk scores, and enforce SLA compliance.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "governance/findings-tracker/SKILL.md"
+    },
+    {
+      "name": "knowledge-management",
+      "domain": "governance",
+      "description": "USAP agent skill for Knowledge Management. Manage reusable security knowledge, record agent decisions with rationale, surface relevant precedents, and prevent institutional amnesia.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "governance/knowledge-management/SKILL.md"
+    },
+    {
+      "name": "metrics-reporting",
+      "domain": "governance",
+      "description": "USAP agent skill for Security Metrics and Reporting. Use for producing MTTD/MTTR KPIs, patch coverage rates, SLA compliance metrics, false-positive rates, and board-level security dashboards — always with data provenance statements and period-over-period trend analysis.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "governance/metrics-reporting/SKILL.md"
+    },
+    {
+      "name": "security-architecture",
+      "domain": "governance",
+      "description": "USAP agent skill for Security Architecture. Validate architecture changes against security principles, assess Zero Trust readiness, and provide security design guidance for new systems.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "governance/security-architecture/SKILL.md"
+    },
+    {
+      "name": "security-awareness",
+      "domain": "governance",
+      "description": "USAP agent skill for Security Awareness. Track and improve human risk posture through targeted training, phishing simulation analysis, and behavioral risk measurement.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "governance/security-awareness/SKILL.md"
+    },
+    {
+      "name": "security-debt-tracker",
+      "domain": "governance",
+      "description": "USAP agent skill for Security Debt Tracking. Use for analyzing aging security findings, computing SLA breach counts, and classifying debt accumulation rate.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "governance/security-debt-tracker/SKILL.md"
+    },
+    {
+      "name": "security-policy-control",
+      "domain": "governance",
+      "description": "USAP agent skill for Security Policy & Control. Author and govern policy-as-code rules, assess control effectiveness, and manage the security policy lifecycle.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "governance/security-policy-control/SKILL.md"
+    },
+    {
+      "name": "security-posture-score",
+      "domain": "governance",
+      "description": "USAP agent skill for Security Posture Scoring. Use for Cross-domain security posture scoring — aggregates findings into an executive scorecard.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "governance/security-posture-score/SKILL.md"
+    },
+    {
+      "name": "security-roadmap-planner",
+      "domain": "governance",
+      "description": "USAP agent skill for Security Roadmap Planning. Use for building investment-prioritized 12-month security program roadmaps from posture, risk, and compliance data.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "governance/security-roadmap-planner/SKILL.md"
+    },
+    {
+      "name": "vulnerability-management",
+      "domain": "governance",
+      "description": "USAP agent skill for Vulnerability Management. Use for Prioritize vulnerabilities by exploitability and impact.",
+      "level": null,
+      "category": "usap-infrastructure",
+      "frontmatter_path": "governance/vulnerability-management/SKILL.md"
+    },
+    {
+      "name": "cryptography-key-management",
+      "domain": "identity-access",
+      "description": "USAP agent skill for Cryptography & Key Management. Govern crypto posture, audit key lifecycle, enforce rotation policies, and detect weak or exposed cryptographic material.",
+      "level": null,
+      "category": "usap-infrastructure",
+      "frontmatter_path": "identity-access/cryptography-key-management/SKILL.md"
+    },
+    {
+      "name": "data-security-classification",
+      "domain": "identity-access",
+      "description": "USAP agent skill for Data Security & Classification. Classify data sensitivity and assign appropriate protection requirements, handling controls, and retention policies.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "identity-access/data-security-classification/SKILL.md"
+    },
+    {
+      "name": "identity-access-risk",
+      "domain": "identity-access",
+      "description": "USAP agent skill for Identity and Access Risk Assessment. Use for IAM anomaly detection, privilege escalation path analysis, over-permissioned role scoring, CloudTrail behavioral review, dormant credential identification, and transitive permission chain mapping across AWS, Azure, and GCP.",
+      "level": null,
+      "category": "usap-identity-access",
+      "frontmatter_path": "identity-access/identity-access-risk/SKILL.md"
+    },
+    {
+      "name": "insider-physical-risk",
+      "domain": "identity-access",
+      "description": "USAP agent skill for Insider & Physical Risk. Evaluate insider threat indicators, analyze behavioral signals, and assess physical access security controls.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "identity-access/insider-physical-risk/SKILL.md"
+    },
+    {
+      "name": "pentest-reporting",
+      "domain": "pentest",
+      "description": "USAP agent skill for Penetration Test Report Generation. Use for compiling pentest findings into executive and technical reports following PTES and OWASP reporting standards.",
+      "level": null,
+      "category": "usap-pentest",
+      "frontmatter_path": "pentest/pentest-reporting/SKILL.md"
+    },
+    {
+      "name": "web-app-pentest",
+      "domain": "pentest",
+      "description": "USAP agent skill for Web Application Penetration Testing. Use for OWASP Top 10 assessment, API security testing, and auth bypass analysis within authorized scope only.",
+      "level": null,
+      "category": "usap-pentest",
+      "frontmatter_path": "pentest/web-app-pentest/SKILL.md"
+    },
+    {
+      "name": "agent-integrity-monitor",
+      "domain": "platform-ai",
+      "description": "USAP agent skill for AI Agent Integrity Monitoring. Use for detecting prompt injection attempts, instruction override, goal drift, and behavioral deviation in autonomous AI agents — monitors production agent sessions against behavioral baselines and raises integrity violations before they produce harmful outputs.",
+      "level": null,
+      "category": "usap-platform-ai",
+      "frontmatter_path": "platform-ai/agent-integrity-monitor/SKILL.md"
+    },
+    {
+      "name": "ai-agent-security",
+      "domain": "platform-ai",
+      "description": "USAP agent skill for AI Agent Security. Use for Detect prompt injection and misuse against agentic workflows.",
+      "level": null,
+      "category": "usap-safety",
+      "frontmatter_path": "platform-ai/ai-agent-security/SKILL.md"
+    },
+    {
+      "name": "ai-ethics-governance",
+      "domain": "platform-ai",
+      "description": "USAP agent skill for AI Ethics & Governance. Use for Govern ethical use and explainability of AI decisions.",
+      "level": null,
+      "category": "usap-executive",
+      "frontmatter_path": "platform-ai/ai-ethics-governance/SKILL.md"
+    },
+    {
+      "name": "guardrail",
+      "domain": "platform-ai",
+      "description": "USAP agent skill for Guardrail. Enforce approval gates, RBAC role policies, intent_type boundaries, and safety rules for the USAP control plane.",
+      "level": null,
+      "category": "usap-control-plane",
+      "frontmatter_path": "platform-ai/guardrail/SKILL.md"
+    },
+    {
+      "name": "orchestrator",
+      "domain": "platform-ai",
+      "description": "USAP agent skill for Orchestrator. Route SecurityFacts through deterministic policy sequences, coordinate multi-agent workflows, and manage agent execution order.",
+      "level": null,
+      "category": "usap-control-plane",
+      "frontmatter_path": "platform-ai/orchestrator/SKILL.md"
+    },
+    {
+      "name": "third-party-vendor-risk",
+      "domain": "platform-ai",
+      "description": "USAP agent skill for Third-Party & Vendor Risk. Assess vendor security posture, track SLA compliance, and govern external dependency risk throughout the vendor lifecycle.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "platform-ai/third-party-vendor-risk/SKILL.md"
+    },
+    {
+      "name": "tool-execution-broker",
+      "domain": "platform-ai",
+      "description": "USAP agent skill for Tool Execution Authorization and Brokering. Use for authorizing, logging, and gating all mutating tool calls from USAP agents — enforces scope validation, approval gates, and tamper-evident audit trails for every automated security action before execution.",
+      "level": null,
+      "category": "usap-platform-ai",
+      "frontmatter_path": "platform-ai/tool-execution-broker/SKILL.md"
+    },
+    {
+      "name": "ai-red-teaming",
+      "domain": "red-team",
+      "description": "USAP agent skill for AI Red Teaming. Use for Adversarial testing of AI/ML systems — prompt injection, model inversion, jailbreaks.",
+      "level": null,
+      "category": "usap-red-team",
+      "frontmatter_path": "red-team/ai-red-teaming/SKILL.md"
+    },
+    {
+      "name": "attack-path-analysis",
+      "domain": "red-team",
+      "description": "USAP agent skill for Attack Path Analysis. Use for Analyze lateral movement and blast-radius attack paths.",
+      "level": null,
+      "category": "usap-adversary",
+      "frontmatter_path": "red-team/attack-path-analysis/SKILL.md"
+    },
+    {
+      "name": "continuous-pentesting",
+      "domain": "red-team",
+      "description": "USAP agent skill for Continuous Pentesting. Analyze attack surface changes, prioritize emerging exposures for testing, and maintain always-on adversarial posture.",
+      "level": null,
+      "category": "usap-adversary",
+      "frontmatter_path": "red-team/continuous-pentesting/SKILL.md"
+    },
+    {
+      "name": "credential-attacks",
+      "domain": "red-team",
+      "description": "ARIA agent skill for credential attack reasoning. Use for deciding whether to spray vs brute-force, selecting wordlists, interpreting hydra results, and assessing account lockout risk before execution.",
+      "level": null,
+      "category": "usap-adversary",
+      "frontmatter_path": "red-team/credential-attacks/SKILL.md"
+    },
+    {
+      "name": "red-team-operations",
+      "domain": "red-team",
+      "description": "USAP agent skill for Red Team Operations. Use for Execute controlled red-team operation workflows.",
+      "level": null,
+      "category": "usap-adversary",
+      "frontmatter_path": "red-team/red-team-operations/SKILL.md"
+    },
+    {
+      "name": "red-team-planner",
+      "domain": "red-team",
+      "description": "USAP agent skill for Red Team Planner. Use for Plan red-team engagements, scope, and rules of engagement.",
+      "level": null,
+      "category": "usap-adversary",
+      "frontmatter_path": "red-team/red-team-planner/SKILL.md"
+    },
+    {
+      "name": "safe-exploitation",
+      "domain": "red-team",
+      "description": "USAP agent skill for Safe Exploitation. Use for Run controlled exploitation workflows in approved lab contexts.",
+      "level": null,
+      "category": "usap-adversary",
+      "frontmatter_path": "red-team/safe-exploitation/SKILL.md"
+    },
+    {
+      "name": "security-research",
+      "domain": "red-team",
+      "description": "USAP agent skill for Security Research. Track emerging threats, analyze novel attack techniques, evaluate research findings, and translate intelligence into actionable security improvements.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "red-team/security-research/SKILL.md"
+    },
+    {
+      "name": "web-enumeration",
+      "domain": "red-team",
+      "description": "ARIA agent skill for active web content discovery. Use for reasoning about path brute-forcing results, prioritising discovered endpoints, and identifying high-value targets for exploitation.",
+      "level": null,
+      "category": "usap-adversary",
+      "frontmatter_path": "red-team/web-enumeration/SKILL.md"
+    },
+    {
+      "name": "containment-advisor",
+      "domain": "response",
+      "description": "USAP agent skill for Incident Containment Strategy. Use for selecting the most targeted containment action for confirmed threats, blast-radius assessment across 10 threat types, production impact quantification, and preparing human-approval-gated containment plans for network isolation, credential revocation, or firewall changes.",
+      "level": null,
+      "category": "usap-response",
+      "frontmatter_path": "response/containment-advisor/SKILL.md"
+    },
+    {
+      "name": "forensics",
+      "domain": "response",
+      "description": "USAP agent skill for Digital Forensics. Produce investigation timelines, evidence preservation guidance, and chain-of-custody recommendations for security incidents.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "response/forensics/SKILL.md"
+    },
+    {
+      "name": "incident-classification",
+      "domain": "response",
+      "description": "USAP agent skill for Security Incident Classification and Triage. Use for classifying incoming security events into 14 incident types, assigning SEV1-SEV4 severity with false-positive filtering across 5 categories, and routing confirmed incidents to the correct response track with zero false-negative tolerance on critical criteria.",
+      "level": null,
+      "category": "usap-response",
+      "frontmatter_path": "response/incident-classification/SKILL.md"
+    },
+    {
+      "name": "incident-commander",
+      "domain": "response",
+      "description": "USAP agent skill for Incident Commander. Coordinate multi-agent incident response, declare severity levels, assign response tracks, and drive decision-making under time pressure.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "response/incident-commander/SKILL.md"
+    },
+    {
+      "name": "zero-day-response",
+      "domain": "response",
+      "description": "USAP agent skill for Zero-Day Response. Use for Coordinate compensating controls for zero-day risk.",
+      "level": null,
+      "category": "usap-operations",
+      "frontmatter_path": "response/zero-day-response/SKILL.md"
+    },
+    {
+      "name": "zero-day-response-governance",
+      "domain": "response",
+      "description": "USAP agent skill for Zero-Day Response Governance. Govern policy and approval pathways for zero-day vulnerability programs — from discovery through coordinated disclosure and emergency response.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "response/zero-day-response-governance/SKILL.md"
+    },
+    {
+      "name": "compliance-mapping",
+      "domain": "risk-compliance",
+      "description": "USAP agent skill for Multi-Framework Compliance Mapping. Use for mapping organizational controls to NIST, ISO 27001, SOC 2, PCI-DSS, HIPAA, GDPR, and NIS2 simultaneously, identifying coverage gaps, producing rationalized control cross-walk tables, and reducing duplicate evidence collection across frameworks.",
+      "level": null,
+      "category": "usap-risk-compliance",
+      "frontmatter_path": "risk-compliance/compliance-mapping/SKILL.md"
+    },
+    {
+      "name": "cyber-insurance",
+      "domain": "risk-compliance",
+      "description": "USAP agent skill for Cyber Insurance. Assess cyber insurance coverage adequacy, identify coverage gaps, maintain claim-readiness evidence, and support renewal applications.",
+      "level": null,
+      "category": "usap-executive",
+      "frontmatter_path": "risk-compliance/cyber-insurance/SKILL.md"
+    },
+    {
+      "name": "enterprise-risk-assessment",
+      "domain": "risk-compliance",
+      "description": "USAP agent skill for Enterprise Risk Assessment. Quantify enterprise cyber risk using FAIR methodology, produce risk heat maps, and communicate residual exposure to the board.",
+      "level": null,
+      "category": "usap-executive",
+      "frontmatter_path": "risk-compliance/enterprise-risk-assessment/SKILL.md"
+    },
+    {
+      "name": "internal-audit-assurance",
+      "domain": "risk-compliance",
+      "description": "USAP agent skill for Internal Audit and Controls Assurance. Use for planning and executing internal security audits, collecting admissible controls evidence for SOC 2, ISO 27001, SOX, and FedRAMP, testing control operating effectiveness, and producing board-ready audit findings with root cause analysis and management responses.",
+      "level": null,
+      "category": "usap-risk-compliance",
+      "frontmatter_path": "risk-compliance/internal-audit-assurance/SKILL.md"
+    },
+    {
+      "name": "privacy-dpia",
+      "domain": "risk-compliance",
+      "description": "USAP agent skill for Privacy & DPIA. Produce GDPR-compliant Data Protection Impact Assessments, identify high-risk processing activities, and generate privacy evidence packs.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "risk-compliance/privacy-dpia/SKILL.md"
+    },
+    {
+      "name": "quantum-security-readiness",
+      "domain": "risk-compliance",
+      "description": "USAP agent skill for Quantum Security Readiness. Use for Track post-quantum migration readiness and crypto agility.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "risk-compliance/quantum-security-readiness/SKILL.md"
+    },
+    {
+      "name": "regulatory-horizon",
+      "domain": "risk-compliance",
+      "description": "USAP agent skill for Regulatory Horizon. Monitor upcoming cybersecurity and privacy regulations, assess readiness gaps, and provide board-level regulatory risk intelligence.",
+      "level": null,
+      "category": "usap-executive",
+      "frontmatter_path": "risk-compliance/regulatory-horizon/SKILL.md"
+    },
+    {
+      "name": "risk-threat-modeling",
+      "domain": "risk-compliance",
+      "description": "USAP agent skill for Risk & Threat Modeling. Model attacker paths using STRIDE, PASTA, and attack trees. Quantify risk impact and prioritize mitigations.",
+      "level": null,
+      "category": "usap-governance",
+      "frontmatter_path": "risk-compliance/risk-threat-modeling/SKILL.md"
+    },
+    {
+      "name": "os-hardening",
+      "domain": "system-security",
+      "description": "USAP agent skill for OS Hardening Assessment. Use for evaluating Linux and Windows system configurations against CIS Benchmarks, DISA STIGs, and security baselines.",
+      "level": null,
+      "category": "usap-system-security",
+      "frontmatter_path": "system-security/os-hardening/SKILL.md"
+    },
+    {
+      "name": "api-security-posture",
+      "domain": "webapp-security",
+      "description": "USAP agent skill for API Security Posture. Use for scoring an API surface against OWASP API Security Top 10 — broken object level authorization, broken authentication, mass assignment, rate-limit gaps — and recommending the next USAP skill to address the largest posture drag.",
+      "level": null,
+      "category": "usap-webapp",
+      "frontmatter_path": "webapp-security/api-security-posture/SKILL.md"
+    },
+    {
+      "name": "owasp-top10-classifier",
+      "domain": "webapp-security",
+      "description": "USAP agent skill for OWASP Top 10 2025 classification. Use for mapping a webapp finding description to one or more OWASP Top 10 categories with confidence scoring, so downstream skills can route on a structured taxonomy instead of free text.",
+      "level": null,
+      "category": "usap-webapp",
+      "frontmatter_path": "webapp-security/owasp-top10-classifier/SKILL.md"
+    },
+    {
+      "name": "webapp-risk-triage",
+      "domain": "webapp-security",
+      "description": "USAP agent skill for Webapp Risk Triage. Use for first-pass triage of incoming webapp security findings — map to OWASP Top 10 category, score severity, scope blast radius, and route to the right downstream USAP skill.",
+      "level": null,
+      "category": "usap-webapp",
+      "frontmatter_path": "webapp-security/webapp-risk-triage/SKILL.md"
+    }
+  ],
+  "agents": [
+    {
+      "name": "cs-appsec-engineer",
+      "domain": "appsec",
+      "description": "USAP orchestrator agent for application security. Drives the webapp-security and appsec-devsecops domains end-to-end — runtime triage, OWASP classification, API posture scoring, and pipeline coverage.",
+      "path": "agents/appsec/cs-appsec-engineer.md"
+    },
+    {
+      "name": "cs-devsecops-engineer",
+      "domain": "devsecops",
+      "description": "Security-in-pipeline engineer coordinating AppSec code review, pipeline security scanning, and supply chain risk assessment",
+      "path": "agents/devsecops/cs-devsecops-engineer.md"
+    },
+    {
+      "name": "cs-ciso-advisor",
+      "domain": "executive",
+      "description": "Executive security advisor generating board-ready security posture reports, risk reviews, and regulatory gap assessments",
+      "path": "agents/executive/cs-ciso-advisor.md"
+    },
+    {
+      "name": "cs-security-program-manager",
+      "domain": "governance",
+      "description": "Passive security lifecycle orchestrator for program planning, proactive scanning, and facilitated security reviews",
+      "path": "agents/governance/cs-security-program-manager.md"
+    },
+    {
+      "name": "cs-usap-next",
+      "domain": "meta",
+      "description": "Decision-grade \"where am I, what's next\" advisor for USAP operators. Reads local runner + audit + registry state and recommends 1-3 next actions per turn.",
+      "path": "agents/meta/cs-usap-next.md"
+    },
+    {
+      "name": "cs-blue-team-analyst",
+      "domain": "security",
+      "description": "Blue Team operations orchestrator for detection, threat hunting, DFIR, and detection engineering across the detection and response domains",
+      "path": "agents/security/cs-blue-team-analyst.md"
+    },
+    {
+      "name": "cs-cloud-investigator",
+      "domain": "security",
+      "description": "USAP orchestrator agent for cloud-incident investigation. Drives misconfiguration triage, workload-runtime analysis, and IAM anomaly attribution across AWS, Azure, and GCP findings.",
+      "path": "agents/security/cs-cloud-investigator.md"
+    },
+    {
+      "name": "cs-incident-responder",
+      "domain": "security",
+      "description": "Full incident lifecycle manager coordinating triage, containment, forensics, and post-incident review",
+      "path": "agents/security/cs-incident-responder.md"
+    },
+    {
+      "name": "cs-purple-team-lead",
+      "domain": "security",
+      "description": "USAP orchestrator agent for purple team operations. Runs tabletop exercises and detection-vs-attack drills by orchestrating cs-blue-team-analyst, cs-red-teamer, and cs-incident-responder in one coordinated session.",
+      "path": "agents/security/cs-purple-team-lead.md"
+    },
+    {
+      "name": "cs-red-teamer",
+      "domain": "security",
+      "description": "Offensive security operations coordinator for red team engagements, attack path mapping, and exploitation workflows",
+      "path": "agents/security/cs-red-teamer.md"
+    },
+    {
+      "name": "cs-security-analyst",
+      "domain": "security",
+      "description": ">",
+      "path": "agents/security/cs-security-analyst.md"
+    },
+    {
+      "name": "cs-supply-chain-defender",
+      "domain": "security",
+      "description": "USAP orchestrator agent for software supply chain defense. Drives SBOM analysis, dependency-vulnerability triage, malicious package detection, and build-integrity verification across CI/CD pipelines.",
+      "path": "agents/security/cs-supply-chain-defender.md"
+    },
+    {
+      "name": "cs-threat-intel-lead",
+      "domain": "security",
+      "description": "USAP orchestrator agent for threat intelligence. Drives IOC enrichment, actor attribution, behavioral corroboration, and intelligence-driven hunt prioritization for active and proactive workflows.",
+      "path": "agents/security/cs-threat-intel-lead.md"
+    }
+  ]
+}

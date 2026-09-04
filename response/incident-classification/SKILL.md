@@ -8,6 +8,8 @@ metadata:
   category: usap-response
   updated: 2025-03-23
   agent_slug: incident-classification
+  frameworks:
+    nist_csf: [DE.AE-02, DE.AE-08, RS.MA-02, RS.MA-03]
   usap_level: "L3"
   agent_id: 9
   level: L3

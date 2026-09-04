@@ -7,18 +7,27 @@ on:
       - '**/SKILL.md'
       - 'agents/**'
       - 'shared/scripts/bundle_usap.py'
+      # The workflow triggers on changes to itself, so a fix to this file is
+      # actually exercised. validate-skills.yml already does this; bundle-dist
+      # did not, which is why a broken step here sat undetected.
+      - '.github/workflows/bundle-dist.yml'
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Bundle mode: lite / pro / full / all'
+        description: 'Bundle mode'
         required: false
         default: 'all'
+        # type: choice constrains this to the four values below. Without it the
+        # input is free text, and it is interpolated into a shell step — a
+        # dispatcher could inject arbitrary commands onto the runner.
+        type: choice
+        options: [all, lite, pro, full]
 
 jobs:
   bundle:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -33,8 +42,12 @@ jobs:
         run: pip install pyyaml
 
       - name: Generate bundles
+        # Defence in depth: the value reaches bash as an environment variable,
+        # never as text pasted into the script body. Even if the choice
+        # constraint above were removed, this step could not be injected.
+        env:
+          MODE: ${{ github.event.inputs.mode || 'all' }}
         run: |
-          MODE="${{ github.event.inputs.mode || 'all' }}"
           if [ "$MODE" = "all" ]; then
             python3 shared/scripts/bundle_usap.py bundle --mode lite
             python3 shared/scripts/bundle_usap.py bundle --mode pro
@@ -49,22 +62,16 @@ jobs:
             [ -f "$f" ] && echo "$f: $(wc -c < $f) bytes"
           done
 
-      - name: Commit updated dist/
+      # DRIFT GATE, not an auto-commit. `main` is a protected branch: bot
+      # pushes are rejected, so committing back can only fail. It was already
+      # failing before protection, on a concurrent-push race:
+      #   "cannot lock ref 'refs/heads/main': is at X but expected Y"
+      # Gating removes the race entirely. Regenerate locally with:
+      #   python3 shared/scripts/bundle_usap.py bundle --mode lite|pro|full
+      - name: dist/ drift gate
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add dist/
-          if git diff --staged --quiet; then
-            echo "No bundle changes to commit"
-          else
-            # Active-domain count only — match bundle_usap.py::DOMAINS.
-            # Counts SKILL.md exactly one level deep under each active domain;
-            # legacy / symlinked entries elsewhere are excluded.
-            SKILLS=$(find \
-              appsec-devsecops cloud-infra detection governance \
-              identity-access pentest platform-ai red-team \
-              response risk-compliance system-security webapp-security \
-              -mindepth 2 -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')
-            git commit -m "chore(dist): regenerate bundles ($SKILLS skills) [skip ci]"
-            git push
+          if ! git diff --exit-code -- dist/; then
+            echo "::error::dist/ is out of date. Regenerate the bundles and commit the result."
+            exit 1
           fi
+          echo "dist/ is current"

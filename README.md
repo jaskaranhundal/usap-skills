@@ -6,6 +6,7 @@
 
 ### `Signal Architecture` · agents reason · humans approve · MCP executes
 
+[![Website](https://img.shields.io/badge/website-usap--security.vercel.app-29d3f0?style=flat-square&labelColor=05080d)](https://usap-security.vercel.app)
 [![Skills](https://img.shields.io/badge/skills-79-29d3f0?style=flat-square&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills)
 [![Agents](https://img.shields.io/badge/agents-12_cs--*-d2a8ff?style=flat-square&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills/tree/main/agents)
 [![Domains](https://img.shields.io/badge/domains-12-29d3f0?style=flat-square&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills#domain-index)
@@ -14,6 +15,7 @@
 [![License](https://img.shields.io/badge/license-Apache_2.0-7ee787?style=flat-square&labelColor=05080d)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-29d3f0?style=flat-square&labelColor=05080d)](shared/scripts)
 [![Last Commit](https://img.shields.io/github/last-commit/jaskaranhundal/usap-skills?style=flat-square&color=8b949e&labelColor=05080d)](https://github.com/jaskaranhundal/usap-skills/commits/main)
+[![usap-skills MCP server](https://glama.ai/mcp/servers/jaskaranhundal/usap-skills/badges/score.svg)](https://glama.ai/mcp/servers/jaskaranhundal/usap-skills)
 
 </div>
 
@@ -22,6 +24,8 @@
 Each `SKILL.md` is a complete LLM system prompt — paste into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no install. Apache 2.0, typed 11-field output contract, framework-mapped (MITRE ATT&CK, NIST CSF 2.0, OWASP Top 10, ATLAS, D3FEND, NIST AI RMF), L1–L4 autonomy with explicit human-approval gates.
 
 > If this is useful, **[star the repo](https://github.com/jaskaranhundal/usap-skills/stargazers)** — it's the cheapest signal to send and the only one that drives discovery. Want to contribute? The [open invitations in `ROADMAP.md`](ROADMAP.md#open-invitations) are picked tasks, not vague areas.
+
+**▶ [See every pillar run with real, reproducible output → `examples/`](examples/README.md)** · **[Install on your platform → `INSTALLATION.md`](INSTALLATION.md)**
 
 ## Try it in 60 seconds
 
@@ -59,6 +63,23 @@ Paste `dist/USAP_LITE.md` as the system prompt in any LLM. No npm, no Docker, no
 ### Option 3 — interactive web demo (no install)
 
 Open [`docs/design-system/ui_kits/platform/index.html`](docs/design-system/ui_kits/platform/index.html) in any browser for the 3-screen click-through (Landing → Agent Console → Findings).
+
+### Option 4 — MCP server (Cursor, Codex CLI, Gemini CLI, Goose, any MCP client)
+
+USAP also runs as a stdlib-only **Model Context Protocol** server. Add to your client's MCP config:
+
+```json
+{
+  "mcpServers": {
+    "usap": {
+      "command": "python3",
+      "args": ["/absolute/path/to/usap-skills/tools/mcp_server.py"]
+    }
+  }
+}
+```
+
+Connect, then ask plain-English security questions — your client discovers and loads USAP skills and `cs-*` agents on demand. Read-only Phase 1 today; Phase 2 turns USAP into the master MCP routing security intents to downstream vendor MCPs (SIEM, EDR, firewall) with the contract's `human_approval_required` gate enforcing the human approval step. Full docs at [`docs/mcp-server.md`](docs/mcp-server.md).
 
 ---
 
@@ -150,6 +171,8 @@ The 11 required fields are: `agent_slug`, `intent_type`, `action`, `rationale`, 
 
 
 ## Why USAP
+
+> New here? Read: [USAP vs Prompt Libraries](docs/explainers/usap-vs-prompt-libraries.md) — why a `SKILL.md` is more than a folder of prompts.
 
 - **Open source, no SaaS, no waitlist.** Apache 2.0. Drop the skills into Claude, ChatGPT, Gemini, Ollama, or AnythingLLM with no platform install. No vendor cloud, no per-seat pricing, no telemetry leaving your environment.
 - **Standardized 11-field output contract.** Every skill emits CVSS, MITRE ATT&CK technique IDs, evidence references, and an explicit `human_approval_required` flag (`standards/output-contract.md`). Safe to embed in production agent stacks where competitor copilots remain black boxes.
@@ -439,6 +462,7 @@ claude          # CLAUDE.md auto-loaded
 | Situation | Agent |
 |---|---|
 | AWS/Azure/GCP misconfiguration scan | `cloud-security-posture` |
+| Container image vulnerability scan (Trivy/Grype/Snyk) | `container-image-scan` |
 | Public attack surface mapping | `attack-surface-management` |
 | Network exposure and open ports | `network-exposure` |
 | Endpoint and OS security | `endpoint-os-security` |
@@ -535,7 +559,7 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 | [Detection](domains/detection.md) | threat-hunting, secrets-exposure, behavioral-analytics, telemetry-signal-quality, network-exposure, attack-surface-management, threat-intelligence, deception-honeypot |
 | [Response](domains/response.md) | incident-commander, incident-classification, containment-advisor, forensics, zero-day-response, zero-day-response-governance |
 | [Risk & Compliance](domains/risk-compliance.md) | enterprise-risk-assessment, risk-threat-modeling, compliance-mapping, regulatory-horizon, privacy-dpia, cyber-insurance, internal-audit-assurance, security-posture-score |
-| [Cloud & Infra](domains/cloud-infra.md) | cloud-security-posture, iac-security, endpoint-os-security, ot-iot-device-security, cloud-workload-protection |
+| [Cloud & Infra](domains/cloud-infra.md) | cloud-security-posture, iac-security, container-image-scan, endpoint-os-security, ot-iot-device-security, cloud-workload-protection |
 | [AppSec & DevSecOps](domains/appsec-devsecops.md) | secure-sdlc, sast-dast-coordinator, devsecops-pipeline, build-integrity, supply-chain-risk, supply-chain-simulation, appsec-code-review, pipeline-security-scan |
 | [Identity & Access](domains/identity-access.md) | identity-access-risk, data-security-classification, cryptography-key-management, insider-physical-risk |
 | [Red Team](domains/red-team.md) | red-team-operations, red-team-planner, safe-exploitation, continuous-pentesting, attack-path-analysis, ai-red-teaming |
@@ -560,6 +584,7 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 | `build-integrity` | L3 | Detection | Verifies software build pipeline integrity: artifact signing, provenance, reproducibility |
 | `cloud-security-posture` | L4 | Cloud | CSPM: AWS/Azure/GCP posture evaluation against CIS Benchmarks, drift detection, compliance mapping |
 | `compliance-mapping` | L2 | Compliance | Maps security findings to regulatory frameworks: GDPR, PCI DSS, HIPAA, SOC 2, ISO 27001 |
+| `container-image-scan` | L3 | Cloud | Classifies Trivy/Grype/Snyk findings by component (base-image OS package, app dependency, implanted layer) into block-deploy/fix/track/accept |
 | `containment-advisor` | L3 | Response | Recommends containment strategies across 10 threat types; assesses blast radius and production impact |
 | `continuous-pentesting` | L3 | Testing | Interprets and prioritizes automated continuous penetration testing results |
 | `cryptography-key-management` | L3 | Identity | Assesses cryptographic key lifecycle risk: weak algorithms, key rotation gaps, HSM gaps |

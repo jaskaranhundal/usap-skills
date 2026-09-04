@@ -5,6 +5,23 @@ skills: incident-commander
 domain: security
 model: opus
 tools: [Read, Write, Bash, Grep, Glob]
+# usap_mcp — connector-agnostic MCP whitelist (read-only for incident evidence;
+# gated for mutating containment/notification). Jordan declares LOGICAL
+# capabilities, not physical tools: `mcp:siem:search` resolves to whichever SIEM
+# the operator connected (Splunk, Elastic, Sentinel), `mcp:edr:*` to whichever
+# EDR (CrowdStrike, Defender, SentinelOne), and so on, via
+# registry/usap-mcp-registry.yaml. Resolve with:
+# python3 tools/mcp_router.py --resolve mcp:siem:search
+usap_mcp:
+  read_only:
+    - mcp:siem:search            # SIEM events during the incident
+    - mcp:edr:list_detections    # endpoint detections for affected hosts
+    - mcp:cloud:list_findings    # cloud posture on affected assets
+  gated:
+    - mcp:edr:isolate_host       # mutating — requires human_approval_required
+    - mcp:firewall:block_ip      # mutating — requires human_approval_required
+    - mcp:identity:suspend_user  # mutating — requires human_approval_required
+    - mcp:slack:post_message     # mutating — requires human_approval_required
 state:
   active_workflow: null
   steps_completed: []
@@ -250,6 +267,25 @@ Announce all discovered documents before proceeding: "Found [document] — extra
 - Evidence package produced without hash values for each item
 - Post-incident report produced without a root cause determination (even a provisional one)
 
+## Live MCP Data Backend (connector-agnostic)
+
+This agent fetches evidence from live MCP connectors rather than pasted logs. It declares LOGICAL capabilities — the router (`tools/mcp_router.py::resolve_logical`) maps each to whichever physical MCP the operator connected, so the same agent works in any environment. If a capability resolves to `None`, the agent degrades gracefully: it names the missing connector, caps confidence, and marks that data class UNKNOWN — it never narrates assumed telemetry as observed.
+
+| Logical capability | Fetches | Resolves to (operator's connected MCP) |
+|---|---|---|
+| `mcp:siem:search` | SIEM events during the incident | Splunk, Elastic, or Sentinel |
+| `mcp:edr:list_detections` | endpoint detections for affected hosts | CrowdStrike or SentinelOne |
+| `mcp:cloud:list_findings` | cloud posture on affected assets | AWS Security Hub, GCP SCC, or Azure |
+| `mcp:edr:isolate_host` | **isolate a host — mutating, gated** | CrowdStrike |
+| `mcp:firewall:block_ip` | **block an IP — mutating, gated** | FortiGate or Palo Alto |
+| `mcp:identity:suspend_user` | **suspend a user — mutating, gated** | Okta or Azure AD |
+| `mcp:slack:post_message` | notify a channel — mutating, gated | Slack |
+
+**Evidence discipline.** Every verdict cites its evidence as a resolvable `evidence_references[].source`: the `mcp:<logical>:<tool>:<tool_call_id>` of the call that produced it (or `https://` / `s3://` / `local://`). The output contract rejects verdicts with no resolvable source.
+
+**Mutating actions stay gated.** Containment (isolate_host, block_ip, suspend_user, post_message) runs only through the human-approval path with `human_approval_required: true` — never from an autonomous run.
+
+---
 ## Integration Examples
 
 ```bash

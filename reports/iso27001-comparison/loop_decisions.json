@@ -1,0 +1,452 @@
+{
+  "generated_utc": "2026-06-27T10:27:52.555750Z",
+  "audit_dir": "/Users/jaskarn.singh/Documents/PREPO/usap-skills/reports/iso27001-comparison/_audit",
+  "audit_key_set": true,
+  "steps": [
+    {
+      "phase": 1,
+      "step": "validate_payload(vuln-scan sample)",
+      "evidence_path": "appsec-devsecops/vuln-scan/expected_outputs/sample_output.json",
+      "violations": [],
+      "ok": true
+    },
+    {
+      "phase": 2,
+      "step": "route_payload(detect \u2192 splunk)",
+      "status": "dispatched",
+      "selected_mcp": "splunk",
+      "selected_capability": "search",
+      "outcome_ok": true
+    },
+    {
+      "phase": 3,
+      "step": "dispatch_after_approval(slack/post_message)",
+      "status": "dispatched",
+      "outcome_ok": true
+    },
+    {
+      "phase": 4,
+      "step": "scheduled_run \u2192 dispatch (splunk/search)",
+      "status": "dispatched",
+      "outcome_ok": true
+    },
+    {
+      "phase": 4,
+      "step": "mcp_audit.verify(latest log)",
+      "log": "/Users/jaskarn.singh/Documents/PREPO/usap-skills/reports/iso27001-comparison/_audit/2026-06-27.jsonl",
+      "ok": true,
+      "errors": []
+    }
+  ],
+  "audit_entries": [
+    {
+      "decision": {
+        "alternatives": [
+          "slack"
+        ],
+        "outcome": {
+          "adapter": "splunk",
+          "capability": "search",
+          "error": null,
+          "ok": true,
+          "response": {
+            "_adapter": "splunk",
+            "_capability": "search",
+            "_mode": "fixture",
+            "_received_args": {
+              "spl": "index=okta_logs failed_login"
+            },
+            "result_count": 3,
+            "results": [
+              {
+                "_time": "2026-06-26T14:32:00Z",
+                "action": "failed_login",
+                "count": 12,
+                "src_ip": "198.51.100.42",
+                "user": "alice"
+              },
+              {
+                "_time": "2026-06-26T14:33:00Z",
+                "action": "failed_login",
+                "count": 14,
+                "src_ip": "198.51.100.42",
+                "user": "bob"
+              },
+              {
+                "_time": "2026-06-26T14:34:00Z",
+                "action": "failed_login",
+                "count": 9,
+                "src_ip": "198.51.100.42",
+                "user": "carol"
+              }
+            ],
+            "spl": "<spl>"
+          }
+        },
+        "phase": 3,
+        "selected_capability": "search",
+        "selected_mcp": "splunk",
+        "selected_mcp_name": "Splunk",
+        "status": "dispatched"
+      },
+      "event": "dispatch",
+      "payload": {
+        "dispatch_args": {
+          "spl": "index=okta_logs failed_login"
+        },
+        "human_approval_required": false,
+        "intent_type": "detect",
+        "next_agents": [
+          "cs-security-analyst"
+        ]
+      },
+      "prev_hash": "GENESIS",
+      "sig": "a30f75e866576a55892c72bb18428b0eccda4135bdfd761abf433958eb1df8b9",
+      "timestamp_utc": "2026-06-27T10:27:52.340488Z"
+    },
+    {
+      "decision": {
+        "alternatives": [
+          "splunk"
+        ],
+        "outcome": {
+          "adapter": "github",
+          "capability": "get_pr_diff",
+          "error": null,
+          "ok": true,
+          "response": {
+            "_adapter": "github",
+            "_capability": "get_pr_diff",
+            "_mode": "fixture",
+            "_received_args": {},
+            "additions": 1,
+            "changed_files": 1,
+            "deletions": 0,
+            "diff": "diff --git a/src/config.py b/src/config.py\n@@ -10,3 +10,4 @@\n+PASSWORD = 'changeme-prod'   # \u2190 USAP would flag this\n"
+          }
+        },
+        "phase": 3,
+        "selected_capability": "get_pr_diff",
+        "selected_mcp": "github",
+        "selected_mcp_name": "GitHub",
+        "status": "dispatched"
+      },
+      "event": "dispatch",
+      "payload": {
+        "action": "Hand off the threat model + DREAD hit list to vuln-scan; scope its checks to the top-3 boundaries.",
+        "affected_assets": [
+          "SimpleStoreAPI"
+        ],
+        "agent_slug": "threat-model",
+        "artifact_path": "/tmp/simple-store-api/THREAT_MODEL.md",
+        "confidence": 0.82,
+        "evidence_references": [
+          {
+            "quote": "auth_scheme: none on PUT /api/v1/profile",
+            "ref": "/tmp/simple-store-api/",
+            "source": "spec"
+          },
+          {
+            "quote": "table users contains email, phone, hashed_password",
+            "ref": "/tmp/simple-store-api/db/schema.sql",
+            "source": "spec"
+          }
+        ],
+        "human_approval_required": false,
+        "intent_type": "analyze",
+        "key_findings": [
+          "TM-001 (Spoofing): unauthenticated PUT on /api/v1/profile \u2014 DREAD sum 38",
+          "TM-002 (Information disclosure): confidential user table without row-level authz \u2014 DREAD sum 34",
+          "TM-003 (Tampering): unsigned session cookie traversing client-server boundary \u2014 DREAD sum 27",
+          "TM-004 (Elevation of privilege): admin and customer routes share a controller \u2014 DREAD sum 25",
+          "Two unverified assumptions logged in THREAT_MODEL.md (TLS terminator presence, /api/v1/profile rate-limit posture)"
+        ],
+        "mitre_ttps": [
+          "T1190",
+          "T1078"
+        ],
+        "next_agents": [
+          "vuln-scan"
+        ],
+        "rationale": "SimpleStoreAPI exposes a confidential user table behind an Express server with no documented row-level authorization. Spoofing (S1) and Information disclosure (I1) at the client-server boundary score DREAD 38 and 34 respectively. Two assumptions remain unverified: presence of a transit TLS terminator and rate-limit posture on /api/v1/profile.",
+        "severity": "high",
+        "timestamp_utc": "2026-06-20T10:30:00Z"
+      },
+      "prev_hash": "ff2a7419a911695c9c2230015096eb0d327010abb3974049c596c26f262d7e37",
+      "sig": "1cc991c85fd633034cfd6a21bb3e727a0d6fd5ab8504b97e5c00c8a246b2c607",
+      "timestamp_utc": "2026-06-27T10:27:52.394789Z"
+    },
+    {
+      "decision": {
+        "approval_token": "smoke-test-approved",
+        "capability": "post_message",
+        "mcp": "slack"
+      },
+      "event": "approval_granted",
+      "prev_hash": "e1f34a63437e34195a7db39f1f052fcfbeacdb5fb47091aa2d1b5baf704b56fd",
+      "sig": "4a2adcc2cd058339fdcdc61d7748de139640baa5b7f5f85281a09393998d1d87",
+      "timestamp_utc": "2026-06-27T10:27:52.395606Z"
+    },
+    {
+      "approval_token": "smoke-test-approved",
+      "decision": {
+        "outcome": {
+          "adapter": "slack",
+          "capability": "post_message",
+          "error": null,
+          "ok": true,
+          "response": {
+            "_adapter": "slack",
+            "_capability": "post_message",
+            "_mode": "fixture",
+            "_received_args": {
+              "channel": "#ir-channel",
+              "text": "SEV-2 declared at 15:24Z"
+            },
+            "channel": "<channel>",
+            "message": {
+              "text": "<text>"
+            },
+            "ok": true,
+            "ts": "1719420000.000100"
+          }
+        },
+        "phase": 3,
+        "selected_capability": "post_message",
+        "selected_mcp": "slack",
+        "selected_mcp_name": "Slack",
+        "status": "dispatched"
+      },
+      "event": "dispatch",
+      "prev_hash": "20ee944d6020cbd943e88b9a905a2da99d25bf7ed71bb228a7de4766796e9b4a",
+      "sig": "c934b262a6134fd6e1bcf6bb6159426dad4c1b8f800b03cee83347421f3b5100",
+      "timestamp_utc": "2026-06-27T10:27:52.424283Z"
+    },
+    {
+      "decision": {
+        "error": "MCP crowdstrike is disabled in the registry.",
+        "status": "dispatch_failed"
+      },
+      "event": "approval_granted_dispatch_failed",
+      "prev_hash": "fe0c5c6f962611b05c417e42f505c7c594fc9965bb3783972c808e0e35bd4c82",
+      "sig": "ddb757ce8371c21e1832993ef96819bc7c539631f00c6884e928c006b01a9fcd",
+      "timestamp_utc": "2026-06-27T10:27:52.425122Z"
+    },
+    {
+      "decision": {
+        "alternatives": [
+          "slack"
+        ],
+        "outcome": {
+          "adapter": "splunk",
+          "capability": "search",
+          "error": null,
+          "ok": true,
+          "response": {
+            "_adapter": "splunk",
+            "_capability": "search",
+            "_mode": "fixture",
+            "_received_args": {
+              "spl": "index=okta_logs failed_login earliest=-1h"
+            },
+            "result_count": 3,
+            "results": [
+              {
+                "_time": "2026-06-26T14:32:00Z",
+                "action": "failed_login",
+                "count": 12,
+                "src_ip": "198.51.100.42",
+                "user": "alice"
+              },
+              {
+                "_time": "2026-06-26T14:33:00Z",
+                "action": "failed_login",
+                "count": 14,
+                "src_ip": "198.51.100.42",
+                "user": "bob"
+              },
+              {
+                "_time": "2026-06-26T14:34:00Z",
+                "action": "failed_login",
+                "count": 9,
+                "src_ip": "198.51.100.42",
+                "user": "carol"
+              }
+            ],
+            "spl": "<spl>"
+          }
+        },
+        "phase": 3,
+        "selected_capability": "search",
+        "selected_mcp": "splunk",
+        "selected_mcp_name": "Splunk",
+        "status": "dispatched"
+      },
+      "event": "dispatch",
+      "payload": {
+        "action": "Hunt for failed Okta logins in the last hour",
+        "agent_slug": "cs-security-analyst",
+        "confidence": 0.92,
+        "dispatch_args": {
+          "spl": "index=okta_logs failed_login earliest=-1h"
+        },
+        "evidence_references": [],
+        "human_approval_required": false,
+        "intent_type": "detect",
+        "key_findings": [
+          "loop-demo synthetic event"
+        ],
+        "next_agents": [
+          "cs-security-analyst"
+        ],
+        "rationale": "Looped demo for ISO 27001 comparison",
+        "severity": "informational",
+        "timestamp_utc": "2026-06-27T10:27:52.463567Z"
+      },
+      "prev_hash": "c39f4cb8026312aa723644086ae8c220f2fdc86ce02465547e88a84efae46cb7",
+      "sig": "659ef53162905a4b12295027b1a8f58a0c733a10e3e329cc7e9077e7a5e671b7",
+      "timestamp_utc": "2026-06-27T10:27:52.497241Z"
+    },
+    {
+      "decision": {
+        "approval_token": "loop-demo-approved",
+        "capability": "post_message",
+        "mcp": "slack"
+      },
+      "event": "approval_granted",
+      "prev_hash": "2110358e8714c407c13ef64cf17cb266a03978128861bb5af38ef18c9304334f",
+      "sig": "2794d065bdec0ccd752c3fc1b5faf26cfca769460b72930d5444df9eb125bafc",
+      "timestamp_utc": "2026-06-27T10:27:52.497634Z"
+    },
+    {
+      "approval_token": "loop-demo-approved",
+      "decision": {
+        "outcome": {
+          "adapter": "slack",
+          "capability": "post_message",
+          "error": null,
+          "ok": true,
+          "response": {
+            "_adapter": "slack",
+            "_capability": "post_message",
+            "_mode": "fixture",
+            "_received_args": {
+              "channel": "#ir-channel",
+              "text": "Loop demo (no human in loop, audit-only)"
+            },
+            "channel": "<channel>",
+            "message": {
+              "text": "<text>"
+            },
+            "ok": true,
+            "ts": "1719420000.000100"
+          }
+        },
+        "phase": 3,
+        "selected_capability": "post_message",
+        "selected_mcp": "slack",
+        "selected_mcp_name": "Slack",
+        "status": "dispatched"
+      },
+      "event": "dispatch",
+      "prev_hash": "091f4cb22b85c56a77d048ab98e47e6b7c5d5b54864e3252e6c0d5def1a445bf",
+      "sig": "f45915de73c7ba4c9e6694416f06500fd40a011f1bc9e3f7ad119560d9cee9a2",
+      "timestamp_utc": "2026-06-27T10:27:52.526019Z"
+    },
+    {
+      "decision": {
+        "note": "demo-only marker",
+        "status": "synthetic"
+      },
+      "event": "scheduled_run",
+      "job_id": "loop-demo-synthetic-job",
+      "payload": {
+        "action": "Hunt for failed Okta logins in the last hour",
+        "agent_slug": "cs-security-analyst",
+        "confidence": 0.92,
+        "dispatch_args": {
+          "spl": "index=okta_logs failed_login earliest=-1h"
+        },
+        "evidence_references": [],
+        "human_approval_required": false,
+        "intent_type": "detect",
+        "key_findings": [
+          "loop-demo synthetic event"
+        ],
+        "next_agents": [
+          "cs-security-analyst"
+        ],
+        "rationale": "Looped demo for ISO 27001 comparison",
+        "severity": "informational",
+        "timestamp_utc": "2026-06-27T10:27:52.463567Z"
+      },
+      "prev_hash": "1cddc883d41160b4197d547bc215bb08babaf2ce005aca3241035f455096f26e",
+      "sig": "5454391fb8116d4f456c74693b6262591aaf5d52c4adf6993f9b1a1a170a0966",
+      "timestamp_utc": "2026-06-27T10:27:52.526335Z"
+    },
+    {
+      "decision": {
+        "approval_token": "loop-demo-scheduled",
+        "capability": "search",
+        "mcp": "splunk"
+      },
+      "event": "approval_granted",
+      "prev_hash": "3a76a98a69b341e0d09c076aed8cfac2b8f1c7ea8de28f109eb5eaf2004b81c8",
+      "sig": "844e5a3ea3b03761e01177c67f65d0f205574914cf6005833b8838a554c6b210",
+      "timestamp_utc": "2026-06-27T10:27:52.526459Z"
+    },
+    {
+      "approval_token": "loop-demo-scheduled",
+      "decision": {
+        "outcome": {
+          "adapter": "splunk",
+          "capability": "search",
+          "error": null,
+          "ok": true,
+          "response": {
+            "_adapter": "splunk",
+            "_capability": "search",
+            "_mode": "fixture",
+            "_received_args": {
+              "spl": "index=ad_logs auth_failure | stats count by user"
+            },
+            "result_count": 3,
+            "results": [
+              {
+                "_time": "2026-06-26T14:32:00Z",
+                "action": "failed_login",
+                "count": 12,
+                "src_ip": "198.51.100.42",
+                "user": "alice"
+              },
+              {
+                "_time": "2026-06-26T14:33:00Z",
+                "action": "failed_login",
+                "count": 14,
+                "src_ip": "198.51.100.42",
+                "user": "bob"
+              },
+              {
+                "_time": "2026-06-26T14:34:00Z",
+                "action": "failed_login",
+                "count": 9,
+                "src_ip": "198.51.100.42",
+                "user": "carol"
+              }
+            ],
+            "spl": "<spl>"
+          }
+        },
+        "phase": 3,
+        "selected_capability": "search",
+        "selected_mcp": "splunk",
+        "selected_mcp_name": "Splunk",
+        "status": "dispatched"
+      },
+      "event": "dispatch",
+      "prev_hash": "4710c71bea49ec3218ab7620da1890d3babf595bf621303bdec94128c8fbddac",
+      "sig": "e2fd1c7516bda96f42d27e80af6fb2a779e53f5453bb4f7989749fa17f7052ed",
+      "timestamp_utc": "2026-06-27T10:27:52.554961Z"
+    }
+  ]
+}

@@ -1,23 +1,29 @@
 ---
 name: <slug>
-description: USAP agent skill for <Title>. Use for <one-line purpose>.
+description: USAP agent skill for <Title>. Use when <one-line trigger>.
 license: MIT
+# Optional framework mappings — top-level placement is agentskills.io conformant.
+# Cap 8 IDs per framework. Remove keys you do not populate; do NOT leave
+# empty arrays in the committed file. See standards/frontmatter-spec.md.
+# mitre_attack: [T1078, T1059.001]
+# nist_csf:     [DE.CM-01, ID.RA-05]
+# mitre_atlas:  [AML.T0040]
+# owasp_top10:  [A01, A03]
+# d3fend:       ["Process Termination"]
+# nist_ai_rmf:  [MAP-1.1, MEASURE-2.7]
 metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-20
+  updated: 2026-06-27
   agent_slug: "<slug>"
-  # Optional framework mappings — see standards/frontmatter-spec.md.
-  # Cap 8 IDs per framework. Remove keys you do not populate; do NOT leave
-  # empty arrays in the committed file.
-  # frameworks:
-  #   mitre_attack: [T1078, T1059.001]
-  #   nist_csf:     [DE.CM-01, ID.RA-05]
-  #   mitre_atlas:  [AML.T0040]
-  #   owasp_top10:  [A01, A03]
-  #   d3fend:       ["Process Termination"]
-  #   nist_ai_rmf:  [MAP-1.1, MEASURE-2.7]
+  # Optional: external CLI binaries this skill's tool script depends on.
+  # Omit entirely when the skill is stdlib-only Python.
+  # requires:
+  #   bins: ["nmap", "kubectl"]
+  #   install:
+  #     macos: "brew install nmap kubernetes-cli"
+  #     linux: "apt-get install -y nmap kubectl"
 # ---------------- Invocation Control (Claude Code extensions) ----------------
 # Optional top-level fields layering onto agentskills.io. See
 # standards/frontmatter-spec.md "Invocation Control" for the L1-L4 invariants.

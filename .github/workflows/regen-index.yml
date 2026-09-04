@@ -1,0 +1,48 @@
+name: regen-index
+
+# Guard the root /index.json and /index.summary.json discovery registries.
+# External tools (agentskills.io, awesome-list scrapers) read these files
+# directly from raw.githubusercontent.com; if they drift away from the
+# per-skill frontmatter the registry lies about what USAP ships.
+#
+# On every push to main that touches a SKILL.md, an agent markdown file,
+# or the builder itself, we re-run `tools/build_index.py --check`. The
+# check is structural only — wall-clock timestamps are normalised before
+# diff — so it fails the build iff the on-disk registries are stale.
+#
+# The build is deliberately read-only. We do NOT auto-commit a regen
+# from CI; instead we surface the diff and force the maintainer to run
+# `python3 tools/build_index.py` locally and push a real commit. This
+# keeps every registry change tied to a reviewable PR.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/SKILL.md'
+      - 'agents/**/*.md'
+      - 'tools/build_index.py'
+      - '.github/workflows/regen-index.yml'
+  pull_request:
+  # No paths: filter. These jobs are required status checks on main, and a
+  # required check that is path-filtered never reports on a PR outside those
+  # paths — the PR then waits on "Expected" forever and cannot merge. They
+  # run in seconds, so running them on every PR is the cheaper trade.
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: index.json drift gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Verify root index.json and index.summary.json are current
+        run: python3 tools/build_index.py --check

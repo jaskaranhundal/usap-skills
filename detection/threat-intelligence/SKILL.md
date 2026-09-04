@@ -2,11 +2,13 @@
 name: threat-intelligence
 description: USAP agent skill for Threat Intelligence Enrichment and Attribution. Use for IOC enrichment, adversary TTP mapping to MITRE ATT&CK, threat actor attribution, intelligence-driven detection prioritization, and converting raw indicators into actionable detection or control recommendations.
 license: MIT
+mitre_attack: [T1041, T1055, T1059, T1078, T1110, T1133, T1190, T1195]
+nist_csf: [DE.AE-07, ID.RA-03, ID.RA-05]
 metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-detection
-  updated: 2026-06-20
+  updated: 2026-06-27
   agent_slug: "threat-intelligence"
   usap_level: "L3"
   agent_id: 25

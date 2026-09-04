@@ -9,6 +9,7 @@ Do not hand-edit anything in `mappings/` except this README and the per-subdirec
 | Path | Purpose |
 |---|---|
 | `mitre-attack/attack-navigator-layer.json` | MITRE ATT&CK Navigator v4.5 layer. Load directly into <https://mitre-attack.github.io/attack-navigator/>. |
+| `mitre-attack/ATTACK_COVERAGE.md` | Per-tactic coverage report (Reconnaissance through Impact) with covered-vs-uncovered ASCII bars and per-tactic technique tables. |
 | `mitre-attack/coverage-summary.md` | Per-technique skill counts plus per-domain technique tallies. |
 | `nist-csf/csf-alignment.md` | Per-subcategory skill counts plus per-function citation totals. |
 
