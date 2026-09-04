@@ -35,6 +35,7 @@ Subdomains covered by this domain:
 | ciso-brief-generator | governance/ciso-brief-generator | ciso-brief-generator_tool.py | Executive briefs |
 | security-roadmap-planner | governance/security-roadmap-planner | security-roadmap-planner_tool.py | 12-month investment-prioritized program roadmap |
 | security-debt-tracker | governance/security-debt-tracker | security-debt-tracker_tool.py | Aging debt analysis, SLA breach detection, accumulation rate |
+| persona-coverage-audit | governance/persona-coverage-audit | persona-coverage-audit_tool.py | Weekly coverage of USAP persona passes over gated sessions; reads the gate audit log and transcripts (keys only) |
 
 All skill paths are relative from the repository root as `governance/<slug>/`. For example, the vulnerability-management skill lives at `governance/vulnerability-management/`.
 
@@ -55,6 +56,7 @@ All skill paths are relative from the repository root as `governance/<slug>/`. F
 | ciso-brief-generator_tool.py | governance/ciso-brief-generator/scripts/ciso-brief-generator_tool.py | Synthesizes posture score, vulnerability trends, and metrics into board-ready narrative briefs | `--audience`, `--period`, `--format`, `--output` |
 | security-roadmap-planner_tool.py | governance/security-roadmap-planner/scripts/security-roadmap-planner_tool.py | Builds investment-prioritized 12-month security program roadmap from posture, risk, and compliance inputs | `--input`, `--risk-input`, `--compliance-input`, `--output` |
 | security-debt-tracker_tool.py | governance/security-debt-tracker/scripts/security-debt-tracker_tool.py | Analyzes findings aging, SLA breach counts, debt accumulation rate; exits 0/1/2 for stable/accumulating/critical | `--input`, `--output` |
+| persona-coverage-audit_tool.py | governance/persona-coverage-audit/scripts/persona-coverage-audit_tool.py | Pairs gated sessions with persona_pass audit entries by session id; exits 0/1/2 for covered/partly covered/zero passes | `--input`, `--audit-dir`, `--transcripts-dir`, `--since-days`, `--output` |
 
 ---
 

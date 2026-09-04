@@ -1,18 +1,67 @@
 {
   "agent_slug": "secrets-exposure",
-  "intent_type": "detect",
-  "action": "Surface candidate findings to the operator and hand off to triage.",
-  "rationale": "Representative output for the Secrets Exposure skill. Detect, classify, and scope the blast radius of exposed secrets and credentials across code repositories, pipelines, and runtime environments. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "escalate",
+  "action": "Rotate and revoke the aws_access_key now (target: within 5 minutes of approval); then audit usage since exposure and purge the value from history. Approval by soc_lead, ciso required before any credential operation.",
+  "rationale": "aws_access_key detected by git-history-scanner (credibility 0.93). Confidence 0.97 from: detector base 0.93 (pattern for aws_access_key, source credibility 0.93); entropy 4.7 > 4.5 and variable named SECRET/KEY/TOKEN: floor 0.92; .env file (not .env.example): +0.05; production branch or environment: +0.05. Blast radius full_account (attached policies include AmazonS3FullAccess, AmazonDynamoDBFullAccess, SecretsManagerReadWrite). Exposure window 4320 minutes; per the attacker timeline the steps up to T+45m are plausible, so revocation must be executed within 5 minutes of approval. Recommendation rotate_and_revoke_immediately; intent mutating, mutating category credential_operation, approvers ['soc_lead', 'ciso'].",
+  "confidence": 0.97,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Secrets Exposure: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Detect, classify, and scope the blast radius of exposed secrets and credentials across code repositories, pipelines, and runtime environments"
+    "Secret type aws_access_key (T1552.005); confidence 0.97: detector base 0.93 (pattern for aws_access_key, source credibility 0.93); entropy 4.7 > 4.5 and variable named SECRET/KEY/TOKEN: floor 0.92; .env file (not .env.example): +0.05; production branch or environment: +0.05",
+    "Blast radius full_account: attached policies include AmazonS3FullAccess, AmazonDynamoDBFullAccess, SecretsManagerReadWrite",
+    "Location acme-corp/payments-service:config/prod.env line 14 on branch main, commit d4f8a3c91b77",
+    "Exposure window 4320 minutes; attacker steps already plausible: T+2m key validated (sts:GetCallerIdentity) (T1552.005); T+5m accessible services mapped (T1619); T+10m backdoor IAM user and access key created (T1098.001); T+15m S3 and Secrets Manager exfiltration started (T1530)",
+    "No CloudTrail anomaly as of 2026-03-10T08:00:00Z; absence of evidence, not a clean result",
+    "Prevention gaps: secrets scanning enabled, pre commit hooks present, mfa on committer account"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/secrets-exposure-input.json",
+      "ref": "event SE-20260310-0047",
+      "timestamp_utc": "2026-03-10T08:14:32Z"
+    },
+    {
+      "source": "local://detection/secrets-exposure/references/attacker_timeline.md",
+      "ref": "aws_access_key timeline"
+    },
+    {
+      "source": "fact:git",
+      "ref": "acme-corp/payments-service@d4f8a3c91b77 config/prod.env:14"
+    }
+  ],
   "next_agents": [
-    "incident-classification"
+    "incident-classification",
+    "containment-advisor",
+    "compliance-mapping"
   ],
-  "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-04T17:15:42Z",
+  "secret_type": "aws_access_key",
+  "blast_radius": "full_account",
+  "recommendation": "rotate_and_revoke_immediately",
+  "mutating_category": "credential_operation",
+  "requires_approval": true,
+  "approver_roles": [
+    "soc_lead",
+    "ciso"
+  ],
+  "mitre_ttps": [
+    "T1552.005",
+    "T1619",
+    "T1098.001",
+    "T1530",
+    "T1562.008"
+  ],
+  "affected_assets": [
+    "repo:acme-corp/payments-service",
+    "iam:payments-service-prod",
+    "aws-account:123456789012"
+  ],
+  "remediation_steps": [
+    "Revoke the exposed aws_access_key at the provider (after approval).",
+    "Issue a replacement credential with least privilege and update consumers.",
+    "Audit provider logs for the exposure window (72 h) for use of the credential.",
+    "Purge the value from git history of acme-corp/payments-service on every branch and force-rotate any secondary secrets in the same file.",
+    "Enable secret scanning and a pre-commit hook on the repository."
+  ],
+  "exposure_window_minutes": 4320
 }
