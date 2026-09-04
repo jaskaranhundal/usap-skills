@@ -531,7 +531,7 @@ claude          # CLAUDE.md auto-loaded
 
 ## Orchestrator Agents
 
-7 `cs-*` agents that coordinate multiple skills into role-specific workflows:
+13 `cs-*` agents that coordinate multiple skills into role-specific workflows. How they hand work to each other, what a handoff carries, and where a chain must stop for a human is specified in [`ORCHESTRATION.md`](ORCHESTRATION.md).
 
 | Agent | Domain | Skills Orchestrated | Description |
 |---|---|---|---|
