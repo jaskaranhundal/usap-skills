@@ -7146,10 +7146,11 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-04
   agent_slug: "iac-security"
 compatibility: "Requires the IaC source tree on disk (Terraform / CloudFormation / Kubernetes manifests / Helm charts). Read-only static analysis."
 allowed-tools: "checkov tfsec trivy kube-bench semgrep"
+mitre_attack: [T1530, T1078.004, T1133, T1611, T1552.001]
 ---
 
 # IaC Security Agent

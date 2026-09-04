@@ -1,0 +1,47 @@
+{
+  "scan_target": "terraform",
+  "source": "acme/payments-infra",
+  "commit": "b7c1e9d",
+  "files": [
+    {
+      "path": "modules/storage/s3.tf",
+      "resources": [
+        {"type": "aws_s3_bucket", "name": "payments-exports", "line": 12,
+         "attributes": {"acl": "public-read", "block_public_acls": false, "server_side_encryption": false, "versioning": false, "logging": false}},
+        {"type": "aws_s3_bucket", "name": "payments-audit-logs", "line": 48,
+         "attributes": {"acl": "private", "block_public_acls": true, "server_side_encryption": true, "versioning": true, "logging": true}}
+      ]
+    },
+    {
+      "path": "modules/iam/roles.tf",
+      "resources": [
+        {"type": "aws_iam_policy", "name": "ci-deploy", "line": 5,
+         "attributes": {"statements": [{"Effect": "Allow", "Action": "*", "Resource": "*"}]}},
+        {"type": "aws_iam_role", "name": "ops-breakglass", "line": 31,
+         "attributes": {"assume_role_policy": {"statements": [{"Effect": "Allow", "Principal": {"AWS": "arn:aws:iam::123456789012:root"}, "Action": "sts:AssumeRole"}]}}}
+      ]
+    },
+    {
+      "path": "modules/network/sg.tf",
+      "resources": [
+        {"type": "aws_security_group_rule", "name": "bastion-ssh-any", "line": 40,
+         "attributes": {"type": "ingress", "from_port": 22, "to_port": 22, "protocol": "tcp", "cidr_blocks": ["0.0.0.0/0"]}},
+        {"type": "aws_security_group_rule", "name": "web-https", "line": 55,
+         "attributes": {"type": "ingress", "from_port": 443, "to_port": 443, "protocol": "tcp", "cidr_blocks": ["0.0.0.0/0"]}}
+      ]
+    },
+    {
+      "path": "k8s/payments-api.yaml",
+      "resources": [
+        {"type": "Deployment", "name": "payments-api", "line": 20,
+         "attributes": {"securityContext": {"privileged": true, "allowPrivilegeEscalation": true, "runAsNonRoot": false}, "automountServiceAccountToken": true}},
+        {"type": "ClusterRoleBinding", "name": "payments-api-admin", "line": 88,
+         "attributes": {"roleRef": "cluster-admin", "subjects": [{"kind": "ServiceAccount", "name": "payments-api"}]}}
+      ]
+    }
+  ],
+  "secrets_detected": [
+    {"path": "modules/database/vars.tf", "line": 8, "kind": "database_password"}
+  ],
+  "approved_exceptions": ["IAC-004"]
+}
