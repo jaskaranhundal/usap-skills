@@ -8,6 +8,7 @@ metadata:
   category: usap-devsecops
   updated: 2026-03-10
   agent_slug: "security-requirements-review"
+mitre_attack: [T1005, T1059, T1133, T1190, T1210, T1530, T1552.001]
 ---
 
 # Security Requirements Review

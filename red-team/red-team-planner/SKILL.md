@@ -8,6 +8,7 @@ metadata:
   category: usap-adversary
   updated: 2026-02-28
   agent_slug: "red-team-planner"
+mitre_attack: [T1566.001]
 ---
 
 # Red Team Planner

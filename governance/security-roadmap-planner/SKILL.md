@@ -22,6 +22,7 @@ metadata:
   input_schema: posture_score_output, risk_assessment_output, compliance_gaps_output
   output_schema: roadmap_items, investment_priorities, quarterly_milestones
   runtime_contract: ../../agents/security-roadmap-planner.yaml
+mitre_attack: [T1046, T1082, T1562, T1566, T1590]
 ---
 
 # Security Roadmap Planner

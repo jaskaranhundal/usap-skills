@@ -10,6 +10,7 @@ metadata:
   agent_slug: "forensics"
 compatibility: "Requires forensic acquisition tooling and a write-blocked evidence target. Read-only against original evidence; chain-of-custody enforced."
 allowed-tools: "volatility3 plaso dd ewfacquire ftk-imager"
+mitre_attack: [T1003, T1041, T1055, T1059, T1070, T1078, T1136, T1486]
 ---
 
 # Forensics Agent
