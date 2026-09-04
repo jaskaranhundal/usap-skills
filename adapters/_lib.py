@@ -73,6 +73,12 @@ def run_adapter(
         Exit code (0 normal).
     """
     mode = os.environ.get("USAP_ADAPTER_MODE", "fixture")
+    if mode == "live" and live_fn is None:
+        # Say it once at startup and again per call: a canned answer must never
+        # pass for a live one (Codex review on PR #147, comment 3936200728).
+        sys.stderr.write(
+            f"adapter:{name}: USAP_ADAPTER_MODE=live but this adapter has no live "
+            "handler; every tools/call returns error -32001 and no call is made.\n")
 
     for raw in sys.stdin:
         line = raw.strip()
@@ -116,7 +122,13 @@ def run_adapter(
             tool_name = params.get("name")
             args = params.get("arguments", {}) or {}
             try:
-                if mode == "live" and live_fn is not None:
+                if mode == "live":
+                    if live_fn is None:
+                        _send(_err(msg_id, -32001,
+                                   f"adapter {name}: live mode is not implemented for this "
+                                   "adapter; no call was made. Set USAP_ADAPTER_MODE=fixture "
+                                   "or supply a live handler."))
+                        continue
                     result = live_fn(tool_name, args)
                 else:
                     if tool_name not in fixtures:
