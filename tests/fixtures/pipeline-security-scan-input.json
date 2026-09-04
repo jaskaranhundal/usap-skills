@@ -1,0 +1,92 @@
+{
+  "platform": "github_actions",
+  "repo": "acme/payments-service",
+  "workflow": ".github/workflows/ci.yml",
+  "permissions": "write-all",
+  "triggers": [
+    "pull_request",
+    "push"
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "DATABASE_URL": "${{ secrets.DATABASE_URL }}",
+    "PAYMENT_GATEWAY_SECRET": "pg_9f8e7d6c5b4a39281706f5e4d3c2b1a0Qx"
+  },
+  "jobs": [
+    {
+      "name": "build",
+      "steps": [
+        {
+          "name": "checkout",
+          "uses": "actions/checkout@v4"
+        },
+        {
+          "name": "setup node",
+          "uses": "actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65",
+          "with": {
+            "node-version": "20"
+          }
+        },
+        {
+          "name": "install",
+          "run": "npm ci"
+        },
+        {
+          "name": "build image",
+          "uses": "docker/build-push-action@v5",
+          "with": {
+            "push": true,
+            "tags": "acme/payments-api:latest"
+          }
+        },
+        {
+          "name": "notify",
+          "run": "curl -s -H 'Authorization: Bearer b64.9f8e7d6c5b4a39281706f5e4d3c2b1a0deadbeefcafe' https://deploy.acme.internal/hooks/payments"
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "env": {
+        "JWT_SIGNING_SECRET": "q9Zr7Kp2Lm5Vx8Wn3Yt6Bh1Jd4Fg0Sc"
+      },
+      "steps": [
+        {
+          "name": "checkout",
+          "uses": "actions/checkout@v4"
+        },
+        {
+          "name": "unit",
+          "run": "npm test"
+        },
+        {
+          "name": "dependency review",
+          "uses": "actions/dependency-review-action@main"
+        }
+      ]
+    }
+  ],
+  "security_stages": {
+    "sast": {
+      "present": false
+    },
+    "sca": {
+      "present": true,
+      "on": [
+        "main"
+      ]
+    },
+    "secrets_scan": {
+      "present": false
+    },
+    "artifact_signing": {
+      "present": false
+    },
+    "sbom": {
+      "present": false
+    },
+    "provenance": {
+      "present": false
+    }
+  }
+}
