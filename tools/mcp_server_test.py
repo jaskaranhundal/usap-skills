@@ -270,6 +270,9 @@ def main() -> int:
                     "mcp_id": "crowdstrike",
                     "capability_id": "isolate_host",
                     "arguments": {"host_id": "abc123"},
+                    # well-formed but never issued: the disabled-MCP check must
+                    # answer before the token is consulted
+                    "approval_token": "never-issued-token-0000000000",
                 },
             },
         })
