@@ -15,9 +15,17 @@ USAP's frontmatter is a strict superset of the [agentskills.io Skill specificati
 | `metadata` (optional, arbitrary key-value mapping) | Used heavily — canonical 5+5 schema lives here plus optional `frameworks.*`. The spec explicitly says clients may store extra properties under `metadata` | Full |
 | `allowed-tools` (optional, **space-separated string**, experimental) | Populated as a string per the spec on the same L4 / tool-dependent skills | Full |
 
-USAP keeps its non-spec schema (the 5 required `metadata.*` subfields plus the optional `metadata.frameworks.*` arrays) nested under `metadata`, where the spec explicitly designates it as the arbitrary-key-value escape hatch. USAP does NOT put non-spec keys at the YAML top level.
+USAP keeps the 5 required `metadata.*` subfields nested under `metadata`, where the spec explicitly designates it as the arbitrary-key-value escape hatch.
 
 USAP's `version` (under `metadata`) is always quoted (`"1.0.0"`) so YAML parsers do not silently coerce it to a float on certain ill-formed strings.
+
+### Framework keys: top-level, not nested under metadata
+
+**Planning correction (2026-06-27).** The agentskills.io ecosystem (Anthropic Conformant Skills, ACS) places framework coverage keys at the YAML top level — not under `metadata.frameworks`. The earlier USAP convention of nesting under `metadata.frameworks` is non-conformant with the ACS canonical layout. New skills SHOULD declare framework coverage as the optional top-level keys `mitre_attack`, `nist_csf`, `mitre_atlas`, `owasp_top10`, `d3fend`, `nist_ai_rmf` (each `array[string]`, ≤8 entries).
+
+`metadata.frameworks.*` remains accepted by the validator for backward compatibility with the ~9 skills already populated, but is deprecated for new authoring. Both the top-level keys and the nested `metadata.frameworks.*` block are validated when present; they may coexist on the same skill during the rollout window.
+
+Rationale: agentskills.io spec expects top-level framework keys for cross-tool consumption (Navigator integrations, CSF crosswalks). Nesting under `metadata` puts them in the unstructured escape-hatch namespace where third-party tools cannot rely on them.
 
 ---
 
@@ -106,7 +114,26 @@ metadata:
 
 ## Framework Mappings
 
-Skills may declare machine-readable framework coverage under `metadata.frameworks`. Every key is optional. Each value is an array of identifier strings. The cap is 8 IDs per framework per skill — keep mappings focused on what the skill primarily covers; broader sweeps belong in repo-level coverage docs.
+Skills declare machine-readable framework coverage as **top-level** YAML keys (preferred, agentskills.io conformant). The validator also accepts the legacy nested form under `metadata.frameworks.*` for backward compatibility — do not author new skills that way.
+
+Every key is optional. Each value is an array of identifier strings. The cap is 8 IDs per framework per skill — keep mappings focused on what the skill primarily covers; broader sweeps belong in repo-level coverage docs.
+
+Top-level form (preferred):
+
+```yaml
+---
+name: detection-engineering
+description: ...
+license: MIT
+mitre_attack: [T1059.001, T1098.001, T1110, T1562.008]
+nist_csf:     [DE.AE-02, DE.CM-01, DE.CM-09]
+metadata:
+  version: "2.0.0"
+  ...
+---
+```
+
+The six framework keys (`mitre_attack`, `nist_csf`, `mitre_atlas`, `owasp_top10`, `d3fend`, `nist_ai_rmf`) defined below apply identically whether they appear at the top level or nested under `metadata.frameworks`.
 
 ### `metadata.frameworks.mitre_attack`
 - **Type:** `array[string]`
@@ -241,6 +268,22 @@ Source: <https://code.claude.com/docs/en/skills>.
 - **Type:** float
 - **Example:** `8.4`
 - **Rules:** Approximate size of SKILL.md in kilobytes. Must be ≤10 or include a rationale comment explaining why the size is acceptable. Content exceeding 10KB should be moved to `references/`.
+
+### `metadata.requires.bins`
+- **Type:** `array[string]`
+- **Example:** `["nmap", "kubectl"]`
+- **Rules:** External CLI binaries the skill's `scripts/<slug>_tool.py` invokes via `subprocess.run` or checks via `shutil.which`. Entries are bare executable names (no path, no flags). When omitted, the skill is assumed stdlib-only Python with no host-tool dependency.
+
+### `metadata.requires.install`
+- **Type:** object with optional `macos` and `linux` string keys
+- **Example:** `{macos: "brew install nmap", linux: "apt-get install -y nmap"}`
+- **Rules:** Human-readable install hints for the binaries in `metadata.requires.bins`. Free text — the validator does not parse package-manager syntax. Use this so a contributor on a fresh box can pick up the skill without spelunking.
+
+---
+
+## Canonical Domain Slugs
+
+Skills MUST live under one of the 11 canonical domain slugs documented in [`standards/canonical-domains.md`](canonical-domains.md). The validator FAILs on any SKILL.md whose first path segment is a known alias (e.g. `red-teaming`, `webapp`) rather than the canonical slug (`red-team`, `webapp-security`). Pin the canonical name in the directory at create time — renaming a domain mid-project requires updating mappings, agents, and CI in lockstep.
 
 ---
 

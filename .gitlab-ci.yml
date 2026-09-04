@@ -22,13 +22,9 @@
 # validate/test suite runs on both. `build:bundle` stays `main`-only — it
 # produces a release artifact, not an integration check.
 #
-# TARGET BRANCH: this is written against `dev`'s tooling. `dev` is ~60 commits
-# behind `main` and their tool interfaces differ. Two concrete examples found
-# while writing this:
-#   - tools/output_contract.py on dev has NO --structural-only flag (main does).
-#     Using main's flag here would fail all 79 samples on argparse alone.
-#   - tests/holdout_runner.py exists only on main.
-# When dev catches up with main, revisit the two marked spots below.
+# TOOLING: written against `main`'s tooling as of the dev->main merge. The
+# earlier dev/main interface drift is resolved — output_contract.py now has
+# --structural-only, and tests/holdout_runner.py is present.
 # ─────────────────────────────────────────────────────────────
 
 stages:
@@ -74,17 +70,48 @@ validate:skills:
 
 validate:contract:
   stage: validate
-  # dev's interface is `--all-samples`. Verified on this branch: 76 passed, 0 failed.
-  # When dev catches up with main, main's per-file `--structural-only` mode
-  # becomes available and is the weaker/faster check.
+  # Mirrors .github/workflows/validate-skills.yml exactly. --structural-only is
+  # the blocking corpus gate; the FULL evidence gate (every verdict must cite a
+  # resolvable source) is being rolled out incrementally and is NOT blocking
+  # here, for the same reason it is not blocking there — 74 of 77 samples still
+  # fail it, and gating on that today would block every MR.
+  # MEASURED on the merged tree 2026-08-14: structural 77/77 pass, exit 0.
   script:
-    - python3 tools/output_contract.py --all-samples
+    - |
+      set -eu
+      rc=0
+      while IFS= read -r f; do
+        [ -z "$f" ] && continue
+        python3 tools/output_contract.py --structural-only "$f" || rc=1
+      done < <(find appsec-devsecops cloud-infra detection governance \
+                    identity-access pentest platform-ai red-team response \
+                    risk-compliance system-security webapp-security \
+                    -name sample_output.json -path '*/expected_outputs/*' 2>/dev/null)
+      exit $rc
   rules:
     - changes: ["**/expected_outputs/sample_output.json", "tools/output_contract.py", ".gitlab-ci.yml"]
     - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
+validate:plugin-mirror:
+  # plugins/usap/ is a distributed copy; the root is the source of truth. See
+  # tools/sync_plugin.py for why this gate exists (1.13.1 shipped five agent
+  # definitions with the human-approval gate silently missing).
+  # MEASURED 2026-08-14: exit 0, mirrors 41 source files, no drift. BLOCKING.
+  stage: validate
+  script:
+    - python3 tools/sync_plugin.py --check
+  rules:
+    - changes: ["agents/**/*", "plugins/usap/**/*", "tools/sync_plugin.py", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
+
 validate:invocation:
-  # MEASURED 2026-08-14 on this branch: exit 0. BLOCKING.
+  # MEASURED on the merged tree 2026-08-14: 80 total, 79 OK, 1 WARN, 0 FAIL,
+  # exit 1. --strict treats WARN as failure. The single WARN is
+  # cloud-infra/container-image-scan and it PRE-DATES this pipeline — main's own
+  # validate-skills workflow blocks on it too and is currently red.
+  # Kept BLOCKING deliberately: main blocks on it, and making it advisory here
+  # would be softer than the GitHub gate it mirrors, which would hide a real
+  # regression. Fixing that one WARN turns this green.
   stage: validate
   script:
     - python3 tools/validate_invocation_control.py --all --strict --summary
@@ -108,14 +135,10 @@ test:tools:
   # --input, say), which is a defect in this job or in the tool's interface —
   # never a declared stub. Keeping 2 and 3 distinct is the whole point of #126.
   #
-  # MEASURED ON THIS BRANCH, 2026-08-14 (after #124 and #126 landed):
-  #   tools=77 implemented=10 declared-stub=66 errors=1
-  # The 66 stubs now declare themselves correctly. ONE error remains and it is
-  # a genuine pre-existing bug, not a stub problem:
-  #   governance/security-debt-tracker — JSONDecodeError traceback, exit 1.
-  # ADVISORY until that is fixed. FLIP CONDITION, mechanical:
-  # set allow_failure to false when errors=0. That is one bug away.
-  allow_failure: true
+  # MEASURED 2026-08-14: tools=78 implemented=12 declared-stub=66 errors=0.
+  # FLIPPED TO BLOCKING. It was advisory pending #129
+  # (governance/security-debt-tracker crashed on empty stdin); that is fixed,
+  # the stated flip condition (errors=0) is met, so the gate is now enforced.
   script:
     - |
       python3 - <<'PY'
@@ -127,7 +150,10 @@ test:tools:
       SEVERITIES = {"critical","high","medium","low","informational"}
       tools = []
       for dp, dn, fn in os.walk("."):
-          if "/.git" in dp or dp.startswith("./references"):
+          # plugins/ holds a verified mirror of these same scripts. Walking it
+          # would re-test byte-identical copies and inflate the counts; the
+          # mirror's integrity is validate:plugin-mirror's job, not this one.
+          if "/.git" in dp or dp.startswith("./references") or dp.startswith("./plugins"):
               continue
           tools += [os.path.join(dp, f) for f in fn if f.endswith("_tool.py")]
       impl = stub = 0
@@ -192,13 +218,25 @@ test:determinism:
     - changes: ["**/SKILL.md", "**/expected_outputs/sample_output.json", "mappings/**/*", ".gitlab-ci.yml"]
     - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
-# test:eval — holdout_runner.py precision/FPR self-check.
-# Deliberately absent: tests/holdout_runner.py exists on main, not on dev.
-# Enable when dev catches up:
-#   test:eval:
-#     stage: test
-#     script:
-#       - python3 tests/holdout_runner.py --responder synthetic
+test:eval:
+  # Protects the scoring math in tests/holdout_runner.py. The synthetic example
+  # encodes a deliberately-imperfect predictor whose metrics are fixed
+  # (precision/recall 0.8571, FPR 0.20). If these move without a corpus change,
+  # the engine regressed. Deterministic and offline.
+  # MEASURED on the merged tree 2026-08-14: exit 0, precision 0.8571, FPR 0.2.
+  stage: test
+  script:
+    - |
+      out=$(python3 tests/holdout_runner.py --responder synthetic \
+              --predictions tests/holdout/example_predictions.json --label ci)
+      echo "$out"
+      echo "$out" | grep -q "precision    0.8571" \
+        && echo "$out" | grep -q "FPR          0.2" \
+        && echo "  PASS holdout eval engine self-check" \
+        || { echo "  FAIL eval engine metrics changed"; exit 1; }
+  rules:
+    - changes: ["tests/**/*", "tools/**/*", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
 # ─── security ────────────────────────────────────────────────
 

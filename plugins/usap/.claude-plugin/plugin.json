@@ -1,7 +1,7 @@
 {
   "name": "usap",
-  "version": "1.3.2",
-  "description": "Unified Security Agent Platform — 79 cybersecurity skills + 12 cs-* orchestrator agents that emit a typed 11-field JSON output contract, mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in any LLM. Bundles 7 slash commands and 6 user-invocable orchestrator skills (Alex, CISO, DevSecOps, Incident Responder, Program Manager, Red Team).",
+  "version": "1.13.2",
+  "description": "Unified Security Agent Platform \u2014 79 cybersecurity skills + 12 cs-* orchestrator agents that emit a typed 11-field JSON output contract, mapped to MITRE ATT&CK and NIST CSF 2.0. Runs in any LLM. Bundles 7 slash commands and 6 user-invocable orchestrator skills (Alex, CISO, DevSecOps, Incident Responder, Program Manager, Red Team).",
   "author": {
     "name": "Jaskarn Singh",
     "url": "https://github.com/jaskaranhundal"

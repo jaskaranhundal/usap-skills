@@ -1,0 +1,19 @@
+{
+  "id": "aws-example-key-in-fixture",
+  "source": "benign: AWS documentation example key in a test fixture",
+  "input": {
+    "description": "A scanner flagged AKIAIOSFODNN7EXAMPLE in tests/fixtures/aws_creds.json; it is the AWS-published documentation example key, not a live credential.",
+    "signals": [
+      "value = AKIAIOSFODNN7EXAMPLE (AWS docs example)",
+      "path under tests/fixtures/",
+      "no CloudTrail usage ever recorded"
+    ]
+  },
+  "labels": {
+    "intent_type": "report",
+    "severity": "low",
+    "is_true_positive": false,
+    "min_evidence_sources": 1,
+    "rationale_for_label": "The canonical AWS example key in a test fixture is not a real secret \u2014 a classic secret-scanner false positive."
+  }
+}

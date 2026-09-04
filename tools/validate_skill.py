@@ -23,6 +23,8 @@ Emits non-blocking WARNs (does not fail the run) for:
     providers, required_invoke_role, required_approver_role, input_schema,
     output_schema, runtime_contract, approval_required) — see Phase 4 of the
     roadmap for migration
+  - MITRE ATT&CK technique IDs cited in the body that are absent from
+    metadata.frameworks.mitre_attack (frontmatter is authoritative)
 
 Usage::
 
@@ -63,6 +65,77 @@ ACTIVE_DOMAINS = [
     "system-security",
     "webapp-security",
 ]
+
+# Canonical domain alias map. Pinned in standards/canonical-domains.md.
+# If a SKILL.md path's first segment matches a key in DOMAIN_ALIASES, validation
+# FAILs and tells the contributor to rename to the value (canonical slug).
+DOMAIN_ALIASES = {
+    # appsec-devsecops
+    "appsec": "appsec-devsecops",
+    "dev-sec-ops": "appsec-devsecops",
+    "devsecops": "appsec-devsecops",
+    "app-sec": "appsec-devsecops",
+    # cloud-infra
+    "cloud": "cloud-infra",
+    "cloud-security": "cloud-infra",
+    "infra": "cloud-infra",
+    "infrastructure": "cloud-infra",
+    "cloud-infrastructure": "cloud-infra",
+    # detection
+    "detect": "detection",
+    "detections": "detection",
+    "siem": "detection",
+    "soc": "detection",
+    # governance
+    "gov": "governance",
+    "exec": "governance",
+    "executive": "governance",
+    "board": "governance",
+    # identity-access
+    "iam": "identity-access",
+    "identity": "identity-access",
+    "idam": "identity-access",
+    "access": "identity-access",
+    # pentest
+    "pentesting": "pentest",
+    "penetration-testing": "pentest",
+    "pen-test": "pentest",
+    "pen-testing": "pentest",
+    # platform-ai
+    "ai-platform": "platform-ai",
+    "ai": "platform-ai",
+    "mlops": "platform-ai",
+    "ml-platform": "platform-ai",
+    "ml": "platform-ai",
+    # red-team
+    "red-teaming": "red-team",
+    "offensive-security": "red-team",
+    "redteam": "red-team",
+    "adversary-emulation": "red-team",
+    "offensive": "red-team",
+    # response
+    "ir": "response",
+    "incident-response": "response",
+    "dfir": "response",
+    "forensics": "response",
+    # risk-compliance
+    "risk": "risk-compliance",
+    "compliance": "risk-compliance",
+    "grc": "risk-compliance",
+    "risk-and-compliance": "risk-compliance",
+    # system-security
+    "endpoint": "system-security",
+    "endpoint-security": "system-security",
+    "host": "system-security",
+    "host-security": "system-security",
+    "os-security": "system-security",
+    # webapp-security
+    "web-application-security": "webapp-security",
+    "webapp": "webapp-security",
+    "appsec-web": "webapp-security",
+    "web": "webapp-security",
+    "web-security": "webapp-security",
+}
 
 REQUIRED_TOP = ("name", "description", "license")
 REQUIRED_METADATA = ("version", "author", "category", "updated", "agent_slug")
@@ -126,6 +199,11 @@ LEGACY_KEYS = {
 KEBAB_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+# Matches MITRE ATT&CK technique IDs in body prose: T1234 or T1234.567.
+# Non-capturing group so re.findall returns the full ID, not just ".567".
+# Negative lookahead (?!\.\d) rejects malformed sub-techniques (e.g. T1552.01,
+# T1552.0012) instead of partial-matching them to the base ID T1552.
+BODY_MITRE_RE = re.compile(r"\bT\d{4}(?:\.\d{3})?(?!\.\d)\b")
 MAX_NAME_LEN = 64
 MIN_DESC_LEN = 50
 
@@ -270,6 +348,17 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
 
     slug = skill_dir.name
 
+    # Canonical-domain check: first path segment must not be a known alias.
+    # The dir layout is <repo>/<domain>/<slug>/SKILL.md, so the parent of
+    # skill_dir is the domain directory.
+    domain_segment = skill_dir.parent.name
+    if domain_segment in DOMAIN_ALIASES:
+        canonical = DOMAIN_ALIASES[domain_segment]
+        errors.append(
+            f"domain '{domain_segment}' is a non-canonical alias — rename "
+            f"the directory to '{canonical}' (see standards/canonical-domains.md)"
+        )
+
     # Non-blocking warning: legacy extended-frontmatter keys at top level.
     legacy_present = sorted(k for k in LEGACY_KEYS if k in fm)
     if legacy_present:
@@ -277,6 +366,31 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
             "legacy extended-frontmatter keys at top level "
             f"({', '.join(legacy_present)}) — see Phase 4 migration"
         )
+
+    # Top-level framework keys (agentskills.io conformant placement).
+    # See standards/frontmatter-spec.md "Framework keys: top-level".
+    for fname, pattern in FRAMEWORK_PATTERNS.items():
+        if fname not in fm:
+            continue
+        ids = fm[fname]
+        if not isinstance(ids, list) or not all(isinstance(x, str) for x in ids):
+            errors.append(
+                f"top-level {fname} must be an array of strings"
+            )
+            continue
+        if len(ids) > FRAMEWORK_CAP:
+            errors.append(
+                f"top-level {fname} has {len(ids)} entries "
+                f"(cap {FRAMEWORK_CAP} per framework — split skills "
+                "or trim to highest-signal IDs)"
+            )
+        if pattern is not None:
+            for entry in ids:
+                if not pattern.match(entry):
+                    errors.append(
+                        f"top-level {fname} '{entry}' does not match "
+                        f"expected pattern {pattern.pattern}"
+                    )
 
     # Required top-level fields.
     for field in REQUIRED_TOP:
@@ -362,6 +476,30 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
                 f"metadata.agent_slug '{agent_slug}' must equal name '{name}'"
             )
 
+        # Optional metadata.requires block (external CLI binaries).
+        requires = metadata.get("requires")
+        if requires is not None:
+            if not isinstance(requires, dict):
+                errors.append(
+                    "metadata.requires must be an object with optional "
+                    "'bins' (array[string]) and 'install' (object) keys"
+                )
+            else:
+                bins = requires.get("bins")
+                if bins is not None:
+                    if not isinstance(bins, list) or not all(
+                        isinstance(x, str) for x in bins
+                    ):
+                        errors.append(
+                            "metadata.requires.bins must be an array of strings"
+                        )
+                install = requires.get("install")
+                if install is not None and not isinstance(install, dict):
+                    errors.append(
+                        "metadata.requires.install must be an object "
+                        "(e.g. {macos: '...', linux: '...'})"
+                    )
+
         # Optional metadata.frameworks block.
         frameworks = metadata.get("frameworks")
         if frameworks is not None:
@@ -409,6 +547,27 @@ def validate_skill(skill_dir: Path) -> Tuple[List[str], List[str]]:
                 ".ps1 files not permitted in scripts/ "
                 f"({', '.join(p.name for p in ps1_files)})"
             )
+
+    # Non-blocking WARN: MITRE technique IDs cited in the body but not
+    # declared in metadata.frameworks.mitre_attack. Frontmatter is
+    # authoritative, so body prose that drifts from it is surfaced for review.
+    body = content[content.find("\n---", 3) + 4:]
+    cited = set(BODY_MITRE_RE.findall(body))
+    declared = set()
+    if isinstance(metadata, dict):
+        frameworks = metadata.get("frameworks")
+        if isinstance(frameworks, dict) and isinstance(
+            frameworks.get("mitre_attack"), list
+        ):
+            declared = {
+                x for x in frameworks["mitre_attack"] if isinstance(x, str)
+            }
+    drift = sorted(cited - declared)
+    if drift:
+        warnings.append(
+            "MITRE technique IDs cited in body but not declared in "
+            f"metadata.frameworks.mitre_attack: {', '.join(drift)}"
+        )
 
     return errors, warnings
 

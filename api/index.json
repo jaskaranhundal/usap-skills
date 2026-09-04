@@ -4,8 +4,8 @@
   "spec": "agentskills.io 1.0",
   "repository": "https://github.com/jaskaranhundal/usap-skills",
   "counts": {
-    "skills": 79,
-    "agents": 12,
+    "skills": 80,
+    "agents": 13,
     "domains": 12
   },
   "domains": [
@@ -15,7 +15,7 @@
     },
     {
       "slug": "cloud-infra",
-      "skill_count": 5
+      "skill_count": 6
     },
     {
       "slug": "detection",
@@ -274,6 +274,28 @@
       "agent_slug": "cloud-workload-protection"
     },
     {
+      "name": "container-image-scan",
+      "domain": "cloud-infra",
+      "path": "cloud-infra/container-image-scan",
+      "description": "USAP agent skill for Container Image Scan. Use for classifying container-image vulnerability scan findings from Trivy, Grype, or Snyk into a block-deploy, fix-by-SLA-window, track, or accept decision across base-image OS packages, application dependencies, and unexpected image layers.",
+      "license": "MIT",
+      "category": "usap-devsecops",
+      "version": "1.0.0",
+      "agent_slug": "container-image-scan",
+      "frameworks": {
+        "mitre_attack": [
+          "T1525",
+          "T1190"
+        ],
+        "nist_csf": [
+          "ID.RA-05",
+          "DE.CM-08"
+        ]
+      },
+      "compatibility": "Requires scanner output (Trivy / Grype / Snyk) as JSON, or a connected registry/CSPM connector for on-demand image scanning. Read-only layer and manifest analysis — no runtime access, no image or registry mutation.",
+      "allowed-tools": "trivy grype snyk docker-scout syft"
+    },
+    {
       "name": "endpoint-os-security",
       "domain": "cloud-infra",
       "path": "cloud-infra/endpoint-os-security",
@@ -389,6 +411,13 @@
       "category": "usap-detection",
       "version": "1.0.0",
       "agent_slug": "secrets-exposure",
+      "frameworks": {
+        "mitre_attack": [
+          "T1552.001",
+          "T1552.004",
+          "T1552.005"
+        ]
+      },
       "allowed-tools": "Read Grep Glob"
     },
     {
@@ -833,6 +862,14 @@
       "category": "usap-response",
       "version": "1.0.0",
       "agent_slug": "incident-classification",
+      "frameworks": {
+        "nist_csf": [
+          "DE.AE-02",
+          "DE.AE-08",
+          "RS.MA-02",
+          "RS.MA-03"
+        ]
+      },
       "allowed-tools": "Read Grep Glob"
     },
     {
@@ -1025,70 +1062,6 @@
   ],
   "agents": [
     {
-      "name": "cs-security-analyst",
-      "domain": "security",
-      "path": "agents/security/cs-security-analyst.md",
-      "description": ">",
-      "model": "sonnet",
-      "skills": "threat-hunting"
-    },
-    {
-      "name": "cs-incident-responder",
-      "domain": "security",
-      "path": "agents/security/cs-incident-responder.md",
-      "description": "Full incident lifecycle manager coordinating triage, containment, forensics, and post-incident review",
-      "model": "opus",
-      "skills": "incident-commander"
-    },
-    {
-      "name": "cs-red-teamer",
-      "domain": "security",
-      "path": "agents/security/cs-red-teamer.md",
-      "description": "Offensive security operations coordinator for red team engagements, attack path mapping, and exploitation workflows",
-      "model": "opus",
-      "skills": "red-team-planner"
-    },
-    {
-      "name": "cs-blue-team-analyst",
-      "domain": "security",
-      "path": "agents/security/cs-blue-team-analyst.md",
-      "description": "Blue Team operations orchestrator for detection, threat hunting, DFIR, and detection engineering across the detection and response domains",
-      "model": "sonnet",
-      "skills": "threat-hunting"
-    },
-    {
-      "name": "cs-cloud-investigator",
-      "domain": "security",
-      "path": "agents/security/cs-cloud-investigator.md",
-      "description": "USAP orchestrator agent for cloud-incident investigation. Drives misconfiguration triage, workload-runtime analysis, and IAM anomaly attribution across AWS, Azure, and GCP findings.",
-      "model": "sonnet",
-      "skills": "cloud-security-posture, cloud-workload-protection, identity-access-risk, threat-hunting"
-    },
-    {
-      "name": "cs-supply-chain-defender",
-      "domain": "security",
-      "path": "agents/security/cs-supply-chain-defender.md",
-      "description": "USAP orchestrator agent for software supply chain defense. Drives SBOM analysis, dependency-vulnerability triage, malicious package detection, and build-integrity verification across CI/CD pipelines.",
-      "model": "sonnet",
-      "skills": "supply-chain-risk, build-integrity, supply-chain-simulation, sast-dast-coordinator"
-    },
-    {
-      "name": "cs-threat-intel-lead",
-      "domain": "security",
-      "path": "agents/security/cs-threat-intel-lead.md",
-      "description": "USAP orchestrator agent for threat intelligence. Drives IOC enrichment, actor attribution, behavioral corroboration, and intelligence-driven hunt prioritization for active and proactive workflows.",
-      "model": "sonnet",
-      "skills": "threat-intelligence, threat-hunting, behavioral-analytics, incident-classification"
-    },
-    {
-      "name": "cs-purple-team-lead",
-      "domain": "security",
-      "path": "agents/security/cs-purple-team-lead.md",
-      "description": "USAP orchestrator agent for purple team operations. Drives detection-validation loops by exercising red team plays against blue team detections and surfacing the single highest-leverage detection gap or hardening recommendation.",
-      "model": "sonnet",
-      "skills": "red-team-planner, red-team-operations, detection-engineering, threat-hunting"
-    },
-    {
       "name": "cs-appsec-engineer",
       "domain": "appsec",
       "path": "agents/appsec/cs-appsec-engineer.md",
@@ -1119,6 +1092,78 @@
       "description": "Passive security lifecycle orchestrator for program planning, proactive scanning, and facilitated security reviews",
       "model": "sonnet",
       "skills": "security-roadmap-planner"
+    },
+    {
+      "name": "cs-usap-next",
+      "domain": "meta",
+      "path": "agents/meta/cs-usap-next.md",
+      "description": "Decision-grade \"where am I, what's next\" advisor for USAP operators. Reads local runner + audit + registry state and recommends 1-3 next actions per turn.",
+      "model": "sonnet",
+      "skills": "security-roadmap-planner"
+    },
+    {
+      "name": "cs-blue-team-analyst",
+      "domain": "security",
+      "path": "agents/security/cs-blue-team-analyst.md",
+      "description": "Blue Team operations orchestrator for detection, threat hunting, DFIR, and detection engineering across the detection and response domains",
+      "model": "sonnet",
+      "skills": "threat-hunting"
+    },
+    {
+      "name": "cs-cloud-investigator",
+      "domain": "security",
+      "path": "agents/security/cs-cloud-investigator.md",
+      "description": "USAP orchestrator agent for cloud-incident investigation. Drives misconfiguration triage, workload-runtime analysis, and IAM anomaly attribution across AWS, Azure, and GCP findings.",
+      "model": "sonnet",
+      "skills": "cloud-security-posture, cloud-workload-protection, container-image-scan, identity-access-risk, threat-hunting"
+    },
+    {
+      "name": "cs-incident-responder",
+      "domain": "security",
+      "path": "agents/security/cs-incident-responder.md",
+      "description": "Full incident lifecycle manager coordinating triage, containment, forensics, and post-incident review",
+      "model": "opus",
+      "skills": "incident-commander"
+    },
+    {
+      "name": "cs-purple-team-lead",
+      "domain": "security",
+      "path": "agents/security/cs-purple-team-lead.md",
+      "description": "USAP orchestrator agent for purple team operations. Runs tabletop exercises and detection-vs-attack drills by orchestrating cs-blue-team-analyst, cs-red-teamer, and cs-incident-responder in one coordinated session.",
+      "model": "sonnet",
+      "skills": "red-team-planner, red-team-operations, detection-engineering, threat-hunting"
+    },
+    {
+      "name": "cs-red-teamer",
+      "domain": "security",
+      "path": "agents/security/cs-red-teamer.md",
+      "description": "Offensive security operations coordinator for red team engagements, attack path mapping, and exploitation workflows",
+      "model": "opus",
+      "skills": "red-team-planner"
+    },
+    {
+      "name": "cs-security-analyst",
+      "domain": "security",
+      "path": "agents/security/cs-security-analyst.md",
+      "description": ">",
+      "model": "sonnet",
+      "skills": "threat-hunting"
+    },
+    {
+      "name": "cs-supply-chain-defender",
+      "domain": "security",
+      "path": "agents/security/cs-supply-chain-defender.md",
+      "description": "USAP orchestrator agent for software supply chain defense. Drives SBOM analysis, dependency-vulnerability triage, malicious package detection, and build-integrity verification across CI/CD pipelines.",
+      "model": "sonnet",
+      "skills": "supply-chain-risk, build-integrity, supply-chain-simulation, sast-dast-coordinator"
+    },
+    {
+      "name": "cs-threat-intel-lead",
+      "domain": "security",
+      "path": "agents/security/cs-threat-intel-lead.md",
+      "description": "USAP orchestrator agent for threat intelligence. Drives IOC enrichment, actor attribution, behavioral corroboration, and intelligence-driven hunt prioritization for active and proactive workflows.",
+      "model": "sonnet",
+      "skills": "threat-intelligence, threat-hunting, behavioral-analytics, incident-classification"
     }
   ]
 }

@@ -1,0 +1,121 @@
+id: iam-overpermission-2026q3
+theme: cloud-misconfig
+severity: high
+initial_event: >
+  At 16:08 UTC on a Thursday, a CSPM scanner (Wiz) flags a critical finding
+  in an AWS production account belonging to a healthcare-adjacent SaaS
+  vendor (60 engineers, HIPAA business associate, no PHI in storage by
+  design but with audit obligations). The finding: an EC2 instance profile
+  attached to all eight web-tier instances grants `s3:*` on
+  `arn:aws:s3:::*` plus `kms:Decrypt` on every CMK in the account.
+  CloudTrail confirms the over-permissioned role was created by a Terraform
+  module merged eleven days ago. The CSPM scanner additionally finds that
+  the instance metadata service (IMDSv1) is still enabled cluster-wide.
+  Within the same hour, GuardDuty raises a low-severity finding for unusual
+  S3 list activity from one of the eight web-tier instances directed at a
+  bucket the application has never written to.
+
+prerequisites_unverified:
+  - exploit_status  # whether the over-permission has actually been used by an attacker
+  - imdsv1_ssrf_susceptibility  # whether the web app has an SSRF vulnerability that would reach IMDSv1
+  - bucket_inventory_exfil  # whether the unusual S3 list activity progressed to GetObject
+  - terraform_module_reuse  # whether other AWS accounts inherit the same module
+  - kms_grant_state  # whether KMS grants have been created against the over-permissive role
+  - cloudtrail_lookback_completeness  # whether 90-day lookback covers the merge date
+  - audit_findability  # whether this misconfiguration would survive the upcoming HITRUST audit
+
+timeline:
+  - t: T+0min
+    event: >
+      Wiz CSPM scanner emits a critical finding on the web-tier instance
+      profile (s3:* and kms:Decrypt on resource * was committed eleven days
+      ago).
+  - t: T+5min
+    event: >
+      GuardDuty raises a low-severity Recon:EC2/PortProbeUnprotectedPort
+      finding on an unrelated dev account. Triaged as noise.
+  - t: T+14min
+    event: >
+      GuardDuty raises Discovery:S3/MaliciousIPCaller from one of the
+      eight web-tier instances to a bucket
+      (s3://internal-finops-exports-prod) that the application has no
+      documented reason to access. The finding is severity 4.0 (low).
+  - t: T+23min
+    event: >
+      CSPM ticket auto-routes to the platform team. Platform engineer
+      acknowledges the ticket but considers it routine (a quarterly
+      Terraform tightening sprint is planned for next month).
+  - t: T+38min
+    event: >
+      SOC analyst (separately) sees the GuardDuty finding and pulls
+      CloudTrail for the source instance. Confirms the s3:ListBucket
+      call against internal-finops-exports-prod succeeded.
+  - t: T+47min
+    event: >
+      SOC analyst pulls the IAM role policy. Sees s3:* + kms:Decrypt.
+      Realizes the GuardDuty finding is the over-permission being
+      exercised, not exploration noise.
+  - t: T+58min
+    event: >
+      SOC analyst pulls IMDS metadata config for all eight web-tier
+      instances. Six are running IMDSv1. Two were rebuilt from a newer
+      AMI and have IMDSv2 enforced.
+  - t: T+72min
+    event: >
+      Web application source review finds an undocumented URL fetch
+      endpoint (/api/v2/preview) that takes a user-supplied URL. The
+      input is partially validated for `http://` and `https://` schemes
+      but not for the IMDS endpoint
+      (`http://169.254.169.254/latest/meta-data/iam/security-credentials/`).
+  - t: T+96min
+    event: >
+      AWS Access Analyzer query confirms 47 KMS grants exist tied to the
+      over-permissive role. Two of those grants were created in the last
+      48 hours from one of the affected web-tier instances.
+
+target_agents:
+  - cs-purple-team-lead
+  - cs-cloud-investigator
+  - cs-incident-responder
+  - cs-blue-team-analyst
+
+expected_outputs:
+  - 11-field USAP payload from cs-purple-team-lead
+  - "Attack-chain table with >=4 MITRE ATT&CK techniques cited"
+  - SSRF -> IMDSv1 -> AssumeRole -> S3 path documented explicitly
+  - Containment column with cs-incident-responder quote on whether the
+    over-permissive role has been revoked and KMS grants invalidated
+  - ">=3 compensating controls with human_approval_required true"
+  - Gap report naming exactly one detection-engineering sprint focus
+
+evaluation_criteria:
+  pass:
+    - Attack chain cites Initial Access (T1190 Exploit Public-Facing
+      Application via SSRF), Credential Access (T1552.005 Cloud Instance
+      Metadata API), Privilege Escalation (T1078.004 Valid Accounts -
+      Cloud Accounts), and Collection (T1530 Data from Cloud Storage)
+      at minimum.
+    - Detection-coverage table identifies that GuardDuty
+      Discovery:S3/MaliciousIPCaller was treated as low severity and
+      raised no automation; recommends tying it to the CSPM finding
+      via correlation.
+    - Containment narrative quotes cs-incident-responder verbatim on
+      whether the 47 KMS grants tied to the over-permissive role have
+      been invalidated.
+    - Recommendation surfaces IMDSv2 enforcement, instance profile
+      least-privilege rewrite, and SSRF-input allowlist with
+      human_approval_required true.
+    - Output payload contains all 11 USAP contract fields.
+  fail:
+    - Verdict declares the misconfiguration low-risk because no
+      destructive action has been observed, ignoring the S3 list-bucket
+      success and the new KMS grants.
+    - Recommendation focuses only on rotating the role permissions and
+      misses the SSRF endpoint and the IMDSv1 enforcement.
+    - Attack chain cites fewer than 4 MITRE TTPs.
+    - Containment column claims "permissions revoked" without quoting
+      cs-incident-responder and without addressing the 47 KMS grants.
+    - Verdict treats the GuardDuty low-severity classification as
+      authoritative without re-scoring it against the CSPM finding
+      (assumption failure - trusting upstream severity without
+      cross-evidence).
