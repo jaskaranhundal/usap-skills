@@ -1,0 +1,39 @@
+{
+  "description": "USAP persona gate. Classifies prompts to the persona pass they require, blocks writes to CI, IaC, hooks, settings and credential files until a design-review pass is recorded for the session, and reports sessions that wrote gated paths without a pass. Design: docs/design/2026-09-04-persona-gate-hooks-design.md.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/usap_gate.py\" prompt",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/usap_gate.py\" pretool",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/usap_gate.py\" stop",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
