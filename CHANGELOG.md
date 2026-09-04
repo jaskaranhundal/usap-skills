@@ -4,6 +4,10 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
+_No unreleased changes yet._
+
+## [1.14.0] — 2026-09-04
+
 ### Added
 
 - **Framework mapping backfill, first tranche (13 skills).** Skills that already cited MITRE ATT&CK technique IDs in their body now declare them as the top-level `mitre_attack:` key (the agentskills.io-conformant form): security-requirements-review, supply-chain-simulation, endpoint-os-security, security-debt-tracker, security-roadmap-planner, identity-access-risk, web-app-pentest, continuous-pentesting, red-team-operations, red-team-planner, forensics, incident-commander, os-hardening. Where a body cited more than the spec's cap of 8, the 8 most-cited IDs were promoted. Declared coverage moves from 18 to 31 skills; `mappings/` are unchanged because the extractor already merged body citations.
@@ -349,7 +353,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.14.0...HEAD
+[1.14.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.13.0...v1.14.0
 [1.13.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.11.0...v1.12.0
 [1.11.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.10.0...v1.11.0
