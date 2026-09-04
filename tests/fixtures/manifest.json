@@ -18,6 +18,12 @@
       "input": "tests/fixtures/supply-chain-risk-input.json",
       "expect_exit": 2,
       "note": "npm SBOM: KEV component with added binary, dependency-confusion candidate, typosquat; block with approval required"
+    },
+    {
+      "tool": "cloud-infra/iac-security/scripts/iac-security_tool.py",
+      "input": "tests/fixtures/iac-security-input.json",
+      "expect_exit": 2,
+      "note": "Terraform + Kubernetes tree: public bucket, IAM wildcard, SSH from anywhere, privileged pod on cluster-admin, committed DB password; PR blocked"
     }
   ]
 }
