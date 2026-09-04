@@ -69,6 +69,12 @@ jobs:
             print(f"  PASS {len(targets)} changed sample_output.json file(s) validated")
           PYEOF
 
+      - name: Implemented tools against recorded fixtures
+        # tests/fixtures/manifest.json lists every implemented tool and the
+        # fixture it must analyse. Each run must exit with the documented code
+        # and its payload must pass the full evidence gate. This is the proof
+        # that a skill is implemented rather than a declared stub.
+        run: python3 tests/run_fixtures.py
       - name: Persona gate tests
         # plugins/usap/hooks/usap_gate.py is a control (blocks writes on gated
         # paths). Its acceptance criteria and the DR conditions are the tests.
