@@ -120,6 +120,12 @@ jobs:
       # "never invoke a mutating capability autonomously" rule. The plugin loaded
       # cleanly and answered with the human-approval gate removed. This gate
       # makes that undetectable-by-eye failure a build failure.
+      - name: Polyglot mirror drift gate
+        # .codex/.gemini/.cursor/.windsurf/.aider are generated symlink trees plus
+        # an index each (scripts/sync_all.py). They drifted by a whole skill
+        # unnoticed until 1.14.0 because nothing gated them.
+        run: python3 scripts/sync_all.py --check
+
       - name: Plugin mirror drift gate
         run: |
           python3 tools/sync_plugin.py --check

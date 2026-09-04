@@ -10,6 +10,10 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 - **`cloud-infra/iac-security` is a real tool.** Evaluates a normalised IaC descriptor (parsed Terraform, CloudFormation or Kubernetes resources plus scanner-detected secrets) against the SKILL.md misconfiguration tables: public S3 ACLs and access blocks, IAM `Action * / Resource *` and open trust policies, admin ports open to `0.0.0.0/0`, privileged, host-namespace and root pods, ServiceAccounts bound to cluster-admin, secrets in IaC. Applies the CI/CD gate policy (block on critical without an approved exception), maps every finding to CIS, NIST 800-53 and PCI DSS, and computes a compliance score. Fixture: a payments infrastructure tree with a public export bucket, a wildcard deploy policy, SSH from anywhere, a privileged deployment bound to cluster-admin and a committed database password (exit 2, PR blocked).
 - **`appsec-devsecops/supply-chain-risk` is a real tool.** Scores an SBOM descriptor with the SKILL.md risk weights (CVE +40, KEV +60, abandoned +20, single maintainer +15, new maintainer +25; binary additions, obfuscation, typosquats and dependency confusion are immediate blocks), applies the licence table and the eight-item SLSA build checklist, and emits a `block` payload with `human_approval_required: true` when a registry policy change is recommended. Evidence cites NVD per CVE, the CISA KEV catalogue and the SLSA specification. Fixture: an npm SBOM with a KEV component carrying an added binary, a dependency-confusion candidate and a typosquat (exit 2).
 
+### Fixed
+
+- **Small post-release fixes.** `tools/validate_skill.py` now recognises the spec-preferred top-level `mitre_attack` key when checking body citations against frontmatter (no more false drift warnings on the 32 skills using it); `scripts/sync_all.py --check` is a PR gate in both pipelines so the five polyglot mirrors cannot drift again; ORCHESTRATION.md's plugin example uses the current skill count.
+
 
 ## [1.14.0] — 2026-09-04
 

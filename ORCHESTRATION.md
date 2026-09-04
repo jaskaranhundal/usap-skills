@@ -116,7 +116,7 @@ Fan-out consolidation is itself a payload: the consolidating agent cites the fan
 
 ## 5. Routing rules the implementation must enforce
 
-1. **Absent skill → `block`.** If a `next_agents` entry names a skill or agent that does not exist in the resolved tree (for example the installed plugin ships 33 of 80 skills), the router emits a `block` payload naming the missing slug and stops. It never silently falls through to a different skill. Tracked in [issue #141](https://github.com/jaskaranhundal/usap-skills/issues/141).
+1. **Absent skill → `block`.** If a `next_agents` entry names a skill or agent that does not exist in the resolved tree (for example the installed plugin ships 33 of 81 skill directories), the router emits a `block` payload naming the missing slug and stops. It never silently falls through to a different skill. Tracked in [issue #141](https://github.com/jaskaranhundal/usap-skills/issues/141).
 2. **Deterministic selection.** Ties break alphabetically. Two runs over the same payload route the same way. See [`docs/mcp-routing.md`](docs/mcp-routing.md).
 3. **Audit every decision.** Route, approval, denial and dispatch each write one line to the hash-chained audit log (`tools/mcp_audit.py`). A chain with a gap in its audit trail is treated as failed.
 4. **Read-only by default.** A connector capability is invoked autonomously only when it is declared `read_only` in the agent's `usap_mcp` block and the payload is not mutating. Everything else is gated.
