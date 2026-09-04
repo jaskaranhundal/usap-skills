@@ -4,7 +4,9 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Fixed
+
+- **Evidence gate contains `local://` sources to the repository.** `tools/output_contract.py` joined the path to the repository root and tested only `exists()`, so `local://../../etc/passwd` passed whenever that file existed on the validating host. The candidate is now resolved and must remain under the resolved repository root; otherwise it is rejected as escaping the root. Symlinks that resolve inside the repository stay valid. Regression test `tools/output_contract_test.py`.
 
 ## [1.13.0] — 2026-07-03
 
