@@ -1,0 +1,28 @@
+{
+  "agent_slug": "persona-coverage-audit",
+  "intent_type": "report",
+  "action": "<plain-English next action>",
+  "rationale": "<how coverage was measured: gated sessions paired with persona_pass entries by session_id>",
+  "confidence": 0.0,
+  "severity": "<critical|high|medium|low|informational>",
+  "key_findings": [
+    "<sessions in window and how many wrote gated paths>",
+    "<passes recorded, by pass code>",
+    "<covered vs uncovered>"
+  ],
+  "evidence_references": [
+    {"source": "local://plugins/usap/hooks/hooks.json", "ref": "gate definition"}
+  ],
+  "next_agents": [],
+  "human_approval_required": false,
+  "timestamp_utc": "<ISO8601 UTC>",
+  "coverage": {
+    "window_days": 7,
+    "sessions_total": 0,
+    "sessions_gated": 0,
+    "sessions_covered": 0,
+    "sessions_uncovered": [],
+    "sessions_without_hook": [],
+    "passes_by_code": {}
+  }
+}

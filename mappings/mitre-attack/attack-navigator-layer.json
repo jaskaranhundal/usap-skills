@@ -733,6 +733,16 @@
       "showSubtechniques": true
     },
     {
+      "techniqueID": "T1562.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: governance/persona-coverage-audit",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
       "techniqueID": "T1562.002",
       "score": 1,
       "color": "",
