@@ -48,4 +48,4 @@ The marketplace manifest sits at the repo root (`/.claude-plugin/marketplace.jso
 
 The skills, agents, and standards the orchestrator commands operate on all live at the **repo root** (`appsec-devsecops/`, `detection/`, `agents/security/`, etc.). This plugin directory only carries the Claude Code surface — the slash commands and orchestrator-skill loaders. When a command reads a domain skill, it walks back to the repo root via the relative paths in the agent definitions.
 
-For the full project — 79 skills across 12 domains, 12 `cs-*` orchestrator agents, the typed 11-field output contract, framework mappings, validators, the design system, and the docs site — see the parent repo's [`README.md`](../../README.md).
+For the full project — 81 skills across 12 domains, 13 `cs-*` orchestrator agents, the typed 11-field output contract, framework mappings, validators, the design system, and the docs site — see the parent repo's [`README.md`](../../README.md).

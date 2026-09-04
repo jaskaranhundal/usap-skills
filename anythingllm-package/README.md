@@ -6,8 +6,8 @@ Auto-generated plugin package for the [Unified Security Agent Platform (USAP)](h
 
 | Item | Count | Description |
 |---|---|---|
-| Agent Skills (JS plugins) | 69 | One JS wrapper per Python `_tool.py` (across 79 skills) |
-| Workspace | 1 | `cs-usap-orchestrator` — master router over all 12 cs-* agents |
+| Agent Skills (JS plugins) | 69 | One JS wrapper per Python `_tool.py` (across 81 skills) |
+| Workspace | 1 | `cs-usap-orchestrator` — master router over all 13 cs-* agents |
 
 ## Architecture
 
@@ -23,7 +23,7 @@ cs-usap-orchestrator (AnythingLLM Workspace)
     +-- cs-ciso-advisor               executive, board reports
 ```
 
-The master orchestrator has access to **all 79 USAP skills** and routes requests to the appropriate specialized agent.
+The master orchestrator has access to **all 81 USAP skills** and routes requests to the appropriate specialized agent.
 
 ## Quick Start
 
