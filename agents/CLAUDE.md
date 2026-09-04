@@ -2,6 +2,8 @@
 
 This guide provides instructions for creating **cs-* prefixed agents** that orchestrate the USAP skill packages.
 
+How agents hand work to each other (the payload as envelope, `next_agents`, the hold on `human_approval_required`, the four USAP chains) is specified in [`../ORCHESTRATION.md`](../ORCHESTRATION.md). Workflows you write must fit one of the chains or patterns defined there.
+
 ## What are cs-* Agents?
 
 **cs-* agents** are specialized orchestrators that combine multiple USAP skills into coherent, role-specific workflows. Each agent:
