@@ -12,6 +12,12 @@
       "input": "tests/fixtures/container-image-scan-input.json",
       "expect_exit": 0,
       "note": "CVE, GHSA and unexpected-layer findings on an internet-facing image: block-deploy, resolvable NVD/GHSA/local evidence"
+    },
+    {
+      "tool": "appsec-devsecops/supply-chain-risk/scripts/supply-chain-risk_tool.py",
+      "input": "tests/fixtures/supply-chain-risk-input.json",
+      "expect_exit": 2,
+      "note": "npm SBOM: KEV component with added binary, dependency-confusion candidate, typosquat; block with approval required"
     }
   ]
 }

@@ -4,7 +4,10 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Added
+
+- **`appsec-devsecops/supply-chain-risk` is a real tool.** Scores an SBOM descriptor with the SKILL.md risk weights (CVE +40, KEV +60, abandoned +20, single maintainer +15, new maintainer +25; binary additions, obfuscation, typosquats and dependency confusion are immediate blocks), applies the licence table and the eight-item SLSA build checklist, and emits a `block` payload with `human_approval_required: true` when a registry policy change is recommended. Evidence cites NVD per CVE, the CISA KEV catalogue and the SLSA specification. Fixture: an npm SBOM with a KEV component carrying an added binary, a dependency-confusion candidate and a typosquat (exit 2).
+
 
 ## [1.14.0] — 2026-09-04
 
