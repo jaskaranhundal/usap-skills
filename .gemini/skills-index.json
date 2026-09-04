@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generated_at_utc": "2026-06-27T10:19:58Z",
+  "generated_at_utc": "2026-09-04T20:22:06Z",
   "target": ".gemini",
   "skills": [
     {
@@ -132,6 +132,14 @@
       "target_path": "cloud-infra/cloud-workload-protection/SKILL.md"
     },
     {
+      "slug": "container-image-scan",
+      "domain": "cloud-infra",
+      "name": "container-image-scan",
+      "description": "USAP agent skill for Container Image Scan. Use for classifying container-image vulnerability scan findings from Trivy, Grype, or Snyk into a block-deploy, fix-by-SLA-window, track, or accept decision across base-image OS packages, application dependencies, and unexpected image layers.",
+      "path": ".gemini/skills/container-image-scan.md",
+      "target_path": "cloud-infra/container-image-scan/SKILL.md"
+    },
+    {
       "slug": "endpoint-os-security",
       "domain": "cloud-infra",
       "name": "endpoint-os-security",
@@ -258,6 +266,14 @@
       "description": "USAP agent skill for Security Metrics and Reporting. Use for producing MTTD/MTTR KPIs, patch coverage rates, SLA compliance metrics, false-positive rates, and board-level security dashboards \u2014 always with data provenance statements and period-over-period trend analysis.",
       "path": ".gemini/skills/metrics-reporting.md",
       "target_path": "governance/metrics-reporting/SKILL.md"
+    },
+    {
+      "slug": "persona-coverage-audit",
+      "domain": "governance",
+      "name": "persona-coverage-audit",
+      "description": "USAP agent skill for Persona Coverage Audit. Use for measuring which security-relevant sessions carried a recorded USAP persona pass and reporting the uncovered ones.",
+      "path": ".gemini/skills/persona-coverage-audit.md",
+      "target_path": "governance/persona-coverage-audit/SKILL.md"
     },
     {
       "slug": "security-architecture",
