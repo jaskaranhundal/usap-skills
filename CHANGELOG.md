@@ -4,9 +4,11 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-### Added
-
 ## [Unreleased]
+
+### Fixed
+
+- **Adapters refuse live mode without a live handler.** With `USAP_ADAPTER_MODE=live`, the Slack and Splunk adapters (no live handler yet) fell through to fixtures and returned a canned success, so the router recorded `dispatched` for a message that was never sent. They now return JSON-RPC error `-32001` and make no call; the router records `dispatch_failed`. Regression test `adapters/_lib_test.py`; a generic unit-test step now runs `tools/*_test.py` and `adapters/*_test.py` in both CI pipelines. Design review for this and the two sibling dispatch-path fixes: `docs/design/2026-09-04-codex-review-fixes-dr.md`.
 
 ## [1.13.0] — 2026-07-03
 

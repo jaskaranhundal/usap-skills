@@ -69,6 +69,17 @@ jobs:
             print(f"  PASS {len(targets)} changed sample_output.json file(s) validated")
           PYEOF
 
+      - name: Runtime unit tests
+        # Every tools/*_test.py and adapters/*_test.py is a regression test for a
+        # control or a wire (adapter mode guard, dispatch deadline, evidence-gate
+        # containment, persona gate, MCP server). Stdlib unittest, no deps.
+        run: |
+          rc=0
+          for t in tools/*_test.py adapters/*_test.py; do
+            [ -f "$t" ] || continue
+            echo "== $t"; python3 "$t" || rc=1
+          done
+          exit $rc
       - name: Implemented tools against recorded fixtures
         # tests/fixtures/manifest.json lists every implemented tool and the
         # fixture it must analyse. Each run must exit with the documented code
