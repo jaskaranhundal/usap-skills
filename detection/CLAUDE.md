@@ -42,7 +42,7 @@ All skill paths are relative from the repository root as `detection/<slug>/`. Fo
 | Tool | Path | Purpose | Key Args |
 |---|---|---|---|
 | threat-hunting_tool.py | detection/threat-hunting/scripts/threat-hunting_tool.py | Executes hunt playbooks, scores hypotheses, estimates dwell time | `--playbook`, `--lookback-days`, `--output` |
-| secrets-exposure_tool.py | detection/secrets-exposure/scripts/secrets-exposure_tool.py | Scans for 15 secret types, entropy scoring, blast radius estimation | `--scope`, `--entropy-threshold`, `--output` |
+| secrets-exposure_tool.py | detection/secrets-exposure/scripts/secrets-exposure_tool.py | Analyses one SecurityFact: secret type, false-positive indicators, confidence factors, blast radius, attacker timeline, recommendation; exits 0/1/2 | `--input`, `--output` |
 | scan_for_secrets.py | detection/secrets-exposure/scripts/scan_for_secrets.py | Raw secrets scan runner invoked by secrets-exposure_tool | `--path`, `--format` |
 | pre_analysis.py | detection/secrets-exposure/scripts/pre_analysis.py | Pre-scan validation and context setup for secrets exposure | `--target`, `--config` |
 | behavioral-analytics_tool.py | detection/behavioral-analytics/scripts/behavioral-analytics_tool.py | UEBA entity risk scoring, insider threat pattern detection, account takeover identification | `--entity`, `--baseline-days`, `--risk-threshold`, `--output` |
@@ -233,6 +233,6 @@ Example:
 
 ```bash
 python detection/threat-hunting/scripts/threat-hunting_tool.py --playbook wmi-lateral-movement --lookback-days 30 --output json
-python detection/secrets-exposure/scripts/secrets-exposure_tool.py --scope repo --entropy-threshold 4.5 --output json
+python detection/secrets-exposure/scripts/secrets-exposure_tool.py --input tests/fixtures/secrets-exposure-input.json --output json
 python detection/telemetry-signal-quality/scripts/telemetry-signal-quality_tool.py --source all --window 24h --output json
 ```
