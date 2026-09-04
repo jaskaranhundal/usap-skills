@@ -24,6 +24,12 @@
       "input": "tests/fixtures/iac-security-input.json",
       "expect_exit": 2,
       "note": "Terraform + Kubernetes tree: public bucket, IAM wildcard, SSH from anywhere, privileged pod on cluster-admin, committed DB password; PR blocked"
+    },
+    {
+      "tool": "appsec-devsecops/pipeline-security-scan/scripts/pipeline-security-scan_tool.py",
+      "input": "tests/fixtures/pipeline-security-scan-input.json",
+      "expect_exit": 2,
+      "note": "GitHub Actions workflow: gateway and JWT secrets in env, bearer token in a run step, write-all permissions, unpinned actions, no SAST or signing; critical"
     }
   ]
 }
