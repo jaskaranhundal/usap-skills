@@ -4,7 +4,9 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Added
+
+- **`ORCHESTRATION.md`.** The orchestration protocol as a normative file: the 11-field payload as the only handoff envelope, the rule that `human_approval_required: true` ends a chain at a hold, inheritance of UNKNOWN fields, the four USAP chains (design review, finding to ticket, incident, audit) with their pass codes and holds, the four composition patterns, the routing rules the router must enforce (absent skill → `block`, deterministic ties, audit every decision, read-only by default, budget as a routing input), and the board-as-state-machine contract for autonomous runs. Linked from README and `agents/CLAUDE.md`.
 
 ## [1.13.0] — 2026-07-03
 
