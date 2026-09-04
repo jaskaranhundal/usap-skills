@@ -4,7 +4,7 @@
   "spec": "agentskills.io 1.0",
   "repository": "https://github.com/jaskaranhundal/usap-skills",
   "counts": {
-    "skills": 80,
+    "skills": 81,
     "agents": 13,
     "domains": 12
   },
@@ -23,7 +23,7 @@
     },
     {
       "slug": "governance",
-      "skill_count": 11
+      "skill_count": 12
     },
     {
       "slug": "identity-access",
@@ -523,6 +523,17 @@
       "category": "usap-governance",
       "version": "1.0.0",
       "agent_slug": "metrics-reporting"
+    },
+    {
+      "name": "persona-coverage-audit",
+      "domain": "governance",
+      "path": "governance/persona-coverage-audit",
+      "description": "USAP agent skill for Persona Coverage Audit. Use for measuring which security-relevant sessions carried a recorded USAP persona pass and reporting the uncovered ones.",
+      "license": "MIT",
+      "category": "usap-governance",
+      "version": "1.0.0",
+      "agent_slug": "persona-coverage-audit",
+      "allowed-tools": "Read Grep Glob Bash(python3:*)"
     },
     {
       "name": "security-architecture",
