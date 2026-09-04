@@ -5865,8 +5865,9 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-04
   agent_slug: "supply-chain-risk"
+mitre_attack: [T1195.001, T1195.002, T1195]
 ---
 
 # Supply Chain Risk Agent
