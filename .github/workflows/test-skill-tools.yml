@@ -79,8 +79,10 @@ jobs:
         # the payload must still pass the full output contract.
         run: |
           out=/tmp/persona-coverage.json
+          rc=0
+          # The runner shell is bash -e; capture the expected non-zero exit instead of aborting on it.
           python3 governance/persona-coverage-audit/scripts/persona-coverage-audit_tool.py \
-            --input tests/fixtures/persona-coverage-audit/input.json --output json > "$out"; rc=$?
+            --input tests/fixtures/persona-coverage-audit/input.json --output json > "$out" || rc=$?
           [ "$rc" -eq 1 ] || { echo "  FAIL expected exit 1 on fixture, got $rc"; exit 1; }
           python3 tools/output_contract.py "$out"
 
