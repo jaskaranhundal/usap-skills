@@ -4,7 +4,9 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Fixed
+
+- **Dispatch timeout is a real bound.** `tools/mcp_dispatch.py` read adapter output with a blocking `readline()` inside its deadline loop, so an adapter that stayed alive without emitting a newline hung `dispatch(timeout=…)` indefinitely. The reader is now non-blocking (`selectors` plus `os.read`), re-checks the deadline between reads and treats EOF as premature exit. Regression test `tools/mcp_dispatch_test.py` uses a fake adapter that stalls after a partial line.
 
 ## [1.13.0] — 2026-07-03
 
