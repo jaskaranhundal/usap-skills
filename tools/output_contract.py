@@ -112,7 +112,18 @@ def _source_is_resolvable(source: Any, registry: Any, repo_root: Any) -> tuple[b
         rel = m.group(1).lstrip("/")
         if repo_root is None:
             return True, ""  # cannot verify path; accept structurally
-        if (repo_root / rel).exists():
+        # Contain the candidate under the repository root before consulting the
+        # filesystem: local:// means a repository artifact, and "..", absolute
+        # segments or symlinks pointing outside must not pass the gate (Codex
+        # review on PR #147, comment 3936200739).
+        root = Path(repo_root).resolve()
+        try:
+            candidate = (root / rel).resolve()
+        except (OSError, RuntimeError):
+            return False, f"local:// path cannot be resolved: {rel}"
+        if candidate != root and root not in candidate.parents:
+            return False, f"local:// path escapes the repository root: {rel}"
+        if candidate.exists():
             return True, ""
         return False, f"local:// path not found in repo: {rel}"
 

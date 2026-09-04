@@ -21,6 +21,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+REPO_ROOT = Path(__file__).resolve().parents[3]
+
 # Reproducible confidence — computed from the evidence via the shared rubric,
 # not narrated. See standards/confidence-rubric.md.
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "shared" / "scripts"))
@@ -104,7 +106,28 @@ def _classify(findings: list[dict]) -> list[dict]:
     return out
 
 
-def scan(target: dict) -> dict:
+def _evidence_source(finding: dict, scanner: str, input_rel: str | None) -> str:
+    """Resolvable evidence URI for one finding (the contract rejects bare scanner names)."""
+    fid = str(finding.get("id") or "").upper()
+    if fid.startswith("CVE-"):
+        return f"https://nvd.nist.gov/vuln/detail/{fid}"
+    if fid.startswith("GHSA-"):
+        return f"https://github.com/advisories/{fid}"
+    if input_rel:
+        return f"local://{input_rel}"
+    return f"scanner:{scanner}"
+
+
+def _input_rel(input_path: str | None) -> str | None:
+    if not input_path:
+        return None
+    try:
+        return Path(input_path).resolve().relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return None
+
+
+def scan(target: dict, input_path: str | None = None) -> dict:
     image = target.get("image", DEFAULT_TARGET["image"])
     scanner = target.get("scanner", "trivy")
     internet_facing = bool(target.get("internet_facing", False))
@@ -136,14 +159,19 @@ def scan(target: dict) -> dict:
     if not key_findings:
         key_findings.append(f"No findings returned by {scanner} for {image} — clean scan.")
 
+    input_rel = _input_rel(input_path)
     evidence_refs = [
         {
-            "source": scanner,
-            "ref": f.get("id") or f["package"],
+            "source": _evidence_source(f, scanner, input_rel),
+            "ref": f"{scanner}: {f.get('id') or f['package']}",
             "quote": f"{f['package']} {f.get('installed_version') or ''}".strip(),
         }
         for f in findings[:5]
     ]
+    evidence_refs.append({
+        "source": "local://cloud-infra/container-image-scan/SKILL.md",
+        "ref": "component classification and severity-to-action tables",
+    })
 
     next_agents = []
     if has_implant:
@@ -208,7 +236,7 @@ def main() -> int:
             target["image"] = args.image
         target["scanner"] = args.scanner
 
-    payload = scan(target)
+    payload = scan(target, args.input)
 
     if args.output == "json":
         print(json.dumps(payload, indent=2))
