@@ -1,13 +1,13 @@
 ---
 title: USAP MCP Server
-description: Run USAP as a Model Context Protocol server. Any MCP-compatible client (Claude Code, Cursor, Codex CLI, Gemini CLI, Goose) can discover the 79 USAP skills and 12 cs-* agents, load any of them as system prompts, and validate payloads against the 11-field output contract.
+description: Run USAP as a Model Context Protocol server. Any MCP-compatible client (Claude Code, Cursor, Codex CLI, Gemini CLI, Goose) can discover the 81 USAP skills and 13 cs-* agents, load any of them as system prompts, and validate payloads against the 11-field output contract.
 ---
 
 # USAP MCP Server
 
 USAP exposes itself as a [Model Context Protocol](https://modelcontextprotocol.io) server. Any MCP-compatible client — Claude Code, Cursor, Codex CLI, Gemini CLI, Goose, OpenCode, and others — can:
 
-- **Discover** — list the 79 USAP skills and 12 `cs-*` orchestrator agents
+- **Discover** — list the 81 USAP skills and 13 `cs-*` orchestrator agents
 - **Activate** — load any skill or agent definition into the client's LLM context as a system prompt
 - **Validate** — validate a JSON payload against the typed 11-field output contract
 
@@ -71,8 +71,8 @@ After connecting, your client sees five MCP tools:
 
 | Tool | What it does |
 |---|---|
-| `list_skills(domain?)` | Catalogue of the 79 skills with one-line descriptions; optionally filter by one of the 12 domains |
-| `list_agents()` | The 12 `cs-*` orchestrator agents |
+| `list_skills(domain?)` | Catalogue of the 81 skills with one-line descriptions; optionally filter by one of the 12 domains |
+| `list_agents()` | The 13 `cs-*` orchestrator agents |
 | `get_skill(slug)` | Full `SKILL.md` content for one skill — paste straight into the client's LLM context |
 | `get_agent(slug)` | Full agent definition — activates the agent persona |
 | `validate_payload(payload)` | Validates a JSON object against the typed 11-field output contract |
@@ -141,7 +141,7 @@ The Phase 1 server is the foundation for that work — same transport, same disc
                                   │
                                   ▼
                    reads from the repo on disk
-                   (79 skills · 12 agents · 11-field contract)
+                   (81 skills · 13 agents · 11-field contract)
 ```
 
 Phase 2 inserts a routing layer between USAP and downstream specialist MCPs. Phase 3 adds production specialist-MCP reference adapters. Phase 4 layers scheduled persistence on top.

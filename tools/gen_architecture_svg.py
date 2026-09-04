@@ -264,7 +264,7 @@ def render() -> str:
         f'<text x="40" y="50" font-family="\'IBM Plex Mono\', monospace" font-size="11" '
         f'letter-spacing="0.2em" fill="{CYAN_400}">USAP · ARCHITECTURE</text>'
         f'<text x="40" y="70" font-family="\'IBM Plex Mono\', monospace" font-size="10" '
-        f'letter-spacing="0.08em" fill="{INK_300}">79 skills · 12 cs-* orchestrator agents · 12 active domains</text>'
+        f'letter-spacing="0.08em" fill="{INK_300}">81 skills · 13 cs-* agents · 12 active domains</text>'
         f'<animate attributeName="opacity" from="0" to="1" begin="0.1s" dur="0.4s" fill="freeze"/>'
         f'</g>'
     )

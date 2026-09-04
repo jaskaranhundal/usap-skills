@@ -35,6 +35,12 @@ import hmac
 import json
 import os
 import sys
+
+try:
+    import fcntl  # POSIX advisory locks; see write_audit
+except ImportError:  # pragma: no cover - Windows is outside the runtime's scope
+    fcntl = None
+_LOCK_WARNED = False
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -109,15 +115,31 @@ def write_audit(entry: dict) -> Path:
     today = entry["timestamp_utc"].split("T")[0]
     log = audit_dir() / f"{today}.jsonl"
 
-    entry["prev_hash"] = _last_hash(log)
-    key = _audit_key()
-    if key is not None:
-        content = json.dumps(entry, separators=(",", ":"), sort_keys=True)
-        entry["sig"] = hmac.new(key, content.encode(), hashlib.sha256).hexdigest()
-
-    line = json.dumps(entry, separators=(",", ":"), sort_keys=True)
-    with log.open("a", encoding="utf-8") as f:
-        f.write(line + "\n")
+    # Hold an exclusive per-log lock across read-predecessor, sign and append.
+    # Without it two concurrent writers record the same predecessor and
+    # verify() reports a broken chain during ordinary operation (Codex review
+    # on PR #148, comment 3936197783).
+    global _LOCK_WARNED
+    lock_path = log.with_suffix(".lock")
+    with lock_path.open("a", encoding="utf-8") as lk:
+        if fcntl is not None:
+            fcntl.flock(lk.fileno(), fcntl.LOCK_EX)
+        elif not _LOCK_WARNED:
+            _LOCK_WARNED = True
+            sys.stderr.write("mcp_audit: audit_lock_unavailable on this platform; concurrent writers may fork the chain\n")
+        try:
+            entry["prev_hash"] = _last_hash(log)
+            key = _audit_key()
+            if key is not None:
+                content = json.dumps(entry, separators=(",", ":"), sort_keys=True)
+                entry["sig"] = hmac.new(key, content.encode(), hashlib.sha256).hexdigest()
+            line = json.dumps(entry, separators=(",", ":"), sort_keys=True)
+            with log.open("a", encoding="utf-8") as f:
+                f.write(line + "\n")
+                f.flush()
+        finally:
+            if fcntl is not None:
+                fcntl.flock(lk.fileno(), fcntl.LOCK_UN)
     return log
 
 

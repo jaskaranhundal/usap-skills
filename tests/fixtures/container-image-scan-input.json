@@ -1,0 +1,39 @@
+{
+  "image": "registry.example.com/acme/payments-api@sha256:8f3e1c2b9a4d5e6f7c8d9e0f1a2b3c4d5e6f7089abcdef0123456789fedcba98",
+  "scanner": "trivy",
+  "internet_facing": true,
+  "findings": [
+    {
+      "id": "CVE-2024-3094",
+      "package": "liblzma5",
+      "installed_version": "5.6.0",
+      "fixed_version": "5.6.2",
+      "component_type": "base_image_os_package",
+      "severity": "critical"
+    },
+    {
+      "id": "CVE-2021-44228",
+      "package": "log4j-core",
+      "installed_version": "2.14.1",
+      "fixed_version": "2.17.1",
+      "component_type": "application_dependency",
+      "severity": "critical"
+    },
+    {
+      "id": "GHSA-jfh8-c2jp-5v3q",
+      "package": "log4j-api",
+      "installed_version": "2.14.1",
+      "fixed_version": "2.17.1",
+      "component_type": "application_dependency",
+      "severity": "high"
+    },
+    {
+      "id": null,
+      "package": "layer:sha256:9c2a1fe36b4d8095c7e2a9135f0d8b2641a9c3e708b5d2f46a1c9e307d4b8f52",
+      "installed_version": null,
+      "fixed_version": null,
+      "component_type": "unexpected_layer",
+      "severity": "critical"
+    }
+  ]
+}

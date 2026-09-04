@@ -5,15 +5,15 @@
     "url": "https://github.com/jaskaranhundal"
   },
   "metadata": {
-    "description": "USAP \u2014 Unified Security Agent Platform. Open-source AI cybersecurity skills marketplace.",
-    "version": "1.13.0"
+    "description": "USAP — Unified Security Agent Platform. Open-source AI cybersecurity skills marketplace.",
+    "version": "1.14.0"
   },
   "plugins": [
     {
       "name": "usap",
       "source": "./plugins/usap",
-      "description": "79 cybersecurity skills + 12 cs-* orchestrator agents. Bundles 7 slash commands and 6 user-invocable orchestrator skills (Alex, CISO, DevSecOps, IR, Program Manager, Red Team). Every skill emits a typed 11-field JSON output contract mapped to MITRE ATT&CK and NIST CSF 2.0. Apache 2.0, runs in any LLM.",
-      "version": "1.13.0",
+      "description": "81 cybersecurity skills + 13 cs-* agents. Bundles 7 slash commands and 6 user-invocable orchestrator skills (Alex, CISO, DevSecOps, IR, Program Manager, Red Team). Every skill emits a typed 11-field JSON output contract mapped to MITRE ATT&CK and NIST CSF 2.0. Apache 2.0, runs in any LLM.",
+      "version": "1.14.0",
       "author": {
         "name": "Jaskarn Singh"
       },
