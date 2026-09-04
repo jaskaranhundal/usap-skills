@@ -4,7 +4,7 @@
 Exposes USAP as a Model Context Protocol server over stdio. Any MCP-compatible
 client (Claude Code, Cursor, Codex CLI, Gemini CLI, Goose, OpenCode) can:
 
-  * Discover the 79 USAP skills and 12 cs-* orchestrator agents
+  * Discover the 81 USAP skills and 13 cs-* orchestrator agents
   * Load any skill or agent definition into the client's LLM context
   * Validate a payload against the 11-field output contract
 
@@ -58,6 +58,7 @@ CS_AGENTS = [
     ("devsecops", "cs-devsecops-engineer"),
     ("executive", "cs-ciso-advisor"),
     ("governance", "cs-security-program-manager"),
+    ("meta", "cs-usap-next"),
 ]
 
 
@@ -135,7 +136,7 @@ def load_skills() -> list[dict]:
 
 
 def load_agents() -> list[dict]:
-    """Return a list of {slug, group, description, path} for the 12 cs-* agents."""
+    """Return a list of {slug, group, description, path} for the 13 cs-* agents."""
     agents = []
     for group, slug in CS_AGENTS:
         agent_md = REPO_ROOT / "agents" / group / f"{slug}.md"
