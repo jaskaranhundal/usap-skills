@@ -6,7 +6,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "forensics"
 compatibility: "Requires forensic acquisition tooling and a write-blocked evidence target. Read-only against original evidence; chain-of-custody enforced."
 allowed-tools: "volatility3 plaso dd ewfacquire ftk-imager"
