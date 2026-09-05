@@ -78,6 +78,18 @@
       "input": "tests/fixtures/detection-engineering-input.json",
       "expect_exit": 2,
       "note": "Two critical CloudTrail techniques uncovered, noisy brute-force rule, useless rare-parent rule; critical gaps, approval to deploy designs"
+    },
+    {
+      "tool": "red-team/credential-attacks/scripts/credential-attacks_tool.py",
+      "input": "tests/fixtures/credential-attacks-input.json",
+      "expect_exit": 0,
+      "note": "authorized, in-scope WordPress login with a rate limit: slow single-pair test, one thread; exit 0"
+    },
+    {
+      "tool": "red-team/web-enumeration/scripts/web-enumeration_tool.py",
+      "input": "tests/fixtures/web-enumeration-input.json",
+      "expect_exit": 1,
+      "note": "authorized, in-scope WordPress enumeration with P1 paths and 403s: ranked, exit 1"
     }
   ]
 }

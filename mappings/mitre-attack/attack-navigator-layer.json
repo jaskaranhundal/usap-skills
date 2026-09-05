@@ -423,6 +423,26 @@
       "showSubtechniques": true
     },
     {
+      "techniqueID": "T1110.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/credential-attacks",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1110.003",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/credential-attacks",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
       "techniqueID": "T1110.004",
       "score": 2,
       "color": "",
@@ -847,6 +867,16 @@
       "score": 1,
       "color": "",
       "comment": "USAP skills covering: detection/attack-surface-management",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1595.003",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/web-enumeration",
       "enabled": true,
       "metadata": [],
       "links": [],
