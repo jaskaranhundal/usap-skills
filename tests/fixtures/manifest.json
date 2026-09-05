@@ -90,6 +90,330 @@
       "input": "tests/fixtures/web-enumeration-input.json",
       "expect_exit": 1,
       "note": "authorized, in-scope WordPress enumeration with P1 paths and 403s: ranked, exit 1"
+    },
+    {
+      "tool": "governance/findings-tracker/scripts/findings-tracker_tool.py",
+      "input": "tests/fixtures/findings-tracker-input.json",
+      "expect_exit": 2,
+      "note": "registry with a critical KEV finding overdue and a closed-without-verification finding"
+    },
+    {
+      "tool": "governance/metrics-reporting/scripts/metrics-reporting_tool.py",
+      "input": "tests/fixtures/metrics-reporting-input.json",
+      "expect_exit": 2,
+      "note": "KPI set with a false-positive rate breach and one open critical"
+    },
+    {
+      "tool": "governance/security-posture-score/scripts/security-posture-score_tool.py",
+      "input": "tests/fixtures/security-posture-score-input.json",
+      "expect_exit": 1,
+      "note": "seven-domain scorecard, composite 72 fair, rising vs prior"
+    },
+    {
+      "tool": "governance/ciso-brief-generator/scripts/ciso-brief-generator_tool.py",
+      "input": "tests/fixtures/ciso-brief-generator-input.json",
+      "expect_exit": 0,
+      "note": "board quarterly brief from posture, metrics and two incidents"
+    },
+    {
+      "tool": "governance/knowledge-management/scripts/knowledge-management_tool.py",
+      "input": "tests/fixtures/knowledge-management-input.json",
+      "expect_exit": 1,
+      "note": "remediation proposal conflicting with an active risk acceptance"
+    },
+    {
+      "tool": "governance/security-architecture/scripts/security-architecture_tool.py",
+      "input": "tests/fixtures/security-architecture-input.json",
+      "expect_exit": 2,
+      "note": "new partner API SAR with a data-at-rest fail"
+    },
+    {
+      "tool": "governance/security-awareness/scripts/security-awareness_tool.py",
+      "input": "tests/fixtures/security-awareness-input.json",
+      "expect_exit": 2,
+      "note": "human-risk metrics with credential submission above target"
+    },
+    {
+      "tool": "governance/security-policy-control/scripts/security-policy-control_tool.py",
+      "input": "tests/fixtures/security-policy-control-input.json",
+      "expect_exit": 2,
+      "note": "policy set with an unowned Tier-2 policy and a failed uncompensated CIS control"
+    },
+    {
+      "tool": "detection/behavioral-analytics/scripts/behavioral-analytics_tool.py",
+      "input": "tests/fixtures/behavioral-analytics-input.json",
+      "expect_exit": 2,
+      "note": "UEBA over three entities: off-hours volume spike, out-of-role finance access, cold-start intern"
+    },
+    {
+      "tool": "detection/threat-intelligence/scripts/threat-intelligence_tool.py",
+      "input": "tests/fixtures/threat-intelligence-input.json",
+      "expect_exit": 2,
+      "note": "data-exfil fact with a malicious Tor C2 IOC and known-APT-infra signals"
+    },
+    {
+      "tool": "detection/network-exposure/scripts/network-exposure_tool.py",
+      "input": "tests/fixtures/network-exposure-input.json",
+      "expect_exit": 2,
+      "note": "SSH and PostgreSQL exposed, any->internal firewall rule, DB reachable from internet, beaconing egress"
+    },
+    {
+      "tool": "detection/telemetry-signal-quality/scripts/telemetry-signal-quality_tool.py",
+      "input": "tests/fixtures/telemetry-signal-quality-input.json",
+      "expect_exit": 1,
+      "note": "mixed-credibility events plus a silent proxy source (data gap)"
+    },
+    {
+      "tool": "detection/deception-honeypot/scripts/deception-honeypot_tool.py",
+      "input": "tests/fixtures/deception-honeypot-input.json",
+      "expect_exit": 0,
+      "note": "deception plan for lateral movement, credential theft and exfiltration"
+    },
+    {
+      "tool": "identity-access/cryptography-key-management/scripts/cryptography-key-management_tool.py",
+      "input": "tests/fixtures/cryptography-key-management-input.json",
+      "expect_exit": 2,
+      "note": "cryptography-key-management real-tool fixture"
+    },
+    {
+      "tool": "identity-access/data-security-classification/scripts/data-security-classification_tool.py",
+      "input": "tests/fixtures/data-security-classification-input.json",
+      "expect_exit": 2,
+      "note": "data-security-classification real-tool fixture"
+    },
+    {
+      "tool": "identity-access/identity-access-risk/scripts/identity-access-risk_tool.py",
+      "input": "tests/fixtures/identity-access-risk-input.json",
+      "expect_exit": 2,
+      "note": "identity-access-risk real-tool fixture"
+    },
+    {
+      "tool": "identity-access/insider-physical-risk/scripts/insider-physical-risk_tool.py",
+      "input": "tests/fixtures/insider-physical-risk-input.json",
+      "expect_exit": 2,
+      "note": "insider-physical-risk real-tool fixture"
+    },
+    {
+      "tool": "response/forensics/scripts/forensics_tool.py",
+      "input": "tests/fixtures/forensics-input.json",
+      "expect_exit": 2,
+      "note": "forensics real-tool fixture"
+    },
+    {
+      "tool": "response/incident-commander/scripts/incident-commander_tool.py",
+      "input": "tests/fixtures/incident-commander-input.json",
+      "expect_exit": 2,
+      "note": "incident-commander real-tool fixture"
+    },
+    {
+      "tool": "response/zero-day-response/scripts/zero-day-response_tool.py",
+      "input": "tests/fixtures/zero-day-response-input.json",
+      "expect_exit": 2,
+      "note": "zero-day-response real-tool fixture"
+    },
+    {
+      "tool": "response/zero-day-response-governance/scripts/zero-day-response-governance_tool.py",
+      "input": "tests/fixtures/zero-day-response-governance-input.json",
+      "expect_exit": 2,
+      "note": "zero-day-response-governance real-tool fixture"
+    },
+    {
+      "tool": "system-security/os-hardening/scripts/os-hardening_tool.py",
+      "input": "tests/fixtures/os-hardening-input.json",
+      "expect_exit": 2,
+      "note": "os-hardening real-tool fixture"
+    },
+    {
+      "tool": "cloud-infra/cloud-workload-protection/scripts/cloud-workload-protection_tool.py",
+      "input": "tests/fixtures/cloud-workload-protection-input.json",
+      "expect_exit": 2,
+      "note": "cloud-workload-protection real-tool fixture"
+    },
+    {
+      "tool": "cloud-infra/endpoint-os-security/scripts/endpoint-os-security_tool.py",
+      "input": "tests/fixtures/endpoint-os-security-input.json",
+      "expect_exit": 2,
+      "note": "endpoint-os-security real-tool fixture"
+    },
+    {
+      "tool": "cloud-infra/ot-iot-device-security/scripts/ot-iot-device-security_tool.py",
+      "input": "tests/fixtures/ot-iot-device-security-input.json",
+      "expect_exit": 2,
+      "note": "ot-iot-device-security real-tool fixture"
+    },
+    {
+      "tool": "pentest/web-app-pentest/scripts/web-app-pentest_tool.py",
+      "input": "tests/fixtures/web-app-pentest-input.json",
+      "expect_exit": 2,
+      "note": "web-app-pentest real-tool fixture"
+    },
+    {
+      "tool": "pentest/pentest-reporting/scripts/pentest-reporting_tool.py",
+      "input": "tests/fixtures/pentest-reporting-input.json",
+      "expect_exit": 2,
+      "note": "pentest-reporting real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/appsec-code-review/scripts/appsec-code-review_tool.py",
+      "input": "tests/fixtures/appsec-code-review-input.json",
+      "expect_exit": 2,
+      "note": "appsec-code-review real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/build-integrity/scripts/build-integrity_tool.py",
+      "input": "tests/fixtures/build-integrity-input.json",
+      "expect_exit": 2,
+      "note": "build-integrity real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/devsecops-pipeline/scripts/devsecops-pipeline_tool.py",
+      "input": "tests/fixtures/devsecops-pipeline-input.json",
+      "expect_exit": 2,
+      "note": "devsecops-pipeline real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/sast-dast-coordinator/scripts/sast-dast-coordinator_tool.py",
+      "input": "tests/fixtures/sast-dast-coordinator-input.json",
+      "expect_exit": 2,
+      "note": "sast-dast-coordinator real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/secure-sdlc/scripts/secure-sdlc_tool.py",
+      "input": "tests/fixtures/secure-sdlc-input.json",
+      "expect_exit": 2,
+      "note": "secure-sdlc real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/supply-chain-simulation/scripts/supply-chain-simulation_tool.py",
+      "input": "tests/fixtures/supply-chain-simulation-input.json",
+      "expect_exit": 2,
+      "note": "supply-chain-simulation real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/agent-integrity-monitor/scripts/agent-integrity-monitor_tool.py",
+      "input": "tests/fixtures/agent-integrity-monitor-input.json",
+      "expect_exit": 2,
+      "note": "agent-integrity-monitor real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/ai-agent-security/scripts/ai-agent-security_tool.py",
+      "input": "tests/fixtures/ai-agent-security-input.json",
+      "expect_exit": 2,
+      "note": "ai-agent-security real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/ai-ethics-governance/scripts/ai-ethics-governance_tool.py",
+      "input": "tests/fixtures/ai-ethics-governance-input.json",
+      "expect_exit": 2,
+      "note": "ai-ethics-governance real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/guardrail/scripts/guardrail_tool.py",
+      "input": "tests/fixtures/guardrail-input.json",
+      "expect_exit": 0,
+      "note": "guardrail real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/orchestrator/scripts/orchestrator_tool.py",
+      "input": "tests/fixtures/orchestrator-input.json",
+      "expect_exit": 2,
+      "note": "orchestrator real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/third-party-vendor-risk/scripts/third-party-vendor-risk_tool.py",
+      "input": "tests/fixtures/third-party-vendor-risk-input.json",
+      "expect_exit": 2,
+      "note": "third-party-vendor-risk real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/tool-execution-broker/scripts/tool-execution-broker_tool.py",
+      "input": "tests/fixtures/tool-execution-broker-input.json",
+      "expect_exit": 0,
+      "note": "tool-execution-broker real-tool fixture"
+    },
+    {
+      "tool": "red-team/ai-red-teaming/scripts/ai-red-teaming_tool.py",
+      "input": "tests/fixtures/ai-red-teaming-input.json",
+      "expect_exit": 2,
+      "note": "ai-red-teaming real-tool fixture"
+    },
+    {
+      "tool": "red-team/attack-path-analysis/scripts/attack-path-analysis_tool.py",
+      "input": "tests/fixtures/attack-path-analysis-input.json",
+      "expect_exit": 2,
+      "note": "attack-path-analysis real-tool fixture"
+    },
+    {
+      "tool": "red-team/continuous-pentesting/scripts/continuous-pentesting_tool.py",
+      "input": "tests/fixtures/continuous-pentesting-input.json",
+      "expect_exit": 2,
+      "note": "continuous-pentesting real-tool fixture"
+    },
+    {
+      "tool": "red-team/red-team-operations/scripts/red-team-operations_tool.py",
+      "input": "tests/fixtures/red-team-operations-input.json",
+      "expect_exit": 2,
+      "note": "red-team-operations real-tool fixture"
+    },
+    {
+      "tool": "red-team/red-team-planner/scripts/red-team-planner_tool.py",
+      "input": "tests/fixtures/red-team-planner-input.json",
+      "expect_exit": 1,
+      "note": "red-team-planner real-tool fixture"
+    },
+    {
+      "tool": "red-team/safe-exploitation/scripts/safe-exploitation_tool.py",
+      "input": "tests/fixtures/safe-exploitation-input.json",
+      "expect_exit": 1,
+      "note": "safe-exploitation real-tool fixture"
+    },
+    {
+      "tool": "red-team/security-research/scripts/security-research_tool.py",
+      "input": "tests/fixtures/security-research-input.json",
+      "expect_exit": 2,
+      "note": "security-research real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/cyber-insurance/scripts/cyber-insurance_tool.py",
+      "input": "tests/fixtures/cyber-insurance-input.json",
+      "expect_exit": 2,
+      "note": "cyber-insurance real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/enterprise-risk-assessment/scripts/enterprise-risk-assessment_tool.py",
+      "input": "tests/fixtures/enterprise-risk-assessment-input.json",
+      "expect_exit": 2,
+      "note": "enterprise-risk-assessment real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/internal-audit-assurance/scripts/internal-audit-assurance_tool.py",
+      "input": "tests/fixtures/internal-audit-assurance-input.json",
+      "expect_exit": 2,
+      "note": "internal-audit-assurance real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/privacy-dpia/scripts/privacy-dpia_tool.py",
+      "input": "tests/fixtures/privacy-dpia-input.json",
+      "expect_exit": 2,
+      "note": "privacy-dpia real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/quantum-security-readiness/scripts/quantum-security-readiness_tool.py",
+      "input": "tests/fixtures/quantum-security-readiness-input.json",
+      "expect_exit": 2,
+      "note": "quantum-security-readiness real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/regulatory-horizon/scripts/regulatory-horizon_tool.py",
+      "input": "tests/fixtures/regulatory-horizon-input.json",
+      "expect_exit": 2,
+      "note": "regulatory-horizon real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/risk-threat-modeling/scripts/risk-threat-modeling_tool.py",
+      "input": "tests/fixtures/risk-threat-modeling-input.json",
+      "expect_exit": 2,
+      "note": "risk-threat-modeling real-tool fixture"
     }
   ]
 }

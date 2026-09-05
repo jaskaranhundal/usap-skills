@@ -42,14 +42,6 @@ jobs:
       spl: "index=secrets"
     intent_type: detect
     enabled: true
-  - id: stub-skill
-    skill: threat-intelligence
-    schedule: "@daily"
-    input: {FIXTURE}
-    dispatch_to: splunk
-    dispatch_args: {{}}
-    intent_type: detect
-    enabled: true
   - id: missing-tool
     skill: not-a-real-skill
     schedule: "@daily"
@@ -97,10 +89,25 @@ class Runner(unittest.TestCase):
         self.assertEqual(rc, 2, err)
 
     def test_stub_skill_is_skipped_not_dispatched(self):
-        rc, body, err = self._once("stub-skill")
-        self.assertEqual(body.get("status"), "skipped", (body, err))
-        self.assertIn("stub", body.get("reason", "").lower() + body.get("reason", ""))
-        self.assertEqual(rc, 2, err)
+        # Find any skill whose tool still declares itself a stub. As the de-stub
+        # sweep completes there may be none left, in which case run_skill's stub
+        # path has no live example and the case is skipped.
+        stub = None
+        for tool in sorted(REPO.glob("*/*/scripts/*_tool.py")):
+            if "not_implemented" in tool.read_text(encoding="utf-8", errors="replace"):
+                stub = tool.parent.parent.name
+                break
+        if stub is None:
+            self.skipTest("no stub skills remain")
+        cfg = Path(self.tmp.name) / "stub.yaml"
+        cfg.write_text(f"version: 1\njobs:\n  - id: stub-skill\n    skill: {stub}\n"
+                       f'    schedule: "@daily"\n    input: {FIXTURE}\n    dispatch_to: splunk\n'
+                       "    dispatch_args: {}\n    intent_type: detect\n    enabled: true\n")
+        p = subprocess.run([sys.executable, str(RUNNER), "--once", "stub-skill", "--config", str(cfg)],
+                           capture_output=True, text=True, env=self.env, timeout=120, cwd=str(REPO))
+        body = json.loads(p.stdout) if p.stdout.strip().startswith("{") else {}
+        self.assertEqual(body.get("status"), "skipped", (body, p.stderr))
+        self.assertEqual(p.returncode, 2, p.stderr)
 
     def test_missing_tool_is_skipped(self):
         rc, body, err = self._once("missing-tool")

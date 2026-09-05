@@ -4411,7 +4411,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "appsec-code-review"
 ---
 
@@ -4640,7 +4640,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "build-integrity"
   usap_level: "L3"
 user-invocable: true
@@ -4831,7 +4831,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-appsec-devsecops
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: devsecops-pipeline
   usap_level: "L3"
   agent_id: 38
@@ -5323,7 +5323,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "sast-dast-coordinator"
 ---
 
@@ -5497,7 +5497,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "secure-sdlc"
 ---
 
@@ -6068,7 +6068,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "supply-chain-simulation"
 mitre_attack: [T1041, T1195.001, T1195.002]
 ---
@@ -6683,7 +6683,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "cloud-workload-protection"
 ---
 
@@ -6967,7 +6967,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "endpoint-os-security"
 mitre_attack: [T1003, T1053.005, T1055, T1059.001, T1218, T1547.001, T1574.001]
 ---
@@ -7339,7 +7339,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "ot-iot-device-security"
 ---
 
@@ -7734,7 +7734,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-27
+  updated: 2026-09-05
   agent_slug: "behavioral-analytics"
   frameworks:
     mitre_attack: [T1078, T1110, T1133]
@@ -7957,7 +7957,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-detection
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "deception-honeypot"
 ---
 
@@ -8299,8 +8299,9 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "network-exposure"
+mitre_attack: [T1046, T1071.004, T1048, T1571]
 ---
 
 # Network Exposure
@@ -8661,7 +8662,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-detection
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: telemetry-signal-quality
   usap_level: "L3"
   agent_id: 8
@@ -9039,7 +9040,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-detection
-  updated: 2026-06-27
+  updated: 2026-09-05
   agent_slug: "threat-intelligence"
   usap_level: "L3"
   agent_id: 25
@@ -9199,7 +9200,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "ciso-brief-generator"
 ---
 
@@ -9321,7 +9322,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "findings-tracker"
 ---
 
@@ -9494,7 +9495,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "knowledge-management"
 ---
 
@@ -9669,7 +9670,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: metrics-reporting
   agent_id: 33
   level: L1
@@ -9915,7 +9916,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "security-architecture"
 ---
 
@@ -10089,8 +10090,9 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "security-awareness"
+mitre_attack: [T1566]
 ---
 
 # Security Awareness Agent
@@ -10499,7 +10501,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "security-policy-control"
 ---
 
@@ -10731,7 +10733,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "security-posture-score"
 ---
 
@@ -11258,7 +11260,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "cryptography-key-management"
 compatibility: "Requires read access to KMS / HSM key inventory and policy. No mutation (key rotation is gated via human_approval_required)."
 allowed-tools: "aws-cli az-cli gcloud openssl"
@@ -11485,7 +11487,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "data-security-classification"
   usap_level: "L3"
 user-invocable: true
@@ -11678,7 +11680,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-identity-access
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: identity-access-risk
   usap_level: "L3"
   agent_id: 14
@@ -11864,7 +11866,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "insider-physical-risk"
 ---
 
@@ -12065,7 +12067,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-pentest
-  updated: 2026-05-20
+  updated: 2026-09-05
   agent_slug: "pentest-reporting"
   level: L2
   plane: governance
@@ -12146,7 +12148,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-pentest
-  updated: 2026-05-20
+  updated: 2026-09-05
   agent_slug: "web-app-pentest"
   usap_level: "L4"
   level: L4
@@ -12249,7 +12251,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-platform-ai
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: agent-integrity-monitor
   usap_level: "L3"
   agent_id: 34
@@ -12421,7 +12423,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-safety
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "ai-agent-security"
 ---
 
@@ -12642,7 +12644,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "ai-ethics-governance"
 ---
 
@@ -12745,7 +12747,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-control-plane
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "guardrail"
   usap_level: "L4"
 disable-model-invocation: true
@@ -12914,7 +12916,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-control-plane
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "orchestrator"
 ---
 
@@ -13090,7 +13092,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "third-party-vendor-risk"
 ---
 
@@ -13286,7 +13288,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-platform-ai
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: tool-execution-broker
   usap_level: "L3"
   agent_id: 35
@@ -13461,7 +13463,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-red-team
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "ai-red-teaming"
 ---
 
@@ -13637,7 +13639,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "attack-path-analysis"
 ---
 
@@ -13778,7 +13780,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "continuous-pentesting"
 mitre_attack: [T1005, T1021, T1039, T1041, T1048, T1055, T1059, T1068]
 ---
@@ -14046,7 +14048,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "red-team-operations"
 mitre_attack: [T1003.006, T1021.002, T1021.006, T1134.001, T1550.002, T1550.003, T1563.001]
 ---
@@ -14201,7 +14203,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "red-team-planner"
 mitre_attack: [T1566.001]
 ---
@@ -14363,7 +14365,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "safe-exploitation"
   usap_level: "L4"
 disable-model-invocation: true
@@ -14529,7 +14531,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "security-research"
 ---
 
@@ -15013,7 +15015,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "forensics"
 compatibility: "Requires forensic acquisition tooling and a write-blocked evidence target. Read-only against original evidence; chain-of-custody enforced."
 allowed-tools: "volatility3 plaso dd ewfacquire ftk-imager"
@@ -15414,7 +15416,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "incident-commander"
 mitre_attack: [T1021, T1078, T1550, T1562]
 ---
@@ -15627,8 +15629,9 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-11
+  updated: 2026-09-05
   agent_slug: "zero-day-response"
+mitre_attack: [T1190, T1203]
 ---
 
 # Zero-Day Response
@@ -15837,7 +15840,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "zero-day-response-governance"
 ---
 
@@ -16204,7 +16207,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "cyber-insurance"
 ---
 
@@ -16392,7 +16395,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "enterprise-risk-assessment"
 ---
 
@@ -16596,7 +16599,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-risk-compliance
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: internal-audit-assurance
   agent_id: 47
   level: L1
@@ -16744,7 +16747,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "privacy-dpia"
 ---
 
@@ -16932,7 +16935,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "quantum-security-readiness"
 ---
 
@@ -17130,7 +17133,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "regulatory-horizon"
 ---
 
@@ -17315,7 +17318,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "risk-threat-modeling"
 ---
 
@@ -17506,7 +17509,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-system-security
-  updated: 2026-05-20
+  updated: 2026-09-05
   agent_slug: "os-hardening"
   usap_level: "L4"
   level: L4

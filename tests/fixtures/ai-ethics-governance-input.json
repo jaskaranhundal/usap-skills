@@ -1,0 +1,2 @@
+{"system":"loan-scoring-model","risk_tier":"high","fairness_gap":true,
+ "model_card_complete":false,"human_oversight":false,"explainability":false}

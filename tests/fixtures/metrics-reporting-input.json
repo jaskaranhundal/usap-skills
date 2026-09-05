@@ -1,0 +1,1 @@
+{"period":"2026-08","report_type":"operational_kpi_report","metrics":{"mttd_min":22,"mttr_hours_critical":6.5,"false_positive_rate":0.52,"patch_coverage_pct":91,"sla_compliance_pct":88,"phishing_click_rate":0.04,"training_completion_pct":97,"critical_open_count":1,"approval_completion_rate":100,"evidence_chain_integrity":100}}

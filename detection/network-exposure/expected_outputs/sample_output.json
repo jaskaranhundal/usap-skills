@@ -1,18 +1,101 @@
 {
   "agent_slug": "network-exposure",
   "intent_type": "detect",
-  "action": "Surface candidate findings to the operator and hand off to triage.",
-  "rationale": "Representative output for the Network Exposure skill. Enumerate and risk-score network exposure across internet-facing services, open ports, and firewall rule gaps. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "action": "3 critical and 6 high network finding(s); Restrict to VPN/bastion or use SSM first.",
+  "rationale": "Each open port classified against admin/database/plaintext tables with exposure context, firewall rules against the any->internal pattern, segmentation against the four boundary questions, and egress against the beaconing/DNS-tunnelling/large-transfer/C2 signals. Read-only; firewall changes need authorization.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Network Exposure: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Enumerate and risk-score network exposure across internet-facing services, open ports, and firewall rule gaps"
+    "acme-dc1-scan: 4 port(s), 2 rule(s), 2 egress IoC(s); 9 finding(s) (3 critical, 6 high)",
+    "critical [port_exposure] SSH (22) exposed on 10.20.8.13 (internet) -> Restrict to VPN/bastion or use SSM",
+    "critical [port_exposure] PostgreSQL (5432) exposed on 10.20.9.4 (dmz) -> Move the database off any internet-reachable path",
+    "critical [segmentation_gap] database tier reachable from the internet/DMZ without the app tier -> Introduce the missing segmentation boundary",
+    "high [unencrypted_service] plaintext Telnet (23) on legacy-02 (internet) -> Enforce TLS / disable the plaintext service",
+    "high [firewall_rule] rule fw-11 allows any -> internal on any -> Scope the source CIDR and destination",
+    "high [segmentation_gap] admin network reachable from workstations without a jump server -> Introduce the missing segmentation boundary",
+    "high [segmentation_gap] DMZ has unrestricted egress to internal subnets -> Introduce the missing segmentation boundary"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/network-exposure-input.json",
+      "ref": "network descriptor"
+    },
+    {
+      "source": "local://detection/network-exposure/references/classification-tables.md",
+      "ref": "port/service, firewall, segmentation tables"
+    }
+  ],
   "next_agents": [
-    "attack-surface-management"
+    "vulnerability-management",
+    "threat-hunting"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:25:54Z",
+  "findings": [
+    {
+      "type": "port_exposure",
+      "severity": "critical",
+      "detail": "SSH (22) exposed on 10.20.8.13 (internet)",
+      "remediation": "Restrict to VPN/bastion or use SSM"
+    },
+    {
+      "type": "port_exposure",
+      "severity": "critical",
+      "detail": "PostgreSQL (5432) exposed on 10.20.9.4 (dmz)",
+      "remediation": "Move the database off any internet-reachable path"
+    },
+    {
+      "type": "segmentation_gap",
+      "severity": "critical",
+      "detail": "database tier reachable from the internet/DMZ without the app tier",
+      "remediation": "Introduce the missing segmentation boundary"
+    },
+    {
+      "type": "unencrypted_service",
+      "severity": "high",
+      "detail": "plaintext Telnet (23) on legacy-02 (internet)",
+      "remediation": "Enforce TLS / disable the plaintext service"
+    },
+    {
+      "type": "firewall_rule",
+      "severity": "high",
+      "detail": "rule fw-11 allows any -> internal on any",
+      "remediation": "Scope the source CIDR and destination"
+    },
+    {
+      "type": "segmentation_gap",
+      "severity": "high",
+      "detail": "admin network reachable from workstations without a jump server",
+      "remediation": "Introduce the missing segmentation boundary"
+    },
+    {
+      "type": "segmentation_gap",
+      "severity": "high",
+      "detail": "DMZ has unrestricted egress to internal subnets",
+      "remediation": "Introduce the missing segmentation boundary"
+    },
+    {
+      "type": "egress_ioc",
+      "severity": "high",
+      "detail": "beaconing: regular 300s connections to 185.220.101.47",
+      "remediation": "Block the destination and hunt the source host"
+    },
+    {
+      "type": "egress_ioc",
+      "severity": "high",
+      "detail": "dns_tunneling: TXT queries >60 chars to a single domain",
+      "remediation": "Block the destination and hunt the source host"
+    }
+  ],
+  "mitre_ttps": [
+    "T1046",
+    "T1071.004",
+    "T1571"
+  ],
+  "affected_assets": [
+    "10.20.8.13",
+    "10.20.9.4",
+    "legacy-02",
+    "web-01"
+  ]
 }

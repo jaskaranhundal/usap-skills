@@ -1,18 +1,71 @@
 {
   "agent_slug": "quantum-security-readiness",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Quantum Security Readiness skill. Assess an organization's cryptographic exposure to quantum computing threats and produce a prioritized migration roadmap to post-quantum algorithms. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "report",
+  "action": "1 asset(s) need PQC migration within 6 months: patient-records-archive. Tier updates and re-issuance are mutating (approval required).",
+  "rationale": "Each asset is tiered against the SKILL.md table: long-lived data (>10 years) protected by RSA/ECC is critical on a 6-month window because of harvest-now-decrypt-later, internet-exposed key exchange is high on 18 months, internal RSA/ECC is medium on 36 months. Assessment is read-only; changing a tier or re-issuing a certificate with a PQC algorithm is a mutating policy change requiring approval.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Quantum Security Readiness: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Assess an organization's cryptographic exposure to quantum computing threats and produce a prioritized migration roadmap to post-quantum algorithms"
+    "4 asset(s): 1 critical, 1 high, 1 medium quantum-migration tier(s)",
+    "critical patient-records-archive (rsa) -> Within 6 months: long-lived data (>10y) on RSA/ECC \u2014 harvest-now-decrypt-later risk",
+    "high public-api-tls (ecc) -> Within 18 months: internet-exposed key exchange on RSA/ECC",
+    "medium internal-svc-mtls (rsa) -> Within 36 months: internal service on RSA/ECC",
+    "low session-tokens (aes) -> During normal refresh: not quantum-vulnerable"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/quantum-security-readiness-input.json",
+      "ref": "crypto asset inventory"
+    },
+    {
+      "source": "https://csrc.nist.gov/projects/post-quantum-cryptography",
+      "ref": "NIST PQC standards"
+    },
+    {
+      "source": "local://risk-compliance/quantum-security-readiness/SKILL.md",
+      "ref": "migration tier table"
+    }
+  ],
   "next_agents": [
-    "security-roadmap-planner"
+    "cryptography-key-management"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T09:01:15Z",
+  "assets": [
+    {
+      "name": "patient-records-archive",
+      "algorithm": "rsa",
+      "tier": "critical",
+      "target": "Within 6 months",
+      "reason": "long-lived data (>10y) on RSA/ECC \u2014 harvest-now-decrypt-later risk"
+    },
+    {
+      "name": "public-api-tls",
+      "algorithm": "ecc",
+      "tier": "high",
+      "target": "Within 18 months",
+      "reason": "internet-exposed key exchange on RSA/ECC"
+    },
+    {
+      "name": "internal-svc-mtls",
+      "algorithm": "rsa",
+      "tier": "medium",
+      "target": "Within 36 months",
+      "reason": "internal service on RSA/ECC"
+    },
+    {
+      "name": "session-tokens",
+      "algorithm": "aes",
+      "tier": "low",
+      "target": "During normal refresh",
+      "reason": "not quantum-vulnerable"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "patient-records-archive",
+    "public-api-tls",
+    "internal-svc-mtls",
+    "session-tokens"
+  ]
 }

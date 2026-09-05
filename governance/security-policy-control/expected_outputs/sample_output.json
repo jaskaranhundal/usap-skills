@@ -1,18 +1,73 @@
 {
   "agent_slug": "security-policy-control",
-  "intent_type": "advise",
-  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
-  "rationale": "Representative output for the Security Policy Control skill. Author, maintain, and validate security policies and control frameworks that are auditable, proportionate, and operationally implementable. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "report",
+  "action": "3 policy gap(s) and 2 failed control(s); control coverage 50%. Assign owners, add verification, and re-test failed controls.",
+  "rationale": "Each policy is a gap unless it has an owner, a verification mechanism, a review within 12 months, and active status; a Tier 1 policy in draft or expired is critical. Control coverage is the pass rate; a failed control with no compensating note is critical. Assessment is read-only; deploying a policy would be a gated policy_change.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Security Policy Control: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Author, maintain, and validate security policies and control frameworks that are auditable, proportionate, and operationally implementable"
+    "4 policy(ies), 4 control test(s): coverage 50%, 3 policy gap(s), 2 failed control(s)",
+    "HIGH Tier 2 Access Control Policy: no operational owner, review older than 12 months",
+    "HIGH Tier 2 Cryptographic Policy: no verification mechanism",
+    "HIGH Tier 2 Data Classification Policy: status draft",
+    "FAILED CIS 5 (policy Access Control Policy) \u2014 no compensating control",
+    "FAILED CIS 8 (policy Audit Logging)"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/security-policy-control-input.json",
+      "ref": "policy set and control tests"
+    },
+    {
+      "source": "https://www.cisecurity.org/controls/v8",
+      "ref": "CIS Controls v8 mapping"
+    },
+    {
+      "source": "local://governance/security-policy-control/SKILL.md",
+      "ref": "policy hierarchy and control framework mapping"
+    }
+  ],
   "next_agents": [
+    "findings-tracker",
     "compliance-mapping"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:19:54Z",
+  "assessment": {
+    "policies": 4,
+    "control_coverage_pct": 50,
+    "policy_gaps": [
+      {
+        "policy": "Access Control Policy",
+        "tier": 2,
+        "severity": "high",
+        "issues": [
+          "no operational owner",
+          "review older than 12 months"
+        ]
+      },
+      {
+        "policy": "Cryptographic Policy",
+        "tier": 2,
+        "severity": "high",
+        "issues": [
+          "no verification mechanism"
+        ]
+      },
+      {
+        "policy": "Data Classification Policy",
+        "tier": 2,
+        "severity": "high",
+        "issues": [
+          "status draft"
+        ]
+      }
+    ],
+    "failed_controls": [
+      "CIS 5",
+      "CIS 8"
+    ]
+  },
+  "mitre_ttps": [],
+  "affected_assets": []
 }

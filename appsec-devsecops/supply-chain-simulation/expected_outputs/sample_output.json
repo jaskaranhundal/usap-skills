@@ -1,16 +1,49 @@
 {
   "agent_slug": "supply-chain-simulation",
   "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Supply Chain Simulation skill. Simulate software supply chain attack scenarios to validate the effectiveness of detection and prevention controls before real adversaries exploit the same vectors. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "action": "1 critical detection point(s) missed in dependency-confusion exercise: Malicious artifact in registry. Build detections before closing the exercise.",
+  "rationale": "Detection coverage is the share of simulated attack points the defenders caught; a missed build-system intrusion, malicious artifact in the registry, or a SIEM that never alerted is a critical gap because it means the whole scenario would have gone unseen. Read-only analysis of a simulation run in an isolated environment.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Supply Chain Simulation: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Simulate software supply chain attack scenarios to validate the effectiveness of detection and prevention controls before real adversaries exploit the same vectors"
+    "dependency-confusion exercise: coverage 60.0% (3/5); 2 gap(s) (1 critical); MTTD 27.7 min",
+    "critical MISSED Malicious artifact in registry [T1195.001]",
+    "high MISSED Unexpected network connection [T1041]"
   ],
-  "evidence_references": [],
-  "next_agents": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/supply-chain-simulation-input.json",
+      "ref": "simulation detection points"
+    },
+    {
+      "source": "local://appsec-devsecops/supply-chain-simulation/SKILL.md",
+      "ref": "detection-point and MITRE table"
+    }
+  ],
+  "next_agents": [
+    "detection-engineering"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:47:44Z",
+  "coverage_percent": 60.0,
+  "mttd_min": 27.7,
+  "gaps": [
+    {
+      "point": "Malicious artifact in registry",
+      "mitre": "T1195.001",
+      "critical": true,
+      "severity": "critical"
+    },
+    {
+      "point": "Unexpected network connection",
+      "mitre": "T1041",
+      "critical": false,
+      "severity": "high"
+    }
+  ],
+  "mitre_ttps": [
+    "T1041",
+    "T1195.001"
+  ],
+  "affected_assets": []
 }

@@ -1,0 +1,5 @@
+{"findings":[
+ {"tool":"Semgrep","kind":"sast","owasp":"A03","location":"src/reports.py:88","severity":"critical"},
+ {"tool":"OWASP ZAP","kind":"dast","owasp":"A03","location":"src/reports.py:88","severity":"critical"},
+ {"tool":"CodeQL","kind":"sast","owasp":"A01","location":"src/invoices.py:12","severity":"high"},
+ {"tool":"Snyk","kind":"sca","owasp":"A06","location":"requirements.txt","severity":"medium"}]}

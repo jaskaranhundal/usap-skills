@@ -1,0 +1,5 @@
+{"system":"payments-api","threats":[
+ {"name":"Forged JWT grants admin","category":"spoofing","likelihood":0.8,"impact":0.95,"mitigation":"asymmetric JWT + short TTL"},
+ {"name":"SQLi in ledger query","category":"tampering","likelihood":0.6,"impact":0.9,"mitigation":"parameterized queries"},
+ {"name":"Excess fields in API response","category":"information_disclosure","likelihood":0.5,"impact":0.4,"mitigation":"response schema allowlist"},
+ {"name":"Audit log deletion","category":"repudiation","likelihood":0.3,"impact":0.5,"mitigation":"append-only WORM logs"}]}

@@ -1,18 +1,111 @@
 {
   "agent_slug": "data-security-classification",
   "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Data Security Classification skill. Classify data assets by sensitivity, apply appropriate protection controls, and ensure data handling practices align with regulatory and business requirements. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "action": "2 high-sensitivity asset(s) under-protected: DA-2 (Confidential: publicly accessible); DA-3 (Top Secret / Restricted: not encrypted at rest).",
+  "rationale": "Each asset takes the highest tier of its data categories (encryption keys and trade secrets are L4; PII/PCI/PHI/source/financial are L3), the tier's handling controls are required, and any missing control is a gap; a Confidential or Top Secret asset that is public or unencrypted is critical. Read-only.",
+  "confidence": 0.88,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Data Security Classification: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Classify data assets by sensitivity, apply appropriate protection controls, and ensure data handling practices align with regulatory and business requirements"
+    "4 asset(s) classified; 2 with control gaps, 2 critical",
+    "critical DA-2 L3 (Confidential): publicly accessible",
+    "critical DA-3 L4 (Top Secret / Restricted): not encrypted at rest",
+    "informational DA-1 L3 (Confidential): controls adequate",
+    "informational DA-4 L1 (Public): controls adequate"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/data-security-classification-input.json",
+      "ref": "data asset inventory"
+    },
+    {
+      "source": "local://identity-access/data-security-classification/SKILL.md",
+      "ref": "4-tier classification and handling controls"
+    }
+  ],
   "next_agents": [
-    "privacy-dpia"
+    "compliance-mapping",
+    "findings-tracker"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:29:52Z",
+  "assets": [
+    {
+      "id": "DA-2",
+      "name": "analytics export",
+      "tier": "L3",
+      "label": "Confidential",
+      "categories": [
+        "pii"
+      ],
+      "required_controls": [
+        "encryption at rest and in transit",
+        "role-based least-privilege access",
+        "audit logging",
+        "DLP monitoring"
+      ],
+      "gaps": [
+        "publicly accessible"
+      ],
+      "severity": "critical"
+    },
+    {
+      "id": "DA-3",
+      "name": "signing keys",
+      "tier": "L4",
+      "label": "Top Secret / Restricted",
+      "categories": [
+        "encryption_keys"
+      ],
+      "required_controls": [
+        "encryption at rest and in transit (dedicated keys)",
+        "access on explicit approval only",
+        "full audit logging",
+        "no third-party sharing"
+      ],
+      "gaps": [
+        "not encrypted at rest"
+      ],
+      "severity": "critical"
+    },
+    {
+      "id": "DA-1",
+      "name": "customer table",
+      "tier": "L3",
+      "label": "Confidential",
+      "categories": [
+        "pii",
+        "pci"
+      ],
+      "required_controls": [
+        "encryption at rest and in transit",
+        "role-based least-privilege access",
+        "audit logging",
+        "DLP monitoring"
+      ],
+      "gaps": [],
+      "severity": "informational"
+    },
+    {
+      "id": "DA-4",
+      "name": "press releases",
+      "tier": "L1",
+      "label": "Public",
+      "categories": [
+        "marketing",
+        "public"
+      ],
+      "required_controls": [
+        "integrity controls; no confidentiality requirement"
+      ],
+      "gaps": [],
+      "severity": "informational"
+    }
+  ],
+  "mitre_ttps": [
+    "T1530"
+  ],
+  "affected_assets": [
+    "DA-2",
+    "DA-3"
+  ]
 }

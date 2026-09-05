@@ -1,0 +1,1 @@
+{"cve_id":"CVE-2026-9999","product":"FortiOS SSL-VPN","patch_available":false,"exploited_in_wild":true,"org_uses":true,"internet_facing":true,"affected_assets":["vpn-eu-1","vpn-us-1"],"available_controls":["waf","segmentation","ids_signature","enhanced_monitoring"]}
