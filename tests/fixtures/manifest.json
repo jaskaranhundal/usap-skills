@@ -66,6 +66,12 @@
       "input": "tests/fixtures/compliance-mapping-input.json",
       "expect_exit": 2,
       "note": "Confirmed exfiltration of PII + cardholder data at a NIS2 important entity: GDPR, CCPA, PCI-DSS, NIS2 clocks; critical"
+    },
+    {
+      "tool": "cloud-infra/cloud-security-posture/scripts/cloud-security-posture_tool.py",
+      "input": "tests/fixtures/cloud-security-posture-input.json",
+      "expect_exit": 2,
+      "note": "AWS payments account: PCI bucket flipped public without a ticket, admin user without MFA, SSH open to the world, RDS public via ticket; critical, escalate"
     }
   ]
 }
