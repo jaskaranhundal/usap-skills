@@ -1,0 +1,1 @@
+../../../detection/behavioral-analytics/SKILL.md

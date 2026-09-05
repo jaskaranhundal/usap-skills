@@ -126,6 +126,11 @@ jobs:
         # unnoticed until 1.14.0 because nothing gated them.
         run: python3 scripts/sync_all.py --check
 
+      - name: agentskills.io emitter drift gate
+        # .agents/skills/<slug>/SKILL.md is the directory-per-skill layout that
+        # OpenCode and OpenClaw read natively (tools/emit_platforms.py).
+        run: python3 tools/emit_platforms.py --target agents --check
+
       - name: Plugin mirror drift gate
         run: |
           python3 tools/sync_plugin.py --check

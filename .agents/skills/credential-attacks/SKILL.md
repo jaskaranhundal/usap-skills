@@ -1,0 +1,1 @@
+../../../red-team/credential-attacks/SKILL.md

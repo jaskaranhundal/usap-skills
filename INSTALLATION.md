@@ -79,3 +79,16 @@ The client can then `list_skills`, `get_skill`, `list_agents`, `validate_payload
 ```bash
 python3 tools/mcp_server_test.py     # expect: "All smoke tests passed." (32 assertions)
 ```
+
+## OpenCode and OpenClaw (agentskills.io layout)
+
+USAP emits the directory-per-skill layout these runtimes read natively:
+
+```bash
+python3 tools/emit_platforms.py --target agents   # writes .agents/skills/<slug>/SKILL.md
+```
+
+- **OpenCode** discovers `.agents/skills` (and `.claude/skills`) in the project or `~/.config/opencode/skills` globally.
+- **OpenClaw** discovers `<workspace>/skills` and `~/.agents/skills`, or install from git: `openclaw skills install git:jaskaranhundal/usap-skills@<tag>`.
+
+Unknown frontmatter fields are ignored by both, so the same `SKILL.md` loads unchanged. The `cs-*` orchestrator agents need per-runtime frontmatter (tracked in issue #181).
