@@ -216,6 +216,12 @@
       "input": "tests/fixtures/zero-day-response-governance-input.json",
       "expect_exit": 2,
       "note": "zero-day-response-governance real-tool fixture"
+    },
+    {
+      "tool": "system-security/os-hardening/scripts/os-hardening_tool.py",
+      "input": "tests/fixtures/os-hardening-input.json",
+      "expect_exit": 2,
+      "note": "os-hardening real-tool fixture"
     }
   ]
 }

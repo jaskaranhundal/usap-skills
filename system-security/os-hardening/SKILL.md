@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-system-security
-  updated: 2026-05-20
+  updated: 2026-09-05
   agent_slug: "os-hardening"
   usap_level: "L4"
   level: L4
