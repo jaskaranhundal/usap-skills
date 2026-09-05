@@ -60,6 +60,12 @@
       "input": "tests/fixtures/containment-advisor-input.json",
       "expect_exit": 2,
       "note": "Web shell on a tier-1 payments host, active, plausible DB path and unverified cloud path; immediate, approval required"
+    },
+    {
+      "tool": "risk-compliance/compliance-mapping/scripts/compliance-mapping_tool.py",
+      "input": "tests/fixtures/compliance-mapping-input.json",
+      "expect_exit": 2,
+      "note": "Confirmed exfiltration of PII + cardholder data at a NIS2 important entity: GDPR, CCPA, PCI-DSS, NIS2 clocks; critical"
     }
   ]
 }
