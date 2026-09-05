@@ -240,6 +240,18 @@
       "input": "tests/fixtures/ot-iot-device-security-input.json",
       "expect_exit": 2,
       "note": "ot-iot-device-security real-tool fixture"
+    },
+    {
+      "tool": "pentest/web-app-pentest/scripts/web-app-pentest_tool.py",
+      "input": "tests/fixtures/web-app-pentest-input.json",
+      "expect_exit": 2,
+      "note": "web-app-pentest real-tool fixture"
+    },
+    {
+      "tool": "pentest/pentest-reporting/scripts/pentest-reporting_tool.py",
+      "input": "tests/fixtures/pentest-reporting-input.json",
+      "expect_exit": 2,
+      "note": "pentest-reporting real-tool fixture"
     }
   ]
 }
