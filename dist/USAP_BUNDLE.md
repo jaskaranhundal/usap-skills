@@ -13463,7 +13463,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-red-team
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "ai-red-teaming"
 ---
 
@@ -13639,7 +13639,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "attack-path-analysis"
 ---
 
@@ -13780,7 +13780,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "continuous-pentesting"
 mitre_attack: [T1005, T1021, T1039, T1041, T1048, T1055, T1059, T1068]
 ---
@@ -14048,7 +14048,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "red-team-operations"
 mitre_attack: [T1003.006, T1021.002, T1021.006, T1134.001, T1550.002, T1550.003, T1563.001]
 ---
@@ -14203,7 +14203,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "red-team-planner"
 mitre_attack: [T1566.001]
 ---
@@ -14365,7 +14365,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "safe-exploitation"
   usap_level: "L4"
 disable-model-invocation: true
@@ -14531,7 +14531,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "security-research"
 ---
 
