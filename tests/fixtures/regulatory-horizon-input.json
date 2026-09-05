@@ -1,0 +1,5 @@
+{"organization":"ACME EU GmbH","regulations":[
+ {"name":"DORA","applicable":true,"ready":false,"in_effect":true},
+ {"name":"NIS2 Directive","applicable":true,"ready":false,"in_effect":false},
+ {"name":"EU AI Act","applicable":true,"ready":true,"in_effect":false},
+ {"name":"FTC Safeguards Rule","applicable":false,"ready":false,"in_effect":true}]}
