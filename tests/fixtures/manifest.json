@@ -54,6 +54,12 @@
       "input": "tests/fixtures/incident-classification-input.json",
       "expect_exit": 2,
       "note": "AssumeRole chain to AdministratorAccess on a new user from a first-seen IP in the production payer account; privilege_escalation critical"
+    },
+    {
+      "tool": "response/containment-advisor/scripts/containment-advisor_tool.py",
+      "input": "tests/fixtures/containment-advisor-input.json",
+      "expect_exit": 2,
+      "note": "Web shell on a tier-1 payments host, active, plausible DB path and unverified cloud path; immediate, approval required"
     }
   ]
 }

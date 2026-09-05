@@ -1,0 +1,24 @@
+{
+  "event_id": "CA-20260904-0031",
+  "event_type": "network_intrusion",
+  "severity": "critical",
+  "source": "cs-incident-responder",
+  "source_credibility": 0.9,
+  "finding": "Web shell on payments-api-03 executing commands as www-data; C2 beacons every 300 s to 185.220.101.47; attempted SSH from the host to the database subnet.",
+  "raw_payload": {
+    "affected_hosts": ["payments-api-03"],
+    "affected_accounts": ["www-data@payments-api-03"],
+    "target_resource": "payments-api-03 (10.20.8.13)",
+    "source_ip": "185.220.101.47",
+    "active": true,
+    "spreading": false,
+    "production_service": "payments-api",
+    "service_tier": 1,
+    "claimed_attack_paths": [
+      {"target": "payments-db (PostgreSQL, 10.20.9.0/24)", "route_confirmed": true, "credentials_confirmed": false, "prerequisite": "database credentials readable from the compromised host"},
+      {"target": "AWS control plane (payments account)", "route_confirmed": false, "credentials_confirmed": false, "prerequisite": "IAM credentials or instance role reachable via IMDS from the host"}
+    ]
+  },
+  "structured_fact": {"ticket_id": "SEC-4471", "notified_team": "platform-security"},
+  "context": {"environment": "production"}
+}
