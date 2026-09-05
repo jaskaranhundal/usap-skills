@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-red-team
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "ai-red-teaming"
 ---
 

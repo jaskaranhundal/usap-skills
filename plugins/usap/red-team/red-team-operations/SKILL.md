@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "red-team-operations"
 mitre_attack: [T1003.006, T1021.002, T1021.006, T1134.001, T1550.002, T1550.003, T1563.001]
 ---

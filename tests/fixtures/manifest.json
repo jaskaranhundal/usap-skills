@@ -330,6 +330,48 @@
       "input": "tests/fixtures/tool-execution-broker-input.json",
       "expect_exit": 0,
       "note": "tool-execution-broker real-tool fixture"
+    },
+    {
+      "tool": "red-team/ai-red-teaming/scripts/ai-red-teaming_tool.py",
+      "input": "tests/fixtures/ai-red-teaming-input.json",
+      "expect_exit": 2,
+      "note": "ai-red-teaming real-tool fixture"
+    },
+    {
+      "tool": "red-team/attack-path-analysis/scripts/attack-path-analysis_tool.py",
+      "input": "tests/fixtures/attack-path-analysis-input.json",
+      "expect_exit": 2,
+      "note": "attack-path-analysis real-tool fixture"
+    },
+    {
+      "tool": "red-team/continuous-pentesting/scripts/continuous-pentesting_tool.py",
+      "input": "tests/fixtures/continuous-pentesting-input.json",
+      "expect_exit": 2,
+      "note": "continuous-pentesting real-tool fixture"
+    },
+    {
+      "tool": "red-team/red-team-operations/scripts/red-team-operations_tool.py",
+      "input": "tests/fixtures/red-team-operations-input.json",
+      "expect_exit": 2,
+      "note": "red-team-operations real-tool fixture"
+    },
+    {
+      "tool": "red-team/red-team-planner/scripts/red-team-planner_tool.py",
+      "input": "tests/fixtures/red-team-planner-input.json",
+      "expect_exit": 1,
+      "note": "red-team-planner real-tool fixture"
+    },
+    {
+      "tool": "red-team/safe-exploitation/scripts/safe-exploitation_tool.py",
+      "input": "tests/fixtures/safe-exploitation-input.json",
+      "expect_exit": 1,
+      "note": "safe-exploitation real-tool fixture"
+    },
+    {
+      "tool": "red-team/security-research/scripts/security-research_tool.py",
+      "input": "tests/fixtures/security-research-input.json",
+      "expect_exit": 2,
+      "note": "security-research real-tool fixture"
     }
   ]
 }
