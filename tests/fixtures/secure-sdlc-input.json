@@ -1,0 +1,4 @@
+{"team":"platform","target_level":4,"gates":{
+ "secret_scanning":true,"sast_on_pr":true,"sca":true,"dast":false,
+ "iac_scan":false,"threat_modeling":false,"full_cicd_gates":false,
+ "continuous_red_team":false,"chaos_testing":false}}
