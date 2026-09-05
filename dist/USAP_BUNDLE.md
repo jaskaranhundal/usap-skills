@@ -16207,7 +16207,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "cyber-insurance"
 ---
 
@@ -16395,7 +16395,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "enterprise-risk-assessment"
 ---
 
@@ -16599,7 +16599,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-risk-compliance
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: internal-audit-assurance
   agent_id: 47
   level: L1
@@ -16747,7 +16747,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "privacy-dpia"
 ---
 
@@ -16935,7 +16935,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "quantum-security-readiness"
 ---
 
@@ -17133,7 +17133,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "regulatory-horizon"
 ---
 
@@ -17318,7 +17318,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "risk-threat-modeling"
 ---
 

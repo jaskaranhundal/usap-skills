@@ -372,6 +372,48 @@
       "input": "tests/fixtures/security-research-input.json",
       "expect_exit": 2,
       "note": "security-research real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/cyber-insurance/scripts/cyber-insurance_tool.py",
+      "input": "tests/fixtures/cyber-insurance-input.json",
+      "expect_exit": 2,
+      "note": "cyber-insurance real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/enterprise-risk-assessment/scripts/enterprise-risk-assessment_tool.py",
+      "input": "tests/fixtures/enterprise-risk-assessment-input.json",
+      "expect_exit": 2,
+      "note": "enterprise-risk-assessment real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/internal-audit-assurance/scripts/internal-audit-assurance_tool.py",
+      "input": "tests/fixtures/internal-audit-assurance-input.json",
+      "expect_exit": 2,
+      "note": "internal-audit-assurance real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/privacy-dpia/scripts/privacy-dpia_tool.py",
+      "input": "tests/fixtures/privacy-dpia-input.json",
+      "expect_exit": 2,
+      "note": "privacy-dpia real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/quantum-security-readiness/scripts/quantum-security-readiness_tool.py",
+      "input": "tests/fixtures/quantum-security-readiness-input.json",
+      "expect_exit": 2,
+      "note": "quantum-security-readiness real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/regulatory-horizon/scripts/regulatory-horizon_tool.py",
+      "input": "tests/fixtures/regulatory-horizon-input.json",
+      "expect_exit": 2,
+      "note": "regulatory-horizon real-tool fixture"
+    },
+    {
+      "tool": "risk-compliance/risk-threat-modeling/scripts/risk-threat-modeling_tool.py",
+      "input": "tests/fixtures/risk-threat-modeling-input.json",
+      "expect_exit": 2,
+      "note": "risk-threat-modeling real-tool fixture"
     }
   ]
 }
