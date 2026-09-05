@@ -48,6 +48,12 @@
       "input": "tests/fixtures/threat-hunting-input.json",
       "expect_exit": 2,
       "note": "WMI lateral movement corroborated by EDR + Windows auth on two hosts, 12-day dwell, stale proxy source; confirmed, escalate"
+    },
+    {
+      "tool": "response/incident-classification/scripts/incident-classification_tool.py",
+      "input": "tests/fixtures/incident-classification-input.json",
+      "expect_exit": 2,
+      "note": "AssumeRole chain to AdministratorAccess on a new user from a first-seen IP in the production payer account; privilege_escalation critical"
     }
   ]
 }

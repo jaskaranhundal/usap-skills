@@ -15240,7 +15240,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-response
-  updated: 2025-03-23
+  updated: 2026-09-04
   agent_slug: incident-classification
   frameworks:
     nist_csf: [DE.AE-02, DE.AE-08, RS.MA-02, RS.MA-03]
