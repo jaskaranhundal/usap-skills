@@ -9,11 +9,11 @@ USAP runs its own validators against its own tree. This file records the live re
 |---|---|---|---|
 | Canonical frontmatter conformance | `tools/validate_skill.py --all` | 81 active-domain `SKILL.md` files | **81 PASS / 0 FAIL / 0 WARN** |
 | Invocation-control invariants (L1-L4) | `tools/validate_invocation_control.py --all --strict` | 81 active-domain `SKILL.md` files | **81 OK / 0 WARN / 0 FAIL** |
-| Python syntax across every tool script | `python3 -m py_compile` | 79 `*_tool.py` scripts + `shared/scripts/*.py` | **0 failures** |
+| Python syntax across every tool script | `python3 -m py_compile` | 81 `*_tool.py` scripts + `shared/scripts/*.py` | **0 failures** |
 | 11-field output-contract conformance (structural) | `tools/output_contract.py --structural-only` | 81 committed `expected_outputs/sample_output.json` files | **81 PASS / 0 FAIL** |
 | Framework-mapping drift | `tools/framework_extractor.py --check` | `mappings/mitre-attack/*.{json,md}`, `mappings/nist-csf/*.md` | **OK — no drift** |
 | Sample-generator drift | `tools/regen_samples.py --check` | 81 committed samples | **OK — no drift** |
-| Executable-tool census | `grep -rl not_implemented --include='*_tool.py' <12 domains>` | 79 `*_tool.py` scripts | **25 implemented / 54 declared stubs** |
+| Executable-tool census | `grep -rl not_implemented --include='*_tool.py' <12 domains>` | 81 `*_tool.py` scripts | **27 implemented / 54 declared stubs** |
 
 ## What the census row means
 

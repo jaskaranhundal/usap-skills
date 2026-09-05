@@ -6,10 +6,14 @@ metadata:
   version: "1.0.0"
   author: ARIA Project
   category: usap-adversary
-  updated: 2026-03-27
+  updated: 2026-09-05
   agent_slug: "web-enumeration"
+  usap_level: \"L4\"
 compatibility: "Requires explicit written authorization and bb_scope_enforcer.py validation. Rate-limit politeness enforced; out-of-scope hostnames refused."
 allowed-tools: "gobuster ffuf dirsearch feroxbuster wfuzz"
+mitre_attack: [T1595.003]
+disable-model-invocation: true
+user-invocable: false
 ---
 
 # Web Enumeration

@@ -1,0 +1,21 @@
+{
+  "target": "shop.acme-labs.example",
+  "authorized": true,
+  "scope": {"in_scope": ["*.acme-labs.example"]},
+  "tech_stack": ["nginx", "php", "wordpress"],
+  "paths": [
+    {"path": "/wp-admin/", "status": 302, "length": 0, "method": "GET"},
+    {"path": "/wp-login.php", "status": 200, "length": 4210},
+    {"path": "/xmlrpc.php", "status": 405, "length": 42},
+    {"path": "/backup.zip", "status": 200, "length": 2048221},
+    {"path": "/.env", "status": 403, "length": 0},
+    {"path": "/api/v1/users", "status": 401, "length": 55},
+    {"path": "/api/v2/health", "status": 200, "length": 17},
+    {"path": "/admin", "status": 403, "length": 0},
+    {"path": "/uploads/", "status": 200, "length": 900},
+    {"path": "/wp-content/themes/acme/style.css", "status": 200, "length": 88213},
+    {"path": "/assets/app.min.js", "status": 200, "length": 210334},
+    {"path": "/favicon.ico", "status": 200, "length": 1150},
+    {"path": "/install.php", "status": 200, "length": 3300}
+  ]
+}
