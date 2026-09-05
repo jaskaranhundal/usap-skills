@@ -7540,8 +7540,9 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-02-28
+  updated: 2026-09-04
   agent_slug: "attack-surface-management"
+mitre_attack: [T1595, T1133, T1584.001, T1608.003]
 ---
 
 # Attack Surface Management
