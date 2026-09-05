@@ -573,7 +573,7 @@ See [`agents/CLAUDE.md`](agents/CLAUDE.md) for the agent development guide.
 
 ## All 81 skills
 
-81 skill packages. 18 ship an executable analysis tool today; the other 61 `*_tool.py` scripts are declared stubs that exit non-zero with `status: not_implemented` and perform no analysis. The live census is in [`SELF-AUDIT.md`](SELF-AUDIT.md).
+81 skill packages. 19 ship an executable analysis tool today; the other 60 `*_tool.py` scripts are declared stubs that exit non-zero with `status: not_implemented` and perform no analysis. The live census is in [`SELF-AUDIT.md`](SELF-AUDIT.md).
 
 | Slug | Level | Category | Description |
 |---|---|---|---|
