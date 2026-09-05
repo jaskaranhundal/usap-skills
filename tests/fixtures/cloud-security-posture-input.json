@@ -1,0 +1,22 @@
+{
+  "provider": "aws",
+  "account": "123456789012 (payments-prod)",
+  "scan_utc": "2026-09-04T04:00:00Z",
+  "collected_utc": "2026-09-04T03:40:00Z",
+  "change_tickets": ["CHG-2211", "CHG-2214"],
+  "resources": [
+    {"id": "acme-payments-exports", "type": "s3_bucket", "region": "eu-central-1", "environment": "production", "internet_facing": true, "data_classification": "pci",
+     "config": {"block_public_access": false, "acl": "public-read", "encryption": "AES256"},
+     "baseline_config": {"block_public_access": true, "acl": "private", "encryption": "AES256"}, "changed_at_utc": "2026-09-03T18:22:00Z", "change_ticket": null, "iac_managed": true},
+    {"id": "sg-0a1b2c3d", "type": "security_group", "region": "eu-central-1", "environment": "production", "internet_facing": true,
+     "config": {"ingress": [{"from_port": 22, "to_port": 22, "protocol": "tcp", "cidr": ["0.0.0.0/0"]}, {"from_port": 443, "to_port": 443, "protocol": "tcp", "cidr": ["0.0.0.0/0"]}]}},
+    {"id": "payments-db-replica", "type": "rds_instance", "region": "eu-central-1", "environment": "production", "internet_facing": false, "data_classification": "pci",
+     "config": {"publicly_accessible": true, "encryption": true}, "baseline_config": {"publicly_accessible": false, "encryption": true}, "changed_at_utc": "2026-09-02T09:10:00Z", "change_ticket": "CHG-2211"},
+    {"id": "root", "type": "iam_root", "region": "global", "environment": "production", "config": {"root_access_key_active": false, "root_mfa_enabled": true}},
+    {"id": "deploy-bot", "type": "iam_user", "region": "global", "environment": "production", "config": {"admin_access": true, "mfa_enabled": false, "access_key_age_days": 210}},
+    {"id": "vpc-0f9e8d7c", "type": "vpc", "region": "eu-central-1", "environment": "production", "config": {"flow_logs_enabled": false}},
+    {"id": "alias/payments-data", "type": "kms_key", "region": "eu-central-1", "environment": "production", "data_classification": "pci", "config": {"rotation_enabled": false}},
+    {"id": "sandbox-scratch", "type": "s3_bucket", "region": "eu-west-1", "environment": "development", "internet_facing": false, "config": {"block_public_access": false, "acl": "private"}, "compensating_control_verified": true},
+    {"id": "account", "type": "account", "region": "global", "environment": "production", "config": {"cloudtrail_all_regions": true, "config_enabled": true}}
+  ]
+}
