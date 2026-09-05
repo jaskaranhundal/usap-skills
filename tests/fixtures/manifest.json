@@ -138,6 +138,36 @@
       "input": "tests/fixtures/security-policy-control-input.json",
       "expect_exit": 2,
       "note": "policy set with an unowned Tier-2 policy and a failed uncompensated CIS control"
+    },
+    {
+      "tool": "detection/behavioral-analytics/scripts/behavioral-analytics_tool.py",
+      "input": "tests/fixtures/behavioral-analytics-input.json",
+      "expect_exit": 2,
+      "note": "UEBA over three entities: off-hours volume spike, out-of-role finance access, cold-start intern"
+    },
+    {
+      "tool": "detection/threat-intelligence/scripts/threat-intelligence_tool.py",
+      "input": "tests/fixtures/threat-intelligence-input.json",
+      "expect_exit": 2,
+      "note": "data-exfil fact with a malicious Tor C2 IOC and known-APT-infra signals"
+    },
+    {
+      "tool": "detection/network-exposure/scripts/network-exposure_tool.py",
+      "input": "tests/fixtures/network-exposure-input.json",
+      "expect_exit": 2,
+      "note": "SSH and PostgreSQL exposed, any->internal firewall rule, DB reachable from internet, beaconing egress"
+    },
+    {
+      "tool": "detection/telemetry-signal-quality/scripts/telemetry-signal-quality_tool.py",
+      "input": "tests/fixtures/telemetry-signal-quality-input.json",
+      "expect_exit": 1,
+      "note": "mixed-credibility events plus a silent proxy source (data gap)"
+    },
+    {
+      "tool": "detection/deception-honeypot/scripts/deception-honeypot_tool.py",
+      "input": "tests/fixtures/deception-honeypot-input.json",
+      "expect_exit": 0,
+      "note": "deception plan for lateral movement, credential theft and exfiltration"
     }
   ]
 }

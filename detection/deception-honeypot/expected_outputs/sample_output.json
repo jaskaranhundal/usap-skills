@@ -1,33 +1,89 @@
 {
   "agent_slug": "deception-honeypot",
   "intent_type": "advise",
-  "action": "Deploy 3 credential honeypots near domain controller subnet, seed 47 AWS key canary tokens in all repositories and S3 buckets, and configure 5 SMB share lateral movement traps.",
-  "rationale": "Environment has zero deception coverage. Attacker lateral movement in the domain controller subnet would generate no alerts under current detection architecture. High-value S3 buckets have no canary tokens to detect exfiltration.",
-  "confidence": 0.91,
+  "action": "Deploy 5 deception asset(s) for credential_theft, data_exfiltration, lateral_movement: credential honeypot near domain_controller/jump_box; AWS key canary token near repositories; credential honeypot near jump_box; DNS canary in documents near file_share. Production deployment requires authorization.",
+  "rationale": "Each attacker objective in scope is matched to its SKILL.md deception assets (honeypots, canary tokens, lateral-movement traps) and a placement zone; assets already present are noted, not duplicated. Any interaction with a decoy is high-fidelity by design. Advisory; deployment is authorization-gated.",
+  "confidence": 0.8,
   "severity": "medium",
   "key_findings": [
-    "Zero existing deception assets in the environment",
-    "Domain controller subnet is a lateral movement blind spot",
-    "47 repositories and S3 buckets lack canary token coverage",
-    "No SMB share traps configured for lateral movement detection"
+    "3 objective(s), 6 zone(s): 5 new deception asset(s) recommended, 1 already deployed",
+    "lateral_movement: honeypot credential honeypot @ domain_controller/jump_box",
+    "lateral_movement: trap honey credentials + deceptive SMB share @ file_share [exists]",
+    "credential_theft: canary AWS key canary token @ repositories",
+    "credential_theft: honeypot credential honeypot @ jump_box",
+    "data_exfiltration: canary DNS canary in documents @ file_share",
+    "data_exfiltration: honeypot database honeypot @ database",
+    "Zones with no recommended decoy: dmz"
   ],
   "evidence_references": [
-    {"source": "network-topology-review", "ref": "topo-2026-q1", "timestamp_utc": "2026-03-08T09:00:00Z"}
+    {
+      "source": "local://tests/fixtures/deception-honeypot-input.json",
+      "ref": "environment objectives and zones"
+    },
+    {
+      "source": "local://detection/deception-honeypot/SKILL.md",
+      "ref": "deception asset taxonomy and alert logic"
+    }
   ],
-  "next_agents": ["threat-hunting", "incident-commander"],
+  "next_agents": [
+    "detection-engineering"
+  ],
   "human_approval_required": true,
-  "deployment_plan": {
-    "honeypots": [
-      {"type": "credential", "placement": "dc-subnet-10.0.1.x", "priority": "critical"},
-      {"type": "database", "placement": "db-segment-10.0.2.x", "priority": "high"}
-    ],
-    "canary_tokens": [
-      {"type": "aws-key", "placement": "all-repositories", "count": 47},
-      {"type": "dns", "placement": "finance-sharepoint", "count": 12}
-    ],
-    "lateral_movement_traps": [
-      {"type": "smb-share", "placement": "file-server-01", "priority": "high"}
-    ]
-  },
-  "timestamp_utc": "2026-03-08T10:00:00Z"
+  "timestamp_utc": "2026-09-05T08:25:55Z",
+  "deployment_plan": [
+    {
+      "objective": "lateral_movement",
+      "asset_type": "honeypot",
+      "asset": "credential honeypot",
+      "placement": "domain_controller/jump_box",
+      "alert_logic": "Any interaction is high-fidelity: real users never touch a decoy. Alert on first read/auth/connect and page the SOC.",
+      "already_deployed": false
+    },
+    {
+      "objective": "lateral_movement",
+      "asset_type": "trap",
+      "asset": "honey credentials + deceptive SMB share",
+      "placement": "file_share",
+      "alert_logic": "Any interaction is high-fidelity: real users never touch a decoy. Alert on first read/auth/connect and page the SOC.",
+      "already_deployed": true
+    },
+    {
+      "objective": "credential_theft",
+      "asset_type": "canary",
+      "asset": "AWS key canary token",
+      "placement": "repositories",
+      "alert_logic": "Any interaction is high-fidelity: real users never touch a decoy. Alert on first read/auth/connect and page the SOC.",
+      "already_deployed": false
+    },
+    {
+      "objective": "credential_theft",
+      "asset_type": "honeypot",
+      "asset": "credential honeypot",
+      "placement": "jump_box",
+      "alert_logic": "Any interaction is high-fidelity: real users never touch a decoy. Alert on first read/auth/connect and page the SOC.",
+      "already_deployed": false
+    },
+    {
+      "objective": "data_exfiltration",
+      "asset_type": "canary",
+      "asset": "DNS canary in documents",
+      "placement": "file_share",
+      "alert_logic": "Any interaction is high-fidelity: real users never touch a decoy. Alert on first read/auth/connect and page the SOC.",
+      "already_deployed": false
+    },
+    {
+      "objective": "data_exfiltration",
+      "asset_type": "honeypot",
+      "asset": "database honeypot",
+      "placement": "database",
+      "alert_logic": "Any interaction is high-fidelity: real users never touch a decoy. Alert on first read/auth/connect and page the SOC.",
+      "already_deployed": false
+    }
+  ],
+  "mitre_ttps": [
+    "T1021",
+    "T1041",
+    "T1555"
+  ],
+  "affected_assets": []
 }

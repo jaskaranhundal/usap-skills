@@ -7734,7 +7734,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-27
+  updated: 2026-09-05
   agent_slug: "behavioral-analytics"
   frameworks:
     mitre_attack: [T1078, T1110, T1133]
@@ -7957,7 +7957,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-detection
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "deception-honeypot"
 ---
 
@@ -8299,8 +8299,9 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "network-exposure"
+mitre_attack: [T1046, T1071.004, T1048, T1571]
 ---
 
 # Network Exposure
@@ -8661,7 +8662,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-detection
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: telemetry-signal-quality
   usap_level: "L3"
   agent_id: 8
@@ -9039,7 +9040,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-detection
-  updated: 2026-06-27
+  updated: 2026-09-05
   agent_slug: "threat-intelligence"
   usap_level: "L3"
   agent_id: 25

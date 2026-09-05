@@ -6,6 +6,7 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ### Added
 
+- **Detection cluster de-stubbed (5 skills).** behavioral-analytics (UEBA anomaly categories and new-behavior weights), threat-intelligence (IOC taxonomy, ATT&CK mapping, threat-actor assessment), network-exposure (port/firewall/segmentation/egress-IoC classification), telemetry-signal-quality (event normalisation and data-source health), deception-honeypot (deception asset plan by attacker objective). Fixtures, samples and manifest rows added.
 - **Governance reporting cluster de-stubbed (8 skills).** findings-tracker (composite risk score, SLA and escalation matrices, closed-without-verification detection), metrics-reporting (KPIs vs targets with business translation), security-posture-score (weighted domain composite with trend), ciso-brief-generator (board brief on the Headline/So-What/Doing/Ask framework, approval-gated), knowledge-management (precedent search and risk-acceptance conflict detection), security-architecture (eight-criterion SAR plus Zero-Trust maturity gap register), security-awareness (human-risk KPIs and high-risk segments), security-policy-control (policy implementability and CIS control coverage). Each ships a fixture, a recorded sample and a manifest row proven by tests/run_fixtures.py.
 
 
