@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "cloud-workload-protection"
 ---
 

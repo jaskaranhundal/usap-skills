@@ -6,7 +6,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "endpoint-os-security"
 mitre_attack: [T1003, T1053.005, T1055, T1059.001, T1218, T1547.001, T1574.001]
 ---

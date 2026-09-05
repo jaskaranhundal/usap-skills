@@ -222,6 +222,24 @@
       "input": "tests/fixtures/os-hardening-input.json",
       "expect_exit": 2,
       "note": "os-hardening real-tool fixture"
+    },
+    {
+      "tool": "cloud-infra/cloud-workload-protection/scripts/cloud-workload-protection_tool.py",
+      "input": "tests/fixtures/cloud-workload-protection-input.json",
+      "expect_exit": 2,
+      "note": "cloud-workload-protection real-tool fixture"
+    },
+    {
+      "tool": "cloud-infra/endpoint-os-security/scripts/endpoint-os-security_tool.py",
+      "input": "tests/fixtures/endpoint-os-security-input.json",
+      "expect_exit": 2,
+      "note": "endpoint-os-security real-tool fixture"
+    },
+    {
+      "tool": "cloud-infra/ot-iot-device-security/scripts/ot-iot-device-security_tool.py",
+      "input": "tests/fixtures/ot-iot-device-security-input.json",
+      "expect_exit": 2,
+      "note": "ot-iot-device-security real-tool fixture"
     }
   ]
 }
