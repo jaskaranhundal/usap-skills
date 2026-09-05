@@ -8,7 +8,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-27
+  updated: 2026-09-04
   agent_slug: "detection-engineering"
   frameworks:
     mitre_attack: [T1059.001, T1098.001, T1110, T1562.008]

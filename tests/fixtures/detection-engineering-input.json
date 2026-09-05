@@ -1,0 +1,17 @@
+{
+  "review_id": "DE-REVIEW-2026-Q3",
+  "telemetry_available": ["EDR", "CloudTrail", "SIEM", "DNS"],
+  "techniques_required": [
+    {"technique": "T1098.001", "priority": "critical"},
+    {"technique": "T1562.008", "priority": "critical"},
+    {"technique": "T1110", "priority": "high"},
+    {"technique": "T1059.001", "priority": "high"},
+    {"technique": "T1047", "priority": "medium"}
+  ],
+  "existing_rules": [
+    {"rule_id": "SIEM-0142", "title": "Brute force then success", "technique": "T1110", "format": "splunk_spl", "precision": 0.62, "recall": 0.9, "fp_rate_7d": 0.11, "status": "production", "telemetry": ["Windows Security Log", "SIEM"]},
+    {"rule_id": "EDR-0210", "title": "Encoded PowerShell from Office", "technique": "T1059.001", "format": "sigma", "precision": 0.88, "recall": 0.55, "fp_rate_7d": 0.02, "status": "production", "telemetry": ["EDR"]},
+    {"rule_id": "SIEM-0301", "title": "CloudTrail StopLogging", "technique": "T1562.008", "format": "sigma", "precision": null, "recall": null, "fp_rate_7d": null, "status": "draft", "telemetry": ["CloudTrail"]},
+    {"rule_id": "SIEM-0088", "title": "Rare parent process", "technique": "T1204", "format": "kql", "precision": 0.3, "recall": 0.4, "fp_rate_7d": 0.34, "status": "production", "telemetry": ["EDR"]}
+  ]
+}
