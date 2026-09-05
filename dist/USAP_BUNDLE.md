@@ -6499,10 +6499,11 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-02-28
+  updated: 2026-09-04
   agent_slug: "cloud-security-posture"
 compatibility: "Requires read access to AWS / Azure / GCP control plane (IAM, EC2/Compute, S3/Blob/GCS, KMS, CloudTrail / Activity Log). No mutation."
 allowed-tools: "aws-cli az-cli gcloud checkov"
+mitre_attack: [T1530, T1078.004, T1562.008, T1133]
 ---
 
 # Cloud Security Posture
