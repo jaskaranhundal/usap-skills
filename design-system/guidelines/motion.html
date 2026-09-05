@@ -1,0 +1,24 @@
+<!-- @dsCard group="Spacing" viewport="700x150" name="Motion" subtitle="Precise easing, no overshoot — signals don't bounce" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; background: var(--surface-1); font-family: var(--font-mono); padding: 22px; }
+  .track { position: relative; height: 30px; background: var(--void); border: 1px solid var(--line-1); border-radius: 6px; margin-bottom: 10px; overflow: hidden; }
+  .dot { position: absolute; top: 5px; left: 6px; width: 18px; height: 18px; border-radius: 4px;
+         background: var(--cyan-400); box-shadow: var(--glow-signal-soft); animation: slide var(--dur-pulse) infinite alternate; }
+  .t1 .dot { animation-timing-function: var(--ease-signal); }
+  .t2 .dot { animation-timing-function: var(--ease-out); }
+  .t3 .dot { animation-timing-function: linear; }
+  .lbl { position: absolute; right: 10px; top: 8px; color: var(--ink-300); font-size: 10px; letter-spacing: 0.04em; }
+  @keyframes slide { from { left: 6px; } to { left: calc(100% - 24px); } }
+</style>
+</head>
+<body>
+  <div class="track t1"><div class="dot"></div><span class="lbl">--ease-signal · default UI</span></div>
+  <div class="track t2"><div class="dot"></div><span class="lbl">--ease-out · entrances</span></div>
+  <div class="track t3"><div class="dot"></div><span class="lbl">linear · ambient pulse (--dur-pulse 2.4s)</span></div>
+</body>
+</html>
