@@ -42,6 +42,12 @@
       "input": "tests/fixtures/vulnerability-management-input.json",
       "expect_exit": 2,
       "note": "Log4Shell on internet-facing PCI asset (P0), stale-EPSS regreSSHion without vector, rejected risk acceptance; critical, escalate"
+    },
+    {
+      "tool": "detection/threat-hunting/scripts/threat-hunting_tool.py",
+      "input": "tests/fixtures/threat-hunting-input.json",
+      "expect_exit": 2,
+      "note": "WMI lateral movement corroborated by EDR + Windows auth on two hosts, 12-day dwell, stale proxy source; confirmed, escalate"
     }
   ]
 }
