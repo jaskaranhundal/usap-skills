@@ -30,6 +30,12 @@
       "input": "tests/fixtures/pipeline-security-scan-input.json",
       "expect_exit": 2,
       "note": "GitHub Actions workflow: gateway and JWT secrets in env, bearer token in a run step, write-all permissions, unpinned actions, no SAST or signing; critical"
+    },
+    {
+      "tool": "detection/attack-surface-management/scripts/attack-surface-management_tool.py",
+      "input": "tests/fixtures/attack-surface-management-input.json",
+      "expect_exit": 2,
+      "note": "Expanding surface: unauthenticated Jenkins, Heroku takeover candidate, cert expiring in 5 days, shadow S3 bucket; critical"
     }
   ]
 }

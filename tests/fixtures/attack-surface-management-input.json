@@ -1,0 +1,17 @@
+{
+  "organization": "acme",
+  "scan_utc": "2026-09-04T03:00:00Z",
+  "seed_scope": {"domains": ["acme.example"], "asns": ["AS64512"], "cloud_accounts": ["123456789012"]},
+  "approved_inventory": ["www.acme.example", "api.acme.example", "vpn.acme.example", "intranet.acme.example"],
+  "previous_snapshot": {"scan_utc": "2026-09-03T03:00:00Z", "internet_facing_count": 3, "asset_ids": ["A-001", "A-002", "A-003"]},
+  "assets": [
+    {"id": "A-001", "type": "domain", "name": "www.acme.example", "exposure": "internet_facing", "verified_by": "http_get", "ports": [443], "service": "nginx", "auth_required": false, "tls": {"expires_in_days": 62, "wildcard": false}, "in_inventory": true, "discovery_source": "certificate_transparency", "first_seen_utc": "2025-01-10T00:00:00Z"},
+    {"id": "A-002", "type": "api", "name": "api.acme.example", "exposure": "internet_facing", "verified_by": "http_get", "ports": [443], "service": "kong", "auth_required": true, "tls": {"expires_in_days": 5, "wildcard": false}, "in_inventory": true, "discovery_source": "dns_enumeration", "first_seen_utc": "2025-02-01T00:00:00Z"},
+    {"id": "A-003", "type": "service", "name": "vpn.acme.example", "exposure": "internet_facing", "verified_by": "tcp_connect", "ports": [443, 1194], "service": "openvpn", "auth_required": true, "tls": {"expires_in_days": 200, "wildcard": true}, "in_inventory": true, "discovery_source": "dns_enumeration", "first_seen_utc": "2024-11-20T00:00:00Z"},
+    {"id": "A-004", "type": "admin_interface", "name": "ci.acme.example", "exposure": "internet_facing", "verified_by": "http_get", "ports": [8080], "service": "jenkins", "auth_required": false, "in_inventory": false, "discovery_source": "shodan", "first_seen_utc": "2026-09-03T21:14:00Z"},
+    {"id": "A-005", "type": "domain", "name": "promo.acme.example", "exposure": "internet_facing", "verified_by": "http_get", "cname_target": "acme-promo-2024.herokuapp.com", "cname_status": "404", "in_inventory": false, "discovery_source": "passive_dns", "first_seen_utc": "2026-08-30T00:00:00Z"},
+    {"id": "A-006", "type": "cloud_resource", "name": "acme-analytics-export (s3)", "exposure": "internet_facing", "verified_by": "http_get", "ports": [443], "service": "s3", "auth_required": false, "in_inventory": false, "iac_managed": false, "discovery_source": "cloud_api", "first_seen_utc": "2026-09-02T12:00:00Z"},
+    {"id": "A-007", "type": "service", "name": "grafana.acme.example", "exposure": "internet_facing", "verified_by": "none", "ports": [3000], "service": "grafana", "auth_required": true, "in_inventory": false, "discovery_source": "dns_enumeration", "first_seen_utc": "2026-09-04T01:30:00Z"},
+    {"id": "A-008", "type": "service", "name": "intranet.acme.example", "exposure": "internal", "verified_by": "tcp_connect", "ports": [443], "service": "confluence", "auth_required": true, "tls": {"expires_in_days": 120, "wildcard": false}, "in_inventory": true, "discovery_source": "internal_dns", "first_seen_utc": "2023-05-01T00:00:00Z"}
+  ]
+}
