@@ -18,7 +18,7 @@ Root ``index.json`` shape::
       "schema_version": "1",
       "generated_at_utc": "<ISO 8601 UTC>",
       "repository": "github.com/jaskaranhundal/usap-skills",
-      "usap_version": "1.14.0",
+      "usap_version": "1.15.0",
       "total_skills": 79,
       "total_agents": 12,
       "total_domains": 12,
@@ -82,7 +82,7 @@ ROOT_INDEX_PATH = REPO_ROOT / "index.json"
 ROOT_SUMMARY_PATH = REPO_ROOT / "index.summary.json"
 LEGACY_API_INDEX_PATH = REPO_ROOT / "api" / "index.json"
 
-USAP_VERSION = "1.14.0"
+USAP_VERSION = "1.15.0"
 REPOSITORY = "github.com/jaskaranhundal/usap-skills"
 SCHEMA_VERSION = "1"
 
