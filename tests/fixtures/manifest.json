@@ -192,6 +192,30 @@
       "input": "tests/fixtures/insider-physical-risk-input.json",
       "expect_exit": 2,
       "note": "insider-physical-risk real-tool fixture"
+    },
+    {
+      "tool": "response/forensics/scripts/forensics_tool.py",
+      "input": "tests/fixtures/forensics-input.json",
+      "expect_exit": 2,
+      "note": "forensics real-tool fixture"
+    },
+    {
+      "tool": "response/incident-commander/scripts/incident-commander_tool.py",
+      "input": "tests/fixtures/incident-commander-input.json",
+      "expect_exit": 2,
+      "note": "incident-commander real-tool fixture"
+    },
+    {
+      "tool": "response/zero-day-response/scripts/zero-day-response_tool.py",
+      "input": "tests/fixtures/zero-day-response-input.json",
+      "expect_exit": 2,
+      "note": "zero-day-response real-tool fixture"
+    },
+    {
+      "tool": "response/zero-day-response-governance/scripts/zero-day-response-governance_tool.py",
+      "input": "tests/fixtures/zero-day-response-governance-input.json",
+      "expect_exit": 2,
+      "note": "zero-day-response-governance real-tool fixture"
     }
   ]
 }
