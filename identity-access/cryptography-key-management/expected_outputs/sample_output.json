@@ -1,16 +1,96 @@
 {
   "agent_slug": "cryptography-key-management",
-  "intent_type": "advise",
-  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
-  "rationale": "Representative output for the Cryptography Key Management skill. Assess cryptographic implementations, key management practices, and PKI health to ensure cryptographic controls provide the intended security guarantees. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "analyze",
+  "action": "Remove 3 forbidden algorithm(s) immediately: svc-tls, legacy-cipher, sig-key.",
+  "rationale": "Each item classified against the SKILL.md symmetric, asymmetric and TLS tables; a forbidden algorithm or a key below the minimum size is critical, deprecated algorithms and overdue rotations are high. Read-only.",
+  "confidence": 0.9,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Cryptography Key Management: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Assess cryptographic implementations, key management practices, and PKI health to ensure cryptographic controls provide the intended security guarantees"
+    "5 crypto item(s): 3 forbidden, 0 deprecated, 1 approved",
+    "critical svc-tls (1.0, tls): TLS 1.0 is forbidden",
+    "critical legacy-cipher (RC4, symmetric): RC4 is forbidden \u2014 remove immediately",
+    "critical sig-key (RSA, asymmetric): RSA is deprecated \u2014 migrate; key size 2048 below minimum 4096 for RSA",
+    "high session-key (AES-GCM, symmetric): key overdue for rotation (400d > 90d)",
+    "informational data-enc (AES-GCM, symmetric): approved"
   ],
-  "evidence_references": [],
-  "next_agents": [],
-  "human_approval_required": true,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/cryptography-key-management-input.json",
+      "ref": "crypto inventory"
+    },
+    {
+      "source": "local://identity-access/cryptography-key-management/SKILL.md",
+      "ref": "approved/deprecated/forbidden algorithm and TLS tables"
+    }
+  ],
+  "next_agents": [
+    "findings-tracker"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:29:52Z",
+  "items": [
+    {
+      "id": "svc-tls",
+      "algorithm": "1.0",
+      "kind": "tls",
+      "status": "forbidden",
+      "severity": "critical",
+      "issues": [
+        "TLS 1.0 is forbidden"
+      ],
+      "usage": "legacy API endpoint"
+    },
+    {
+      "id": "legacy-cipher",
+      "algorithm": "RC4",
+      "kind": "symmetric",
+      "status": "forbidden",
+      "severity": "critical",
+      "issues": [
+        "RC4 is forbidden \u2014 remove immediately"
+      ],
+      "usage": "old file transfer"
+    },
+    {
+      "id": "sig-key",
+      "algorithm": "RSA",
+      "kind": "asymmetric",
+      "status": "forbidden",
+      "severity": "critical",
+      "issues": [
+        "RSA is deprecated \u2014 migrate",
+        "key size 2048 below minimum 4096 for RSA"
+      ],
+      "usage": "code signing"
+    },
+    {
+      "id": "session-key",
+      "algorithm": "AES-GCM",
+      "kind": "symmetric",
+      "status": "rotation_overdue",
+      "severity": "high",
+      "issues": [
+        "key overdue for rotation (400d > 90d)"
+      ],
+      "usage": "sessions"
+    },
+    {
+      "id": "data-enc",
+      "algorithm": "AES-GCM",
+      "kind": "symmetric",
+      "status": "approved",
+      "severity": "informational",
+      "issues": [],
+      "usage": "database encryption"
+    }
+  ],
+  "mitre_ttps": [
+    "T1552.004"
+  ],
+  "affected_assets": [
+    "svc-tls",
+    "legacy-cipher",
+    "sig-key",
+    "session-key"
+  ]
 }

@@ -11260,7 +11260,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "cryptography-key-management"
 compatibility: "Requires read access to KMS / HSM key inventory and policy. No mutation (key rotation is gated via human_approval_required)."
 allowed-tools: "aws-cli az-cli gcloud openssl"
@@ -11487,7 +11487,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "data-security-classification"
   usap_level: "L3"
 user-invocable: true
@@ -11680,7 +11680,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-identity-access
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: identity-access-risk
   usap_level: "L3"
   agent_id: 14
@@ -11866,7 +11866,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "insider-physical-risk"
 ---
 

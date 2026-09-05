@@ -1,29 +1,77 @@
 {
   "agent_slug": "insider-physical-risk",
-  "intent_type": "advise",
-  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
-  "rationale": "Representative output for the Insider Physical Risk skill. Detect, assess, and manage insider threat and physical security risks through behavioral signal analysis, access pattern monitoring, and cross-functional investigation coordination. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
+  "intent_type": "analyze",
+  "action": "2 subject(s) at elevated insider risk (identifiers only). Any individual-level action requires HR and Legal co-approval; investigate the corroborating telemetry before contacting anyone.",
+  "rationale": "Each subject's indicators are weighted (data staging, bulk download and post-resignation activity heaviest) and multiplied by the high-risk-period and role-sensitivity factors. Active exfiltration signals during a high-risk period raise severity to high. Read-only; individual action needs HR and Legal co-approval.",
+  "confidence": 0.8,
   "severity": "high",
   "key_findings": [
-    "Representative finding for Insider Physical Risk: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Detect, assess, and manage insider threat and physical security risks through behavioral signal analysis, access pattern monitoring, and cross-functional investigation coordination"
+    "3 subject(s): 2 elevated; top risk score 18.0",
+    "high E-4471: score 18.0 (resignation period), indicators bulk_download, data_staging, access_after_resignation",
+    "high E-2093: score 4.2 (disciplinary period), indicators usb_mass_storage, failed_badge",
+    "low E-1120: score 1.0 (none period), indicators off_hours_access",
+    "Privacy guardrail: this output ranks risk, it does not authorise surveillance or action; HR and Legal co-approve any individual measure."
   ],
   "evidence_references": [
     {
-      "source": "skill-md",
-      "ref": "identity-access/insider-physical-risk/SKILL.md",
-      "quote": "Persona: You are a **Senior Insider Threat Program Director** with **20+ years** of experience in cybersecurity. You led insider threat programs at two defense contracto"
+      "source": "local://tests/fixtures/insider-physical-risk-input.json",
+      "ref": "subject behavioral signals"
     },
     {
-      "source": "workflow",
-      "ref": "identity-access/insider-physical-risk/references/workflow.md",
-      "quote": "See workflow.md for the step-by-step procedure this payload illustrates."
+      "source": "local://identity-access/insider-physical-risk/SKILL.md",
+      "ref": "behavioral risk indicators and high-risk-period model"
     }
   ],
   "next_agents": [
     "incident-classification"
   ],
-  "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:29:52Z",
+  "approver_roles": [
+    "hr_director",
+    "legal",
+    "ciso"
+  ],
+  "subjects": [
+    {
+      "id": "E-4471",
+      "indicators": [
+        "bulk_download",
+        "data_staging",
+        "access_after_resignation"
+      ],
+      "high_risk_period": "resignation",
+      "risk_score": 18.0,
+      "severity": "high",
+      "exfil_signals": true
+    },
+    {
+      "id": "E-2093",
+      "indicators": [
+        "usb_mass_storage",
+        "failed_badge"
+      ],
+      "high_risk_period": "disciplinary",
+      "risk_score": 4.2,
+      "severity": "high",
+      "exfil_signals": true
+    },
+    {
+      "id": "E-1120",
+      "indicators": [
+        "off_hours_access"
+      ],
+      "high_risk_period": "none",
+      "risk_score": 1.0,
+      "severity": "low",
+      "exfil_signals": false
+    }
+  ],
+  "mitre_ttps": [
+    "T1530"
+  ],
+  "affected_assets": [
+    "E-4471",
+    "E-2093"
+  ]
 }

@@ -168,6 +168,30 @@
       "input": "tests/fixtures/deception-honeypot-input.json",
       "expect_exit": 0,
       "note": "deception plan for lateral movement, credential theft and exfiltration"
+    },
+    {
+      "tool": "identity-access/cryptography-key-management/scripts/cryptography-key-management_tool.py",
+      "input": "tests/fixtures/cryptography-key-management-input.json",
+      "expect_exit": 2,
+      "note": "cryptography-key-management real-tool fixture"
+    },
+    {
+      "tool": "identity-access/data-security-classification/scripts/data-security-classification_tool.py",
+      "input": "tests/fixtures/data-security-classification-input.json",
+      "expect_exit": 2,
+      "note": "data-security-classification real-tool fixture"
+    },
+    {
+      "tool": "identity-access/identity-access-risk/scripts/identity-access-risk_tool.py",
+      "input": "tests/fixtures/identity-access-risk-input.json",
+      "expect_exit": 2,
+      "note": "identity-access-risk real-tool fixture"
+    },
+    {
+      "tool": "identity-access/insider-physical-risk/scripts/insider-physical-risk_tool.py",
+      "input": "tests/fixtures/insider-physical-risk-input.json",
+      "expect_exit": 2,
+      "note": "insider-physical-risk real-tool fixture"
     }
   ]
 }
