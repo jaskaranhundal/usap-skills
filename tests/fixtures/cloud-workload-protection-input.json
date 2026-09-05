@@ -1,0 +1,10 @@
+{
+  "workloads": [
+    {"name": "payments-api", "type": "container", "cwpp_coverage": true,
+     "runtime_signals": ["escape_indicator", "c2_egress", "privileged_syscall"]},
+    {"name": "batch-worker", "type": "container", "cwpp_coverage": true,
+     "runtime_signals": ["crypto_mining", "drift_from_image"]},
+    {"name": "auth-fn", "type": "serverless", "cwpp_coverage": false,
+     "runtime_signals": ["new_binary"]}
+  ]
+}

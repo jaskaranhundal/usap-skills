@@ -1,0 +1,10 @@
+{
+  "endpoints": [
+    {"host": "fin-ws-04", "os": "windows", "edr_installed": true,
+     "indicators": ["credential_dumping", "registry_persistence"]},
+    {"host": "build-lin-02", "os": "linux", "edr_installed": true,
+     "indicators": ["lolbin_execution"]},
+    {"host": "kiosk-01", "os": "windows", "edr_installed": false,
+     "indicators": []}
+  ]
+}

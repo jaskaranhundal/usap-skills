@@ -1,0 +1,10 @@
+{
+  "devices": [
+    {"name": "hmi-line-3", "purdue_level": 2, "protocol": "s7", "safety_critical": true,
+     "findings": ["it_ot_bridge", "default_credentials"]},
+    {"name": "plc-boiler", "purdue_level": 1, "protocol": "modbus", "safety_critical": true,
+     "findings": ["unpatchable_legacy", "plaintext_protocol"]},
+    {"name": "cam-gate", "purdue_level": 3, "protocol": "other", "safety_critical": false,
+     "findings": ["flat_network", "no_network_monitoring"]}
+  ]
+}
