@@ -1,0 +1,1 @@
+../../../cloud-infra/container-image-scan/SKILL.md
