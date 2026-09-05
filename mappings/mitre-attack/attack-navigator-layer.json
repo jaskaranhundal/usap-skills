@@ -244,9 +244,9 @@
     },
     {
       "techniqueID": "T1041",
-      "score": 4,
+      "score": 5,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence, red-team/continuous-pentesting, response/forensics",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence, red-team/continuous-pentesting, response/containment-advisor, response/forensics",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -374,9 +374,9 @@
     },
     {
       "techniqueID": "T1078.004",
-      "score": 4,
+      "score": 5,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/pipeline-security-scan, cloud-infra/iac-security, identity-access/identity-access-risk, red-team/continuous-pentesting",
+      "comment": "USAP skills covering: appsec-devsecops/pipeline-security-scan, cloud-infra/iac-security, identity-access/identity-access-risk, red-team/continuous-pentesting, response/containment-advisor",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -474,9 +474,9 @@
     },
     {
       "techniqueID": "T1190",
-      "score": 12,
+      "score": 13,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/patch-candidate, appsec-devsecops/security-requirements-review, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, cloud-infra/container-image-scan, detection/threat-intelligence, governance/vulnerability-management, pentest/web-app-pentest, red-team/continuous-pentesting, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
+      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/patch-candidate, appsec-devsecops/security-requirements-review, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, cloud-infra/container-image-scan, detection/threat-intelligence, governance/vulnerability-management, pentest/web-app-pentest, red-team/continuous-pentesting, response/containment-advisor, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -564,9 +564,9 @@
     },
     {
       "techniqueID": "T1486",
-      "score": 1,
+      "score": 2,
       "color": "",
-      "comment": "USAP skills covering: response/forensics",
+      "comment": "USAP skills covering: response/containment-advisor, response/forensics",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -890,7 +890,7 @@
       "#8ec843ff"
     ],
     "minValue": 1,
-    "maxValue": 12
+    "maxValue": 13
   },
   "legendItems": [],
   "metadata": [],
