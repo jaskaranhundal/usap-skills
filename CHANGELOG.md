@@ -4,7 +4,10 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
-_No unreleased changes yet._
+### Added
+
+- **Governance reporting cluster de-stubbed (8 skills).** findings-tracker (composite risk score, SLA and escalation matrices, closed-without-verification detection), metrics-reporting (KPIs vs targets with business translation), security-posture-score (weighted domain composite with trend), ciso-brief-generator (board brief on the Headline/So-What/Doing/Ask framework, approval-gated), knowledge-management (precedent search and risk-acceptance conflict detection), security-architecture (eight-criterion SAR plus Zero-Trust maturity gap register), security-awareness (human-risk KPIs and high-risk segments), security-policy-control (policy implementability and CIS control coverage). Each ships a fixture, a recorded sample and a manifest row proven by tests/run_fixtures.py.
+
 
 ## [1.15.0] — 2026-09-05
 

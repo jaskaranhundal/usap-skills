@@ -9199,7 +9199,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "ciso-brief-generator"
 ---
 
@@ -9321,7 +9321,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "findings-tracker"
 ---
 
@@ -9494,7 +9494,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "knowledge-management"
 ---
 
@@ -9669,7 +9669,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: metrics-reporting
   agent_id: 33
   level: L1
@@ -9915,7 +9915,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "security-architecture"
 ---
 
@@ -10089,8 +10089,9 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "security-awareness"
+mitre_attack: [T1566]
 ---
 
 # Security Awareness Agent
@@ -10499,7 +10500,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "security-policy-control"
 ---
 
@@ -10731,7 +10732,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "security-posture-score"
 ---
 
