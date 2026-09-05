@@ -1,0 +1,1 @@
+{"environment":"acme-corp","objectives":["lateral_movement","credential_theft","data_exfiltration"],"zones":["domain_controller","jump_box","database","file_share","repositories","dmz"],"existing_deception":["service honeypot in dmz"]}

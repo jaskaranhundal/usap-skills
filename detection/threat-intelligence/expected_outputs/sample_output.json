@@ -1,18 +1,56 @@
 {
   "agent_slug": "threat-intelligence",
   "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Threat Intelligence skill. Enrich indicators, attribute adversary TTPs to ATT&CK techniques, and produce actionable intelligence that drives detection and response priorities. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "action": "1 malicious and 1 suspicious indicator(s); actor assessment nation_state (70%). Escalate for hunting and containment.",
+  "rationale": "IOCs classified by the SKILL.md taxonomy, the event type mapped to its priority ATT&CK techniques, and the actor category assessed from the indicator signals (zero-day / known APT infra / low-and-slow => nation state; commodity malware => cybercrime; mass scanning => opportunistic). Read-only.",
+  "confidence": 0.8,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Threat Intelligence: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Enrich indicators, attribute adversary TTPs to ATT&CK techniques, and produce actionable intelligence that drives detection and response priorities",
-    "MITRE ATT&CK techniques in scope for this run: T1078, T1041, T1055, T1059",
-    "NIST CSF 2.0 subcategories touched: ID.RA-03, ID.RA-05, DE.AE-07"
+    "Event data_exfiltration: 3 IOC(s) (1 malicious, 1 suspicious); ATT&CK T1041, T1567; actor nation_state (70%)",
+    "malicious ip_address 185.220.101.47: Tor exit node, known C2 in threat feed",
+    "suspicious domain update-cdn-metrics.example: registered 26 days ago, low reputation"
   ],
-  "evidence_references": [],
-  "next_agents": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/threat-intelligence-input.json",
+      "ref": "SecurityFact IOCs",
+      "quote": "data_exfiltration"
+    },
+    {
+      "source": "https://attack.mitre.org/techniques/T1041/",
+      "ref": "T1041"
+    },
+    {
+      "source": "https://attack.mitre.org/techniques/T1567/",
+      "ref": "T1567"
+    },
+    {
+      "source": "local://detection/threat-intelligence/SKILL.md",
+      "ref": "IOC taxonomy, ATT&CK mapping, threat-actor assessment"
+    }
+  ],
+  "next_agents": [
+    "threat-hunting",
+    "incident-classification"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:25:54Z",
+  "enrichment": {
+    "event_type": "data_exfiltration",
+    "attack_techniques": [
+      "T1041",
+      "T1567"
+    ],
+    "malicious": 1,
+    "suspicious": 1,
+    "actor_assessment": "nation_state",
+    "actor_confidence": 0.7
+  },
+  "mitre_ttps": [
+    "T1041",
+    "T1567"
+  ],
+  "affected_assets": [
+    "185.220.101.47"
+  ]
 }

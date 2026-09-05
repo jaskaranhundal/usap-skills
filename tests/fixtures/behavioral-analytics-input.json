@@ -1,0 +1,4 @@
+{"entities":[
+{"entity":"svc-backup","baseline":{"active_hours_mean":14,"active_hours_std":2,"volume_mean_mb":200,"volume_std_mb":50,"volume_p95_mb":300,"observation_days":90},"current":{"active_hour":3,"volume_mb":4200},"new_behaviors":["privileged_command","new_country"],"peer_deviation_sigmas":2},
+{"entity":"j.mueller","baseline":{"active_hours_mean":10,"active_hours_std":3,"volume_mean_mb":50,"volume_std_mb":20,"volume_p95_mb":90,"observation_days":120},"current":{"active_hour":11,"volume_mb":60},"new_behaviors":["hr_or_finance_out_of_role"],"peer_deviation_sigmas":0},
+{"entity":"new-intern","baseline":{"active_hours_mean":13,"active_hours_std":1,"volume_mean_mb":20,"volume_std_mb":10,"volume_p95_mb":35,"observation_days":8},"current":{"active_hour":22,"volume_mb":40},"new_behaviors":["after_hours"],"peer_deviation_sigmas":1}]}
