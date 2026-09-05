@@ -16030,7 +16030,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-risk-compliance
-  updated: 2025-03-23
+  updated: 2026-09-04
   agent_slug: compliance-mapping
   agent_id: 22
   level: L2
@@ -16043,6 +16043,7 @@ metadata:
   providers: [claude, openai, gemini, ollama, mock]
   required_invoke_role: compliance_officer
   required_approver_role: security_manager
+mitre_attack: [T1041, T1530]
 ---
 
 # Compliance Mapping Agent
