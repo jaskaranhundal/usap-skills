@@ -12251,7 +12251,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-platform-ai
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: agent-integrity-monitor
   usap_level: "L3"
   agent_id: 34
@@ -12423,7 +12423,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-safety
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "ai-agent-security"
 ---
 
@@ -12644,7 +12644,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-executive
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "ai-ethics-governance"
 ---
 
@@ -12747,7 +12747,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-control-plane
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "guardrail"
   usap_level: "L4"
 disable-model-invocation: true
@@ -12916,7 +12916,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-control-plane
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "orchestrator"
 ---
 
@@ -13092,7 +13092,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "third-party-vendor-risk"
 ---
 
@@ -13288,7 +13288,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-platform-ai
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: tool-execution-broker
   usap_level: "L3"
   agent_id: 35

@@ -288,6 +288,48 @@
       "input": "tests/fixtures/supply-chain-simulation-input.json",
       "expect_exit": 2,
       "note": "supply-chain-simulation real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/agent-integrity-monitor/scripts/agent-integrity-monitor_tool.py",
+      "input": "tests/fixtures/agent-integrity-monitor-input.json",
+      "expect_exit": 2,
+      "note": "agent-integrity-monitor real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/ai-agent-security/scripts/ai-agent-security_tool.py",
+      "input": "tests/fixtures/ai-agent-security-input.json",
+      "expect_exit": 2,
+      "note": "ai-agent-security real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/ai-ethics-governance/scripts/ai-ethics-governance_tool.py",
+      "input": "tests/fixtures/ai-ethics-governance-input.json",
+      "expect_exit": 2,
+      "note": "ai-ethics-governance real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/guardrail/scripts/guardrail_tool.py",
+      "input": "tests/fixtures/guardrail-input.json",
+      "expect_exit": 0,
+      "note": "guardrail real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/orchestrator/scripts/orchestrator_tool.py",
+      "input": "tests/fixtures/orchestrator-input.json",
+      "expect_exit": 2,
+      "note": "orchestrator real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/third-party-vendor-risk/scripts/third-party-vendor-risk_tool.py",
+      "input": "tests/fixtures/third-party-vendor-risk-input.json",
+      "expect_exit": 2,
+      "note": "third-party-vendor-risk real-tool fixture"
+    },
+    {
+      "tool": "platform-ai/tool-execution-broker/scripts/tool-execution-broker_tool.py",
+      "input": "tests/fixtures/tool-execution-broker-input.json",
+      "expect_exit": 0,
+      "note": "tool-execution-broker real-tool fixture"
     }
   ]
 }

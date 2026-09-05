@@ -1,0 +1,5 @@
+{"recommendation_id":"REC-4410","checks":{
+ "approval_signature_present":true,"approval_not_expired":true,
+ "approver_role_authorized":true,"action_within_scope":true,
+ "target_not_production_restricted":true,"no_duplicate_execution":true,
+ "guardrail_cleared":true,"connector_available":true}}
