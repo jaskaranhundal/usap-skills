@@ -1,0 +1,1 @@
+../../../platform-ai/ai-ethics-governance/SKILL.md

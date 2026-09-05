@@ -1,0 +1,1 @@
+../../../cloud-infra/cloud-workload-protection/SKILL.md

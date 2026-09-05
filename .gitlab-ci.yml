@@ -237,6 +237,14 @@ test:persona-gate:
     - changes: ["plugins/usap/hooks/**", "tools/usap_gate_test.py", "governance/persona-coverage-audit/**", ".gitlab-ci.yml"]
     - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
 
+validate:agentskills-emitter:
+  stage: validate
+  script:
+    - python3 tools/emit_platforms.py --target agents --check
+  rules:
+    - changes: ["**/SKILL.md", "tools/emit_platforms.py", ".agents/**", ".gitlab-ci.yml"]
+    - if: '$CI_COMMIT_BRANCH =~ /^(dev|main)$/'
+
 validate:polyglot-mirror:
   # Generated symlink trees for Codex/Gemini/Cursor/Windsurf/Aider must match the tree.
   stage: validate

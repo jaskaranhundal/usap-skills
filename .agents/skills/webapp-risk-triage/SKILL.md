@@ -1,0 +1,1 @@
+../../../webapp-security/webapp-risk-triage/SKILL.md
