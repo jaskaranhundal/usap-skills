@@ -11067,8 +11067,9 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-02-28
+  updated: 2026-09-04
   agent_slug: "vulnerability-management"
+mitre_attack: [T1190, T1068]
 ---
 
 # Vulnerability Management

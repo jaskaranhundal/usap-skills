@@ -13,11 +13,11 @@ USAP runs its own validators against its own tree. This file records the live re
 | 11-field output-contract conformance (structural) | `tools/output_contract.py --structural-only` | 81 committed `expected_outputs/sample_output.json` files | **81 PASS / 0 FAIL** |
 | Framework-mapping drift | `tools/framework_extractor.py --check` | `mappings/mitre-attack/*.{json,md}`, `mappings/nist-csf/*.md` | **OK — no drift** |
 | Sample-generator drift | `tools/regen_samples.py --check` | 81 committed samples | **OK — no drift** |
-| Executable-tool census | `grep -rl not_implemented --include='*_tool.py' <12 domains>` | 79 `*_tool.py` scripts | **18 implemented / 61 declared stubs** |
+| Executable-tool census | `grep -rl not_implemented --include='*_tool.py' <12 domains>` | 79 `*_tool.py` scripts | **19 implemented / 60 declared stubs** |
 
 ## What the census row means
 
-A stub tool exits non-zero with `status: not_implemented`, confidence `0.0`, and an `action` string saying it did not read `--input`. That is the honest state of 61 scripts today. The 18 implemented tools are `appsec-customize`, `finding-triage`, `patch-candidate`, `security-requirements-review`, `threat-model`, `vuln-scan`, `container-image-scan`, `security-debt-tracker`, `security-roadmap-planner`, `api-security-posture`, `owasp-top10-classifier`, `webapp-risk-triage`, `secrets-exposure` and `persona-coverage-audit`, `supply-chain-risk`, `iac-security`, `pipeline-security-scan`, `attack-surface-management`. The row exists so that the skill count on the README can never again be read as an executable-tool count. Progress is tracked in [issue #138](https://github.com/jaskaranhundal/usap-skills/issues/138).
+A stub tool exits non-zero with `status: not_implemented`, confidence `0.0`, and an `action` string saying it did not read `--input`. That is the honest state of 60 scripts today. The 19 implemented tools are `appsec-customize`, `finding-triage`, `patch-candidate`, `security-requirements-review`, `threat-model`, `vuln-scan`, `container-image-scan`, `security-debt-tracker`, `security-roadmap-planner`, `api-security-posture`, `owasp-top10-classifier`, `webapp-risk-triage`, `secrets-exposure` and `persona-coverage-audit`, `supply-chain-risk`, `iac-security`, `pipeline-security-scan`, `attack-surface-management`, `vulnerability-management`. The row exists so that the skill count on the README can never again be read as an executable-tool count. Progress is tracked in [issue #138](https://github.com/jaskaranhundal/usap-skills/issues/138).
 
 ## What changed since the previous audit
 
