@@ -90,6 +90,54 @@
       "input": "tests/fixtures/web-enumeration-input.json",
       "expect_exit": 1,
       "note": "authorized, in-scope WordPress enumeration with P1 paths and 403s: ranked, exit 1"
+    },
+    {
+      "tool": "governance/findings-tracker/scripts/findings-tracker_tool.py",
+      "input": "tests/fixtures/findings-tracker-input.json",
+      "expect_exit": 2,
+      "note": "registry with a critical KEV finding overdue and a closed-without-verification finding"
+    },
+    {
+      "tool": "governance/metrics-reporting/scripts/metrics-reporting_tool.py",
+      "input": "tests/fixtures/metrics-reporting-input.json",
+      "expect_exit": 2,
+      "note": "KPI set with a false-positive rate breach and one open critical"
+    },
+    {
+      "tool": "governance/security-posture-score/scripts/security-posture-score_tool.py",
+      "input": "tests/fixtures/security-posture-score-input.json",
+      "expect_exit": 1,
+      "note": "seven-domain scorecard, composite 72 fair, rising vs prior"
+    },
+    {
+      "tool": "governance/ciso-brief-generator/scripts/ciso-brief-generator_tool.py",
+      "input": "tests/fixtures/ciso-brief-generator-input.json",
+      "expect_exit": 0,
+      "note": "board quarterly brief from posture, metrics and two incidents"
+    },
+    {
+      "tool": "governance/knowledge-management/scripts/knowledge-management_tool.py",
+      "input": "tests/fixtures/knowledge-management-input.json",
+      "expect_exit": 1,
+      "note": "remediation proposal conflicting with an active risk acceptance"
+    },
+    {
+      "tool": "governance/security-architecture/scripts/security-architecture_tool.py",
+      "input": "tests/fixtures/security-architecture-input.json",
+      "expect_exit": 2,
+      "note": "new partner API SAR with a data-at-rest fail"
+    },
+    {
+      "tool": "governance/security-awareness/scripts/security-awareness_tool.py",
+      "input": "tests/fixtures/security-awareness-input.json",
+      "expect_exit": 2,
+      "note": "human-risk metrics with credential submission above target"
+    },
+    {
+      "tool": "governance/security-policy-control/scripts/security-policy-control_tool.py",
+      "input": "tests/fixtures/security-policy-control-input.json",
+      "expect_exit": 2,
+      "note": "policy set with an unowned Tier-2 policy and a failed uncompensated CIS control"
     }
   ]
 }

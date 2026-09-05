@@ -1,16 +1,48 @@
 {
   "agent_slug": "knowledge-management",
-  "intent_type": "advise",
-  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
-  "rationale": "Representative output for the Knowledge Management skill. Capture, organize, and surface security knowledge assets to accelerate analyst capability, prevent institutional knowledge loss, and enable consistent evidence-based decisions. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
+  "intent_type": "report",
+  "action": "Precedent conflict: RA-2026-04: an active risk acceptance covers this (downstream partner reads it; CDN in front; CISO signed); a new remediation conflicts \u2014 confirm before proceeding.",
+  "rationale": "Precedents matched on event type and affected resource; a precedent is in effect only if active and unexpired. A new remediation against an active risk acceptance, or a query matching a known false-positive pattern, is flagged as a conflict for human confirmation. Read-only.",
+  "confidence": 0.8,
   "severity": "medium",
   "key_findings": [
-    "Representative finding for Knowledge Management: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Capture, organize, and surface security knowledge assets to accelerate analyst capability, prevent institutional knowledge loss, and enable consistent evidence-based decisions"
+    "Query cloud_misconfiguration on acme-exports: 2 relevant precedent(s), 1 conflict(s)",
+    "risk_acceptance RA-2026-04: accept public-read for the analytics export bucket (status active)",
+    "runbook RB-07: S3 public-access remediation runbook (status active)",
+    "CONFLICT RA-2026-04: an active risk acceptance covers this (downstream partner reads it; CDN in front; CISO signed); a new remediation conflicts \u2014 confirm before proceeding"
   ],
-  "evidence_references": [],
-  "next_agents": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/knowledge-management-input.json",
+      "ref": "query and knowledge base"
+    },
+    {
+      "source": "local://governance/knowledge-management/SKILL.md",
+      "ref": "precedent search and consistency enforcement logic"
+    }
+  ],
+  "next_agents": [
+    "findings-tracker"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:19:53Z",
+  "precedents": [
+    {
+      "id": "RA-2026-04",
+      "kind": "risk_acceptance",
+      "status": "active"
+    },
+    {
+      "id": "RB-07",
+      "kind": "runbook",
+      "status": "active"
+    }
+  ],
+  "conflicts": [
+    "RA-2026-04: an active risk acceptance covers this (downstream partner reads it; CDN in front; CISO signed); a new remediation conflicts \u2014 confirm before proceeding"
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "acme-exports"
+  ]
 }

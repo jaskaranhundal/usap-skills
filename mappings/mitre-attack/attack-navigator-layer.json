@@ -794,9 +794,9 @@
     },
     {
       "techniqueID": "T1566",
-      "score": 2,
+      "score": 3,
       "color": "",
-      "comment": "USAP skills covering: governance/security-roadmap-planner, red-team/continuous-pentesting",
+      "comment": "USAP skills covering: governance/security-awareness, governance/security-roadmap-planner, red-team/continuous-pentesting",
       "enabled": true,
       "metadata": [],
       "links": [],

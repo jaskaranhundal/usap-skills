@@ -1,16 +1,102 @@
 {
   "agent_slug": "findings-tracker",
   "intent_type": "report",
-  "action": "Emit a stakeholder-ready summary tied to the underlying evidence package.",
-  "rationale": "Representative output for the Findings Tracker skill. Track every security finding from identification through verified remediation, maintaining SLA compliance, escalation triggers, and accurate program health metrics. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "action": "Reopen 1 finding(s) closed without verification: F-1003. 1 overdue finding(s) (1 critically): F-1001 executive escalation / risk acceptance (15.0d overdue).",
+  "rationale": "Each finding scored by the SKILL.md formula (cvss*10 * exploit * business * aging, aging capped at 2.0), SLA and escalation band from the severity matrix. A closed finding without a verification record is treated as open. Read-only; auto-closing a false positive would require approval.",
+  "confidence": 0.9,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Findings Tracker: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Track every security finding from identification through verified remediation, maintaining SLA compliance, escalation triggers, and accurate program health metrics"
+    "4 finding(s): 3 open, 1 overdue, 1 critically overdue; top risk score 800.0",
+    "P0 F-1001 critical risk 800.0 critically_overdue (15.0d over) owner=appsec",
+    "P2 F-1002 high risk 164.0 on_track (0d over) owner=cloudops",
+    "P3 F-1003 medium risk 104.0 critically_overdue (36.0d over) owner=iam",
+    "P4 F-1004 low risk 15.5 on_track (0d over) owner=web",
+    "Closed without verification (treated as open): F-1003"
   ],
-  "evidence_references": [],
-  "next_agents": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/findings-tracker-input.json",
+      "ref": "findings registry"
+    },
+    {
+      "source": "local://governance/findings-tracker/SKILL.md",
+      "ref": "composite risk score, severity SLA matrix, escalation matrix"
+    }
+  ],
+  "next_agents": [
+    "metrics-reporting",
+    "ciso-brief-generator"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:19:53Z",
+  "registry": {
+    "total": 4,
+    "open": 3,
+    "overdue": 1,
+    "critically_overdue": 1,
+    "unverified_closed": [
+      "F-1003"
+    ],
+    "findings": [
+      {
+        "finding_id": "F-1001",
+        "title": "Log4Shell on payments-api",
+        "severity": "critical",
+        "status": "in_progress",
+        "risk_score": 800.0,
+        "priority": "P0",
+        "owner": "appsec",
+        "affected_resource": "payments-api-prod",
+        "days_overdue": 15.0,
+        "sla_status": "critically_overdue",
+        "source_agent": "vulnerability-management"
+      },
+      {
+        "finding_id": "F-1002",
+        "title": "Public S3 export bucket",
+        "severity": "high",
+        "status": "assigned",
+        "risk_score": 164.0,
+        "priority": "P2",
+        "owner": "cloudops",
+        "affected_resource": "acme-exports",
+        "days_overdue": 0,
+        "sla_status": "on_track",
+        "source_agent": "cloud-security-posture"
+      },
+      {
+        "finding_id": "F-1003",
+        "title": "Missing MFA on service account",
+        "severity": "medium",
+        "status": "closed",
+        "risk_score": 104.0,
+        "priority": "P3",
+        "owner": "iam",
+        "affected_resource": "svc-deploy",
+        "days_overdue": 36.0,
+        "sla_status": "critically_overdue",
+        "source_agent": "identity-access-risk"
+      },
+      {
+        "finding_id": "F-1004",
+        "title": "Outdated TLS on marketing site",
+        "severity": "low",
+        "status": "triaged",
+        "risk_score": 15.5,
+        "priority": "P4",
+        "owner": "web",
+        "affected_resource": "www",
+        "days_overdue": 0,
+        "sla_status": "on_track",
+        "source_agent": "attack-surface-management"
+      }
+    ]
+  },
+  "mitre_ttps": [],
+  "affected_assets": [
+    "acme-exports",
+    "payments-api-prod",
+    "svc-deploy",
+    "www"
+  ]
 }
