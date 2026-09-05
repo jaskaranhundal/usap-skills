@@ -12,7 +12,7 @@ USAP adopts the [Contributor Covenant 2.1](https://www.contributor-covenant.org/
 
 ## Enforcement
 
-Reports go to **jaskarn.singh@lindera.de** with subject prefix `[USAP-COC]`. Reports are read by the project lead; outside parties are not involved unless a report directly concerns the lead, in which case escalate to the contact link in the Contributor Covenant's enforcement section.
+Report privately through the repository's **[Security → Report a vulnerability](https://github.com/jaskaranhundal/usap-skills/security/advisories/new)** form, which delivers directly and privately to the project lead. Reports are read by the project lead; outside parties are not involved unless a report directly concerns the lead, in which case escalate to the contact link in the Contributor Covenant's enforcement section.
 
 You will receive an acknowledgement within **3 business days** and a decision within **14 days**. Outcomes range from "no action — context misread" through private guidance, public clarification, and contribution suspension up to permanent ban.
 
