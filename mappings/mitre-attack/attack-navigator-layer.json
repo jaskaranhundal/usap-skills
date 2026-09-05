@@ -244,9 +244,9 @@
     },
     {
       "techniqueID": "T1041",
-      "score": 5,
+      "score": 6,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence, red-team/continuous-pentesting, response/containment-advisor, response/forensics",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence, red-team/continuous-pentesting, response/containment-advisor, response/forensics, risk-compliance/compliance-mapping",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -584,9 +584,9 @@
     },
     {
       "techniqueID": "T1530",
-      "score": 2,
+      "score": 3,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, cloud-infra/iac-security",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, cloud-infra/iac-security, risk-compliance/compliance-mapping",
       "enabled": true,
       "metadata": [],
       "links": [],

@@ -1,0 +1,13 @@
+{
+  "incident_id": "INC-2026-0912",
+  "incident_type": "data_exfiltration",
+  "awareness_timestamp_utc": "2026-09-04T09:30:00Z",
+  "system": "customer-portal-db",
+  "confirmed_breach": true,
+  "records_affected": 41800,
+  "data_types": ["pii", "cardholder"],
+  "data_subjects": ["eu", "california"],
+  "entity_scope": ["nis2_important", "pci_merchant", "iso27001_certified", "soc2_service_org"],
+  "indicators": ["overprivileged_identity", "mfa_not_enforced", "data_exfiltrated", "evidence_chain_incomplete"],
+  "summary": "Read replica credentials with broad grants used from an unrecognised network to export the customers table over four hours; CloudTrail data events were not enabled for the bucket the export was staged in."
+}
