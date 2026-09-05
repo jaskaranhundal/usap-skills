@@ -252,6 +252,42 @@
       "input": "tests/fixtures/pentest-reporting-input.json",
       "expect_exit": 2,
       "note": "pentest-reporting real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/appsec-code-review/scripts/appsec-code-review_tool.py",
+      "input": "tests/fixtures/appsec-code-review-input.json",
+      "expect_exit": 2,
+      "note": "appsec-code-review real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/build-integrity/scripts/build-integrity_tool.py",
+      "input": "tests/fixtures/build-integrity-input.json",
+      "expect_exit": 2,
+      "note": "build-integrity real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/devsecops-pipeline/scripts/devsecops-pipeline_tool.py",
+      "input": "tests/fixtures/devsecops-pipeline-input.json",
+      "expect_exit": 2,
+      "note": "devsecops-pipeline real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/sast-dast-coordinator/scripts/sast-dast-coordinator_tool.py",
+      "input": "tests/fixtures/sast-dast-coordinator-input.json",
+      "expect_exit": 2,
+      "note": "sast-dast-coordinator real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/secure-sdlc/scripts/secure-sdlc_tool.py",
+      "input": "tests/fixtures/secure-sdlc-input.json",
+      "expect_exit": 2,
+      "note": "secure-sdlc real-tool fixture"
+    },
+    {
+      "tool": "appsec-devsecops/supply-chain-simulation/scripts/supply-chain-simulation_tool.py",
+      "input": "tests/fixtures/supply-chain-simulation-input.json",
+      "expect_exit": 2,
+      "note": "supply-chain-simulation real-tool fixture"
     }
   ]
 }

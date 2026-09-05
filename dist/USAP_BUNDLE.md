@@ -4411,7 +4411,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-08
+  updated: 2026-09-05
   agent_slug: "appsec-code-review"
 ---
 
@@ -4640,7 +4640,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "build-integrity"
   usap_level: "L3"
 user-invocable: true
@@ -4831,7 +4831,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-appsec-devsecops
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: devsecops-pipeline
   usap_level: "L3"
   agent_id: 38
@@ -5323,7 +5323,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "sast-dast-coordinator"
 ---
 
@@ -5497,7 +5497,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "secure-sdlc"
 ---
 
@@ -6068,7 +6068,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "supply-chain-simulation"
 mitre_attack: [T1041, T1195.001, T1195.002]
 ---

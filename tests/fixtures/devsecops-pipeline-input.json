@@ -1,0 +1,5 @@
+{"branch":"main","findings":[
+ {"type":"secret_in_code"},
+ {"type":"high_cvss_dependency","cvss":8.1},
+ {"type":"license_violation"},
+ {"type":"outdated_base_image"}]}
