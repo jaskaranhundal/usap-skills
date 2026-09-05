@@ -8824,7 +8824,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-27
+  updated: 2026-09-04
   agent_slug: "threat-hunting"
   frameworks:
     mitre_attack: [T1078, T1046, T1059.001, T1110, T1133]
