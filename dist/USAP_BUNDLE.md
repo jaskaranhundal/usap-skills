@@ -14802,7 +14802,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-response
-  updated: 2025-03-23
+  updated: 2026-09-04
   agent_slug: containment-advisor
   usap_level: "L3"
   agent_id: 12
@@ -14820,6 +14820,7 @@ user-invocable: true
 allowed-tools: "Read Grep Glob"
 disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
 context: inherit
+mitre_attack: [T1190, T1078.004, T1486, T1041]
 ---
 
 # Containment Advisor Agent
