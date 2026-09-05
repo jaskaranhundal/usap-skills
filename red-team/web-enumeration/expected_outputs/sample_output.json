@@ -1,16 +1,102 @@
 {
   "agent_slug": "web-enumeration",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Web Enumeration skill. Analyse active web enumeration results (ffuf, gobuster) and identify which discovered paths represent the highest-value attack targets \u2014 those most likely to contain exploitable vulnerabilities or sensitive data. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "advise",
+  "action": "Probe in this order: /.env (P1, GET); /admin (P1, GET); /api/v1/users (P1, GET+POST); /api/v2/health (P1, GET+POST); /backup.zip (P1, GET). Do not probe outside the scope; parameter fuzzing needs researcher approval.",
+  "rationale": "Authorization and scope are validated first. Static assets are filtered before ranking. Priority comes from the SKILL.md path table; 403 and 500 raise the effective rank because a page that exists but is forbidden is more valuable than one openly served; WordPress paths on a non-WordPress stack are downgraded as likely false positives. Only the top five are recommended for probing. Read-only; no request is sent.",
+  "confidence": 0.82,
+  "severity": "high",
   "key_findings": [
-    "Representative finding for Web Enumeration: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Analyse active web enumeration results (ffuf, gobuster) and identify which discovered paths represent the highest-value attack targets \u2014 those most likely to contain exploitable vulnerabilities or sensitive data"
+    "shop.acme-labs.example: 13 path(s), 3 static filtered, 10 ranked; 6 P1, 2 forbidden (403)",
+    "P1 /.env [403] GET: credential or source leakage (exists but forbidden: auth-bypass candidate, high value)",
+    "P1 /admin [403] GET: direct admin access (exists but forbidden: auth-bypass candidate, high value)",
+    "P1 /api/v1/users [401] GET+POST: API surface, possible unauthenticated data (auth required: credential-testing candidate)",
+    "P1 /api/v2/health [200] GET+POST: API surface, possible unauthenticated data (accessible)",
+    "P1 /backup.zip [200] GET: backup or source exposure (accessible)",
+    "403s flagged high-value (exist but forbidden, auth-bypass candidates): /.env, /admin"
   ],
-  "evidence_references": [],
-  "next_agents": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/web-enumeration-input.json",
+      "ref": "shop.acme-labs.example enumeration results",
+      "quote": "10 ranked paths"
+    },
+    {
+      "source": "local://shared/scripts/bb_scope_enforcer.py",
+      "ref": "shop.acme-labs.example confirmed in scope"
+    },
+    {
+      "source": "local://red-team/web-enumeration/SKILL.md",
+      "ref": "path priority and status-code interpretation tables"
+    }
+  ],
+  "next_agents": [
+    "web-app-pentest"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T07:41:49Z",
+  "ranked_targets": [
+    {
+      "path": "/.env",
+      "status": 403,
+      "priority": "P1",
+      "effective_rank": 5,
+      "why": "credential or source leakage",
+      "status_note": "exists but forbidden: auth-bypass candidate, high value",
+      "method": "GET",
+      "length": 0
+    },
+    {
+      "path": "/admin",
+      "status": 403,
+      "priority": "P1",
+      "effective_rank": 5,
+      "why": "direct admin access",
+      "status_note": "exists but forbidden: auth-bypass candidate, high value",
+      "method": "GET",
+      "length": 0
+    },
+    {
+      "path": "/api/v1/users",
+      "status": 401,
+      "priority": "P1",
+      "effective_rank": 4,
+      "why": "API surface, possible unauthenticated data",
+      "status_note": "auth required: credential-testing candidate",
+      "method": "GET+POST",
+      "length": 55
+    },
+    {
+      "path": "/api/v2/health",
+      "status": 200,
+      "priority": "P1",
+      "effective_rank": 3,
+      "why": "API surface, possible unauthenticated data",
+      "status_note": "accessible",
+      "method": "GET+POST",
+      "length": 17
+    },
+    {
+      "path": "/backup.zip",
+      "status": 200,
+      "priority": "P1",
+      "effective_rank": 3,
+      "why": "backup or source exposure",
+      "status_note": "accessible",
+      "method": "GET",
+      "length": 2048221
+    }
+  ],
+  "coverage": {
+    "paths_total": 13,
+    "static_filtered": 3,
+    "ranked": 10,
+    "p1_count": 6,
+    "forbidden_count": 2
+  },
+  "mitre_ttps": [
+    "T1595.003"
+  ],
+  "affected_assets": [
+    "shop.acme-labs.example"
+  ]
 }

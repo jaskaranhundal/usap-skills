@@ -1,31 +1,342 @@
 {
   "agent_slug": "cloud-security-posture",
-  "intent_type": "analyze",
-  "action": "Escalate the public-S3 -> IMDSv1 -> IAM-wildcard exposure chain: hand off to cloud-workload-protection for runtime containment and identity-access-risk for the over-permissive role.",
-  "rationale": "CSPM scan of AWS account 123456789012 (us-east-1, us-west-2) against CIS AWS Foundations 1.5. 5 findings across 22 checks; 4 form a single exploitable chain: a public-read S3 bucket holding customer exports (CIS 2.1.5), an internet-facing EC2 still permitting IMDSv1 (CIS 5.6), an app-runtime IAM role with Action:*/Resource:* (CIS 1.16), and CloudTrail disabled in us-west-2 (CIS 3.1) masking the path. Internet-facing + production + regulated-data modifiers upgrade the chain to high. Confidence 0.86: 3 agreeing sources (Security Hub finding, config snapshot, IAM policy read); best tier secondary, corroboration lift (per standards/confidence-rubric.md).",
-  "confidence": 0.86,
-  "severity": "high",
+  "intent_type": "escalate",
+  "action": "5 critical finding(s) in 123456789012 (payments-prod): cascade to the orchestrator now; remediation is human-gated, commands in references/remediation-commands.md. First: AWS-01 on acme-payments-exports.",
+  "rationale": "Every in-scope resource evaluated against the AWS check matrix; base severity from the matrix, then the Misconfiguration Severity Matrix modifiers (internet-facing +1, regulated data +1, development -1, verified compensating control -1 capped at medium, active exploit -> critical). Drift is any change to a posture-relevant key versus the baseline; without a change ticket it is a High finding on its own. Read-only. Confidence factors: base 0.60, configuration attributes collected per resource (+0.15), baseline available for drift (+0.10).",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "CSP-001 public-s3-bucket - arn:aws:s3:::acme-prod-customer-exports has a public-read ACL (CIS AWS 2.1.5); bucket holds customer PII exports",
-    "CSP-002 imdsv1-enabled - instance i-0a1b2c3d4e5f6a7b8 (internet-facing) permits IMDSv1 with HttpTokens=optional (CIS AWS 5.6); SSRF -> instance-credential theft path",
-    "CSP-003 iam-wildcard - role/app-runtime policy allows Action:* on Resource:* (CIS AWS 1.16); enables lateral movement once instance credentials are stolen",
-    "CSP-004 cloudtrail-disabled - CloudTrail is off in us-west-2 (CIS AWS 3.1); masks the S3 read and API activity in the exfiltration path",
-    "CSP-005 rds-unencrypted - db-prod-billing lacks encryption at rest (CIS AWS 2.3.1); medium severity, outside the primary chain"
+    "AWS 123456789012 (payments-prod): 9 resource(s), 10 finding(s) (5 critical, 3 high, 2 medium), 2 drift event(s) (1 unauthorised)",
+    "critical AWS-01 s3_bucket acme-payments-exports (eu-central-1, production): S3 Block Public Access disabled [internet-facing +1; regulated data +1] -> CIS AWS 2.1.1",
+    "critical AWS-02 s3_bucket acme-payments-exports (eu-central-1, production): S3 bucket ACL grants public read [internet-facing +1; regulated data +1] -> CIS AWS 2.1.2",
+    "critical AWS-12 iam_user deploy-bot (global, production): IAM user with AdministratorAccess and no MFA -> CIS AWS 1.10",
+    "critical AWS-03 rds_instance payments-db-replica (eu-central-1, production): RDS instance publicly accessible [regulated data +1] -> CIS AWS 2.3.3",
+    "critical AWS-04 security_group sg-0a1b2c3d (eu-central-1, production): Ingress 0.0.0.0/0 to port 22 [internet-facing +1] -> CIS AWS 5.2",
+    "high DRIFT s3_bucket acme-payments-exports (eu-central-1, production): unauthorised posture drift: block_public_access, acl changed with no change ticket -> ISO 27001 A.8.32",
+    "high AWS-14 kms_key alias/payments-data (eu-central-1, production): CMK rotation not enabled [regulated data +1] -> CIS AWS 3.8",
+    "Drift on acme-payments-exports at 2026-09-03T18:22:00Z: block_public_access True->False, acl private->public-read (NO change ticket)",
+    "Drift on payments-db-replica at 2026-09-02T09:10:00Z: publicly_accessible False->True (ticket CHG-2211)"
   ],
   "evidence_references": [
-    {"source": "mcp:cloud:list_findings:call_csp7f21", "ref": "arn:aws:s3:::acme-prod-customer-exports", "quote": "Grantee=http://acs.amazonaws.com/groups/global/AllUsers, Permission=READ"},
-    {"source": "mcp:cloud:list_findings:call_csp7f21", "ref": "arn:aws:ec2:us-east-1:123456789012:instance/i-0a1b2c3d4e5f6a7b8", "quote": "MetadataOptions.HttpTokens = optional"},
-    {"source": "mcp:cloud:list_findings:call_csp7f21", "ref": "arn:aws:iam::123456789012:role/app-runtime", "quote": "Statement[0]: Effect=Allow, Action=*, Resource=*"}
+    {
+      "source": "local://tests/fixtures/cloud-security-posture-input.json",
+      "ref": "s3_bucket acme-payments-exports",
+      "quote": "AWS-01 S3 Block Public Access disabled"
+    },
+    {
+      "source": "local://tests/fixtures/cloud-security-posture-input.json",
+      "ref": "s3_bucket acme-payments-exports",
+      "quote": "AWS-02 S3 bucket ACL grants public read"
+    },
+    {
+      "source": "local://tests/fixtures/cloud-security-posture-input.json",
+      "ref": "iam_user deploy-bot",
+      "quote": "AWS-12 IAM user with AdministratorAccess and no MFA"
+    },
+    {
+      "source": "local://tests/fixtures/cloud-security-posture-input.json",
+      "ref": "rds_instance payments-db-replica",
+      "quote": "AWS-03 RDS instance publicly accessible"
+    },
+    {
+      "source": "local://tests/fixtures/cloud-security-posture-input.json",
+      "ref": "security_group sg-0a1b2c3d",
+      "quote": "AWS-04 Ingress 0.0.0.0/0 to port 22"
+    },
+    {
+      "source": "local://tests/fixtures/cloud-security-posture-input.json",
+      "ref": "s3_bucket acme-payments-exports",
+      "quote": "DRIFT unauthorised posture drift: block_public_access, acl changed with no change ticket"
+    },
+    {
+      "source": "local://cloud-infra/cloud-security-posture/references/cspm-check-matrices.md",
+      "ref": "check matrix and base severities"
+    },
+    {
+      "source": "https://www.cisecurity.org/benchmark/amazon_web_services",
+      "ref": "CIS Benchmark controls cited per finding"
+    }
   ],
-  "next_agents": ["cloud-workload-protection", "identity-access-risk"],
+  "next_agents": [
+    "attack-surface-management",
+    "network-exposure",
+    "iac-security",
+    "vulnerability-management",
+    "compliance-mapping"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-07-04T09:15:00Z",
-  "mitre_ttps": ["T1530", "T1552.005", "T1078.004", "T1562.008"],
-  "affected_assets": [
-    "arn:aws:s3:::acme-prod-customer-exports",
-    "arn:aws:ec2:us-east-1:123456789012:instance/i-0a1b2c3d4e5f6a7b8",
-    "arn:aws:iam::123456789012:role/app-runtime",
-    "arn:aws:rds:us-east-1:123456789012:db:db-prod-billing"
+  "timestamp_utc": "2026-09-05T07:35:19Z",
+  "posture": {
+    "provider": "aws",
+    "account": "123456789012 (payments-prod)",
+    "resources_scanned": 9,
+    "counts": {
+      "critical": 5,
+      "high": 3,
+      "medium": 2,
+      "low": 0,
+      "informational": 0
+    },
+    "data_stale": false,
+    "drift_events": [
+      {
+        "resource_id": "acme-payments-exports",
+        "changes": {
+          "block_public_access": {
+            "previous": true,
+            "current": false
+          },
+          "acl": {
+            "previous": "private",
+            "current": "public-read"
+          }
+        },
+        "changed_at_utc": "2026-09-03T18:22:00Z",
+        "change_ticket": null,
+        "authorised": false
+      },
+      {
+        "resource_id": "payments-db-replica",
+        "changes": {
+          "publicly_accessible": {
+            "previous": false,
+            "current": true
+          }
+        },
+        "changed_at_utc": "2026-09-02T09:10:00Z",
+        "change_ticket": "CHG-2211",
+        "authorised": true
+      }
+    ]
+  },
+  "findings": [
+    {
+      "check_id": "AWS-01",
+      "resource_id": "acme-payments-exports",
+      "resource_type": "s3_bucket",
+      "provider": "aws",
+      "region": "eu-central-1",
+      "environment": "production",
+      "finding": "S3 Block Public Access disabled",
+      "base_severity": "critical",
+      "modifiers": [
+        "internet-facing +1",
+        "regulated data +1"
+      ],
+      "severity": "critical",
+      "compliance": [
+        "CIS AWS 2.1.1",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-01",
+      "drift": true,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "AWS-02",
+      "resource_id": "acme-payments-exports",
+      "resource_type": "s3_bucket",
+      "provider": "aws",
+      "region": "eu-central-1",
+      "environment": "production",
+      "finding": "S3 bucket ACL grants public read",
+      "base_severity": "critical",
+      "modifiers": [
+        "internet-facing +1",
+        "regulated data +1"
+      ],
+      "severity": "critical",
+      "compliance": [
+        "CIS AWS 2.1.2",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-02",
+      "drift": true,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "AWS-12",
+      "resource_id": "deploy-bot",
+      "resource_type": "iam_user",
+      "provider": "aws",
+      "region": "global",
+      "environment": "production",
+      "finding": "IAM user with AdministratorAccess and no MFA",
+      "base_severity": "critical",
+      "modifiers": [],
+      "severity": "critical",
+      "compliance": [
+        "CIS AWS 1.10",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-12",
+      "drift": false,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "AWS-03",
+      "resource_id": "payments-db-replica",
+      "resource_type": "rds_instance",
+      "provider": "aws",
+      "region": "eu-central-1",
+      "environment": "production",
+      "finding": "RDS instance publicly accessible",
+      "base_severity": "critical",
+      "modifiers": [
+        "regulated data +1"
+      ],
+      "severity": "critical",
+      "compliance": [
+        "CIS AWS 2.3.3",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-03",
+      "drift": true,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "AWS-04",
+      "resource_id": "sg-0a1b2c3d",
+      "resource_type": "security_group",
+      "provider": "aws",
+      "region": "eu-central-1",
+      "environment": "production",
+      "finding": "Ingress 0.0.0.0/0 to port 22",
+      "base_severity": "high",
+      "modifiers": [
+        "internet-facing +1"
+      ],
+      "severity": "critical",
+      "compliance": [
+        "CIS AWS 5.2",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-04",
+      "drift": false,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "DRIFT",
+      "resource_id": "acme-payments-exports",
+      "resource_type": "s3_bucket",
+      "provider": "aws",
+      "region": "eu-central-1",
+      "environment": "production",
+      "finding": "unauthorised posture drift: block_public_access, acl changed with no change ticket",
+      "base_severity": "high",
+      "modifiers": [],
+      "severity": "high",
+      "compliance": [
+        "ISO 27001 A.8.32",
+        "SOC 2 CC8.1"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/workflow.md",
+      "drift": true,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "AWS-14",
+      "resource_id": "alias/payments-data",
+      "resource_type": "kms_key",
+      "provider": "aws",
+      "region": "eu-central-1",
+      "environment": "production",
+      "finding": "CMK rotation not enabled",
+      "base_severity": "medium",
+      "modifiers": [
+        "regulated data +1"
+      ],
+      "severity": "high",
+      "compliance": [
+        "CIS AWS 3.8",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-14",
+      "drift": false,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "AWS-15",
+      "resource_id": "vpc-0f9e8d7c",
+      "resource_type": "vpc",
+      "provider": "aws",
+      "region": "eu-central-1",
+      "environment": "production",
+      "finding": "VPC Flow Logs disabled",
+      "base_severity": "high",
+      "modifiers": [],
+      "severity": "high",
+      "compliance": [
+        "CIS AWS 3.9",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-15",
+      "drift": false,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "AWS-13",
+      "resource_id": "deploy-bot",
+      "resource_type": "iam_user",
+      "provider": "aws",
+      "region": "global",
+      "environment": "production",
+      "finding": "Access key not rotated in 90+ days",
+      "base_severity": "medium",
+      "modifiers": [],
+      "severity": "medium",
+      "compliance": [
+        "CIS AWS 1.14",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-13",
+      "drift": false,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    },
+    {
+      "check_id": "AWS-01",
+      "resource_id": "sandbox-scratch",
+      "resource_type": "s3_bucket",
+      "provider": "aws",
+      "region": "eu-west-1",
+      "environment": "development",
+      "finding": "S3 Block Public Access disabled",
+      "base_severity": "critical",
+      "modifiers": [
+        "development -1",
+        "verified compensating control -1 (max medium)"
+      ],
+      "severity": "medium",
+      "compliance": [
+        "CIS AWS 2.1.1",
+        "NIST 800-53 CM-6",
+        "SOC 2 CC6.6"
+      ],
+      "remediation_ref": "local://cloud-infra/cloud-security-posture/references/remediation-commands.md#aws-01",
+      "drift": false,
+      "scan_utc": "2026-09-04T04:00:00Z"
+    }
   ],
-  "compliance_mappings": ["CIS-AWS-2.1.5", "CIS-AWS-5.6", "CIS-AWS-1.16", "CIS-AWS-3.1", "NIST-800-53-AC-6", "PCI-DSS-1.2.1"]
+  "mitre_ttps": [
+    "T1078.004",
+    "T1133",
+    "T1530"
+  ],
+  "affected_assets": [
+    "acme-payments-exports",
+    "alias/payments-data",
+    "deploy-bot",
+    "payments-db-replica",
+    "sandbox-scratch",
+    "sg-0a1b2c3d",
+    "vpc-0f9e8d7c"
+  ]
 }

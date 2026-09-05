@@ -29,6 +29,7 @@ import argparse
 import json
 import re
 import signal
+import subprocess
 import sys
 import time
 from dataclasses import dataclass
@@ -45,6 +46,15 @@ from mcp_router import dispatch_unattended  # noqa: E402
 from mcp_audit import write_audit  # noqa: E402
 
 VALID_INTENTS = {"detect", "respond", "analyze", "advise", "escalate", "report", "block"}
+
+ACTIVE_DOMAINS = [
+    "appsec-devsecops", "cloud-infra", "detection", "governance", "identity-access",
+    "pentest", "platform-ai", "red-team", "response", "risk-compliance",
+    "system-security", "webapp-security",
+]
+TOOL_TIMEOUT_SECONDS = 60
+MAX_STDOUT_BYTES = 512 * 1024
+from output_contract import validate_payload  # noqa: E402
 
 
 # ─── Schedule parsing ──────────────────────────────────────────────
@@ -127,6 +137,7 @@ class Job:
     dispatch_to: str
     dispatch_args: dict
     enabled: bool
+    input: Optional[str] = None
 
 
 def load_jobs(path: Path | None = None) -> list[Job]:
@@ -163,50 +174,89 @@ def load_jobs(path: Path | None = None) -> list[Job]:
             dispatch_to=raw.get("dispatch_to", ""),
             dispatch_args=raw.get("dispatch_args") or {},
             enabled=bool(raw.get("enabled", False)),
+            input=raw.get("input"),
         ))
     return jobs
 
 
 # ─── Job execution ─────────────────────────────────────────────────
 
-def _build_payload(job: Job) -> dict:
-    """Synthesize a Phase 4 payload from the job spec.
+def _locate_tool(slug: str) -> Optional[Path]:
+    for dom in ACTIVE_DOMAINS:
+        cand = REPO_ROOT / dom / slug / "scripts" / f"{slug}_tool.py"
+        if cand.is_file():
+            return cand
+    return None
 
-    The runner doesn't actually invoke the skill's LLM — it produces a
-    deterministic payload that says "this job fired on this schedule, route
-    to this MCP." The downstream adapter does the real work.
+
+def _resolve_input(job: Job) -> Optional[Path]:
+    if not job.input:
+        return None
+    try:
+        p = (REPO_ROOT / job.input).resolve()
+        p.relative_to(REPO_ROOT)  # contain to the repo
+    except (ValueError, OSError):
+        return None
+    return p if p.is_file() else None
+
+
+def run_skill(job: Job) -> dict:
+    """Run the skill's own tool and return {ok, payload|None, reason}.
+
+    ok is True only when the tool produced a contract-conformant, non-stub
+    payload. A stub, an unparseable payload, a gate failure, a timeout or a
+    missing tool returns ok=False with a reason and is never dispatched
+    (design: docs/design/2026-09-05-runner-real-tools-dr.md).
     """
-    return {
-        "agent_slug": "usap-runner",
-        "intent_type": job.intent_type,
-        "action": f"Scheduled job {job.id!r} firing skill {job.skill!r}.",
-        "rationale": f"Cron schedule {job.schedule.kind} matched at {datetime.now(timezone.utc).isoformat()}.",
-        "confidence": 1.0,
-        "severity": "informational",
-        "key_findings": [f"Scheduled invocation of {job.skill}"],
-        "evidence_references": [],
-        "next_agents": [],
-        "human_approval_required": False,
-        "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-    }
+    tool = _locate_tool(job.skill)
+    if tool is None:
+        return {"ok": False, "payload": None, "reason": f"no tool script for skill {job.skill!r} in any active domain"}
+    if not job.input:
+        return {"ok": False, "payload": None, "reason": "job has no `input`; a scheduled real run needs a fixture or live input to analyse"}
+    inp = _resolve_input(job)
+    if inp is None:
+        return {"ok": False, "payload": None, "reason": f"input {job.input!r} not found under the repository"}
+    cmd = [sys.executable, str(tool), "--output", "json", "--input", str(inp)]
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=TOOL_TIMEOUT_SECONDS, cwd=str(REPO_ROOT))
+    except subprocess.TimeoutExpired:
+        return {"ok": False, "payload": None, "reason": f"tool timed out after {TOOL_TIMEOUT_SECONDS}s"}
+    except OSError as exc:
+        return {"ok": False, "payload": None, "reason": f"tool could not be launched: {exc}"}
+    out = proc.stdout or ""
+    if len(out.encode("utf-8", "replace")) > MAX_STDOUT_BYTES:
+        return {"ok": False, "payload": None, "reason": "tool output exceeded the size cap"}
+    if proc.returncode == 3:
+        return {"ok": False, "payload": None, "reason": "tool is a declared stub (exit 3)"}
+    try:
+        payload = json.loads(out)
+    except json.JSONDecodeError:
+        return {"ok": False, "payload": None, "reason": f"tool output was not JSON (exit {proc.returncode})"}
+    if not isinstance(payload, dict) or payload.get("status") == "not_implemented":
+        return {"ok": False, "payload": None, "reason": "tool reported not_implemented"}
+    violations = validate_payload(payload, evidence_gate=True, score_checks=False)
+    if violations:
+        return {"ok": False, "payload": None, "reason": "payload failed the output contract: " + "; ".join(violations[:3])}
+    return {"ok": True, "payload": payload, "reason": ""}
 
 
 def execute_job(job: Job) -> dict:
-    """Dispatch one job. Writes a scheduled_run audit line + the dispatch line."""
-    payload = _build_payload(job)
-    write_audit({
-        "event": "scheduled_run",
-        "job_id": job.id,
-        "payload": payload,
-    })
-    # Unattended dispatch: the router refuses any capability that requires
-    # approval, so a runner job can never stand in for a human decision.
-    result = dispatch_unattended(
+    """Run the skill tool, then dispatch a real payload — or record why not."""
+    result = run_skill(job)
+    if not result["ok"]:
+        decision = {"status": "skipped", "job_id": job.id, "skill": job.skill, "reason": result["reason"]}
+        write_audit({"event": "runner_skipped", "job_id": job.id, "decision": decision})
+        return decision
+    payload = result["payload"]
+    write_audit({"event": "scheduled_run", "job_id": job.id, "payload": payload})
+    dispatched = dispatch_unattended(
         job.dispatch_to,
         _pick_capability_for_job(job),
         job.dispatch_args,
     )
-    return result
+    dispatched.setdefault("skill", job.skill)
+    dispatched.setdefault("skill_severity", payload.get("severity"))
+    return dispatched
 
 
 def _pick_capability_for_job(job: Job) -> str:

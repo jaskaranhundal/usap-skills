@@ -244,9 +244,9 @@
     },
     {
       "techniqueID": "T1041",
-      "score": 4,
+      "score": 6,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence, red-team/continuous-pentesting, response/forensics",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence, red-team/continuous-pentesting, response/containment-advisor, response/forensics, risk-compliance/compliance-mapping",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -334,9 +334,9 @@
     },
     {
       "techniqueID": "T1068",
-      "score": 3,
+      "score": 4,
       "color": "",
-      "comment": "USAP skills covering: governance/security-debt-tracker, red-team/continuous-pentesting, system-security/os-hardening",
+      "comment": "USAP skills covering: governance/security-debt-tracker, governance/vulnerability-management, red-team/continuous-pentesting, system-security/os-hardening",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -374,9 +374,9 @@
     },
     {
       "techniqueID": "T1078.004",
-      "score": 2,
+      "score": 6,
       "color": "",
-      "comment": "USAP skills covering: identity-access/identity-access-risk, red-team/continuous-pentesting",
+      "comment": "USAP skills covering: appsec-devsecops/pipeline-security-scan, cloud-infra/cloud-security-posture, cloud-infra/iac-security, identity-access/identity-access-risk, red-team/continuous-pentesting, response/containment-advisor",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -423,6 +423,26 @@
       "showSubtechniques": true
     },
     {
+      "techniqueID": "T1110.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/credential-attacks",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1110.003",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/credential-attacks",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
       "techniqueID": "T1110.004",
       "score": 2,
       "color": "",
@@ -434,9 +454,9 @@
     },
     {
       "techniqueID": "T1133",
-      "score": 4,
+      "score": 7,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, detection/behavioral-analytics, detection/threat-hunting, detection/threat-intelligence",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, cloud-infra/cloud-security-posture, cloud-infra/iac-security, detection/attack-surface-management, detection/behavioral-analytics, detection/threat-hunting, detection/threat-intelligence",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -474,9 +494,9 @@
     },
     {
       "techniqueID": "T1190",
-      "score": 11,
+      "score": 13,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/patch-candidate, appsec-devsecops/security-requirements-review, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, cloud-infra/container-image-scan, detection/threat-intelligence, pentest/web-app-pentest, red-team/continuous-pentesting, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
+      "comment": "USAP skills covering: appsec-devsecops/finding-triage, appsec-devsecops/patch-candidate, appsec-devsecops/security-requirements-review, appsec-devsecops/threat-model, appsec-devsecops/vuln-scan, cloud-infra/container-image-scan, detection/threat-intelligence, governance/vulnerability-management, pentest/web-app-pentest, red-team/continuous-pentesting, response/containment-advisor, webapp-security/api-security-posture, webapp-security/webapp-risk-triage",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -484,9 +504,9 @@
     },
     {
       "techniqueID": "T1195",
-      "score": 2,
+      "score": 3,
       "color": "",
-      "comment": "USAP skills covering: detection/threat-intelligence, pentest/web-app-pentest",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-risk, detection/threat-intelligence, pentest/web-app-pentest",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -494,9 +514,9 @@
     },
     {
       "techniqueID": "T1195.001",
-      "score": 2,
+      "score": 3,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation, detection/threat-intelligence",
+      "comment": "USAP skills covering: appsec-devsecops/supply-chain-risk, appsec-devsecops/supply-chain-simulation, detection/threat-intelligence",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -504,9 +524,9 @@
     },
     {
       "techniqueID": "T1195.002",
-      "score": 1,
+      "score": 3,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/supply-chain-simulation",
+      "comment": "USAP skills covering: appsec-devsecops/pipeline-security-scan, appsec-devsecops/supply-chain-risk, appsec-devsecops/supply-chain-simulation",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -564,9 +584,9 @@
     },
     {
       "techniqueID": "T1486",
-      "score": 1,
+      "score": 2,
       "color": "",
-      "comment": "USAP skills covering: response/forensics",
+      "comment": "USAP skills covering: response/containment-advisor, response/forensics",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -584,9 +604,9 @@
     },
     {
       "techniqueID": "T1530",
-      "score": 1,
+      "score": 4,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review",
+      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, cloud-infra/cloud-security-posture, cloud-infra/iac-security, risk-compliance/compliance-mapping",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -684,9 +704,9 @@
     },
     {
       "techniqueID": "T1552.001",
-      "score": 4,
+      "score": 6,
       "color": "",
-      "comment": "USAP skills covering: appsec-devsecops/security-requirements-review, appsec-devsecops/vuln-scan, detection/secrets-exposure, detection/threat-intelligence",
+      "comment": "USAP skills covering: appsec-devsecops/pipeline-security-scan, appsec-devsecops/security-requirements-review, appsec-devsecops/vuln-scan, cloud-infra/iac-security, detection/secrets-exposure, detection/threat-intelligence",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -754,9 +774,9 @@
     },
     {
       "techniqueID": "T1562.008",
-      "score": 1,
+      "score": 2,
       "color": "",
-      "comment": "USAP skills covering: detection/detection-engineering",
+      "comment": "USAP skills covering: cloud-infra/cloud-security-posture, detection/detection-engineering",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -813,6 +833,16 @@
       "showSubtechniques": true
     },
     {
+      "techniqueID": "T1584.001",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/attack-surface-management",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
       "techniqueID": "T1590",
       "score": 1,
       "color": "",
@@ -827,6 +857,46 @@
       "score": 1,
       "color": "",
       "comment": "USAP skills covering: pentest/web-app-pentest",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1595",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/attack-surface-management",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1595.003",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: red-team/web-enumeration",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1608.003",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: detection/attack-surface-management",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1611",
+      "score": 1,
+      "color": "",
+      "comment": "USAP skills covering: cloud-infra/iac-security",
       "enabled": true,
       "metadata": [],
       "links": [],
@@ -850,7 +920,7 @@
       "#8ec843ff"
     ],
     "minValue": 1,
-    "maxValue": 12
+    "maxValue": 13
   },
   "legendItems": [],
   "metadata": [],

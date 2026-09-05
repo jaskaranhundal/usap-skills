@@ -1,0 +1,29 @@
+{
+  "event_id": "IC-20260904-0112",
+  "event_type": "iam_anomaly",
+  "source": "cloudtrail-analytics",
+  "source_credibility": 0.91,
+  "severity": "high",
+  "timestamp_utc": "2026-09-04T05:12:44Z",
+  "finding": "AssumeRole chain from role ci-deploy to OrganizationAccountAccessRole followed by iam:AttachUserPolicy AdministratorAccess on a newly created user, from an IP never seen for this principal, in the production payer account.",
+  "raw_payload": {
+    "principal": "arn:aws:sts::123456789012:assumed-role/ci-deploy/i-0abc",
+    "account": "prod-payer",
+    "source_ip": "185.220.101.47",
+    "api_actions": ["sts:AssumeRole", "iam:CreateUser", "iam:AttachUserPolicy"],
+    "attached_policy": "arn:aws:iam::aws:policy/AdministratorAccess",
+    "new_user": "svc-metrics-2",
+    "first_seen_ip_for_principal": true,
+    "mfa_present": false,
+    "in_progress": true
+  },
+  "structured_fact": {
+    "whitelisted_ips": ["52.10.0.0/16"],
+    "whitelisted_identities": ["arn:aws:iam::123456789012:role/OrgAdminBreakGlass"],
+    "tags": ["production", "payer"]
+  },
+  "context": {
+    "environment": "production",
+    "previous_incidents_for_principal": 0
+  }
+}

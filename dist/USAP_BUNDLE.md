@@ -5192,8 +5192,9 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-08
+  updated: 2026-09-04
   agent_slug: "pipeline-security-scan"
+mitre_attack: [T1552.001, T1195.002, T1078.004]
 ---
 
 # Pipeline Security Scan
@@ -5865,8 +5866,9 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-04
   agent_slug: "supply-chain-risk"
+mitre_attack: [T1195.001, T1195.002, T1195]
 ---
 
 # Supply Chain Risk Agent
@@ -6497,10 +6499,11 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-02-28
+  updated: 2026-09-04
   agent_slug: "cloud-security-posture"
 compatibility: "Requires read access to AWS / Azure / GCP control plane (IAM, EC2/Compute, S3/Blob/GCS, KMS, CloudTrail / Activity Log). No mutation."
 allowed-tools: "aws-cli az-cli gcloud checkov"
+mitre_attack: [T1530, T1078.004, T1562.008, T1133]
 ---
 
 # Cloud Security Posture
@@ -7145,10 +7148,11 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-devsecops
-  updated: 2026-03-01
+  updated: 2026-09-04
   agent_slug: "iac-security"
 compatibility: "Requires the IaC source tree on disk (Terraform / CloudFormation / Kubernetes manifests / Helm charts). Read-only static analysis."
 allowed-tools: "checkov tfsec trivy kube-bench semgrep"
+mitre_attack: [T1530, T1078.004, T1133, T1611, T1552.001]
 ---
 
 # IaC Security Agent
@@ -7537,8 +7541,9 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-02-28
+  updated: 2026-09-04
   agent_slug: "attack-surface-management"
+mitre_attack: [T1595, T1133, T1584.001, T1608.003]
 ---
 
 # Attack Surface Management
@@ -8079,7 +8084,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-27
+  updated: 2026-09-04
   agent_slug: "detection-engineering"
   frameworks:
     mitre_attack: [T1059.001, T1098.001, T1110, T1562.008]
@@ -8820,7 +8825,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-27
+  updated: 2026-09-04
   agent_slug: "threat-hunting"
   frameworks:
     mitre_attack: [T1078, T1046, T1059.001, T1110, T1133]
@@ -11063,8 +11068,9 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-02-28
+  updated: 2026-09-04
   agent_slug: "vulnerability-management"
+mitre_attack: [T1190, T1068]
 ---
 
 # Vulnerability Management
@@ -13944,10 +13950,14 @@ metadata:
   version: "1.0.0"
   author: ARIA Project
   category: usap-adversary
-  updated: 2026-03-27
+  updated: 2026-09-05
   agent_slug: "credential-attacks"
+  usap_level: \"L4\"
 compatibility: "Requires explicit written authorization and bb_scope_enforcer.py validation. Account lockout risk must be assessed before any password-spray."
 allowed-tools: "hydra hashcat john kerbrute crackmapexec"
+mitre_attack: [T1110.001, T1110.003]
+disable-model-invocation: true
+user-invocable: false
 ---
 
 # Credential Attacks
@@ -14708,10 +14718,14 @@ metadata:
   version: "1.0.0"
   author: ARIA Project
   category: usap-adversary
-  updated: 2026-03-27
+  updated: 2026-09-05
   agent_slug: "web-enumeration"
+  usap_level: \"L4\"
 compatibility: "Requires explicit written authorization and bb_scope_enforcer.py validation. Rate-limit politeness enforced; out-of-scope hostnames refused."
 allowed-tools: "gobuster ffuf dirsearch feroxbuster wfuzz"
+mitre_attack: [T1595.003]
+disable-model-invocation: true
+user-invocable: false
 ---
 
 # Web Enumeration
@@ -14797,7 +14811,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-response
-  updated: 2025-03-23
+  updated: 2026-09-04
   agent_slug: containment-advisor
   usap_level: "L3"
   agent_id: 12
@@ -14815,6 +14829,7 @@ user-invocable: true
 allowed-tools: "Read Grep Glob"
 disallowed-tools: "Bash(rm:*) Bash(sudo:*)"
 context: inherit
+mitre_attack: [T1190, T1078.004, T1486, T1041]
 ---
 
 # Containment Advisor Agent
@@ -15235,7 +15250,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-response
-  updated: 2025-03-23
+  updated: 2026-09-04
   agent_slug: incident-classification
   frameworks:
     nist_csf: [DE.AE-02, DE.AE-08, RS.MA-02, RS.MA-03]
@@ -16024,7 +16039,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-risk-compliance
-  updated: 2025-03-23
+  updated: 2026-09-04
   agent_slug: compliance-mapping
   agent_id: 22
   level: L2
@@ -16037,6 +16052,7 @@ metadata:
   providers: [claude, openai, gemini, ollama, mock]
   required_invoke_role: compliance_officer
   required_approver_role: security_manager
+mitre_attack: [T1041, T1530]
 ---
 
 # Compliance Mapping Agent

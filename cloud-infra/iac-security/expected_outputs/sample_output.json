@@ -1,18 +1,361 @@
 {
   "agent_slug": "iac-security",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Iac Security skill. Scan infrastructure-as-code templates for security misconfigurations, enforce policy-as-code standards, and prevent insecure infrastructure from reaching deployment. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "block",
+  "action": "Block the PR: 7 critical finding(s) without an approved exception. Fix in order: IAC-009 Drop privileged; grant the specific capability instead.; IAC-013 Bind a namespaced Role with the verbs the workload needs.; IAC-014 Move the value to a secrets manager reference and rotate it; the committed value is compromised.",
+  "rationale": "Static analysis of 8 terraform resource(s) against the SKILL.md misconfiguration tables. Block conditions: critical finding without approved exception, secret in IaC, IAM wildcard, public bucket or public admin port. 7 blocker(s); compliance score 0/100 (critical -25, high -10, medium -4, low -1). Confidence factors: base 0.60 for parsed resources, resource attributes supplied (+0.15), secret scan result supplied (+0.10).",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Iac Security: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Scan infrastructure-as-code templates for security misconfigurations, enforce policy-as-code standards, and prevent insecure infrastructure from reaching deployment"
+    "terraform scan of acme/payments-infra: 8 resource(s) in 4 file(s), 14 finding(s) (7 critical, 5 high, 2 medium), compliance score 0/100, PR BLOCKED",
+    "IAC-009 critical k8s/payments-api.yaml:20 Deployment payments-api: privileged: true -> Drop privileged; grant the specific capability instead.",
+    "IAC-013 critical k8s/payments-api.yaml:88 ClusterRoleBinding payments-api-admin binds a ServiceAccount to cluster-admin -> Bind a namespaced Role with the verbs the workload needs.",
+    "IAC-014 critical modules/database/vars.tf:8 Secret in IaC: database_password -> Move the value to a secrets manager reference and rotate it; the committed value is compromised.",
+    "IAC-006 critical modules/iam/roles.tf:5 IAM policy ci-deploy grants Action * on Resource * -> Scope actions and resources to the least privilege the workload needs.",
+    "IAC-008 critical modules/network/sg.tf:40 Security group bastion-ssh-any exposes SSH (22) to the internet -> Restrict the CIDR to the bastion or VPN range, or move to SSM Session Manager.",
+    "IAC-001 critical modules/storage/s3.tf:12 S3 bucket payments-exports has public ACL -> Set acl = \"private\" and enable the public access block on the bucket."
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/iac-security-input.json",
+      "ref": "k8s/payments-api.yaml:20 Deployment/payments-api",
+      "quote": "privileged: true"
+    },
+    {
+      "source": "local://tests/fixtures/iac-security-input.json",
+      "ref": "k8s/payments-api.yaml:88 ClusterRoleBinding/payments-api-admin",
+      "quote": "roleRef cluster-admin with ServiceAccount subject"
+    },
+    {
+      "source": "local://tests/fixtures/iac-security-input.json",
+      "ref": "modules/database/vars.tf:8 secret/database_password",
+      "quote": "credential committed in IaC source"
+    },
+    {
+      "source": "local://tests/fixtures/iac-security-input.json",
+      "ref": "modules/iam/roles.tf:5 aws_iam_policy/ci-deploy",
+      "quote": "\"Action\": \"*\" with \"Resource\": \"*\""
+    },
+    {
+      "source": "local://tests/fixtures/iac-security-input.json",
+      "ref": "modules/network/sg.tf:40 aws_security_group_rule/bastion-ssh-any",
+      "quote": "ingress 22-22 from 0.0.0.0/0"
+    },
+    {
+      "source": "local://tests/fixtures/iac-security-input.json",
+      "ref": "modules/storage/s3.tf:12 aws_s3_bucket/payments-exports",
+      "quote": "acl = \"public-read\""
+    },
+    {
+      "source": "https://www.cisecurity.org/benchmark/amazon_web_services",
+      "ref": "CIS AWS Foundations Benchmark controls cited per finding"
+    },
+    {
+      "source": "https://www.cisecurity.org/benchmark/kubernetes",
+      "ref": "CIS Kubernetes Benchmark controls cited per finding"
+    },
+    {
+      "source": "local://cloud-infra/iac-security/SKILL.md",
+      "ref": "misconfiguration tables and CI/CD gate policy"
+    }
+  ],
   "next_agents": [
-    "cloud-security-posture"
+    "secrets-exposure",
+    "findings-tracker",
+    "compliance-mapping"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-04T21:21:34Z",
+  "scan_target": "terraform",
+  "findings": [
+    {
+      "finding_id": "IAC-009",
+      "title": "Deployment payments-api: privileged: true",
+      "severity": "critical",
+      "resource_type": "Deployment",
+      "resource_name": "payments-api",
+      "file_path": "k8s/payments-api.yaml",
+      "line_number": 20,
+      "misconfiguration": "privileged: true",
+      "remediation": "Drop privileged; grant the specific capability instead.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": true,
+      "mitre_technique": "T1611",
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-013",
+      "title": "ClusterRoleBinding payments-api-admin binds a ServiceAccount to cluster-admin",
+      "severity": "critical",
+      "resource_type": "ClusterRoleBinding",
+      "resource_name": "payments-api-admin",
+      "file_path": "k8s/payments-api.yaml",
+      "line_number": 88,
+      "misconfiguration": "roleRef cluster-admin with ServiceAccount subject",
+      "remediation": "Bind a namespaced Role with the verbs the workload needs.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": true,
+      "mitre_technique": "T1078.004",
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-014",
+      "title": "Secret in IaC: database_password",
+      "severity": "critical",
+      "resource_type": "secret",
+      "resource_name": "database_password",
+      "file_path": "modules/database/vars.tf",
+      "line_number": 8,
+      "misconfiguration": "credential committed in IaC source",
+      "remediation": "Move the value to a secrets manager reference and rotate it; the committed value is compromised.",
+      "compliance_frameworks": [
+        "NIST 800-53 IA-5",
+        "PCI DSS 8.2"
+      ],
+      "block_pr": true,
+      "mitre_technique": "T1552.001",
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-006",
+      "title": "IAM policy ci-deploy grants Action * on Resource *",
+      "severity": "critical",
+      "resource_type": "aws_iam_policy",
+      "resource_name": "ci-deploy",
+      "file_path": "modules/iam/roles.tf",
+      "line_number": 5,
+      "misconfiguration": "\"Action\": \"*\" with \"Resource\": \"*\"",
+      "remediation": "Scope actions and resources to the least privilege the workload needs.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": true,
+      "mitre_technique": "T1078.004",
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-008",
+      "title": "Security group bastion-ssh-any exposes SSH (22) to the internet",
+      "severity": "critical",
+      "resource_type": "aws_security_group_rule",
+      "resource_name": "bastion-ssh-any",
+      "file_path": "modules/network/sg.tf",
+      "line_number": 40,
+      "misconfiguration": "ingress 22-22 from 0.0.0.0/0",
+      "remediation": "Restrict the CIDR to the bastion or VPN range, or move to SSM Session Manager.",
+      "compliance_frameworks": [
+        "CIS AWS 5.1-5.6",
+        "CIS K8s 5.2.1",
+        "NIST 800-53 SC-7",
+        "PCI DSS 1.1"
+      ],
+      "block_pr": true,
+      "mitre_technique": "T1133",
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-001",
+      "title": "S3 bucket payments-exports has public ACL",
+      "severity": "critical",
+      "resource_type": "aws_s3_bucket",
+      "resource_name": "payments-exports",
+      "file_path": "modules/storage/s3.tf",
+      "line_number": 12,
+      "misconfiguration": "acl = \"public-read\"",
+      "remediation": "Set acl = \"private\" and enable the public access block on the bucket.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": true,
+      "mitre_technique": "T1530",
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-002",
+      "title": "S3 bucket payments-exports allows public ACLs",
+      "severity": "critical",
+      "resource_type": "aws_s3_bucket",
+      "resource_name": "payments-exports",
+      "file_path": "modules/storage/s3.tf",
+      "line_number": 12,
+      "misconfiguration": "block_public_acls = false",
+      "remediation": "Set every aws_s3_bucket_public_access_block flag to true.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": true,
+      "mitre_technique": "T1530",
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-010",
+      "title": "Deployment payments-api: allowPrivilegeEscalation: true",
+      "severity": "high",
+      "resource_type": "Deployment",
+      "resource_name": "payments-api",
+      "file_path": "k8s/payments-api.yaml",
+      "line_number": 20,
+      "misconfiguration": "allowPrivilegeEscalation: true",
+      "remediation": "Set allowPrivilegeEscalation: false.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": false,
+      "mitre_technique": null,
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-011",
+      "title": "Deployment payments-api: runAsRoot: true",
+      "severity": "high",
+      "resource_type": "Deployment",
+      "resource_name": "payments-api",
+      "file_path": "k8s/payments-api.yaml",
+      "line_number": 20,
+      "misconfiguration": "runAsRoot: true",
+      "remediation": "Set runAsNonRoot: true and a fixed runAsUser.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": false,
+      "mitre_technique": null,
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-007",
+      "title": "IAM role ops-breakglass can be assumed without MFA",
+      "severity": "high",
+      "resource_type": "aws_iam_role",
+      "resource_name": "ops-breakglass",
+      "file_path": "modules/iam/roles.tf",
+      "line_number": 31,
+      "misconfiguration": "No MFA condition on AssumeRole",
+      "remediation": "Add Condition {\"Bool\": {\"aws:MultiFactorAuthPresent\": \"true\"}}.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": false,
+      "mitre_technique": null,
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-003",
+      "title": "S3 bucket payments-exports is not encrypted at rest",
+      "severity": "high",
+      "resource_type": "aws_s3_bucket",
+      "resource_name": "payments-exports",
+      "file_path": "modules/storage/s3.tf",
+      "line_number": 12,
+      "misconfiguration": "server_side_encryption = false",
+      "remediation": "Add aws_s3_bucket_server_side_encryption_configuration with SSE-KMS.",
+      "compliance_frameworks": [
+        "CIS AWS 2.1.1",
+        "CIS K8s 3.1.2",
+        "NIST 800-53 SC-28",
+        "PCI DSS 3.4"
+      ],
+      "block_pr": false,
+      "mitre_technique": null,
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-005",
+      "title": "S3 bucket payments-exports has access logging disabled",
+      "severity": "high",
+      "resource_type": "aws_s3_bucket",
+      "resource_name": "payments-exports",
+      "file_path": "modules/storage/s3.tf",
+      "line_number": 12,
+      "misconfiguration": "logging disabled",
+      "remediation": "Enable server access logging to a dedicated log bucket.",
+      "compliance_frameworks": [
+        "CIS AWS 3.1-3.14",
+        "CIS K8s 3.2.1",
+        "NIST 800-53 AU-2",
+        "PCI DSS 10.1"
+      ],
+      "block_pr": false,
+      "mitre_technique": null,
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-012",
+      "title": "Deployment payments-api: automountServiceAccountToken: true",
+      "severity": "medium",
+      "resource_type": "Deployment",
+      "resource_name": "payments-api",
+      "file_path": "k8s/payments-api.yaml",
+      "line_number": 20,
+      "misconfiguration": "automountServiceAccountToken: true",
+      "remediation": "Set automountServiceAccountToken: false unless the pod calls the API.",
+      "compliance_frameworks": [
+        "CIS AWS 1.1-1.22",
+        "CIS K8s 5.1.1",
+        "NIST 800-53 AC-6",
+        "PCI DSS 7.1"
+      ],
+      "block_pr": false,
+      "mitre_technique": null,
+      "exception_approved": false
+    },
+    {
+      "finding_id": "IAC-004",
+      "title": "S3 bucket payments-exports has versioning disabled",
+      "severity": "medium",
+      "resource_type": "aws_s3_bucket",
+      "resource_name": "payments-exports",
+      "file_path": "modules/storage/s3.tf",
+      "line_number": 12,
+      "misconfiguration": "versioning disabled",
+      "remediation": "Enable versioning; it is the ransomware and accidental-delete recovery path.",
+      "compliance_frameworks": [
+        "NIST 800-53 CP-9"
+      ],
+      "block_pr": false,
+      "mitre_technique": null,
+      "exception_approved": true
+    }
+  ],
+  "critical_count": 7,
+  "high_count": 5,
+  "pr_should_be_blocked": true,
+  "block_reason": "IAC-009 Deployment payments-api: privileged: true; IAC-013 ClusterRoleBinding payments-api-admin binds a ServiceAccount to cluster-admin; IAC-014 Secret in IaC: database_password; +4 more",
+  "compliance_score": 0,
+  "mitre_ttps": [
+    "T1078.004",
+    "T1133",
+    "T1530",
+    "T1552.001",
+    "T1611"
+  ],
+  "affected_assets": [
+    "acme/payments-infra"
+  ]
 }
