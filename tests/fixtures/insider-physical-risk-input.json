@@ -1,0 +1,4 @@
+{"subjects":[
+{"id":"E-4471","indicators":["bulk_download","data_staging","access_after_resignation"],"high_risk_period":"resignation","role_sensitive":true},
+{"id":"E-1120","indicators":["off_hours_access"],"high_risk_period":"none","role_sensitive":false},
+{"id":"E-2093","indicators":["usb_mass_storage","failed_badge"],"high_risk_period":"disciplinary","role_sensitive":false}]}

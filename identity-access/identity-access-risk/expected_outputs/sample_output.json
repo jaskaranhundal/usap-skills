@@ -1,18 +1,81 @@
 {
   "agent_slug": "identity-access-risk",
-  "intent_type": "advise",
-  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
-  "rationale": "Representative output for the Identity Access Risk skill. Assess identity and access risks across the full IAM stack \u2014 entitlements, privilege escalation paths, authentication gaps, and access anomalies \u2014 and produce prioritized remediation recommendations. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "detect",
+  "action": "1 critical IAM anomaly(ies); recommend revoking sessions/credentials for arn:aws:sts::123:assumed-role/ci-deploy/i-0 (mutating, requires soc_lead approval).",
+  "rationale": "Each event classified against the SKILL.md IAM anomaly table for base severity and MITRE technique, then raised to critical when the principal's entitlements give a full-account blast radius or MFA was bypassed. Detection is read-only; a credential operation is gated for soc_lead approval.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Identity Access Risk: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Assess identity and access risks across the full IAM stack \u2014 entitlements, privilege escalation paths, authentication gaps, and access anomalies \u2014 and produce prioritized remediation recommendations"
+    "4 IAM event(s): 1 critical; top arn:aws:sts::123:assumed-role/ci-deploy/i-0 privilege_escalation (full_account)",
+    "critical arn:aws:sts::123:assumed-role/ci-deploy/i-0: privilege_escalation blast=full_account \u2014 AttachUserPolicy AdministratorAccess to new user",
+    "high svc-metrics: service_account_interactive blast=data_exfiltration_risk \u2014 interactive console login from new IP",
+    "high j.doe: impossible_travel blast=service_scoped \u2014 auth from DE then US within 40m",
+    "medium analyst-2: dormant_reactivation blast=service_scoped \u2014 inactive 120d, now active"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/identity-access-risk-input.json",
+      "ref": "IAM events"
+    },
+    {
+      "source": "local://identity-access/identity-access-risk/SKILL.md",
+      "ref": "IAM anomaly classification and blast-radius tables"
+    }
+  ],
   "next_agents": [
-    "cryptography-key-management"
+    "incident-classification",
+    "containment-advisor"
   ],
-  "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:29:52Z",
+  "findings": [
+    {
+      "principal": "arn:aws:sts::123:assumed-role/ci-deploy/i-0",
+      "anomaly_type": "privilege_escalation",
+      "severity": "critical",
+      "blast_radius": "full_account",
+      "detail": "AttachUserPolicy AdministratorAccess to new user",
+      "mitre": "T1078.004"
+    },
+    {
+      "principal": "svc-metrics",
+      "anomaly_type": "service_account_interactive",
+      "severity": "high",
+      "blast_radius": "data_exfiltration_risk",
+      "detail": "interactive console login from new IP",
+      "mitre": "T1078.002"
+    },
+    {
+      "principal": "j.doe",
+      "anomaly_type": "impossible_travel",
+      "severity": "high",
+      "blast_radius": "service_scoped",
+      "detail": "auth from DE then US within 40m",
+      "mitre": "T1078"
+    },
+    {
+      "principal": "analyst-2",
+      "anomaly_type": "dormant_reactivation",
+      "severity": "medium",
+      "blast_radius": "service_scoped",
+      "detail": "inactive 120d, now active",
+      "mitre": "T1078.004"
+    }
+  ],
+  "mutating_category": "credential_operation",
+  "approver_roles": [
+    "soc_lead",
+    "ciso"
+  ],
+  "mitre_ttps": [
+    "T1078",
+    "T1078.002",
+    "T1078.004"
+  ],
+  "affected_assets": [
+    "arn:aws:sts::123:assumed-role/ci-deploy/i-0",
+    "svc-metrics",
+    "j.doe",
+    "analyst-2"
+  ]
 }
