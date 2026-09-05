@@ -1,16 +1,47 @@
 {
   "agent_slug": "credential-attacks",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Credential Attacks skill. Determine the safest, most targeted credential attack approach for the confirmed target \u2014 one that maximises the probability of finding valid credentials while minimising the risk of account lockout, detection, or denial of service to legitimate users. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
+  "intent_type": "advise",
+  "action": "run a slow single-pair test with delays against staging.acme-labs.example using default credentials for WordPress, 1 thread(s), matching the failure indicator \"Invalid username or password\". Lockout risk medium. Verify any hit by replaying the credential manually before reporting it valid.",
+  "rationale": "Authorization and scope are validated first (refuse otherwise). MFA, CAPTCHA or a lockout threshold at or below three attempts forces a manual-only recommendation. Otherwise the attack type follows the SKILL.md selection table, the thread count drops to one under any rate limit or lockout signal, and confidence follows the documented bands. No attack is executed.",
+  "confidence": 0.7,
   "severity": "medium",
   "key_findings": [
-    "Representative finding for Credential Attacks: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Determine the safest, most targeted credential attack approach for the confirmed target \u2014 one that maximises the probability of finding valid credentials while minimising the risk of account lockout, detection, or denial of service to legitimate users"
+    "Target staging.acme-labs.example: authorized and in scope; lockout risk medium; attack type slow single-pair test with delays; 1 thread(s)",
+    "Failure indicator: Invalid username or password",
+    "Wordlist: default credentials for WordPress; confidence 0.7",
+    "Verification: replay every hydra hit manually; hydra output alone is not proof of a valid credential"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://shared/scripts/bb_scope_enforcer.py",
+      "ref": "staging.acme-labs.example confirmed in scope"
+    },
+    {
+      "source": "local://tests/fixtures/credential-attacks-input.json",
+      "ref": "login descriptor and probe result"
+    },
+    {
+      "source": "local://red-team/credential-attacks/SKILL.md",
+      "ref": "attack type selection, lockout risk, wordlist tables"
+    }
+  ],
   "next_agents": [],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T07:41:49Z",
+  "credential_plan": {
+    "decision": "recommended",
+    "target": "staging.acme-labs.example",
+    "attack_type": "slow single-pair test with delays",
+    "lockout_risk": "medium",
+    "threads": 1,
+    "wordlist": "default credentials for WordPress",
+    "failure_indicator": "Invalid username or password",
+    "manual_verification_required": true
+  },
+  "mitre_ttps": [
+    "T1110.001"
+  ],
+  "affected_assets": [
+    "staging.acme-labs.example"
+  ]
 }
