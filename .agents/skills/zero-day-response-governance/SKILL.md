@@ -1,0 +1,1 @@
+../../../response/zero-day-response-governance/SKILL.md

@@ -1,0 +1,1 @@
+../../../red-team/attack-path-analysis/SKILL.md

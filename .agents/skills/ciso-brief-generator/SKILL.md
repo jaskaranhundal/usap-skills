@@ -1,0 +1,1 @@
+../../../governance/ciso-brief-generator/SKILL.md

@@ -1,0 +1,1 @@
+../../../appsec-devsecops/threat-model/SKILL.md

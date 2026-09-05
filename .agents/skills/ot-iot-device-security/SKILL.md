@@ -1,0 +1,1 @@
+../../../cloud-infra/ot-iot-device-security/SKILL.md
