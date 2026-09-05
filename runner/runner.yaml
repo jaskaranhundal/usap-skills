@@ -51,6 +51,7 @@ jobs:
   - id: daily-secrets-scan
     skill: secrets-exposure
     schedule: "0 9 * * *"
+    input: tests/fixtures/secrets-exposure-input.json   # real run: the tool analyses this SecurityFact
     intent_type: detect
     dispatch_to: github
     dispatch_args:

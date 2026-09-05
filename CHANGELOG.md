@@ -21,6 +21,7 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ### Fixed
 
+- **The scheduled runner executes the real skill tool (F-03).** `tools/usap_runner.py` synthesised a contract-shaped payload from the job spec and dispatched it, so a scheduled `secrets-exposure` job posted a finding-free payload and the audit trail recorded a run that analysed nothing. `execute_job` now runs `<domain>/<slug>/scripts/<slug>_tool.py` on the job's `input`, passes the payload through the evidence gate, and dispatches only a real, conformant verdict through `dispatch_unattended` (which still refuses approval-required capabilities). A stub (exit 3 / `not_implemented`), a missing tool, a missing input, a timeout or a gate failure is recorded as `runner_skipped` and never dispatched as a clean result. New `input` field on the job schema; the daily dogfood job points at its fixture. Design review before implementation: `docs/design/2026-09-05-runner-real-tools-dr.md` (residual low). Regression tests in `tools/usap_runner_test.py`.
 - **Small post-release fixes.** `tools/validate_skill.py` now recognises the spec-preferred top-level `mitre_attack` key when checking body citations against frontmatter (no more false drift warnings on the 32 skills using it); `scripts/sync_all.py --check` is a PR gate in both pipelines so the five polyglot mirrors cannot drift again; ORCHESTRATION.md's plugin example uses the current skill count.
 
 
