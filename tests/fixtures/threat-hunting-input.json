@@ -1,0 +1,26 @@
+{
+  "hunt_id": "HUNT-2026-031",
+  "sprint": "2026-S18",
+  "hypothesis": {
+    "statement": "An intrusion set using WMI for lateral movement (T1047) would produce wmiprvse.exe spawning powershell.exe in EDR process telemetry and network logons (4624 type 3) from a single source host across the finance segment between 2026-08-20 and 2026-09-03.",
+    "ttp": ["T1047", "T1059.001"],
+    "actor_relevance": 2,
+    "control_gap": 2,
+    "data_availability": 1
+  },
+  "time_window": {"start": "2026-08-20T00:00:00Z", "end": "2026-09-03T23:59:59Z"},
+  "data_sources": [
+    {"name": "EDR", "required": true, "last_event_utc": "2026-09-03T23:55:10Z", "retention_days": 90},
+    {"name": "Windows authentication", "required": true, "last_event_utc": "2026-09-03T23:58:02Z", "retention_days": 90},
+    {"name": "DNS", "required": true, "last_event_utc": "2026-09-03T23:50:00Z", "retention_days": 30},
+    {"name": "Proxy", "required": true, "last_event_utc": "2026-09-01T02:10:00Z", "retention_days": 90}
+  ],
+  "observations": [
+    {"source": "EDR", "host": "FIN-WS-114", "account": "acme\\j.mueller", "indicator": "wmiprvse.exe -> powershell.exe -nop -w hidden -enc ...", "technique": "T1047", "timestamp_utc": "2026-08-22T14:03:11Z", "playbook": "wmi_lateral_movement"},
+    {"source": "Windows authentication", "host": "FIN-WS-114", "account": "acme\\svc-backup", "indicator": "4624 logon type 3 from 10.20.4.17 (FIN-SRV-02) then 4688 wmic process call create", "technique": "T1047", "timestamp_utc": "2026-08-22T14:02:58Z", "playbook": "wmi_lateral_movement"},
+    {"source": "EDR", "host": "FIN-WS-121", "account": "acme\\svc-backup", "indicator": "wmiprvse.exe -> powershell.exe -enc ...", "technique": "T1047", "timestamp_utc": "2026-08-25T09:41:30Z", "playbook": "wmi_lateral_movement"},
+    {"source": "Windows authentication", "host": "FIN-WS-121", "account": "acme\\svc-backup", "indicator": "4624 logon type 3 from 10.20.4.17 (FIN-SRV-02)", "technique": "T1021.002", "timestamp_utc": "2026-08-25T09:41:12Z", "playbook": "wmi_lateral_movement"},
+    {"source": "DNS", "host": "FIN-SRV-02", "indicator": "periodic queries to update-cdn-metrics.example every 300 s, domain registered 2026-08-10", "technique": "T1071.004", "timestamp_utc": "2026-08-21T06:15:00Z", "playbook": "beaconing"}
+  ],
+  "ioc_matches": []
+}
