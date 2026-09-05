@@ -13950,10 +13950,14 @@ metadata:
   version: "1.0.0"
   author: ARIA Project
   category: usap-adversary
-  updated: 2026-03-27
+  updated: 2026-09-05
   agent_slug: "credential-attacks"
+  usap_level: \"L4\"
 compatibility: "Requires explicit written authorization and bb_scope_enforcer.py validation. Account lockout risk must be assessed before any password-spray."
 allowed-tools: "hydra hashcat john kerbrute crackmapexec"
+mitre_attack: [T1110.001, T1110.003]
+disable-model-invocation: true
+user-invocable: false
 ---
 
 # Credential Attacks
@@ -14714,10 +14718,14 @@ metadata:
   version: "1.0.0"
   author: ARIA Project
   category: usap-adversary
-  updated: 2026-03-27
+  updated: 2026-09-05
   agent_slug: "web-enumeration"
+  usap_level: \"L4\"
 compatibility: "Requires explicit written authorization and bb_scope_enforcer.py validation. Rate-limit politeness enforced; out-of-scope hostnames refused."
 allowed-tools: "gobuster ffuf dirsearch feroxbuster wfuzz"
+mitre_attack: [T1595.003]
+disable-model-invocation: true
+user-invocable: false
 ---
 
 # Web Enumeration
