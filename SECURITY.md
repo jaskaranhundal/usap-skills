@@ -8,13 +8,13 @@ USAP is a library of LLM system prompts and stdlib Python tools. The threat surf
 
 ## Reporting a vulnerability
 
-Send a report to **jaskarn.singh@lindera.de** with subject prefix `[USAP-SEC]`. Use any of:
+Report privately through GitHub's private vulnerability reporting: open the repository's **[Security → Report a vulnerability](https://github.com/jaskaranhundal/usap-skills/security/advisories/new)** form. Include any of:
 
 - A minimal reproducer (input file + expected vs. actual output).
 - A patch as a private fork link.
 - A signed PGP message if you prefer; key available on request.
 
-**Please do not file vulnerability reports as public GitHub issues.** Use the email address above and we will track the issue privately until a fix lands.
+**Please do not file vulnerability reports as public GitHub issues.** Use the private advisory form above and the report stays private until a fix lands.
 
 If your report is in scope, you will receive:
 
