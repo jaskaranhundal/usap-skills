@@ -4,6 +4,10 @@ All notable changes to USAP are recorded here. Format follows [Keep a Changelog]
 
 ## [Unreleased]
 
+_No unreleased changes yet._
+
+## [1.15.0] — 2026-09-05
+
 ### Added
 
 - **agentskills.io platform emitter (`tools/emit_platforms.py`).** Emits the directory-per-skill layout `.agents/skills/<slug>/SKILL.md` that OpenCode (`.agents/skills`, `.claude/skills`) and OpenClaw (`<workspace>/skills`, `~/.agents/skills`) read natively, as relative symlinks to the canonical tree plus an index. `--check` is a PR gate in both pipelines and `tools/emit_platforms_test.py` verifies every skill resolves. The cs-* agent frontmatter transform for those runtimes is the tracked follow-up (#181).
@@ -373,7 +377,8 @@ Phase 1 is read-only discovery + load. Phase 2 — already scoped — turns this
 - Apache 2.0 license.
 - Tagged at commit `4e7622b`.
 
-[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.14.0...HEAD
+[Unreleased]: https://github.com/jaskaranhundal/usap-skills/compare/v1.15.0...HEAD
+[1.15.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.13.0...v1.14.0
 [1.13.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/jaskaranhundal/usap-skills/compare/v1.11.0...v1.12.0
