@@ -12067,7 +12067,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-pentest
-  updated: 2026-05-20
+  updated: 2026-09-05
   agent_slug: "pentest-reporting"
   level: L2
   plane: governance
@@ -12148,7 +12148,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-pentest
-  updated: 2026-05-20
+  updated: 2026-09-05
   agent_slug: "web-app-pentest"
   usap_level: "L4"
   level: L4
