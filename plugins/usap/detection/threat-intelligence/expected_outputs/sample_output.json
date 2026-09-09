@@ -1,0 +1,56 @@
+{
+  "agent_slug": "threat-intelligence",
+  "intent_type": "analyze",
+  "action": "1 malicious and 1 suspicious indicator(s); actor assessment nation_state (70%). Escalate for hunting and containment.",
+  "rationale": "IOCs classified by the SKILL.md taxonomy, the event type mapped to its priority ATT&CK techniques, and the actor category assessed from the indicator signals (zero-day / known APT infra / low-and-slow => nation state; commodity malware => cybercrime; mass scanning => opportunistic). Read-only.",
+  "confidence": 0.8,
+  "severity": "critical",
+  "key_findings": [
+    "Event data_exfiltration: 3 IOC(s) (1 malicious, 1 suspicious); ATT&CK T1041, T1567; actor nation_state (70%)",
+    "malicious ip_address 185.220.101.47: Tor exit node, known C2 in threat feed",
+    "suspicious domain update-cdn-metrics.example: registered 26 days ago, low reputation"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/threat-intelligence-input.json",
+      "ref": "SecurityFact IOCs",
+      "quote": "data_exfiltration"
+    },
+    {
+      "source": "https://attack.mitre.org/techniques/T1041/",
+      "ref": "T1041"
+    },
+    {
+      "source": "https://attack.mitre.org/techniques/T1567/",
+      "ref": "T1567"
+    },
+    {
+      "source": "local://detection/threat-intelligence/SKILL.md",
+      "ref": "IOC taxonomy, ATT&CK mapping, threat-actor assessment"
+    }
+  ],
+  "next_agents": [
+    "threat-hunting",
+    "incident-classification"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:25:54Z",
+  "enrichment": {
+    "event_type": "data_exfiltration",
+    "attack_techniques": [
+      "T1041",
+      "T1567"
+    ],
+    "malicious": 1,
+    "suspicious": 1,
+    "actor_assessment": "nation_state",
+    "actor_confidence": 0.7
+  },
+  "mitre_ttps": [
+    "T1041",
+    "T1567"
+  ],
+  "affected_assets": [
+    "185.220.101.47"
+  ]
+}
