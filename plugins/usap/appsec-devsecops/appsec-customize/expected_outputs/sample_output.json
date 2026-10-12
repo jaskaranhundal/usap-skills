@@ -1,0 +1,23 @@
+{
+  "agent_slug": "appsec-customize",
+  "intent_type": "advise",
+  "action": "CUSTOMIZE.md plan for Rust microservices ready — hand off to threat-model.",
+  "rationale": "Operator answered all three forcing questions for a Rust+actix microservice stack deploying to production. Top three classes: unsafe-deserial, use-after-free (rare in safe Rust but common in unsafe blocks), panic-in-handler (DoS vector). Production deployment triggers L4 patch-candidate gating with disable-model-invocation: true. Pattern catalog has 5 anchors covering the three classes; patch recipes mapped to each.",
+  "confidence": 0.85,
+  "severity": "informational",
+  "key_findings": [
+    "Language: Rust + actix; file extensions: .rs, .toml",
+    "Top three classes: unsafe-deserial (priority 1), use-after-free (priority 2), panic-in-handler (priority 3)",
+    "Deployment: production — L4 patch-candidate gating enforced",
+    "Pattern catalog: 5 anchors (serde-untagged-without-tag, unsafe-transmute, unwrap-in-handler, expect-in-handler, panic-prone-indexing)",
+    "Regression discipline: cargo test --no-fail-fast + cargo fuzz on the handler crate"
+  ],
+  "evidence_references": [
+    {"source": "operator", "ref": "forcing-questions", "quote": "Rust microservice stack, production, top classes: deserial / use-after-free / panic"}
+  ],
+  "next_agents": ["threat-model"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "affected_assets": ["RustMicroserviceStack"],
+  "artifact_path": "/tmp/rust-microservices/CUSTOMIZE.md"
+}

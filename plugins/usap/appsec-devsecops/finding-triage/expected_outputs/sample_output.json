@@ -1,0 +1,27 @@
+{
+  "agent_slug": "finding-triage",
+  "intent_type": "analyze",
+  "action": "Hand off 4 confirmed findings to patch-candidate; carry 1 refuted false positive in TRIAGE.md.",
+  "rationale": "Read 5 findings from VULN-FINDINGS.json. Confirmed: VF-001, VF-002, VF-003, VF-004. Refuted: VF-005 (permissive-cors on /api/v1/health which is a public liveness probe, intentional). Confirmed findings scored 8.0–11.7 against a confidential-tier impact multiplier (×1.0).",
+  "confidence": 0.86,
+  "severity": "high",
+  "key_findings": [
+    "rank #1: VF-001 hardcoded-credential at src/config.py:14 — CONFIRMED, score 9.0",
+    "rank #2: VF-004 missing-input-validation at src/routes/profile.js:11 — CONFIRMED, score 7.8",
+    "rank #3: VF-002 sql-string-concat at src/db/profile.js:42 — CONFIRMED, score 8.0",
+    "rank #4: VF-003 public-iac at infra/storage.tf:21 — CONFIRMED, score 7.0",
+    "VF-005 refuted: /api/v1/health is the intentional public liveness probe, not a credential-bearing endpoint"
+  ],
+  "evidence_references": [
+    {"source": "scanner", "ref": "src/config.py:14", "quote": "PASSWORD = \"changeme-prod\""},
+    {"source": "scanner", "ref": "src/routes/profile.js:11", "quote": "router.put('/api/v1/profile', updateProfile)"},
+    {"source": "scanner", "ref": "src/db/profile.js:42", "quote": "db.query('SELECT * FROM users WHERE id = ' + req.params.id)"},
+    {"source": "scanner", "ref": "infra/storage.tf:21", "quote": "acl = \"public-read\""}
+  ],
+  "next_agents": ["patch-candidate"],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-06-20T10:30:00Z",
+  "mitre_ttps": ["T1552.001", "T1190"],
+  "affected_assets": ["SimpleStoreAPI"],
+  "artifact_path": "/tmp/simple-store-api/TRIAGE.md"
+}
