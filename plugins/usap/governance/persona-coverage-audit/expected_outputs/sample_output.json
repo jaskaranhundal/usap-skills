@@ -1,0 +1,47 @@
+{
+  "agent_slug": "persona-coverage-audit",
+  "intent_type": "report",
+  "action": "2 of 3 gated sessions carry no pass. Review those changes retrospectively and record the pass; check why the PreToolUse block did not fire (hook_seen false means the plugin was not loaded).",
+  "rationale": "Coverage is measured as gated sessions (sessions that wrote CI, IaC, hooks, settings or credential paths) that carry a persona_pass audit entry with the same session_id. A pass recorded in a different session does not count. Sessions without hook activity indicate the gate was absent, which is the bypass the design accepted as residual risk.",
+  "confidence": 0.9,
+  "severity": "medium",
+  "key_findings": [
+    "4 session(s) in the last 7 day(s); 3 wrote gated paths",
+    "1 persona pass(es) recorded by pass code {\"DR\": 1}",
+    "1 gated session(s) covered, 2 uncovered",
+    "1 gated session(s) show no hook activity: the plugin gate was not loaded there (DR-7 condition b)",
+    "2 prompt(s) matched a trigger and received the gate instruction",
+    "Residual-risk ratings recorded: medium"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://plugins/usap/hooks/hooks.json",
+      "ref": "gate definition (UserPromptSubmit, PreToolUse, Stop)"
+    },
+    {
+      "source": "local://standards/output-contract.md",
+      "ref": "human_approval_required hold that the DR chain ends at"
+    }
+  ],
+  "next_agents": [
+    "metrics-reporting"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-04T17:03:14Z",
+  "coverage": {
+    "window_days": 7,
+    "sessions_total": 4,
+    "sessions_gated": 3,
+    "sessions_covered": 1,
+    "sessions_uncovered": [
+      "s-003",
+      "s-004"
+    ],
+    "sessions_without_hook": [
+      "s-004"
+    ],
+    "passes_by_code": {
+      "DR": 1
+    }
+  }
+}
