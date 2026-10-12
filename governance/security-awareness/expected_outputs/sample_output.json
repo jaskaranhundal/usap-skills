@@ -1,18 +1,101 @@
 {
   "agent_slug": "security-awareness",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Security Awareness skill. Design, execute, and measure security awareness programs that change observable security behaviors across the organization. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "report",
+  "action": "4 human-risk target(s) breached for 2026-08: Phishing click rate 0.07 (target < 0.05); Privileged-user click rate 0.05 (target < 0.03); Credential submission rate 0.015 (target < 0.01); Repeat clickers (90d) 0.03 (target < 0.02). Enhanced training for high-click segments: Finance, Executive assistants, Sales.",
+  "rationale": "Each behavioral KPI compared to its SKILL.md target; a credential submission rate above target is critical because it is a direct account-compromise path. Segments clicking at or above 5% are surfaced for enhanced training (remediation, not punishment). Read-only.",
+  "confidence": 0.9,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Security Awareness: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Design, execute, and measure security awareness programs that change observable security behaviors across the organization"
+    "Human-risk review 2026-08: 6 KPI(s), 4 breached; click rate improving vs baseline 0.23",
+    "BREACH Phishing click rate: 0.07 (target < 0.05)",
+    "BREACH Privileged-user click rate: 0.05 (target < 0.03)",
+    "BREACH Credential submission rate: 0.015 (target < 0.01)",
+    "ok  Suspicious-email reporting rate: 0.34 (target >= 0.30)",
+    "ok  Training completion: 96.0 (target >= 95%)",
+    "BREACH Repeat clickers (90d): 0.03 (target < 0.02)",
+    "High-risk segments (>=5% click): Finance 11%, Executive assistants 9%, Sales 8%"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/security-awareness-input.json",
+      "ref": "awareness metrics"
+    },
+    {
+      "source": "local://governance/security-awareness/SKILL.md",
+      "ref": "human risk metrics framework and targets"
+    }
+  ],
   "next_agents": [
     "metrics-reporting"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:19:54Z",
+  "human_risk": {
+    "kpis": [
+      {
+        "kpi": "click_rate",
+        "label": "Phishing click rate",
+        "value": 0.07,
+        "target": "< 0.05",
+        "on_target": false,
+        "critical": false
+      },
+      {
+        "kpi": "privileged_click_rate",
+        "label": "Privileged-user click rate",
+        "value": 0.05,
+        "target": "< 0.03",
+        "on_target": false,
+        "critical": false
+      },
+      {
+        "kpi": "credential_submission_rate",
+        "label": "Credential submission rate",
+        "value": 0.015,
+        "target": "< 0.01",
+        "on_target": false,
+        "critical": true
+      },
+      {
+        "kpi": "reporting_rate",
+        "label": "Suspicious-email reporting rate",
+        "value": 0.34,
+        "target": ">= 0.30",
+        "on_target": true,
+        "critical": false
+      },
+      {
+        "kpi": "training_completion_pct",
+        "label": "Training completion",
+        "value": 96.0,
+        "target": ">= 95%",
+        "on_target": true,
+        "critical": false
+      },
+      {
+        "kpi": "repeat_clicker_pct",
+        "label": "Repeat clickers (90d)",
+        "value": 0.03,
+        "target": "< 0.02",
+        "on_target": false,
+        "critical": false
+      }
+    ],
+    "breached": [
+      "click_rate",
+      "privileged_click_rate",
+      "credential_submission_rate",
+      "repeat_clicker_pct"
+    ],
+    "high_risk_segments": [
+      "Finance",
+      "Executive assistants",
+      "Sales"
+    ],
+    "trend": "improving"
+  },
+  "mitre_ttps": [
+    "T1566"
+  ],
+  "affected_assets": []
 }

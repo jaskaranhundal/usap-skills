@@ -1,18 +1,113 @@
 {
   "agent_slug": "ot-iot-device-security",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Ot Iot Device Security skill. Assess and harden OT, ICS, and IoT device security in critical infrastructure environments where availability and safety constraints limit traditional security control application. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "detect",
+  "action": "2 critical OT exposure(s); remediate via the network path, not a device change: Introduce a segmentation boundary (firewall/data diode) in the next window; Change credentials in a planned window; compensate with access control now. All OT changes require safety review plus CISO and operations-director approval.",
+  "rationale": "Each finding is scored for OT: an IT/OT bridge or an internet-exposed device removes the containment boundary and is critical, as are default credentials on a safety-critical device. Remediation favours network-path changes over device changes because OT prioritises availability and safety; every mutating OT action requires safety review plus CISO and operations-director approval. Read-only assessment.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Ot Iot Device Security: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Assess and harden OT, ICS, and IoT device security in critical infrastructure environments where availability and safety constraints limit traditional security control application"
+    "3 device(s): 6 finding(s) (2 critical, 2 high); OT paradox \u2014 availability and safety before patching",
+    "critical hmi-line-3 (Purdue 2, s7, safety-critical): IT/OT network bridge \u2014 removes the primary OT containment boundary -> Introduce a segmentation boundary (firewall/data diode) in the next window",
+    "critical hmi-line-3 (Purdue 2, s7, safety-critical): default credentials on an OT device -> Change credentials in a planned window; compensate with access control now",
+    "high plc-boiler (Purdue 1, modbus, safety-critical): unpatchable legacy device -> Wrap in compensating controls (segmentation, monitoring); do not force-patch",
+    "high cam-gate (Purdue 3, other): flat OT network with no zone segmentation -> Segment per the Purdue model / IEC 62443 zones",
+    "medium plc-boiler (Purdue 1, modbus, safety-critical): plaintext OT protocol -> Add network monitoring; encrypt where the device supports it",
+    "medium cam-gate (Purdue 3, other): no passive OT network monitoring -> Deploy passive OT IDS (no active scanning of OT)"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/ot-iot-device-security-input.json",
+      "ref": "OT/IoT device inventory"
+    },
+    {
+      "source": "https://www.isa.org/standards-and-publications/isa-standards/isa-iec-62443-series-of-standards",
+      "ref": "IEC 62443 zones and conduits"
+    },
+    {
+      "source": "local://cloud-infra/ot-iot-device-security/SKILL.md",
+      "ref": "OT assessment model and approval gate"
+    }
+  ],
   "next_agents": [
-    "cloud-workload-protection"
+    "network-exposure",
+    "findings-tracker"
   ],
-  "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:41:41Z",
+  "approver_roles": [
+    "safety_review",
+    "ciso",
+    "operations_director"
+  ],
+  "findings": [
+    {
+      "device": "hmi-line-3",
+      "purdue_level": 2,
+      "protocol": "s7",
+      "safety_critical": true,
+      "finding": "it_ot_bridge",
+      "severity": "critical",
+      "description": "IT/OT network bridge \u2014 removes the primary OT containment boundary",
+      "remediation": "Introduce a segmentation boundary (firewall/data diode) in the next window"
+    },
+    {
+      "device": "hmi-line-3",
+      "purdue_level": 2,
+      "protocol": "s7",
+      "safety_critical": true,
+      "finding": "default_credentials",
+      "severity": "critical",
+      "description": "default credentials on an OT device",
+      "remediation": "Change credentials in a planned window; compensate with access control now"
+    },
+    {
+      "device": "plc-boiler",
+      "purdue_level": 1,
+      "protocol": "modbus",
+      "safety_critical": true,
+      "finding": "unpatchable_legacy",
+      "severity": "high",
+      "description": "unpatchable legacy device",
+      "remediation": "Wrap in compensating controls (segmentation, monitoring); do not force-patch"
+    },
+    {
+      "device": "cam-gate",
+      "purdue_level": 3,
+      "protocol": "other",
+      "safety_critical": false,
+      "finding": "flat_network",
+      "severity": "high",
+      "description": "flat OT network with no zone segmentation",
+      "remediation": "Segment per the Purdue model / IEC 62443 zones"
+    },
+    {
+      "device": "plc-boiler",
+      "purdue_level": 1,
+      "protocol": "modbus",
+      "safety_critical": true,
+      "finding": "plaintext_protocol",
+      "severity": "medium",
+      "description": "plaintext OT protocol",
+      "remediation": "Add network monitoring; encrypt where the device supports it"
+    },
+    {
+      "device": "cam-gate",
+      "purdue_level": 3,
+      "protocol": "other",
+      "safety_critical": false,
+      "finding": "no_network_monitoring",
+      "severity": "medium",
+      "description": "no passive OT network monitoring",
+      "remediation": "Deploy passive OT IDS (no active scanning of OT)"
+    }
+  ],
+  "mitre_ttps": [
+    "T0812",
+    "T0886"
+  ],
+  "affected_assets": [
+    "cam-gate",
+    "hmi-line-3",
+    "plc-boiler"
+  ]
 }

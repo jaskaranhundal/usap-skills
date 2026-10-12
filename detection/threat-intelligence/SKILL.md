@@ -8,7 +8,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-detection
-  updated: 2026-06-27
+  updated: 2026-09-05
   agent_slug: "threat-intelligence"
   usap_level: "L3"
   agent_id: 25

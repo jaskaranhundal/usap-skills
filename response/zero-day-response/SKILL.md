@@ -6,8 +6,9 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-11
+  updated: 2026-09-05
   agent_slug: "zero-day-response"
+mitre_attack: [T1190, T1203]
 ---
 
 # Zero-Day Response

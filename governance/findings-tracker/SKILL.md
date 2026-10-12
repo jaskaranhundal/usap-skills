@@ -6,7 +6,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "findings-tracker"
 ---
 

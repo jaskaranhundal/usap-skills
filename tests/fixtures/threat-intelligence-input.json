@@ -1,0 +1,5 @@
+{"event_type":"data_exfiltration","severity":"high","iocs":[
+{"type":"ip_address","value":"185.220.101.47","reputation":"malicious","context":"Tor exit node, known C2 in threat feed"},
+{"type":"domain","value":"update-cdn-metrics.example","reputation":"suspicious","context":"registered 26 days ago, low reputation"},
+{"type":"file_hash","value":"ab12...","reputation":"unknown","context":"not in any feed"}],
+"signals":{"zero_day":false,"known_apt_infra":true,"low_and_slow":true,"commodity_malware":false,"mass_scanning":false}}

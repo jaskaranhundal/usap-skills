@@ -1,0 +1,81 @@
+{
+  "agent_slug": "red-team-planner",
+  "intent_type": "advise",
+  "action": "ACME annual red team: 1 execution directive(s) require human approval.",
+  "rationale": "Targets are ranked by the SKILL.md asset tiers \u2014 crown jewels are an objective in every campaign, tier 1 are secondary objectives \u2014 and actions are classified: planning, ROE and technique recommendations are read-only, execution directives require human approval, and modifying an active engagement's scope requires CISO and sponsor sign-off.",
+  "confidence": 0.88,
+  "severity": "medium",
+  "key_findings": [
+    "ACME annual red team: 3 target(s) (1 crown jewels), 4 action(s), 1 mutating",
+    "Maximum DC01 (crown_jewels)",
+    "High Okta (tier1)",
+    "Low wiki (tier3)",
+    "read_only campaign_plan",
+    "read_only roe_document",
+    "read_only recommend_attack_techniques",
+    "mutating execution_directive_red_team_ops [human approval]"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/red-team-planner-input.json",
+      "ref": "engagement targets and actions"
+    },
+    {
+      "source": "local://red-team/red-team-planner/SKILL.md",
+      "ref": "asset-tier and action tables"
+    }
+  ],
+  "next_agents": [
+    "red-team-operations"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:56:39Z",
+  "matrix": [
+    {
+      "name": "DC01",
+      "tier": "crown_jewels",
+      "priority": "Maximum \u2014 objective in every campaign",
+      "rank": 4
+    },
+    {
+      "name": "Okta",
+      "tier": "tier1",
+      "priority": "High \u2014 secondary objectives",
+      "rank": 3
+    },
+    {
+      "name": "wiki",
+      "tier": "tier3",
+      "priority": "Low",
+      "rank": 1
+    }
+  ],
+  "actions": [
+    {
+      "action": "campaign_plan",
+      "classification": "read_only",
+      "approvals": ""
+    },
+    {
+      "action": "roe_document",
+      "classification": "read_only",
+      "approvals": ""
+    },
+    {
+      "action": "recommend_attack_techniques",
+      "classification": "read_only",
+      "approvals": ""
+    },
+    {
+      "action": "execution_directive_red_team_ops",
+      "classification": "mutating",
+      "approvals": "human approval"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "DC01",
+    "Okta",
+    "wiki"
+  ]
+}

@@ -1,35 +1,88 @@
 {
   "agent_slug": "os-hardening",
   "intent_type": "detect",
-  "action": "Remediate 3 critical CIS Level 1 failures: disable Telnet, enforce SSH key-only auth, enable auditd",
-  "rationale": "Ubuntu 22.04 LTS failed 3 critical and 7 high CIS Benchmark Level 1 controls.",
-  "confidence": 0.95,
+  "action": "1 critical and 2 high hardening finding(s) on linux (payments-api); Patch the local privilege-escalation CVE immediately first.",
+  "rationale": "Each configuration signal is scored against the SKILL.md CIS/STIG classification table for severity, intent and MITRE technique; world-writable system files and an unpatched local-privilege-escalation CVE are critical. Read-only detection.",
+  "confidence": 0.88,
   "severity": "critical",
   "key_findings": [
-    "Telnet active on port 23 (CIS 2.1.1) \u2014 MITRE T1040",
-    "SSH PermitRootLogin yes (CIS 5.2.7) \u2014 MITRE T1021.004",
-    "auditd service not running (CIS 4.1.1) \u2014 MITRE T1562.002",
-    "SUID binary /usr/bin/nmap outside baseline \u2014 MITRE T1548.001",
-    "SELinux in permissive mode \u2014 MITRE T1068"
+    "linux payments-api (CIS L1): 5 finding(s) (1 critical, 2 high, 2 medium)",
+    "critical unpatched_lpe_cve [T1068]: Patch the local privilege-escalation CVE immediately (CVE-2026-1000 dirtypipe variant)",
+    "high weak_ssh_config [T1021.004]: Harden sshd: disable root login and password auth, restrict ciphers (PermitRootLogin yes)",
+    "high cleartext_protocol_services [T1040]: Disable Telnet/FTP/rsh; use SSH/SFTP (telnetd on 23)",
+    "medium unneeded_services_running [T1203]: Disable services not required by the system role",
+    "medium password_policy_below_cis [T1110]: Set password policy to the CIS minimum"
   ],
   "evidence_references": [
     {
-      "source": "Lynis 3.0.9",
-      "finding": "SSH-7408",
-      "control": "CIS Ubuntu 22.04 v1.0 \u2014 5.2.7",
-      "remediation": "Set PermitRootLogin no in /etc/ssh/sshd_config; systemctl restart sshd"
+      "source": "local://tests/fixtures/os-hardening-input.json",
+      "ref": "OS configuration findings"
     },
     {
-      "source": "service enum",
-      "finding": "telnet.socket enabled",
-      "control": "CIS Ubuntu 22.04 v1.0 \u2014 2.1.1",
-      "remediation": "systemctl disable --now telnet.socket; apt purge telnetd"
+      "source": "https://www.cisecurity.org/cis-benchmarks",
+      "ref": "CIS Benchmarks"
+    },
+    {
+      "source": "local://system-security/os-hardening/SKILL.md",
+      "ref": "OS hardening classification table"
     }
   ],
   "next_agents": [
     "vulnerability-management",
-    "detection-engineering"
+    "findings-tracker"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-05-20T10:00:00Z"
+  "timestamp_utc": "2026-09-05T08:36:00Z",
+  "findings": [
+    {
+      "signal": "unpatched_lpe_cve",
+      "severity": "critical",
+      "intent": "respond",
+      "mitre": "T1068",
+      "remediation": "Patch the local privilege-escalation CVE immediately",
+      "detail": "CVE-2026-1000 dirtypipe variant"
+    },
+    {
+      "signal": "weak_ssh_config",
+      "severity": "high",
+      "intent": "detect",
+      "mitre": "T1021.004",
+      "remediation": "Harden sshd: disable root login and password auth, restrict ciphers",
+      "detail": "PermitRootLogin yes"
+    },
+    {
+      "signal": "cleartext_protocol_services",
+      "severity": "high",
+      "intent": "detect",
+      "mitre": "T1040",
+      "remediation": "Disable Telnet/FTP/rsh; use SSH/SFTP",
+      "detail": "telnetd on 23"
+    },
+    {
+      "signal": "unneeded_services_running",
+      "severity": "medium",
+      "intent": "analyze",
+      "mitre": "T1203",
+      "remediation": "Disable services not required by the system role",
+      "detail": ""
+    },
+    {
+      "signal": "password_policy_below_cis",
+      "severity": "medium",
+      "intent": "detect",
+      "mitre": "T1110",
+      "remediation": "Set password policy to the CIS minimum",
+      "detail": ""
+    }
+  ],
+  "mitre_ttps": [
+    "T1021.004",
+    "T1040",
+    "T1068",
+    "T1110",
+    "T1203"
+  ],
+  "affected_assets": [
+    "payments-api-03"
+  ]
 }

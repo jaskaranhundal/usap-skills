@@ -1,0 +1,67 @@
+{
+  "agent_slug": "cyber-insurance",
+  "intent_type": "advise",
+  "action": "ACME 2026 cyber tower: 2 critical coverage gap(s) \u2014 no coverage: Cyber extortion / ransomware; privacy liability excludes unencrypted data \u2014 a common denial trigger. Address before renewal.",
+  "rationale": "Each coverage is checked against the SKILL.md tables; missing ransomware or privacy liability is critical, and an unencrypted-data exclusion is critical because it voids the privacy cover when it is most needed. Sublimits and war/nation-state exclusions are flagged as the common claim-denial triggers. Read-only advisory.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "ACME 2026 cyber tower: 5 gap(s) (2 critical)",
+    "critical no coverage: Cyber extortion / ransomware",
+    "critical privacy liability excludes unencrypted data \u2014 a common denial trigger",
+    "high nation-state / war exclusion on network security liability",
+    "high social-engineering sublimit is low ($100,000)",
+    "low no coverage: Media liability"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/cyber-insurance-input.json",
+      "ref": "policy descriptor"
+    },
+    {
+      "source": "local://risk-compliance/cyber-insurance/SKILL.md",
+      "ref": "first-party and third-party coverage tables"
+    }
+  ],
+  "next_agents": [
+    "enterprise-risk-assessment"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T09:01:15Z",
+  "gaps": [
+    {
+      "item": "ransomware",
+      "type": "missing_coverage",
+      "severity": "critical",
+      "note": "no coverage: Cyber extortion / ransomware"
+    },
+    {
+      "item": "unencrypted_data_exclusion",
+      "type": "exclusion",
+      "severity": "critical",
+      "note": "privacy liability excludes unencrypted data \u2014 a common denial trigger"
+    },
+    {
+      "item": "war_exclusion",
+      "type": "exclusion",
+      "severity": "high",
+      "note": "nation-state / war exclusion on network security liability"
+    },
+    {
+      "item": "social_engineering_sublimit",
+      "type": "sublimit",
+      "severity": "high",
+      "note": "social-engineering sublimit is low ($100,000)"
+    },
+    {
+      "item": "media_liability",
+      "type": "missing_coverage",
+      "severity": "low",
+      "note": "no coverage: Media liability"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "ACME 2026 cyber tower"
+  ]
+}

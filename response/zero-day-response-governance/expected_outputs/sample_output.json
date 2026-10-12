@@ -1,27 +1,54 @@
 {
   "agent_slug": "zero-day-response-governance",
-  "intent_type": "respond",
-  "action": "Recommend the next containment step; require operator approval before any mutating action.",
-  "rationale": "Representative output for the Zero Day Response Governance skill. Coordinate executive communication, manage regulatory notification deadlines, and maintain the cross-organizational escalation matrix for zero-day events. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "high",
+  "intent_type": "report",
+  "action": "2 critical governance gap(s): compensating-control approval pathway not defined; regulatory communication not gated behind legal review. Close before the next zero-day event.",
+  "rationale": "Each governance requirement is a gap unless present; a missing approval pathway or regulatory communication not gated behind legal review is critical. Compensating controls without an expiry trigger are counted as a gap because every control is temporary by definition. Read-only.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Zero Day Response Governance: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Coordinate executive communication, manage regulatory notification deadlines, and maintain the cross-organizational escalation matrix for zero-day events"
+    "Programme governance: 4 gap(s) (2 critical); 2 open zero-day(s), 1 control(s) without expiry",
+    "CRITICAL approval_pathways_defined: compensating-control approval pathway not defined",
+    "CRITICAL legal_review_required: regulatory communication not gated behind legal review",
+    "HIGH control_expiry_tracking: 1 compensating control(s) with no expiry trigger",
+    "MEDIUM board_reporting: no board reporting cadence for zero-day risk"
   ],
   "evidence_references": [
     {
-      "source": "skill-md",
-      "ref": "response/zero-day-response-governance/SKILL.md",
-      "quote": "Persona: You are a **Chief Zero-Day Governance Officer** with **23+ years** of experience in cybersecurity. You authored disclosure policies adopted by three national CE"
+      "source": "local://tests/fixtures/zero-day-response-governance-input.json",
+      "ref": "programme descriptor"
     },
     {
-      "source": "workflow",
-      "ref": "response/zero-day-response-governance/references/workflow.md",
-      "quote": "See workflow.md for the step-by-step procedure this payload illustrates."
+      "source": "local://response/zero-day-response-governance/SKILL.md",
+      "ref": "governance requirements and disclosure policy"
     }
   ],
-  "next_agents": [],
+  "next_agents": [
+    "ciso-brief-generator"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:35:34Z",
+  "gaps": [
+    {
+      "requirement": "approval_pathways_defined",
+      "severity": "critical",
+      "description": "compensating-control approval pathway not defined"
+    },
+    {
+      "requirement": "legal_review_required",
+      "severity": "critical",
+      "description": "regulatory communication not gated behind legal review"
+    },
+    {
+      "requirement": "control_expiry_tracking",
+      "severity": "high",
+      "description": "1 compensating control(s) with no expiry trigger"
+    },
+    {
+      "requirement": "board_reporting",
+      "severity": "medium",
+      "description": "no board reporting cadence for zero-day risk"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": []
 }

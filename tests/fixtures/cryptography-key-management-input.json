@@ -1,0 +1,6 @@
+{"items":[
+{"id":"svc-tls","kind":"tls","tls_version":"1.0","usage":"legacy API endpoint"},
+{"id":"data-enc","kind":"symmetric","algorithm":"AES-GCM","key_size":256,"usage":"database encryption","key_age_days":120,"rotation_period_days":365},
+{"id":"legacy-cipher","kind":"symmetric","algorithm":"RC4","key_size":128,"usage":"old file transfer"},
+{"id":"sig-key","kind":"asymmetric","algorithm":"RSA","key_size":2048,"usage":"code signing"},
+{"id":"session-key","kind":"symmetric","algorithm":"AES-GCM","key_size":256,"usage":"sessions","key_age_days":400,"rotation_period_days":90}]}

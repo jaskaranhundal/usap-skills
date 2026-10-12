@@ -1,0 +1,2 @@
+{"artifact":"payments:1.8.0","slsa_level":2,"target_slsa":3,
+ "anomalies":["dependency_hash_mismatch","build_outside_window","artifact_size_changed"]}

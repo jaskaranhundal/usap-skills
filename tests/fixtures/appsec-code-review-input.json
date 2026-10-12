@@ -1,0 +1,5 @@
+{"repo":"acme/payments","findings":[
+ {"owasp":"A03","name":"SQLi in report query","cwe":"CWE-89","file":"src/reports.py","line":88},
+ {"owasp":"A07","name":"JWT alg=none accepted","cwe":"CWE-287","file":"src/auth.py","line":42},
+ {"owasp":"A05","name":"DEBUG=True in prod config","file":"config/prod.py","line":3},
+ {"owasp":"A09","name":"Card PAN written to log","file":"src/pay.py","line":210}]}

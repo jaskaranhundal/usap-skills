@@ -1,0 +1,54 @@
+{
+  "agent_slug": "ciso-brief-generator",
+  "intent_type": "report",
+  "action": "Review and approve the board_quarterly brief for 2026-Q3 before it goes to the board.",
+  "rationale": "Brief assembled on the SKILL.md Headline / So What / What We Are Doing / Ask framework in plain language from the posture score, KPI metrics and incident summaries. The brief is gated for human approval before it reaches a board; the tool drafts, it does not send.",
+  "confidence": 0.85,
+  "severity": "high",
+  "key_findings": [
+    "board_quarterly brief for 2026-Q3: 2 incident(s), 1 open critical/high, 2 regulatory gap(s)",
+    "Headline: Security posture is fair at 72/100 (rising)",
+    "So what: Open critical work and regulatory deadlines carry direct business and compliance risk.",
+    "What we are doing: Responding to 2 incident(s); 1 high or critical still open. Closing 2 regulatory gap(s).",
+    "Ask: Approve funding for the identity and access remediation programme"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/ciso-brief-generator-input.json",
+      "ref": "posture, metrics and incident inputs"
+    },
+    {
+      "source": "local://governance/ciso-brief-generator/SKILL.md",
+      "ref": "executive communication framework and plain-language rules"
+    }
+  ],
+  "next_agents": [
+    "security-posture-score",
+    "metrics-reporting"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:19:53Z",
+  "brief": {
+    "brief_type": "board_quarterly",
+    "period": "2026-Q3",
+    "sections": {
+      "headline": "Security posture is fair at 72/100 (rising)",
+      "so_what": "Open critical work and regulatory deadlines carry direct business and compliance risk.",
+      "what_we_are_doing": [
+        "Responding to 2 incident(s); 1 high or critical still open.",
+        "Closing 2 regulatory gap(s)."
+      ],
+      "ask": [
+        "Approve funding for the identity and access remediation programme"
+      ]
+    },
+    "key_messages": [
+      "Security posture is fair at 72/100 (rising)",
+      "INC-2026-0912: Exfiltration of 41,800 customer records from the portal database (critical, contained)",
+      "INC-2026-0844: Phishing compromise of a finance mailbox (high, closed)",
+      "Regulatory gaps: GDPR Art 33 notification pending for INC-2026-0912; PCI DSS Req 10 logging gap"
+    ]
+  },
+  "mitre_ttps": [],
+  "affected_assets": []
+}

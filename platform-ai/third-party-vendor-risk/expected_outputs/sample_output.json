@@ -1,18 +1,51 @@
 {
   "agent_slug": "third-party-vendor-risk",
   "intent_type": "advise",
-  "action": "Issue an advisory recommendation; flag any policy-blocking constraints for the operator.",
-  "rationale": "Representative output for the Third Party Vendor Risk skill. Assess, tier, and continuously monitor third-party vendor security posture to prevent supply chain risk from materializing into organizational incidents. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "action": "DataPipe Inc (tier 1): 2 critical evidence gap(s) \u2014 pentest, dpa. Withhold onboarding or plan offboarding (mutating, approval required).",
+  "rationale": "Each document is checked against the SKILL.md tiered matrix; a missing tier-1 SOC 2 or pen test is critical, as is a missing data-processing agreement when the vendor handles PII or PCI (GDPR Art. 28 / HIPAA BAA). Assessment is read-only; suspending or offboarding a vendor is a mutating action requiring approval.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Third Party Vendor Risk: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Assess, tier, and continuously monitor third-party vendor security posture to prevent supply chain risk from materializing into organizational incidents"
+    "DataPipe Inc: tier 1, PII/PCI=True; 3 gap(s) (2 critical)",
+    "critical missing pentest (required)",
+    "critical missing dpa (required (PII/PCI))",
+    "low missing iso27001 (preferred)"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/third-party-vendor-risk-input.json",
+      "ref": "vendor documents"
+    },
+    {
+      "source": "local://platform-ai/third-party-vendor-risk/SKILL.md",
+      "ref": "tiered evidence and regulatory tables"
+    }
+  ],
   "next_agents": [
-    "supply-chain-risk"
+    "findings-tracker"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:52:08Z",
+  "tier": 1,
+  "gaps": [
+    {
+      "document": "pentest",
+      "requirement": "required",
+      "severity": "critical"
+    },
+    {
+      "document": "dpa",
+      "requirement": "required (PII/PCI)",
+      "severity": "critical"
+    },
+    {
+      "document": "iso27001",
+      "requirement": "preferred",
+      "severity": "low"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "DataPipe Inc"
+  ]
 }

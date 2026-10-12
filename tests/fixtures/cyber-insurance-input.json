@@ -1,0 +1,6 @@
+{"policy":"ACME 2026 cyber tower","coverages":{
+ "business_interruption":true,"extra_expense":true,"ransomware":false,
+ "data_recovery":true,"cyber_crime":true,"crisis_management":true,
+ "regulatory_defense":true,"privacy_liability":true,"network_security":true,"media_liability":false},
+ "exclusions":{"unencrypted_data":true,"gdpr_fines":false,"nation_state":true},
+ "sublimits":{"social_engineering":100000}}

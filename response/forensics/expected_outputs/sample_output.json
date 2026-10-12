@@ -1,27 +1,67 @@
 {
   "agent_slug": "forensics",
   "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Forensics skill. Collect, preserve, and analyze digital evidence using legally defensible methods that establish attacker timelines and support regulatory and legal proceedings. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "high",
+  "action": "Fix chain of custody before analysis: no hash recorded at acquisition \u2014 evidence inadmissible. Then collect P0 volatile evidence first.",
+  "rationale": "Evidence ordered by the SKILL.md volatility matrix (RAM, network, processes are P0). Chain of custody requires a hash at acquisition, documented tool provenance and a write-blocked target; a missing one makes evidence inadmissible (critical). Timeline reconstruction is read-only; a collection step that modifies a live system is a gated remediation_action.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Forensics: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Collect, preserve, and analyze digital evidence using legally defensible methods that establish attacker timelines and support regulatory and legal proceedings"
+    "Case IR-2026-0912: 5 evidence source(s), 3 volatile (P0), 1 custody defect(s), 3 timeline event(s)",
+    "P0 ram (volatility seconds)",
+    "P0 network_connections (volatility minutes)",
+    "P0 processes (volatility minutes)",
+    "P1 cloudtrail (volatility days)",
+    "P2 disk (volatility persistent)",
+    "CUSTODY DEFECT: no hash recorded at acquisition \u2014 evidence inadmissible",
+    "Timeline: 2026-09-04T02:11:00Z web shell dropped -> 2026-09-04T02:14:00Z C2 beacon started -> 2026-09-04T02:40:00Z DB subnet SSH attempt"
   ],
   "evidence_references": [
     {
-      "source": "skill-md",
-      "ref": "response/forensics/SKILL.md",
-      "quote": "Persona: You are a **Senior Digital Forensics Director** with **25+ years** of experience in cybersecurity. You contributed to DFRWS methodology standards and served as "
+      "source": "local://tests/fixtures/forensics-input.json",
+      "ref": "case evidence and custody record"
     },
     {
-      "source": "workflow",
-      "ref": "response/forensics/references/workflow.md",
-      "quote": "See workflow.md for the step-by-step procedure this payload illustrates."
+      "source": "local://response/forensics/SKILL.md",
+      "ref": "evidence priority matrix and chain-of-custody requirements"
     }
   ],
-  "next_agents": [],
+  "next_agents": [
+    "incident-commander"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:35:34Z",
+  "collection_plan": [
+    {
+      "evidence": "ram",
+      "priority": "P0",
+      "volatility": "seconds"
+    },
+    {
+      "evidence": "network_connections",
+      "priority": "P0",
+      "volatility": "minutes"
+    },
+    {
+      "evidence": "processes",
+      "priority": "P0",
+      "volatility": "minutes"
+    },
+    {
+      "evidence": "cloudtrail",
+      "priority": "P1",
+      "volatility": "days"
+    },
+    {
+      "evidence": "disk",
+      "priority": "P2",
+      "volatility": "persistent"
+    }
+  ],
+  "custody_defects": [
+    "no hash recorded at acquisition \u2014 evidence inadmissible"
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "payments-api-03"
+  ]
 }

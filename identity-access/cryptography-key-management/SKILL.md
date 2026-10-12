@@ -6,7 +6,7 @@ metadata:
   version: "2.0.0"
   author: USAP Team
   category: usap-infrastructure
-  updated: 2026-03-01
+  updated: 2026-09-05
   agent_slug: "cryptography-key-management"
 compatibility: "Requires read access to KMS / HSM key inventory and policy. No mutation (key rotation is gated via human_approval_required)."
 allowed-tools: "aws-cli az-cli gcloud openssl"

@@ -1,0 +1,79 @@
+{
+  "agent_slug": "appsec-code-review",
+  "intent_type": "analyze",
+  "action": "2 critical code finding(s) in acme/payments; require fix before merge: SQLi in report query (src/reports.py); JWT alg=none accepted (src/auth.py).",
+  "rationale": "Each finding is mapped to the SKILL.md OWASP Top 10 review table for severity, CWE and review approach; broken access control, injection and authentication failures are critical. Read-only review \u2014 remediation and merge gating are downstream actions.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "acme/payments: 4 finding(s) (2 critical, 1 high, 1 medium)",
+    "critical A03 SQLi in report query [CWE-89] @ src/reports.py:88",
+    "critical A07 JWT alg=none accepted [CWE-287] @ src/auth.py:42",
+    "high A05 DEBUG=True in prod config [CWE-16] @ config/prod.py:3",
+    "medium A09 Card PAN written to log [CWE-778] @ src/pay.py:210"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/appsec-code-review-input.json",
+      "ref": "code-review findings"
+    },
+    {
+      "source": "https://owasp.org/Top10/",
+      "ref": "OWASP Top 10:2021"
+    },
+    {
+      "source": "local://appsec-devsecops/appsec-code-review/SKILL.md",
+      "ref": "OWASP review approach table"
+    }
+  ],
+  "next_agents": [
+    "sast-dast-coordinator"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:47:43Z",
+  "findings": [
+    {
+      "owasp": "A03",
+      "name": "SQLi in report query",
+      "cwe": "CWE-89",
+      "file": "src/reports.py",
+      "line": 88,
+      "severity": "critical",
+      "approach": "Parameterized queries, input sanitization, template injection"
+    },
+    {
+      "owasp": "A07",
+      "name": "JWT alg=none accepted",
+      "cwe": "CWE-287",
+      "file": "src/auth.py",
+      "line": 42,
+      "severity": "critical",
+      "approach": "Session management, JWT validation, password storage"
+    },
+    {
+      "owasp": "A05",
+      "name": "DEBUG=True in prod config",
+      "cwe": "CWE-16",
+      "file": "config/prod.py",
+      "line": 3,
+      "severity": "high",
+      "approach": "Default credentials, debug flags, exposed admin endpoints"
+    },
+    {
+      "owasp": "A09",
+      "name": "Card PAN written to log",
+      "cwe": "CWE-778",
+      "file": "src/pay.py",
+      "line": 210,
+      "severity": "medium",
+      "approach": "Sensitive data in logs, missing security-event logging"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "config/prod.py",
+    "src/auth.py",
+    "src/pay.py",
+    "src/reports.py"
+  ]
+}

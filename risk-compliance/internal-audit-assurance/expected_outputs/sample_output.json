@@ -1,18 +1,68 @@
 {
   "agent_slug": "internal-audit-assurance",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Internal Audit Assurance skill. Plan, execute, and report internal security audits that provide independent assurance on control effectiveness to the board, audit committee, and regulators. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "report",
+  "action": "2 critical audit finding(s) in USAP control plane Q3: execution record without a prior signed approval; evidence-chain hash links broken or unverifiable. Escalate with management response.",
+  "rationale": "Each dimension is tested against its pass criterion; a failing 'no unauthorized execution' or a broken hash chain is critical because it breaks the integrity of the control plane's audit trail, and each finding is mapped to the ISO 27001, SOC 2, PCI-DSS and GDPR control it violates. Read-only assurance.",
+  "confidence": 0.88,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Internal Audit Assurance: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Plan, execute, and report internal security audits that provide independent assurance on control effectiveness to the board, audit committee, and regulators"
+    "USAP control plane Q3: 6 dimension(s) tested, 3 finding(s) (2 critical, 1 high)",
+    "critical no_unauthorized_execution: execution record without a prior signed approval [ISO A.9.4.2 / SOC2 CC6.6]",
+    "critical hash_chain_integrity: evidence-chain hash links broken or unverifiable [ISO A.12.4.2 / SOC2 CC7.2]",
+    "high evidence_completeness: recommendation without a corresponding evidence record [ISO A.12.4.1 / SOC2 CC7.2]"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/internal-audit-assurance-input.json",
+      "ref": "control test results"
+    },
+    {
+      "source": "local://risk-compliance/internal-audit-assurance/SKILL.md",
+      "ref": "audit dimension and framework-mapping tables"
+    }
+  ],
   "next_agents": [
-    "metrics-reporting"
+    "ciso-brief-generator"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T09:01:15Z",
+  "findings": [
+    {
+      "dimension": "no_unauthorized_execution",
+      "severity": "critical",
+      "description": "execution record without a prior signed approval",
+      "mappings": {
+        "iso27001": "A.9.4.2",
+        "soc2": "CC6.6",
+        "pci_dss": "Req 7.1",
+        "gdpr": "Art 25"
+      }
+    },
+    {
+      "dimension": "hash_chain_integrity",
+      "severity": "critical",
+      "description": "evidence-chain hash links broken or unverifiable",
+      "mappings": {
+        "iso27001": "A.12.4.2",
+        "soc2": "CC7.2",
+        "pci_dss": "Req 10.5",
+        "gdpr": "Art 32"
+      }
+    },
+    {
+      "dimension": "evidence_completeness",
+      "severity": "high",
+      "description": "recommendation without a corresponding evidence record",
+      "mappings": {
+        "iso27001": "A.12.4.1",
+        "soc2": "CC7.2",
+        "pci_dss": "Req 10.2",
+        "gdpr": "Art 30"
+      }
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "USAP control plane Q3"
+  ]
 }

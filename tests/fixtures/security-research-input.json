@@ -1,0 +1,4 @@
+{"items":[
+ {"title":"Actively exploited RCE in our web framework","cve":"CVE-2026-11111","poc":true,"cisa_kev":true,"active_exploitation":true,"in_our_stack":true,"vendor_advisory":true},
+ {"title":"PoC for auth bypass in our VPN","cve":"CVE-2026-22222","poc":true,"cisa_kev":false,"active_exploitation":false,"in_our_stack":true},
+ {"title":"Academic model-stealing technique","poc":false,"in_our_stack":false}]}

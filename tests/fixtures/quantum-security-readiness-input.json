@@ -1,0 +1,5 @@
+{"assets":[
+ {"name":"patient-records-archive","algorithm":"rsa","data_sensitivity_years":25,"internet_exposed":false},
+ {"name":"public-api-tls","algorithm":"ecc","data_sensitivity_years":1,"internet_exposed":true},
+ {"name":"internal-svc-mtls","algorithm":"rsa","data_sensitivity_years":2,"internal":true},
+ {"name":"session-tokens","algorithm":"aes","data_sensitivity_years":0}]}

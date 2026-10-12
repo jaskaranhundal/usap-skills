@@ -1,0 +1,1 @@
+{"os":"linux","role":"payments-api","cis_profile":"L1","host":"payments-api-03","findings":[{"signal":"unpatched_lpe_cve","detail":"CVE-2026-1000 dirtypipe variant"},{"signal":"weak_ssh_config","detail":"PermitRootLogin yes"},{"signal":"cleartext_protocol_services","detail":"telnetd on 23"},"unneeded_services_running","password_policy_below_cis"]}

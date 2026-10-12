@@ -1,0 +1,4 @@
+{"query":{"event_type":"cloud_misconfiguration","severity":"high","affected_resource":"acme-exports","proposed_action":"remediate: enable block public access"},"knowledge_base":[
+{"id":"RA-2026-04","kind":"risk_acceptance","event_type":"cloud_misconfiguration","affected_resource":"acme-exports","decision":"accept public-read for the analytics export bucket","status":"active","expiry_utc":"2026-12-31T00:00:00Z","rationale":"downstream partner reads it; CDN in front; CISO signed"},
+{"id":"RB-07","kind":"runbook","event_type":"cloud_misconfiguration","affected_resource":"acme-exports","decision":"S3 public-access remediation runbook","status":"active"},
+{"id":"PIR-2025-11","kind":"lesson","event_type":"data_exfiltration","affected_resource":"customer-portal-db","decision":"enable data-event logging on all PII buckets","status":"active"}]}

@@ -1,0 +1,73 @@
+{
+  "agent_slug": "attack-path-analysis",
+  "intent_type": "analyze",
+  "action": "1 critical attack path(s) from phished-workstation; harden the 1 choke point(s) first: WS -> DA via Kerberoast.",
+  "rationale": "Each path is scored as likelihood x impact and bucketed (>= 0.75 critical, >= 0.5 high); choke points that appear on multiple paths are the highest-leverage hardening targets. Analysis is read-only; issuing a lateral-movement or credential-harvesting directive is a mutating action requiring human approval.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "3 path(s) from phished-workstation: 1 critical, 0 high; 1 choke point(s)",
+    "critical WS -> DA via Kerberoast [TA0006] score 0.76 (choke point)",
+    "medium WS -> file server [TA0008] score 0.3",
+    "low local priv-esc [TA0004] score 0.16"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/attack-path-analysis-input.json",
+      "ref": "attack-path graph"
+    },
+    {
+      "source": "local://red-team/attack-path-analysis/SKILL.md",
+      "ref": "path scoring and category table"
+    }
+  ],
+  "next_agents": [
+    "red-team-planner"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:56:39Z",
+  "paths": [
+    {
+      "name": "WS -> DA via Kerberoast",
+      "category": "credential_theft",
+      "mitre": "TA0006",
+      "likelihood": 0.8,
+      "impact": 0.95,
+      "score": 0.76,
+      "severity": "critical",
+      "choke_point": true,
+      "hardening": "tier-0 admin isolation, AES-only SPNs"
+    },
+    {
+      "name": "WS -> file server",
+      "category": "lateral_movement",
+      "mitre": "TA0008",
+      "likelihood": 0.6,
+      "impact": 0.5,
+      "score": 0.3,
+      "severity": "medium",
+      "choke_point": false,
+      "hardening": null
+    },
+    {
+      "name": "local priv-esc",
+      "category": "privilege_escalation",
+      "mitre": "TA0004",
+      "likelihood": 0.4,
+      "impact": 0.4,
+      "score": 0.16,
+      "severity": "low",
+      "choke_point": false,
+      "hardening": null
+    }
+  ],
+  "choke_points": [
+    "WS -> DA via Kerberoast"
+  ],
+  "mitre_ttps": [
+    "TA0004",
+    "TA0006",
+    "TA0008"
+  ],
+  "affected_assets": []
+}

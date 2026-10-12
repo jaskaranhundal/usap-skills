@@ -1,18 +1,46 @@
 {
   "agent_slug": "secure-sdlc",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Secure Sdlc skill. Design and enforce security requirements, reviews, and validation gates across every SDLC phase to produce software with measurable security quality. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "advise",
+  "action": "platform is at SDLC maturity level 2 (target 4); add next: Level 3 (Defined): DAST.",
+  "rationale": "Maturity is scored by walking the SKILL.md ladder in order \u2014 secret scanning, SAST on PR and SCA, DAST and IaC scanning, threat modeling and full CI/CD gates, then continuous red team and chaos testing \u2014 and bucketing the leading satisfied gates into levels 0 to 5. The next gate to add is the first gap. Read-only advisory.",
+  "confidence": 0.85,
+  "severity": "high",
   "key_findings": [
-    "Representative finding for Secure Sdlc: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Design and enforce security requirements, reviews, and validation gates across every SDLC phase to produce software with measurable security quality"
+    "platform: SDLC maturity level 2/5 (target 4, gap 2); 6 gate(s) missing",
+    "missing: Level 3 (Defined): DAST",
+    "missing: Level 3 (Defined): IaC scanning",
+    "missing: Level 4 (Managed): threat modeling",
+    "missing: Level 4 (Managed): full CI/CD gates",
+    "missing: Level 5 (Optimizing): continuous red team",
+    "missing: Level 5 (Optimizing): chaos testing"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/secure-sdlc-input.json",
+      "ref": "gates in place"
+    },
+    {
+      "source": "local://appsec-devsecops/secure-sdlc/SKILL.md",
+      "ref": "SDLC maturity ladder"
+    }
+  ],
   "next_agents": [
-    "sast-dast-coordinator"
+    "devsecops-pipeline"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:47:44Z",
+  "level": 2,
+  "target_level": 4,
+  "missing_gates": [
+    "Level 3 (Defined): DAST",
+    "Level 3 (Defined): IaC scanning",
+    "Level 4 (Managed): threat modeling",
+    "Level 4 (Managed): full CI/CD gates",
+    "Level 5 (Optimizing): continuous red team",
+    "Level 5 (Optimizing): chaos testing"
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "platform"
+  ]
 }

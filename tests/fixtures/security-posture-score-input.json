@@ -1,0 +1,8 @@
+{"period":"2026-Q3","prior_composite":71,"domains":[
+{"name":"Detection","controls_passing":16,"controls_total":20,"maturity":"managed"},
+{"name":"Response","controls_passing":11,"controls_total":20,"maturity":"defined"},
+{"name":"Cloud & Infra","controls_passing":18,"controls_total":22,"maturity":"managed"},
+{"name":"AppSec/DevSecOps","controls_passing":19,"controls_total":25,"maturity":"managed"},
+{"name":"Identity & Access","controls_passing":8,"controls_total":15,"maturity":"defined"},
+{"name":"Risk & Compliance","controls_passing":12,"controls_total":14,"maturity":"optimized"},
+{"name":"Governance","controls_passing":9,"controls_total":12,"maturity":"managed"}]}

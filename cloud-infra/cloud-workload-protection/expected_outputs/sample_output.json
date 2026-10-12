@@ -1,29 +1,90 @@
 {
   "agent_slug": "cloud-workload-protection",
-  "intent_type": "analyze",
-  "action": "Deploy CWPP agent to 12 unprotected pods in production namespace. Restrict 3 Lambda functions from AdministratorAccess to least-privilege policies.",
-  "rationale": "12 production pods (28% of fleet) have no runtime protection. 3 Lambda functions carry AdministratorAccess — any function compromise gives full AWS account access.",
-  "confidence": 0.87,
-  "severity": "high",
+  "intent_type": "detect",
+  "action": "2 critical runtime threat(s) (escape/C2/reverse shell); isolate the affected workload and escalate: payments-api.",
+  "rationale": "Each runtime signal is scored against the SKILL.md model: container escape, C2 egress and reverse shell are critical; privileged syscalls, crypto-mining and image drift are high. Workloads without CWPP coverage are a detection blind spot. Read-only; isolation is a downstream gated action.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "CWPP coverage: 72% — 12 unprotected pods in production namespace",
-    "3 Lambda functions with AdministratorAccess execution roles",
-    "2 pods running as root with hostPath mounts",
-    "No anomalous runtime behavior detected in protected workloads (past 30d)"
+    "3 workload(s): 6 runtime signal(s) (2 critical, 3 high); 1 without CWPP coverage",
+    "critical payments-api (container): escape_indicator [T1611]",
+    "critical payments-api (container): c2_egress [T1071]",
+    "high payments-api (container): privileged_syscall [T1611]",
+    "high batch-worker (container): crypto_mining [T1496]",
+    "high batch-worker (container): drift_from_image [T1525]",
+    "medium auth-fn (serverless): new_binary [T1105]",
+    "No runtime protection on: auth-fn"
   ],
   "evidence_references": [
-    {"source": "k8s-audit", "ref": "pod-inventory-2026-q1", "timestamp_utc": "2026-03-08T09:00:00Z"},
-    {"source": "iam-policy-review", "ref": "lambda-roles-scan", "timestamp_utc": "2026-03-08T09:00:00Z"}
+    {
+      "source": "local://tests/fixtures/cloud-workload-protection-input.json",
+      "ref": "workload runtime telemetry"
+    },
+    {
+      "source": "local://cloud-infra/cloud-workload-protection/SKILL.md",
+      "ref": "runtime threat signals and CWPP coverage model"
+    }
   ],
-  "next_agents": ["cloud-security-posture", "identity-access-risk"],
-  "human_approval_required": true,
-  "cwpp_coverage_pct": 72,
-  "unprotected_workloads": ["payment-processor", "auth-service", "data-pipeline"],
-  "remediation_steps": [
-    "Deploy CWPP agent to 12 unprotected pods — prioritize payment-processor",
-    "Replace AdministratorAccess on 3 Lambda roles with least-privilege policies",
-    "Migrate 2 root-running pods to non-root user context",
-    "Remove hostPath mounts from pods not requiring host filesystem access"
+  "next_agents": [
+    "incident-commander",
+    "containment-advisor"
   ],
-  "timestamp_utc": "2026-03-08T10:00:00Z"
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:41:41Z",
+  "workloads": [
+    {
+      "workload": "payments-api",
+      "type": "container",
+      "signal": "escape_indicator",
+      "severity": "critical",
+      "mitre": "T1611"
+    },
+    {
+      "workload": "payments-api",
+      "type": "container",
+      "signal": "c2_egress",
+      "severity": "critical",
+      "mitre": "T1071"
+    },
+    {
+      "workload": "payments-api",
+      "type": "container",
+      "signal": "privileged_syscall",
+      "severity": "high",
+      "mitre": "T1611"
+    },
+    {
+      "workload": "batch-worker",
+      "type": "container",
+      "signal": "crypto_mining",
+      "severity": "high",
+      "mitre": "T1496"
+    },
+    {
+      "workload": "batch-worker",
+      "type": "container",
+      "signal": "drift_from_image",
+      "severity": "high",
+      "mitre": "T1525"
+    },
+    {
+      "workload": "auth-fn",
+      "type": "serverless",
+      "signal": "new_binary",
+      "severity": "medium",
+      "mitre": "T1105"
+    }
+  ],
+  "mitre_ttps": [
+    "T1071",
+    "T1105",
+    "T1496",
+    "T1525",
+    "T1611"
+  ],
+  "affected_assets": [
+    "auth-fn",
+    "batch-worker",
+    "payments-api"
+  ]
 }

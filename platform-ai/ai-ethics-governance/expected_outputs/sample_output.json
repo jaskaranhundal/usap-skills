@@ -1,16 +1,61 @@
 {
   "agent_slug": "ai-ethics-governance",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Ai Ethics Governance skill. Assess and govern the ethical and societal risk dimensions of AI deployments to ensure systems operate within sanctioned boundaries and comply with emerging regulatory requirements. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "advise",
+  "action": "loan-scoring-model: 2 critical governance gap(s) \u2014 measured fairness disparity; recommend mandatory retraining (mutating); high-risk systems require human oversight (Art. 14). Mutating remediation requires approval.",
+  "rationale": "Governance gaps are scored against the EU AI Act risk tier: an unacceptable-tier practice is critical and prohibited, and for a high-risk system a fairness gap or absent human oversight is critical. Assessment is read-only; suspension, tier change and mandatory retraining are mutating policy changes requiring approval.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Ai Ethics Governance: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Assess and govern the ethical and societal risk dimensions of AI deployments to ensure systems operate within sanctioned boundaries and comply with emerging regulatory requirements"
+    "loan-scoring-model: risk tier 'high'; 4 gap(s) (2 critical)",
+    "critical fairness_gap: measured fairness disparity; recommend mandatory retraining (mutating)",
+    "critical no_human_oversight: high-risk systems require human oversight (Art. 14)",
+    "high model_card_incomplete: complete the model card / technical documentation (Art. 11)",
+    "high no_explainability: add decision explainability"
   ],
-  "evidence_references": [],
-  "next_agents": [],
-  "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/ai-ethics-governance-input.json",
+      "ref": "AI system descriptor"
+    },
+    {
+      "source": "https://artificialintelligenceact.eu/",
+      "ref": "EU AI Act risk tiers"
+    },
+    {
+      "source": "local://platform-ai/ai-ethics-governance/SKILL.md",
+      "ref": "action classification table"
+    }
+  ],
+  "next_agents": [
+    "ciso-brief-generator"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:52:08Z",
+  "risk_tier": "high",
+  "gaps": [
+    {
+      "gap": "fairness_gap",
+      "severity": "critical",
+      "note": "measured fairness disparity; recommend mandatory retraining (mutating)"
+    },
+    {
+      "gap": "no_human_oversight",
+      "severity": "critical",
+      "note": "high-risk systems require human oversight (Art. 14)"
+    },
+    {
+      "gap": "model_card_incomplete",
+      "severity": "high",
+      "note": "complete the model card / technical documentation (Art. 11)"
+    },
+    {
+      "gap": "no_explainability",
+      "severity": "high",
+      "note": "add decision explainability"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "loan-scoring-model"
+  ]
 }

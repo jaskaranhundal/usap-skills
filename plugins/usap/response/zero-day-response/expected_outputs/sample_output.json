@@ -1,0 +1,86 @@
+{
+  "agent_slug": "zero-day-response",
+  "intent_type": "advise",
+  "action": "True zero-day in FortiOS SSL-VPN exploited in the wild with no patch: deploy compensating controls now (virtual-patch order), each expiring on patch. Gated for approval.",
+  "rationale": "Classified on the SKILL.md matrix: no patch and active exploitation while the org uses the product is a true zero-day (critical); no patch and PoC-only is n-day; a patch existing routes to vulnerability management. Compensating controls follow the virtual-patching order and each carries an expiry tied to the patch. Every control is a gated intent block; nothing is executed.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "CVE-2026-9999 in FortiOS SSL-VPN: classification true_zero_day (patch=False, exploited=True, uses=True, internet=True)",
+    "control: Deploy a virtual-patch WAF rule for the exploit pattern (expires on patch)",
+    "control: Restrict network reachability to the affected service (expires on patch)",
+    "control: Add an IDS/IPS signature for the exploit (expires on patch)"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/zero-day-response-input.json",
+      "ref": "vulnerability descriptor"
+    },
+    {
+      "source": "https://nvd.nist.gov/vuln/detail/CVE-2026-9999",
+      "ref": "CVE-2026-9999"
+    },
+    {
+      "source": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "ref": "exploited in the wild"
+    },
+    {
+      "source": "local://response/zero-day-response/SKILL.md",
+      "ref": "zero-day classification and virtual-patching order"
+    }
+  ],
+  "next_agents": [
+    "containment-advisor"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:35:34Z",
+  "classification": "true_zero_day",
+  "controls": [
+    {
+      "containment_intent": "Deploy a virtual-patch WAF rule for the exploit pattern",
+      "intent_type": "mutating",
+      "mutating_category": "device_config_change",
+      "reversibility": "immediate",
+      "expiry_trigger": "remove when the vendor patch is applied (review by 2026-10-05)",
+      "requires_approval": true,
+      "approver_roles": [
+        "soc_lead",
+        "ciso"
+      ],
+      "executor": "tool-execution-broker"
+    },
+    {
+      "containment_intent": "Restrict network reachability to the affected service",
+      "intent_type": "mutating",
+      "mutating_category": "device_config_change",
+      "reversibility": "immediate",
+      "expiry_trigger": "remove when the vendor patch is applied (review by 2026-10-05)",
+      "requires_approval": true,
+      "approver_roles": [
+        "soc_lead",
+        "ciso"
+      ],
+      "executor": "tool-execution-broker"
+    },
+    {
+      "containment_intent": "Add an IDS/IPS signature for the exploit",
+      "intent_type": "mutating",
+      "mutating_category": "device_config_change",
+      "reversibility": "immediate",
+      "expiry_trigger": "remove when the vendor patch is applied (review by 2026-10-05)",
+      "requires_approval": true,
+      "approver_roles": [
+        "soc_lead",
+        "ciso"
+      ],
+      "executor": "tool-execution-broker"
+    }
+  ],
+  "mitre_ttps": [
+    "T1190"
+  ],
+  "affected_assets": [
+    "vpn-eu-1",
+    "vpn-us-1"
+  ]
+}

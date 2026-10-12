@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-risk-compliance
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: internal-audit-assurance
   agent_id: 47
   level: L1

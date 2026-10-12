@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-safety
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "ai-agent-security"
 ---
 

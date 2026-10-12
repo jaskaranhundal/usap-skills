@@ -1,0 +1,77 @@
+{
+  "agent_slug": "risk-threat-modeling",
+  "intent_type": "analyze",
+  "action": "1 critical threat(s) in payments-api; mitigate first: Forged JWT grants admin (asymmetric JWT + short TTL).",
+  "rationale": "Each threat is classified by STRIDE to name the security property it violates, then scored as likelihood x impact and bucketed (>= 0.75 critical, >= 0.5 high) to order mitigations. Read-only modeling.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "payments-api: 4 threat(s) (1 critical, 1 high)",
+    "critical spoofing 'Forged JWT grants admin' violates Authentication [TA0006] score 0.76",
+    "high tampering 'SQLi in ledger query' violates Integrity [TA0040] score 0.54",
+    "low information_disclosure 'Excess fields in API response' violates Confidentiality [TA0009] score 0.2",
+    "low repudiation 'Audit log deletion' violates Non-repudiation [TA0005] score 0.15"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/risk-threat-modeling-input.json",
+      "ref": "threat model"
+    },
+    {
+      "source": "local://risk-compliance/risk-threat-modeling/SKILL.md",
+      "ref": "STRIDE classification table"
+    }
+  ],
+  "next_agents": [
+    "risk-prioritization"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T09:01:15Z",
+  "threats": [
+    {
+      "name": "Forged JWT grants admin",
+      "category": "spoofing",
+      "property": "Authentication",
+      "mitre": "TA0006",
+      "score": 0.76,
+      "severity": "critical",
+      "mitigation": "asymmetric JWT + short TTL"
+    },
+    {
+      "name": "SQLi in ledger query",
+      "category": "tampering",
+      "property": "Integrity",
+      "mitre": "TA0040",
+      "score": 0.54,
+      "severity": "high",
+      "mitigation": "parameterized queries"
+    },
+    {
+      "name": "Excess fields in API response",
+      "category": "information_disclosure",
+      "property": "Confidentiality",
+      "mitre": "TA0009",
+      "score": 0.2,
+      "severity": "low",
+      "mitigation": "response schema allowlist"
+    },
+    {
+      "name": "Audit log deletion",
+      "category": "repudiation",
+      "property": "Non-repudiation",
+      "mitre": "TA0005",
+      "score": 0.15,
+      "severity": "low",
+      "mitigation": "append-only WORM logs"
+    }
+  ],
+  "mitre_ttps": [
+    "TA0005",
+    "TA0006",
+    "TA0009",
+    "TA0040"
+  ],
+  "affected_assets": [
+    "payments-api"
+  ]
+}

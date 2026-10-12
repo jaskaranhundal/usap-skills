@@ -1,39 +1,79 @@
 {
   "agent_slug": "appsec-code-review",
   "intent_type": "analyze",
-  "gate_decision": "block",
-  "action": "Block PR #247 merge. Remediate SQL injection in user search endpoint and remove hardcoded Stripe API key from config.",
-  "rationale": "SQL injection in search.py:47 allows unauthenticated database read of all user records. Hardcoded API key in config.py:12 will be committed to repository history.",
-  "confidence": 0.93,
+  "action": "2 critical code finding(s) in acme/payments; require fix before merge: SQLi in report query (src/reports.py); JWT alg=none accepted (src/auth.py).",
+  "rationale": "Each finding is mapped to the SKILL.md OWASP Top 10 review table for severity, CWE and review approach; broken access control, injection and authentication failures are critical. Read-only review \u2014 remediation and merge gating are downstream actions.",
+  "confidence": 0.85,
   "severity": "critical",
-  "findings": [
-    {
-      "file": "api/search.py",
-      "line": 47,
-      "owasp_category": "A03: Injection",
-      "cwe": "CWE-89",
-      "severity": "critical",
-      "description": "SQL query constructed via string concatenation with unsanitized user input",
-      "remediation": "Use parameterized query: cursor.execute('SELECT * FROM users WHERE name = %s', (user_input,))"
-    },
-    {
-      "file": "config/settings.py",
-      "line": 12,
-      "owasp_category": "A02: Cryptographic Failures",
-      "cwe": "CWE-798",
-      "severity": "critical",
-      "description": "Hardcoded Stripe live API key: STRIPE_SECRET_KEY = 'sk_live_...'",
-      "remediation": "Move to environment variable: STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')"
-    }
-  ],
   "key_findings": [
-    "SQL injection in api/search.py:47 — unauthenticated full database read",
-    "Hardcoded Stripe live API key in config/settings.py:12"
+    "acme/payments: 4 finding(s) (2 critical, 1 high, 1 medium)",
+    "critical A03 SQLi in report query [CWE-89] @ src/reports.py:88",
+    "critical A07 JWT alg=none accepted [CWE-287] @ src/auth.py:42",
+    "high A05 DEBUG=True in prod config [CWE-16] @ config/prod.py:3",
+    "medium A09 Card PAN written to log [CWE-778] @ src/pay.py:210"
   ],
   "evidence_references": [
-    {"source": "pr-247-diff", "ref": "api/search.py#L47", "timestamp_utc": "2026-03-08T09:00:00Z"}
+    {
+      "source": "local://tests/fixtures/appsec-code-review-input.json",
+      "ref": "code-review findings"
+    },
+    {
+      "source": "https://owasp.org/Top10/",
+      "ref": "OWASP Top 10:2021"
+    },
+    {
+      "source": "local://appsec-devsecops/appsec-code-review/SKILL.md",
+      "ref": "OWASP review approach table"
+    }
   ],
-  "next_agents": ["sast-dast-coordinator", "secrets-exposure"],
+  "next_agents": [
+    "sast-dast-coordinator"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-03-08T09:15:00Z"
+  "timestamp_utc": "2026-09-05T08:47:43Z",
+  "findings": [
+    {
+      "owasp": "A03",
+      "name": "SQLi in report query",
+      "cwe": "CWE-89",
+      "file": "src/reports.py",
+      "line": 88,
+      "severity": "critical",
+      "approach": "Parameterized queries, input sanitization, template injection"
+    },
+    {
+      "owasp": "A07",
+      "name": "JWT alg=none accepted",
+      "cwe": "CWE-287",
+      "file": "src/auth.py",
+      "line": 42,
+      "severity": "critical",
+      "approach": "Session management, JWT validation, password storage"
+    },
+    {
+      "owasp": "A05",
+      "name": "DEBUG=True in prod config",
+      "cwe": "CWE-16",
+      "file": "config/prod.py",
+      "line": 3,
+      "severity": "high",
+      "approach": "Default credentials, debug flags, exposed admin endpoints"
+    },
+    {
+      "owasp": "A09",
+      "name": "Card PAN written to log",
+      "cwe": "CWE-778",
+      "file": "src/pay.py",
+      "line": 210,
+      "severity": "medium",
+      "approach": "Sensitive data in logs, missing security-event logging"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "config/prod.py",
+    "src/auth.py",
+    "src/pay.py",
+    "src/reports.py"
+  ]
 }

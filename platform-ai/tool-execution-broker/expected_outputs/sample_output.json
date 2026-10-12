@@ -1,16 +1,30 @@
 {
   "agent_slug": "tool-execution-broker",
-  "intent_type": "block",
-  "action": "Refuse the requested action and emit the policy violation that triggered the block.",
-  "rationale": "Representative output for the Tool Execution Broker skill. Authorize, log, and broker tool execution requests from USAP agents, enforcing approval gates for mutating operations and maintaining a complete audit trail of all automated actions. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "report",
+  "action": "AUTHORIZE REC-4410: all pre-execution checks passed; the connector may execute the approved action.",
+  "rationale": "The request is validated against the SKILL.md checklist in order \u2014 a present and unexpired signed approval, an authorized approver, action in scope, no production restriction, no duplicate execution, a cleared guardrail, and a reachable connector. The first failing check rejects the call. Validation is read-only; this tool never executes the action itself.",
+  "confidence": 0.95,
+  "severity": "informational",
   "key_findings": [
-    "Representative finding for Tool Execution Broker: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Authorize, log, and broker tool execution requests from USAP agents, enforcing approval gates for mutating operations and maintaining a complete audit trail of all automated actions"
+    "recommendation REC-4410: broker_result=authorized",
+    "8/8 checks passed"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/tool-execution-broker-input.json",
+      "ref": "tool-call request and checks"
+    },
+    {
+      "source": "local://platform-ai/tool-execution-broker/SKILL.md",
+      "ref": "pre-execution authorization checklist"
+    }
+  ],
   "next_agents": [],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:52:08Z",
+  "broker_result": "authorized",
+  "mitre_ttps": [],
+  "affected_assets": [
+    "REC-4410"
+  ]
 }

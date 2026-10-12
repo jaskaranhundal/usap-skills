@@ -1,0 +1,6 @@
+{"scenario":"dependency-confusion exercise","detection_points":[
+ {"point":"build_system_intrusion","detected":true,"time_to_detect_min":12},
+ {"point":"malicious_artifact_registry","detected":false},
+ {"point":"anomalous_dependency_binary","detected":true,"time_to_detect_min":31},
+ {"point":"unexpected_network_connection","detected":false},
+ {"point":"siem_alert_fired","detected":true,"time_to_detect_min":40}]}

@@ -1,0 +1,66 @@
+{
+  "agent_slug": "build-integrity",
+  "intent_type": "respond",
+  "action": "Block payments:1.8.0: 1 block-worthy anomaly(ies) \u2014 dependency_hash_mismatch -> Block and investigate. Blocking requires approval.",
+  "rationale": "Each anomaly is scored against the SKILL.md build-anomaly table: an unexpected binary, a signing key used off its authorized host, a dependency-hash mismatch or a failed signature verification is critical and blocks the artifact. Blocking a compromised artifact is a mutating action requiring human approval.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "payments:1.8.0: SLSA 2; 4 anomaly(ies) (1 critical, 2 high); 1 block-worthy",
+    "critical dependency_hash_mismatch -> Block and investigate",
+    "high build_outside_window -> Verify authorization",
+    "high slsa_below_target -> Raise build to SLSA 3",
+    "medium artifact_size_changed -> Review and verify"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/build-integrity-input.json",
+      "ref": "build provenance and anomalies"
+    },
+    {
+      "source": "https://slsa.dev/spec/v1.0/levels",
+      "ref": "SLSA levels"
+    },
+    {
+      "source": "local://appsec-devsecops/build-integrity/SKILL.md",
+      "ref": "build anomaly table"
+    }
+  ],
+  "next_agents": [
+    "findings-tracker"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:47:44Z",
+  "findings": [
+    {
+      "anomaly": "dependency_hash_mismatch",
+      "severity": "critical",
+      "action": "Block and investigate",
+      "blocks": true
+    },
+    {
+      "anomaly": "build_outside_window",
+      "severity": "high",
+      "action": "Verify authorization",
+      "blocks": false
+    },
+    {
+      "anomaly": "slsa_below_target",
+      "severity": "high",
+      "action": "Raise build to SLSA 3",
+      "blocks": false
+    },
+    {
+      "anomaly": "artifact_size_changed",
+      "severity": "medium",
+      "action": "Review and verify",
+      "blocks": false
+    }
+  ],
+  "mitre_ttps": [
+    "T1195.001"
+  ],
+  "affected_assets": [
+    "payments:1.8.0"
+  ]
+}

@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-platform-ai
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: agent-integrity-monitor
   usap_level: "L3"
   agent_id: 34

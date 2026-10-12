@@ -1,0 +1,3 @@
+{"recommendation_id":"REC-4410","mutating":true,"mutating_category":"network_change",
+ "blast_radius":"service_scoped","invoker":"analyst.jane","approver":"director.sam",
+ "approval":{"present":true,"approver_role":"security_director","ttl_expired":false}}

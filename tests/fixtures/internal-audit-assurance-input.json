@@ -1,0 +1,4 @@
+{"scope":"USAP control plane Q3","dimensions":{
+ "evidence_completeness":0.92,"approval_integrity":true,
+ "hash_chain_integrity":false,"approver_role_compliance":true,
+ "ttl_compliance":true,"no_unauthorized_execution":false}}

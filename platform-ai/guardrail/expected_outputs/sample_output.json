@@ -1,18 +1,33 @@
 {
   "agent_slug": "guardrail",
-  "intent_type": "block",
-  "action": "Refuse the requested action and emit the policy violation that triggered the block.",
-  "rationale": "Representative output for the Guardrail skill. Enforce input validation, output filtering, and behavioral constraints on AI agents to prevent prompt injection, scope creep, and unintended capability exercise. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "report",
+  "action": "CLEARED REC-4410: all guardrail checks passed for blast radius 'service_scoped'. tool-execution-broker may proceed.",
+  "rationale": "The recommendation is checked in order against the SKILL.md guardrail rules: a mutating action needs a mutating_category, a present and unexpired approval, an approver whose role meets the blast-radius requirement, and a different person as approver than invoker. The first failing check blocks; otherwise the action is cleared. Validation is read-only.",
+  "confidence": 0.95,
+  "severity": "high",
   "key_findings": [
-    "Representative finding for Guardrail: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Enforce input validation, output filtering, and behavioral constraints on AI agents to prevent prompt injection, scope creep, and unintended capability exercise"
+    "recommendation REC-4410: guardrail_result=cleared",
+    "mutating=True, blast_radius=service_scoped, approver=security_director",
+    "all guardrail checks passed for blast radius 'service_scoped'"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/guardrail-input.json",
+      "ref": "recommendation and approval record"
+    },
+    {
+      "source": "local://platform-ai/guardrail/SKILL.md",
+      "ref": "blast-radius approval and violation tables"
+    }
+  ],
   "next_agents": [
     "tool-execution-broker"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:52:08Z",
+  "guardrail_result": "cleared",
+  "mitre_ttps": [],
+  "affected_assets": [
+    "REC-4410"
+  ]
 }

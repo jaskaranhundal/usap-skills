@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-adversary
-  updated: 2026-02-28
+  updated: 2026-09-05
   agent_slug: "red-team-planner"
 mitre_attack: [T1566.001]
 ---

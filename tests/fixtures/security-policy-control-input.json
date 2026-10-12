@@ -1,0 +1,6 @@
+{"as_of_utc":"2026-09-05T00:00:00Z","policies":[
+{"name":"Information Security Policy","tier":1,"owner":"CISO","verification":"annual review","last_reviewed_utc":"2026-02-01T00:00:00Z","status":"active"},
+{"name":"Access Control Policy","tier":2,"owner":null,"verification":"IAM control tests","last_reviewed_utc":"2024-06-01T00:00:00Z","status":"active"},
+{"name":"Cryptographic Policy","tier":2,"owner":"security-eng","verification":null,"last_reviewed_utc":"2026-01-15T00:00:00Z","status":"active"},
+{"name":"Data Classification Policy","tier":2,"owner":"dpo","verification":"DLP tests","last_reviewed_utc":"2026-03-01T00:00:00Z","status":"draft"}],
+"control_tests":[{"control":"CIS 5","result":"fail","policy":"Access Control Policy"},{"control":"CIS 6","result":"pass","policy":"Access Control Policy"},{"control":"CIS 3","result":"pass","policy":"Data Classification Policy"},{"control":"CIS 8","result":"fail","policy":"Audit Logging","compensating_control":"SIEM retention 90d"}]}

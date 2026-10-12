@@ -1,18 +1,50 @@
 {
   "agent_slug": "privacy-dpia",
   "intent_type": "report",
-  "action": "Emit a stakeholder-ready summary tied to the underlying evidence package.",
-  "rationale": "Representative output for the Privacy Dpia skill. Conduct Data Protection Impact Assessments that identify privacy risks in data processing activities and produce documented risk mitigation plans satisfying regulatory requirements. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "action": "AI-driven applicant screening: 1 critical privacy gap(s) \u2014 high-risk processing requires a completed DPIA (Art. 35). Do not proceed until resolved.",
+  "rationale": "The activity is checked for an Art. 6 lawful basis, the Art. 35 DPIA requirement when processing is high-risk, and the implementation of data-subject rights. No lawful basis and high-risk processing without a DPIA are critical because they make the processing itself unlawful. Read-only assessment.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Privacy Dpia: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Conduct Data Protection Impact Assessments that identify privacy risks in data processing activities and produce documented risk mitigation plans satisfying regulatory requirements"
+    "AI-driven applicant screening: lawful basis 'legitimate_interests', high_risk=True; 3 gap(s) (1 critical)",
+    "critical dpia_missing: high-risk processing requires a completed DPIA (Art. 35)",
+    "high special_category_basis: special-category data needs an Art. 9 condition, not legitimate interests alone",
+    "high right_erasure: data-subject right to erasure not implemented (Art 17)"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/privacy-dpia-input.json",
+      "ref": "processing activity"
+    },
+    {
+      "source": "local://risk-compliance/privacy-dpia/SKILL.md",
+      "ref": "lawful-basis and data-subject-rights tables"
+    }
+  ],
   "next_agents": [
-    "compliance-mapping"
+    "findings-tracker"
   ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T09:01:15Z",
+  "gaps": [
+    {
+      "gap": "dpia_missing",
+      "severity": "critical",
+      "note": "high-risk processing requires a completed DPIA (Art. 35)"
+    },
+    {
+      "gap": "special_category_basis",
+      "severity": "high",
+      "note": "special-category data needs an Art. 9 condition, not legitimate interests alone"
+    },
+    {
+      "gap": "right_erasure",
+      "severity": "high",
+      "note": "data-subject right to erasure not implemented (Art 17)"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "AI-driven applicant screening"
+  ]
 }

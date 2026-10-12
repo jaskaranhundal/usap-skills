@@ -1,0 +1,54 @@
+{
+  "agent_slug": "incident-commander",
+  "intent_type": "escalate",
+  "action": "Declare SEV1 (critical) for INC-2026-0912: War Room, all-hands. Assign IC, forensics, containment and comms. Containment actions are gated for approval.",
+  "rationale": "Severity taken as the incident type's SKILL.md floor, never lowered; spread raises a lower SEV. The commander declares severity (read-only) and assigns the ICS roles; each containment action carried out downstream is a gated mutating intent.",
+  "confidence": 0.9,
+  "severity": "critical",
+  "key_findings": [
+    "INC-2026-0912 type=data_exfiltration: declared SEV1 (critical); response track War Room, all-hands; 1 host(s), 1 account(s)",
+    "ICS roles: incident_commander=cs-incident-responder, forensics_lead=forensics, containment_lead=containment-advisor, comms_lead=ciso-brief-generator, intel_lead=threat-intelligence",
+    "Containment category if actioned: credential_operation \u2014 gated for approval"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/incident-commander-input.json",
+      "ref": "incident descriptor"
+    },
+    {
+      "source": "local://response/incident-commander/SKILL.md",
+      "ref": "incident classification and severity framework (NIST SP 800-61)"
+    }
+  ],
+  "next_agents": [
+    "containment-advisor",
+    "forensics",
+    "ciso-brief-generator"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:35:34Z",
+  "command": {
+    "incident_id": "INC-2026-0912",
+    "sev": "SEV1",
+    "response_track": "War Room, all-hands",
+    "ics_roles": {
+      "incident_commander": "cs-incident-responder",
+      "forensics_lead": "forensics",
+      "containment_lead": "containment-advisor",
+      "comms_lead": "ciso-brief-generator",
+      "intel_lead": "threat-intelligence"
+    },
+    "mutating_category": "credential_operation"
+  },
+  "approver_roles": [
+    "soc_lead",
+    "ciso"
+  ],
+  "mitre_ttps": [
+    "T1041"
+  ],
+  "affected_assets": [
+    "customer-portal-db",
+    "svc-portal-ro"
+  ]
+}

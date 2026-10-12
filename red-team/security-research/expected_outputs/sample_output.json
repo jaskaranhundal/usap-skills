@@ -1,16 +1,61 @@
 {
   "agent_slug": "security-research",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Security Research skill. Conduct original security research to identify novel vulnerability classes, develop proof-of-concept demonstrations, and advance the state of defensive knowledge. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "report",
+  "action": "1 P0 item(s) \u2014 act within 24 hours: Actively exploited RCE in our web framework.",
+  "rationale": "Each item's confidence is set from its evidence basis (CVE + PoC + KEV is high, CVE + vendor advisory is medium) and its action priority from the timeframe table: KEV plus active exploitation in our stack is P0 within 24 hours, a released PoC affecting our stack is P1 within 7 days. Read-only.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Security Research: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Conduct original security research to identify novel vulnerability classes, develop proof-of-concept demonstrations, and advance the state of defensive knowledge"
+    "3 item(s): 1 P0, 1 P1, 0 P2, 1 P3",
+    "P0 Actively exploited RCE in our web framework (CVE-2026-11111) conf 0.90 -> < 24 hours",
+    "P1 PoC for auth bypass in our VPN (CVE-2026-22222) conf 0.50 -> < 7 days",
+    "P3 Academic model-stealing technique (no CVE) conf 0.35 -> < 90 days"
   ],
-  "evidence_references": [],
-  "next_agents": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/security-research-input.json",
+      "ref": "research items"
+    },
+    {
+      "source": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "ref": "CISA KEV catalog"
+    },
+    {
+      "source": "local://red-team/security-research/SKILL.md",
+      "ref": "confidence and priority tables"
+    }
+  ],
+  "next_agents": [
+    "vulnerability-management"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:56:39Z",
+  "items": [
+    {
+      "title": "Actively exploited RCE in our web framework",
+      "cve": "CVE-2026-11111",
+      "confidence": 0.9,
+      "priority": "P0",
+      "timeframe": "< 24 hours",
+      "severity": "critical"
+    },
+    {
+      "title": "PoC for auth bypass in our VPN",
+      "cve": "CVE-2026-22222",
+      "confidence": 0.5,
+      "priority": "P1",
+      "timeframe": "< 7 days",
+      "severity": "high"
+    },
+    {
+      "title": "Academic model-stealing technique",
+      "cve": null,
+      "confidence": 0.35,
+      "priority": "P3",
+      "timeframe": "< 90 days",
+      "severity": "low"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": []
 }

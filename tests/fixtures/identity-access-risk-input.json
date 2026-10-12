@@ -1,0 +1,5 @@
+{"events":[
+{"principal":"arn:aws:sts::123:assumed-role/ci-deploy/i-0","anomaly_type":"privilege_escalation","detail":"AttachUserPolicy AdministratorAccess to new user","entitlements":["AdministratorAccess","iam:*"],"mfa_present":false},
+{"principal":"svc-metrics","anomaly_type":"service_account_interactive","detail":"interactive console login from new IP","entitlements":["s3:GetObject","s3:ListBucket"],"mfa_present":true},
+{"principal":"j.doe","anomaly_type":"impossible_travel","detail":"auth from DE then US within 40m","entitlements":["ReadOnlyAccess"],"mfa_present":true},
+{"principal":"analyst-2","anomaly_type":"dormant_reactivation","detail":"inactive 120d, now active","entitlements":["service:read"],"mfa_present":true}]}

@@ -1,0 +1,57 @@
+{
+  "agent_slug": "devsecops-pipeline",
+  "intent_type": "block",
+  "action": "BLOCK merge/deploy on main: 2 gate-failing finding(s) \u2014 high_cvss_dependency, secret_in_code. Blocking requires approval.",
+  "rationale": "Each finding takes its base severity from the SKILL.md finding table (secrets, critical CVSS dependencies and critical SAST always block) and the gate is resolved by branch: protected branches block on critical or high, feature branches block only on critical. Blocking a merge or deploy is a mutating action requiring human approval.",
+  "confidence": 0.88,
+  "severity": "critical",
+  "key_findings": [
+    "main (protected): decision=block; 4 finding(s) (1 critical, 1 high); 2 block, 1 warn",
+    "BLOCK secret_in_code (critical)",
+    "BLOCK high_cvss_dependency (high)",
+    "WARN license_violation (medium)",
+    "PASS outdated_base_image (low)"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/devsecops-pipeline-input.json",
+      "ref": "pipeline findings"
+    },
+    {
+      "source": "local://appsec-devsecops/devsecops-pipeline/SKILL.md",
+      "ref": "finding-severity and branch gate matrix"
+    }
+  ],
+  "next_agents": [
+    "sast-dast-coordinator"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:47:44Z",
+  "gate_decision": "block",
+  "findings": [
+    {
+      "type": "secret_in_code",
+      "severity": "critical",
+      "gate": "block"
+    },
+    {
+      "type": "high_cvss_dependency",
+      "severity": "high",
+      "gate": "block"
+    },
+    {
+      "type": "license_violation",
+      "severity": "medium",
+      "gate": "warn"
+    },
+    {
+      "type": "outdated_base_image",
+      "severity": "low",
+      "gate": "pass"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "main"
+  ]
+}

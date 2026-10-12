@@ -1,0 +1,67 @@
+{
+  "agent_slug": "red-team-operations",
+  "intent_type": "advise",
+  "action": "OP-NIGHTJAR: 2 mutating execution directive(s) require human approval before execution \u2014 recon_directive, exploitation_directive. Exploitation routes through safe-exploitation.",
+  "rationale": "Each action is classified against the SKILL.md table: plan generation, C2 design documentation, IOC checklists and OPSEC recommendations are read-only, while every execution directive \u2014 recon, exploitation, lateral movement, C2 deployment, exfiltration staging \u2014 is mutating and requires human approval; exploitation additionally routes through the safe-exploitation agent.",
+  "confidence": 0.9,
+  "severity": "high",
+  "key_findings": [
+    "OP-NIGHTJAR: 5 action(s); 2 mutating (1 high-risk)",
+    "read_only generate_execution_plan",
+    "read_only document_c2_design",
+    "read_only recommend_opsec",
+    "mutating recon_directive [human approval]",
+    "mutating exploitation_directive [human approval + safe-exploitation agent]"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/red-team-operations-input.json",
+      "ref": "operation action list"
+    },
+    {
+      "source": "local://red-team/red-team-operations/SKILL.md",
+      "ref": "action classification and kill-chain table"
+    }
+  ],
+  "next_agents": [
+    "safe-exploitation"
+  ],
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:56:39Z",
+  "actions": [
+    {
+      "action": "generate_execution_plan",
+      "classification": "read_only",
+      "approvals": "",
+      "high_risk": false
+    },
+    {
+      "action": "document_c2_design",
+      "classification": "read_only",
+      "approvals": "",
+      "high_risk": false
+    },
+    {
+      "action": "recommend_opsec",
+      "classification": "read_only",
+      "approvals": "",
+      "high_risk": false
+    },
+    {
+      "action": "recon_directive",
+      "classification": "mutating",
+      "approvals": "human approval",
+      "high_risk": false
+    },
+    {
+      "action": "exploitation_directive",
+      "classification": "mutating",
+      "approvals": "human approval + safe-exploitation agent",
+      "high_risk": true
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "OP-NIGHTJAR"
+  ]
+}

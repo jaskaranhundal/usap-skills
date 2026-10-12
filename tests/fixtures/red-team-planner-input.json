@@ -1,0 +1,5 @@
+{"engagement":"ACME annual red team","targets":[
+ {"name":"DC01","tier":"crown_jewels"},
+ {"name":"Okta","tier":"tier1"},
+ {"name":"wiki","tier":"tier3"}],
+ "actions":["campaign_plan","roe_document","recommend_attack_techniques","execution_directive_red_team_ops"]}

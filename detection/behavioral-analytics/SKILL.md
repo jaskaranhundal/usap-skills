@@ -8,7 +8,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-operations
-  updated: 2026-06-27
+  updated: 2026-09-05
   agent_slug: "behavioral-analytics"
   frameworks:
     mitre_attack: [T1078, T1110, T1133]

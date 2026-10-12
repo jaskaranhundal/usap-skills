@@ -1,0 +1,67 @@
+{
+  "agent_slug": "forensics",
+  "intent_type": "analyze",
+  "action": "Fix chain of custody before analysis: no hash recorded at acquisition \u2014 evidence inadmissible. Then collect P0 volatile evidence first.",
+  "rationale": "Evidence ordered by the SKILL.md volatility matrix (RAM, network, processes are P0). Chain of custody requires a hash at acquisition, documented tool provenance and a write-blocked target; a missing one makes evidence inadmissible (critical). Timeline reconstruction is read-only; a collection step that modifies a live system is a gated remediation_action.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "Case IR-2026-0912: 5 evidence source(s), 3 volatile (P0), 1 custody defect(s), 3 timeline event(s)",
+    "P0 ram (volatility seconds)",
+    "P0 network_connections (volatility minutes)",
+    "P0 processes (volatility minutes)",
+    "P1 cloudtrail (volatility days)",
+    "P2 disk (volatility persistent)",
+    "CUSTODY DEFECT: no hash recorded at acquisition \u2014 evidence inadmissible",
+    "Timeline: 2026-09-04T02:11:00Z web shell dropped -> 2026-09-04T02:14:00Z C2 beacon started -> 2026-09-04T02:40:00Z DB subnet SSH attempt"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/forensics-input.json",
+      "ref": "case evidence and custody record"
+    },
+    {
+      "source": "local://response/forensics/SKILL.md",
+      "ref": "evidence priority matrix and chain-of-custody requirements"
+    }
+  ],
+  "next_agents": [
+    "incident-commander"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:35:34Z",
+  "collection_plan": [
+    {
+      "evidence": "ram",
+      "priority": "P0",
+      "volatility": "seconds"
+    },
+    {
+      "evidence": "network_connections",
+      "priority": "P0",
+      "volatility": "minutes"
+    },
+    {
+      "evidence": "processes",
+      "priority": "P0",
+      "volatility": "minutes"
+    },
+    {
+      "evidence": "cloudtrail",
+      "priority": "P1",
+      "volatility": "days"
+    },
+    {
+      "evidence": "disk",
+      "priority": "P2",
+      "volatility": "persistent"
+    }
+  ],
+  "custody_defects": [
+    "no hash recorded at acquisition \u2014 evidence inadmissible"
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "payments-api-03"
+  ]
+}

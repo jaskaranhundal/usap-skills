@@ -1,0 +1,5 @@
+{"assets":[
+{"id":"DA-1","name":"customer table","data_categories":["pii","pci"],"location":"rds-prod","encrypted_at_rest":true,"encrypted_in_transit":true,"access":"restricted"},
+{"id":"DA-2","name":"analytics export","data_categories":["pii"],"location":"s3://acme-exports","encrypted_at_rest":true,"encrypted_in_transit":true,"access":"public"},
+{"id":"DA-3","name":"signing keys","data_categories":["encryption_keys"],"location":"kms","encrypted_at_rest":false,"encrypted_in_transit":true,"access":"restricted"},
+{"id":"DA-4","name":"press releases","data_categories":["marketing","public"],"location":"cms","encrypted_at_rest":false,"encrypted_in_transit":true,"access":"public"}]}

@@ -1,0 +1,8 @@
+{"source":"acme-dc1-scan","open_ports":[
+{"host":"10.20.8.13","port":22,"service":"ssh","exposure":"internet"},
+{"host":"10.20.9.4","port":5432,"service":"postgresql","exposure":"dmz"},
+{"host":"web-01","port":443,"service":"https","exposure":"internet"},
+{"host":"legacy-02","port":23,"service":"telnet","exposure":"internet"}],
+"firewall_rules":[{"id":"fw-11","source":"0.0.0.0/0","dest":"internal","port":"any","action":"allow"},{"id":"fw-02","source":"10.0.0.0/8","dest":"dmz","port":"443","action":"allow"}],
+"segmentation":{"db_reachable_from_internet":true,"admin_without_jump":true,"ot_bridged_to_it":false,"dmz_unrestricted_egress":true},
+"egress_iocs":[{"type":"beaconing","detail":"regular 300s connections to 185.220.101.47"},{"type":"dns_tunneling","detail":"TXT queries >60 chars to a single domain"}]}

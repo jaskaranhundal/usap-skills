@@ -1,0 +1,1 @@
+{"agent":"rag-support-bot","indicators":["prompt_injection","tool_misuse","hallucination"]}

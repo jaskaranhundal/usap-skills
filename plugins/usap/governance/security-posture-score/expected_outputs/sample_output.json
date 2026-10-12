@@ -1,0 +1,98 @@
+{
+  "agent_slug": "security-posture-score",
+  "intent_type": "report",
+  "action": "Composite 61.0/100 (fair), falling -10.0. Prioritise remediation in Identity & Access, Response (below 60).",
+  "rationale": "Each domain scored as controls-passing/total * 100 * maturity multiplier (ad_hoc 0.6 .. optimized 1.0), composite as the weighted sum of the SKILL.md domain weights, rating from the score bands, trend against the prior composite. A swing of 10 points or more is flagged as anomalous. Read-only.",
+  "confidence": 0.88,
+  "severity": "medium",
+  "key_findings": [
+    "Composite posture 61.0/100 \u2014 fair; trend falling (-10.0 vs 71)",
+    "Identity & Access: 40.0/100 (controls 8/15, defined, weight 0%)",
+    "Response: 41.3/100 (controls 11/20, defined, weight 20%)",
+    "Governance: 67.5/100 (controls 9/12, managed, weight 10%)",
+    "AppSec/DevSecOps: 68.4/100 (controls 19/25, managed, weight 15%)",
+    "Detection: 72.0/100 (controls 16/20, managed, weight 20%)",
+    "Cloud & Infra: 73.6/100 (controls 18/22, managed, weight 0%)",
+    "Risk & Compliance: 85.7/100 (controls 12/14, optimized, weight 0%)",
+    "Anomalous 10.0-point swing this period \u2014 root-cause explanation required in the brief"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/security-posture-score-input.json",
+      "ref": "domain control data"
+    },
+    {
+      "source": "local://governance/security-posture-score/SKILL.md",
+      "ref": "domain weights, maturity multipliers, score bands"
+    }
+  ],
+  "next_agents": [
+    "ciso-brief-generator",
+    "metrics-reporting"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:19:53Z",
+  "scorecard": {
+    "composite": 61.0,
+    "rating": "fair",
+    "trend": "falling",
+    "delta": -10.0,
+    "domains": [
+      {
+        "domain": "Identity & Access",
+        "score": 40.0,
+        "weight": 0.0,
+        "controls": "8/15",
+        "maturity": "defined"
+      },
+      {
+        "domain": "Response",
+        "score": 41.3,
+        "weight": 0.2,
+        "controls": "11/20",
+        "maturity": "defined"
+      },
+      {
+        "domain": "Governance",
+        "score": 67.5,
+        "weight": 0.1,
+        "controls": "9/12",
+        "maturity": "managed"
+      },
+      {
+        "domain": "AppSec/DevSecOps",
+        "score": 68.4,
+        "weight": 0.15,
+        "controls": "19/25",
+        "maturity": "managed"
+      },
+      {
+        "domain": "Detection",
+        "score": 72.0,
+        "weight": 0.2,
+        "controls": "16/20",
+        "maturity": "managed"
+      },
+      {
+        "domain": "Cloud & Infra",
+        "score": 73.6,
+        "weight": 0.0,
+        "controls": "18/22",
+        "maturity": "managed"
+      },
+      {
+        "domain": "Risk & Compliance",
+        "score": 85.7,
+        "weight": 0.0,
+        "controls": "12/14",
+        "maturity": "optimized"
+      }
+    ],
+    "weak_domains": [
+      "Identity & Access",
+      "Response"
+    ]
+  },
+  "mitre_ttps": [],
+  "affected_assets": []
+}

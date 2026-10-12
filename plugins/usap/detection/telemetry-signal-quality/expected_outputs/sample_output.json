@@ -1,0 +1,53 @@
+{
+  "agent_slug": "telemetry-signal-quality",
+  "intent_type": "report",
+  "action": "Data-source gap in 1/3 source(s): Proxy (last event 2026-09-01T00:00:00Z, expected within 24h). A clean hunt verdict is not valid for the affected period.",
+  "rationale": "Each raw event mapped to the controlled event-type vocabulary, severity normalised, confidence scored by source credibility and indicator specificity. Source health is checked against the expected window; a silent required source is a blind spot that invalidates negative findings. Read-only transform.",
+  "confidence": 0.85,
+  "severity": "high",
+  "key_findings": [
+    "3 event(s) normalised, 2 unknown, 2 low-confidence; 1/3 source(s) with a gap",
+    "gap: Proxy (last event 2026-09-01T00:00:00Z, expected within 24h)",
+    "event types: unknown=2, malware_execution=1"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/telemetry-signal-quality-input.json",
+      "ref": "raw events and source inventory"
+    },
+    {
+      "source": "local://detection/telemetry-signal-quality/SKILL.md",
+      "ref": "event vocabulary, severity and confidence scoring rules"
+    }
+  ],
+  "next_agents": [
+    "detection-engineering"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:25:55Z",
+  "normalized": [
+    {
+      "event_type": "malware_execution",
+      "severity": "high",
+      "confidence": 0.97,
+      "source": "crowdstrike"
+    },
+    {
+      "event_type": "unknown",
+      "severity": "low",
+      "confidence": 0.4,
+      "source": "helpdesk"
+    },
+    {
+      "event_type": "unknown",
+      "severity": "medium",
+      "confidence": 0.4,
+      "source": "legacy-script"
+    }
+  ],
+  "data_gaps": [
+    "Proxy (last event 2026-09-01T00:00:00Z, expected within 24h)"
+  ],
+  "mitre_ttps": [],
+  "affected_assets": []
+}

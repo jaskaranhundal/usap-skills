@@ -1,0 +1,128 @@
+{
+  "agent_slug": "metrics-reporting",
+  "intent_type": "report",
+  "action": "5 KPI(s) off target for 2026-08: Mean time to remediate (critical) 6.5 (target < 4 h); False-positive rate 0.52 (target < 0.40); Patch coverage (critical) 91.0 (target >= 95%); SLA compliance 88.0 (target >= 90%).",
+  "rationale": "Each KPI computed from the supplied metric and compared to its SKILL.md target; breaches of critical KPIs (open criticals, approval completion, evidence-chain integrity) drive critical severity. Breaches are translated to business language for the decisions-needed section. Read-only.",
+  "confidence": 0.9,
+  "severity": "critical",
+  "key_findings": [
+    "operational_kpi_report for 2026-08: 10 KPI(s), 5 off target",
+    "ok  Mean time to detect: 22.0 (target < 30 min)",
+    "OFF Mean time to remediate (critical): 6.5 (target < 4 h)",
+    "OFF False-positive rate: 0.52 (target < 0.40)",
+    "OFF Patch coverage (critical): 91.0 (target >= 95%)",
+    "OFF SLA compliance: 88.0 (target >= 90%)",
+    "ok  Phishing click rate: 0.04 (target < 0.05)",
+    "ok  Training completion: 97.0 (target >= 95%)",
+    "OFF Open critical incidents: 1.0 (target 0)",
+    "Decisions needed: Mean time to remediate (critical) is off target (6.5 vs < 4 h).; Signal quality is low \u2014 the team spends time on noise, not real threats.; Critical systems remain unpatched beyond the coverage target \u2014 exploitable exposure."
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/metrics-reporting-input.json",
+      "ref": "metrics inputs"
+    },
+    {
+      "source": "local://governance/metrics-reporting/SKILL.md",
+      "ref": "KPI definitions and targets"
+    }
+  ],
+  "next_agents": [
+    "security-posture-score",
+    "ciso-brief-generator"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:19:53Z",
+  "kpis": [
+    {
+      "kpi": "mttd_min",
+      "label": "Mean time to detect",
+      "value": 22.0,
+      "target": "< 30 min",
+      "on_target": true,
+      "critical": false
+    },
+    {
+      "kpi": "mttr_hours_critical",
+      "label": "Mean time to remediate (critical)",
+      "value": 6.5,
+      "target": "< 4 h",
+      "on_target": false,
+      "critical": false
+    },
+    {
+      "kpi": "false_positive_rate",
+      "label": "False-positive rate",
+      "value": 0.52,
+      "target": "< 0.40",
+      "on_target": false,
+      "critical": false
+    },
+    {
+      "kpi": "patch_coverage_pct",
+      "label": "Patch coverage (critical)",
+      "value": 91.0,
+      "target": ">= 95%",
+      "on_target": false,
+      "critical": false
+    },
+    {
+      "kpi": "sla_compliance_pct",
+      "label": "SLA compliance",
+      "value": 88.0,
+      "target": ">= 90%",
+      "on_target": false,
+      "critical": false
+    },
+    {
+      "kpi": "phishing_click_rate",
+      "label": "Phishing click rate",
+      "value": 0.04,
+      "target": "< 0.05",
+      "on_target": true,
+      "critical": false
+    },
+    {
+      "kpi": "training_completion_pct",
+      "label": "Training completion",
+      "value": 97.0,
+      "target": ">= 95%",
+      "on_target": true,
+      "critical": false
+    },
+    {
+      "kpi": "critical_open_count",
+      "label": "Open critical incidents",
+      "value": 1.0,
+      "target": "0",
+      "on_target": false,
+      "critical": true
+    },
+    {
+      "kpi": "approval_completion_rate",
+      "label": "Approval completion",
+      "value": 100.0,
+      "target": "100%",
+      "on_target": true,
+      "critical": true
+    },
+    {
+      "kpi": "evidence_chain_integrity",
+      "label": "Evidence-chain integrity",
+      "value": 100.0,
+      "target": "100%",
+      "on_target": true,
+      "critical": true
+    }
+  ],
+  "decisions_needed": [
+    "Mean time to remediate (critical) is off target (6.5 vs < 4 h).",
+    "Signal quality is low \u2014 the team spends time on noise, not real threats.",
+    "Critical systems remain unpatched beyond the coverage target \u2014 exploitable exposure.",
+    "SLA compliance is off target (88.0 vs >= 90%).",
+    "Unresolved critical incidents remain open \u2014 active business risk."
+  ],
+  "regulatory_relevance": "Assess GDPR/PCI/HIPAA obligations if a breach KPI reflects a reportable incident.",
+  "mitre_ttps": [],
+  "affected_assets": []
+}

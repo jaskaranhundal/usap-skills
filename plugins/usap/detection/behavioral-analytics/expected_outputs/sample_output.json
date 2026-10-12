@@ -1,0 +1,74 @@
+{
+  "agent_slug": "behavioral-analytics",
+  "intent_type": "detect",
+  "action": "3 entity/entities with behavioral anomalies; investigate svc-backup first (critical). Baselines under 30 days for new-intern: treat verdicts as low-confidence.",
+  "rationale": "Each entity scored against the SKILL.md anomaly categories: time by z-score >= 3, volume by mean+3sigma or >5x p95, peer-group by >2 sigma on two or more dimensions, and weighted new-behavior signals (HR/finance out of role is the heaviest). A baseline under 30 days is cold-start and caps confidence. Read-only.",
+  "confidence": 0.6,
+  "severity": "critical",
+  "key_findings": [
+    "3 entity/entities analysed, 3 anomalous; top svc-backup (critical, composite 11)",
+    "critical svc-backup: time anomaly (z=5.5); volume anomaly (4200.0MB vs mean 200.0MB); peer-group deviation on 2 dimensions (>2 sigma); new behavior: privileged_command, new_country (weight 5)",
+    "critical j.mueller: new behavior: hr_or_finance_out_of_role (weight 4)",
+    "high new-intern: time anomaly (z=9.0); new behavior: after_hours (weight 1) [cold start <30d]"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/behavioral-analytics-input.json",
+      "ref": "entity baselines and current activity"
+    },
+    {
+      "source": "local://detection/behavioral-analytics/SKILL.md",
+      "ref": "anomaly categories and new-behavior weights"
+    }
+  ],
+  "next_agents": [
+    "threat-hunting"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:25:54Z",
+  "entities": [
+    {
+      "entity": "svc-backup",
+      "anomalies": [
+        "time anomaly (z=5.5)",
+        "volume anomaly (4200.0MB vs mean 200.0MB)",
+        "peer-group deviation on 2 dimensions (>2 sigma)",
+        "new behavior: privileged_command, new_country (weight 5)"
+      ],
+      "new_behavior_score": 5,
+      "composite": 11,
+      "cold_start": false,
+      "severity": "critical"
+    },
+    {
+      "entity": "j.mueller",
+      "anomalies": [
+        "new behavior: hr_or_finance_out_of_role (weight 4)"
+      ],
+      "new_behavior_score": 4,
+      "composite": 4,
+      "cold_start": false,
+      "severity": "critical"
+    },
+    {
+      "entity": "new-intern",
+      "anomalies": [
+        "time anomaly (z=9.0)",
+        "new behavior: after_hours (weight 1)"
+      ],
+      "new_behavior_score": 1,
+      "composite": 3,
+      "cold_start": true,
+      "severity": "high"
+    }
+  ],
+  "mitre_ttps": [
+    "T1078",
+    "T1110"
+  ],
+  "affected_assets": [
+    "svc-backup",
+    "j.mueller",
+    "new-intern"
+  ]
+}

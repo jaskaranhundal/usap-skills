@@ -1,16 +1,39 @@
 {
   "agent_slug": "orchestrator",
-  "intent_type": "escalate",
-  "action": "Route the event to the matching specialist agent based on classification rules.",
-  "rationale": "Representative output for the Orchestrator skill. Coordinate multi-agent security workflows, enforce skill routing policies, and maintain trust boundaries across the USAP agent platform. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "report",
+  "action": "Route network_intrusion (critical) -> primary: threat-intelligence, incident-classification; then: incident-commander, forensics.",
+  "rationale": "The event is routed deterministically by the SKILL.md table: event_type selects the primary agent(s) and severity selects the secondary fan-out \u2014 a high or critical IAM anomaly, for instance, adds containment and threat-intelligence, while a low one only records a finding. The orchestrator coordinates and never executes.",
+  "confidence": 0.9,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Orchestrator: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Coordinate multi-agent security workflows, enforce skill routing policies, and maintain trust boundaries across the USAP agent platform"
+    "event=network_intrusion, severity=critical: 4 agent(s) in sequence",
+    "primary: threat-intelligence, incident-classification",
+    "secondary: incident-commander, forensics"
   ],
-  "evidence_references": [],
-  "next_agents": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/orchestrator-input.json",
+      "ref": "security event"
+    },
+    {
+      "source": "local://platform-ai/orchestrator/SKILL.md",
+      "ref": "event routing table"
+    }
+  ],
+  "next_agents": [
+    "threat-intelligence",
+    "incident-classification",
+    "incident-commander",
+    "forensics"
+  ],
   "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "timestamp_utc": "2026-09-05T08:52:08Z",
+  "route": [
+    "threat-intelligence",
+    "incident-classification",
+    "incident-commander",
+    "forensics"
+  ],
+  "mitre_ttps": [],
+  "affected_assets": []
 }

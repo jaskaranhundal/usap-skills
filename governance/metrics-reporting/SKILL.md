@@ -6,7 +6,7 @@ metadata:
   version: "1.0.0"
   author: USAP Team
   category: usap-governance
-  updated: 2025-03-23
+  updated: 2026-09-05
   agent_slug: metrics-reporting
   agent_id: 33
   level: L1

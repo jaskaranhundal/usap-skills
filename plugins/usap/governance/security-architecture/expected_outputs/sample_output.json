@@ -1,0 +1,73 @@
+{
+  "agent_slug": "security-architecture",
+  "intent_type": "advise",
+  "action": "1 SAR criterion(criteria) failed on new-partner-api \u2014 do not deploy until fixed: data (partner PII stored unencrypted at rest).",
+  "rationale": "Each of the eight SAR criteria is a gap unless marked pass; a fail on a critical criterion (auth, authz, data, secrets) blocks deployment. Zero Trust pillars still at traditional maturity are noted against the CISA model. Every control traces to a SAR question. Read-only advisory.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "SAR of new-partner-api (trigger: new internet-facing API with data access): 4 open criterion(criteria), 1 failed; 2 ZT pillar(s) at traditional",
+    "CRITICAL data [fail]: partner PII stored unencrypted at rest",
+    "HIGH authorization [gap]: scopes coarse; no per-partner least privilege",
+    "MEDIUM audit [gap]: API access logged but not to tamper-proof store",
+    "MEDIUM third_party [gap]: partner compromise blast radius not modelled",
+    "Zero Trust at traditional maturity: device: traditional, data: traditional"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/security-architecture-input.json",
+      "ref": "SAR descriptor"
+    },
+    {
+      "source": "https://csrc.nist.gov/pubs/sp/800/207/final",
+      "ref": "NIST SP 800-207 Zero Trust Architecture"
+    },
+    {
+      "source": "local://governance/security-architecture/SKILL.md",
+      "ref": "SAR evaluation criteria and ZT maturity model"
+    }
+  ],
+  "next_agents": [
+    "risk-threat-modeling"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T08:19:54Z",
+  "gap_register": [
+    {
+      "criterion": "data",
+      "status": "fail",
+      "severity": "critical",
+      "question": "Is data encrypted at rest and in transit?",
+      "note": "partner PII stored unencrypted at rest"
+    },
+    {
+      "criterion": "authorization",
+      "status": "gap",
+      "severity": "high",
+      "question": "Is least privilege enforced for every identity?",
+      "note": "scopes coarse; no per-partner least privilege"
+    },
+    {
+      "criterion": "audit",
+      "status": "gap",
+      "severity": "medium",
+      "question": "Are security events logged to tamper-proof storage?",
+      "note": "API access logged but not to tamper-proof store"
+    },
+    {
+      "criterion": "third_party",
+      "status": "gap",
+      "severity": "medium",
+      "question": "What is the blast radius of a third-party compromise?",
+      "note": "partner compromise blast radius not modelled"
+    }
+  ],
+  "zero_trust_gaps": [
+    "device: traditional",
+    "data: traditional"
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "new-partner-api"
+  ]
+}

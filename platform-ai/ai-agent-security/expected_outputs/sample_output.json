@@ -1,18 +1,54 @@
 {
   "agent_slug": "ai-agent-security",
-  "intent_type": "analyze",
-  "action": "Produce structured analysis with explicit assumptions and chain to the next analytical step.",
-  "rationale": "Representative output for the Ai Agent Security skill. Identify, assess, and mitigate security vulnerabilities specific to AI agent systems including prompt injection, model extraction, capability misuse, and trust boundary violations. This payload is a contract-conformant baseline emitted by the sample generator; a live run would substitute real findings derived from the operator-supplied input package.",
-  "confidence": 0.78,
-  "severity": "medium",
+  "intent_type": "respond",
+  "action": "1 critical misuse indicator(s) on rag-support-bot; recommend: Block the agent session (mutating \u2014 requires approval).",
+  "rationale": "Detection of injection, misuse and hallucination is read-only; the recommended remediation is mapped to the SKILL.md action table \u2014 blocking a session, revoking tool permissions, quarantining a source or suspending an endpoint are all mutating actions that require human approval before execution.",
+  "confidence": 0.85,
+  "severity": "critical",
   "key_findings": [
-    "Representative finding for Ai Agent Security: baseline pass against documented decision tables in SKILL.md",
-    "Skill mandate observed: Identify, assess, and mitigate security vulnerabilities specific to AI agent systems including prompt injection, model extraction, capability misuse, and trust boundary violations"
+    "rag-support-bot: 3 indicator(s) (1 critical, 1 high); 2 mutating remediation(s) recommended",
+    "critical prompt_injection -> Block the agent session [approval]",
+    "high tool_misuse -> Revoke agent tool permissions [approval]",
+    "medium hallucination -> Flag the session for human review"
   ],
-  "evidence_references": [],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/ai-agent-security-input.json",
+      "ref": "agent session indicators"
+    },
+    {
+      "source": "local://platform-ai/ai-agent-security/SKILL.md",
+      "ref": "action classification table"
+    }
+  ],
   "next_agents": [
-    "agent-integrity-monitor"
+    "agent-integrity-monitor",
+    "guardrail"
   ],
-  "human_approval_required": false,
-  "timestamp_utc": "2026-06-22T12:00:00Z"
+  "human_approval_required": true,
+  "timestamp_utc": "2026-09-05T08:52:08Z",
+  "findings": [
+    {
+      "indicator": "prompt_injection",
+      "severity": "critical",
+      "remediation": "Block the agent session",
+      "mutating": true
+    },
+    {
+      "indicator": "tool_misuse",
+      "severity": "high",
+      "remediation": "Revoke agent tool permissions",
+      "mutating": true
+    },
+    {
+      "indicator": "hallucination",
+      "severity": "medium",
+      "remediation": "Flag the session for human review",
+      "mutating": false
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "rag-support-bot"
+  ]
 }

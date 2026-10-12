@@ -1,0 +1,8 @@
+{"as_of_utc":"2026-09-05T00:00:00Z","events":[
+{"raw_type":"EDR alert","raw_severity":"HIGH","source":"crowdstrike","source_credibility":0.95,"specific_indicator":"suspicious process wmiprvse->powershell -enc"},
+{"raw_type":"user report","raw_severity":"P3","source":"helpdesk","source_credibility":0.5,"specific_indicator":""},
+{"raw_type":"weird thing","raw_severity":"banana","source":"legacy-script","source_credibility":0.45,"specific_indicator":""}],
+"sources":[
+{"name":"EDR","last_event_utc":"2026-09-04T23:50:00Z","expected_within_hours":24},
+{"name":"CloudTrail","last_event_utc":"2026-09-04T23:59:00Z","expected_within_hours":24},
+{"name":"Proxy","last_event_utc":"2026-09-01T00:00:00Z","expected_within_hours":24}]}

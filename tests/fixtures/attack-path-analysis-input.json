@@ -1,0 +1,4 @@
+{"source":"phished-workstation","paths":[
+ {"name":"WS -> DA via Kerberoast","category":"credential_theft","likelihood":0.8,"impact":0.95,"choke_point":true,"hardening":"tier-0 admin isolation, AES-only SPNs"},
+ {"name":"WS -> file server","category":"lateral_movement","likelihood":0.6,"impact":0.5,"choke_point":false},
+ {"name":"local priv-esc","category":"privilege_escalation","likelihood":0.4,"impact":0.4,"choke_point":false}]}

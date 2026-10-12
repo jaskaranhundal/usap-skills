@@ -1,0 +1,65 @@
+{
+  "agent_slug": "enterprise-risk-assessment",
+  "intent_type": "report",
+  "action": "1 critical risk scenario(s) (> $10M ALE) for ACME Corp; immediate board escalation and an emergency remediation plan for: Ransomware halts production.",
+  "rationale": "Each scenario's Annual Loss Expectancy (supplied, or threat-event frequency x probable loss magnitude) is placed on the SKILL.md tier table: above $10M is critical with immediate board escalation, $1M-$10M high with quarterly reporting. Read-only quantification.",
+  "confidence": 0.85,
+  "severity": "critical",
+  "key_findings": [
+    "ACME Corp: 4 scenario(s), aggregate ALE $17,530,000 (1 critical, 1 high)",
+    "critical Ransomware halts production: ALE $14,000,000 -> Immediate board escalation",
+    "high PII breach (2M records): ALE $3,000,000 -> Quarterly board reporting",
+    "medium Insider data theft: ALE $450,000 -> Annual board reporting",
+    "low Phishing account takeover: ALE $80,000 -> Internal tracking"
+  ],
+  "evidence_references": [
+    {
+      "source": "local://tests/fixtures/enterprise-risk-assessment-input.json",
+      "ref": "risk scenarios"
+    },
+    {
+      "source": "local://risk-compliance/enterprise-risk-assessment/SKILL.md",
+      "ref": "FAIR ALE tier table"
+    }
+  ],
+  "next_agents": [
+    "ciso-brief-generator"
+  ],
+  "human_approval_required": false,
+  "timestamp_utc": "2026-09-05T09:01:15Z",
+  "aggregate_ale": 17530000.0,
+  "scenarios": [
+    {
+      "name": "Ransomware halts production",
+      "ale": 14000000.0,
+      "tier": "critical",
+      "board_attention": "Immediate board escalation",
+      "response": "Emergency remediation plan"
+    },
+    {
+      "name": "PII breach (2M records)",
+      "ale": 3000000.0,
+      "tier": "high",
+      "board_attention": "Quarterly board reporting",
+      "response": "Risk owner + timeline"
+    },
+    {
+      "name": "Insider data theft",
+      "ale": 450000.0,
+      "tier": "medium",
+      "board_attention": "Annual board reporting",
+      "response": "Risk register entry"
+    },
+    {
+      "name": "Phishing account takeover",
+      "ale": 80000.0,
+      "tier": "low",
+      "board_attention": "Internal tracking",
+      "response": "Accept or mitigate"
+    }
+  ],
+  "mitre_ttps": [],
+  "affected_assets": [
+    "ACME Corp"
+  ]
+}
